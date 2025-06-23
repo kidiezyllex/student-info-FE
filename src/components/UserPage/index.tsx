@@ -1,0 +1,174 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useGetAllUsers, useDeleteUser } from "@/hooks/useUser";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'; 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { UserTable } from "@/components/UserPage/UserTable";
+import { UserDeleteDialog } from "@/components/UserPage/UserDeleteDialog";
+import { UserCreateDialog } from "@/components/UserPage/UserCreateDialog";
+import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { IconSearch, IconPlus } from "@tabler/icons-react";
+import { IUser } from "@/interface/response/user";
+
+export default function UserPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+
+  const { data: usersData, isLoading, refetch } = useGetAllUsers();
+  const { mutateAsync: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
+
+  // Filter users based on search query
+  useEffect(() => {
+    if (usersData?.data) {
+      if (searchQuery.trim()) {
+        const filtered = usersData.data.filter(user =>
+          user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.role.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredUsers(filtered);
+      } else {
+        setFilteredUsers(usersData.data);
+      }
+    }
+  }, [usersData?.data, searchQuery]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleEdit = (id: string) => {
+    setSelectedUserId(id);
+    setIsDetailsDialogOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    setSelectedUserId(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!selectedUserId) {
+      return Promise.resolve();
+    }
+
+    try {
+      const response = await deleteUserMutation(selectedUserId);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return (
+    <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/admin/users">Quản lý người dùng</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Quản lý tài khoản</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-4 w-full md:w-auto">
+            <div className="relative w-full md:w-64">
+              <Input
+                placeholder="Tìm kiếm người dùng..."
+                value={searchQuery}
+                onChange={handleSearch}
+                className="pl-10 pr-4 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-secondaryTextV1"
+              />
+              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
+            </div>
+          <Button
+            onClick={() => setIsCreateDialogOpen(true)}
+            className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+          >
+            <IconPlus className="mr-2 h-4 w-4" />
+            Thêm người dùng
+          </Button>
+          </div>
+
+          <Card className="p-0 overflow-hidden border border-lightBorderV1">
+            {isLoading ? (
+              <div className="p-6">
+                <div className="flex flex-col gap-4">
+                  {[...Array(5)].map((_, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-48" />
+                        <Skeleton className="h-4 w-24" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <UserTable
+                users={filteredUsers}
+                isSearching={!!searchQuery}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            )}
+          </Card>
+        </div>
+      </motion.div>
+      <UserDeleteDialog
+        isOpen={isDeleteDialogOpen}
+        isDeleting={isDeleting}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={confirmDelete}
+      />
+      
+      <UserCreateDialog
+        isOpen={isCreateDialogOpen}
+        onClose={() => setIsCreateDialogOpen(false)}
+        onSuccess={() => refetch()}
+      />
+      
+      {selectedUserId && (
+        <UserDetailsDialog
+          isOpen={isDetailsDialogOpen}
+          onClose={() => {
+            setIsDetailsDialogOpen(false);
+            setSelectedUserId(null);
+          }}
+          userId={selectedUserId}
+          onSuccess={() => refetch()}
+        />
+      )}
+    </div>
+  );
+} 
