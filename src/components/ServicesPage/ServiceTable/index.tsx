@@ -105,7 +105,7 @@ const ServiceTable = ({
               <CardContent className="relative p-6 space-y-4">
                 {/* Header with icon and title */}
                 <div className="flex items-start gap-4">
-                  <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-3 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-3 shadow-md group-hover:shadow-xl transition-shadow duration-300">
                     <IconSettings className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">

@@ -133,7 +133,7 @@ export const HomeDetailInfo = ({ home }: HomeDetailInfoProps) => {
   );
 
   const InfoSection = ({ title, items, className = "" }: { title: string, items: any[], className?: string }) => (
-    <Card className={`border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow ${className}`}>
+    <Card className={`border border-slate-200 bg-white overflow-hidden shadow-md hover:shadow-md transition-shadow ${className}`}>
       <CardHeader>
         {title}
       </CardHeader>
@@ -165,7 +165,7 @@ export const HomeDetailInfo = ({ home }: HomeDetailInfoProps) => {
 
   return (
     <div className="space-y-4 bg-[#F9F9FC]">
-      <Card className="border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <Card className="border border-slate-200 bg-white overflow-hidden shadow-md hover:shadow-md transition-shadow">
         <CardHeader>
           Hình ảnh căn hộ
         </CardHeader>
@@ -201,7 +201,7 @@ export const HomeDetailInfo = ({ home }: HomeDetailInfoProps) => {
         />
       </div>
 
-      <Card className="border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <Card className="border border-slate-200 bg-white overflow-hidden shadow-md hover:shadow-md transition-shadow">
         <CardHeader>
           Tiện nghi & Dịch vụ
         </CardHeader>
@@ -218,7 +218,7 @@ export const HomeDetailInfo = ({ home }: HomeDetailInfoProps) => {
         </div>
       </Card>
 
-      <Card className="border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <Card className="border border-slate-200 bg-white overflow-hidden shadow-md hover:shadow-md transition-shadow">
         <CardHeader>
           Thông tin thời gian
         </CardHeader>

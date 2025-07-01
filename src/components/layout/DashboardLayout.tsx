@@ -227,7 +227,7 @@ export default function DashboardLayout({
 				{
 					isStudent ? (
 						<main
-							className={`flex-1 overflow-auto bg-mainDarkBackgroundV1 ${isOpen ? "pl-[140px]" : "pl-[38px]"} mt-[32px] min-h-screen transition-all duration-300 p-4`}
+							className={`flex-1 overflow-auto bg-mainDarkBackgroundV1 ${isOpen ? "pl-[140px]" : "pl-[38px]"} mt-[32px] min-h-screen transition-all duration-300 p-4 pr-2`}
 						>
 							{children}
 						</main>

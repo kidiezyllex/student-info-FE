@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IconSend, IconRobot, IconUser, IconMessageCircle } from "@tabler/icons-react";
 import { useUser } from "@/context/useUserContext";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 interface Message {
   id: string;
@@ -48,7 +49,6 @@ export default function StudentChatPage() {
   }, [messages]);
 
   useEffect(() => {
-    // Add welcome message when component mounts
     if (messages.length === 0) {
       const welcomeMessage: Message = {
         id: `welcome-${Date.now()}`,
@@ -88,7 +88,6 @@ export default function StudentChatPage() {
 
       setMessages(prev => [...prev, aiMessage]);
     } catch (error: any) {
-      console.error("AI chat error:", error);
       const errorMessage: Message = {
         id: `error-${Date.now()}`,
         content: "I'm sorry, I encountered an error while processing your request. Please try again later.",
@@ -114,7 +113,7 @@ export default function StudentChatPage() {
   };
 
   return (
-    <div className="space-y-6 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1 h-[calc(100vh-120px)]">
+    <div className="fixed mr-4 space-y-6 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1 h-[calc(100vh-100px)]">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -127,31 +126,30 @@ export default function StudentChatPage() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex flex-col h-full max-h-[calc(100vh-200px)]">
+      <div className="flex flex-col h-full max-h-[calc(100vh-180px)]">
         {/* Chat Header */}
-        <Card className="mb-4">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                <IconRobot className="w-6 h-6 text-purple-600" />
+        <Card className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-b-none border-b-0">
+          <CardHeader className="p-3">
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center shadow-md">
+                  <IconRobot className="w-7 h-7 text-white" />
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
               </div>
-              <div>
-                <CardTitle className="text-lg text-mainTextV1">AI Assistant</CardTitle>
-                <p className="text-sm text-secondaryTextV1">
-                  Online • Ready to help with your questions
-                </p>
-              </div>
-              <div className="ml-auto">
-                <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100">
-                  Active
-                </Badge>
+              <div className="flex-1">
+                <CardTitle className="text-xl font-bold text-mainTextV1 mb-1">AI Assistant</CardTitle>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-secondaryTextV1 font-medium">
+                    Ready to help with your questions
+                  </p>
+                </div>
               </div>
             </div>
           </CardHeader>
         </Card>
-
         {/* Chat Messages */}
-        <Card className="flex-1 overflow-hidden">
+        <Card className="flex-1 overflow-hidden rounded-none border-t-0">
           <CardContent className="p-0 h-full">
             <ScrollArea className="h-full p-4">
               <div className="space-y-4">
@@ -165,18 +163,17 @@ export default function StudentChatPage() {
                       className={`flex gap-3 ${message.isUser ? 'justify-end' : 'justify-start'}`}
                     >
                       {!message.isUser && (
-                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <IconRobot className="w-4 h-4 text-purple-600" />
+                        <div className="w-10 h-10 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
                         </div>
                       )}
-                      
+
                       <div className={`max-w-[70%] ${message.isUser ? 'order-first' : ''}`}>
                         <div
-                          className={`p-3 rounded-lg ${
-                            message.isUser
+                          className={`p-3 rounded-lg ${message.isUser
                               ? 'bg-mainTextHoverV1 text-white'
                               : 'bg-gray-100 text-mainTextV1'
-                          }`}
+                            }`}
                         >
                           <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                         </div>
@@ -186,8 +183,8 @@ export default function StudentChatPage() {
                       </div>
 
                       {message.isUser && (
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <IconUser className="w-4 h-4 text-blue-600" />
+                        <div className="w-10 h-10 overflow-hidden bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Image src="/images/student.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
                         </div>
                       )}
                     </motion.div>
@@ -201,8 +198,8 @@ export default function StudentChatPage() {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex gap-3"
                   >
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <IconRobot className="w-4 h-4 text-purple-600" />
+                    <div className="w-10 h-10 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
                     </div>
                     <div className="bg-gray-100 p-3 rounded-lg">
                       <div className="flex gap-1">
@@ -220,7 +217,7 @@ export default function StudentChatPage() {
         </Card>
 
         {/* Message Input */}
-        <Card className="mt-4">
+        <Card className="rounded-t-none border-t-0 bg-blue-50">
           <CardContent className="p-4">
             <div className="flex gap-2">
               <Input
@@ -240,9 +237,6 @@ export default function StudentChatPage() {
                 <IconSend className="w-4 h-4" />
               </Button>
             </div>
-            <p className="text-xs text-secondaryTextV1 mt-2">
-              Press Enter to send, Shift + Enter for new line
-            </p>
           </CardContent>
         </Card>
       </div>

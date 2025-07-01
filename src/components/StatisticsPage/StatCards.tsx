@@ -47,13 +47,13 @@ const StatCard = ({
             </h3>
           </div>
           <div 
-            className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300"
+            className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300"
             style={{ 
               background: `linear-gradient(135deg, ${color}20 0%, ${color}30 100%)`,
               border: `1px solid ${color}30`
             }}
           >
-            <Icon size={28} style={{ color }} className="drop-shadow-sm" />
+            <Icon size={28} style={{ color }} className="drop-shadow-md" />
           </div>
         </div>
         

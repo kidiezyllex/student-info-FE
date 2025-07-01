@@ -29,3 +29,5 @@
   };
 
 2. Content text phải sử dụng tiếng Anh
+3. Styling các Dialog "Thêm", "Xoá", "Sửa" phải chuẩn theo các file tham chiếu, vì đó là mẫu chung, không được tuỳ tiện chỉnh sửa các Button, Dialog theo styling/format khác, nhưng có 
+thể thêm các component vào Form/Render sao cho phù hợp

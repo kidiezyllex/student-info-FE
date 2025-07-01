@@ -883,7 +883,7 @@ export const HomeContractCreateDialog = ({ isOpen, onClose, onSuccess }: HomeCon
                         className={`border-lightBorderV1 ${errors.price ? "border-mainDangerV1" : ""}`}
                       />
                       {showPriceSuggestions && priceSuggestions.length > 0 && (
-                        <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-white border border-lightBorderV1 rounded-md shadow-lg">
+                        <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-white border border-lightBorderV1 rounded-md shadow-md">
                           <div className="p-2 space-y-1">
                             <div className="text-xs text-secondaryTextV1 mb-2">Gợi ý giá thuê:</div>
                             <div className="flex flex-wrap gap-1">
@@ -935,7 +935,7 @@ export const HomeContractCreateDialog = ({ isOpen, onClose, onSuccess }: HomeCon
                         className="border-lightBorderV1"
                       />
                       {showDepositSuggestions && depositSuggestions.length > 0 && (
-                        <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-white border border-lightBorderV1 rounded-md shadow-lg">
+                        <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-white border border-lightBorderV1 rounded-md shadow-md">
                           <div className="p-2 space-y-1">
                             <div className="text-xs text-secondaryTextV1 mb-2">Gợi ý tiền đặt cọc:</div>
                             <div className="flex flex-wrap gap-1">
