@@ -108,7 +108,7 @@ export default function GuestPage() {
       >
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-4 w-full md:w-auto">
-            <div className="relative w-full md:w-64">
+            <div className="relative w-full md:w-96">
               <Input
                 placeholder="Tìm kiếm khách hàng..."
                 value={searchQuery}
@@ -121,7 +121,7 @@ export default function GuestPage() {
             onClick={() => setIsCreateDialogOpen(true)}
             className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
           >
-            <IconPlus className="mr-2 h-4 w-4" />
+            <IconPlus className="h-4 w-4" />
             Thêm khách hàng
           </Button>
           </div>

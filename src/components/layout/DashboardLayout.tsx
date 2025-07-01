@@ -10,9 +10,10 @@ import { usePathname } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
 import DashboardHeader from "../Common/DashboardHeader";
-import { getDashboardMenuItems } from "./dashboardMenuItems";
+import { getDashboardMenuItems, getStudentMenuItems } from "./dashboardMenuItems";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { RippleEffect } from "@/components/ui/ripple-effect";
+import { useUser } from "@/context/useUserContext";
 
 export default function DashboardLayout({
 	children,
@@ -23,7 +24,11 @@ export default function DashboardLayout({
 	const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
 	const pathname = usePathname();
 	const { isOpen } = useMenuSidebar();
-	const dashboardMenuItems = getDashboardMenuItems();
+	const { profile } = useUser();
+	
+	// Get menu items based on user role
+	const isStudent = profile?.data?.role === 'student';
+	const dashboardMenuItems = isStudent ? getStudentMenuItems() : getDashboardMenuItems();
 
 	const isMenuActive = (menu: MenuItem) => {
 		if (menu.path && pathname === menu.path) return true;
@@ -73,7 +78,7 @@ export default function DashboardLayout({
 												>
 													<div
 														className={cn(
-															"flex items-center rounded-lg p-[10px] h-[46px] text-sm font-medium transition-colors",
+															"flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-colors",
 															isMenuActive(menu)
 																? "bg-[#29323A] text-white"
 																: "text-white/70 hover:bg-[#29323A]",
@@ -83,7 +88,7 @@ export default function DashboardLayout({
 														<div
 															className={cn(
 																"!w-7 !h-7 flex-shrink-0 rounded-sm flex items-center justify-center bg-[#29323A]",
-																isOpen ? "mr-4" : "mr-0",
+																isOpen ? "mr-2" : "mr-0",
 															)}
 														>
 															<Icon
@@ -107,7 +112,7 @@ export default function DashboardLayout({
 											>
 												<div
 													className={cn(
-														"flex items-center  rounded-lg p-[10px] h-[46px] text-sm font-medium transition-colors cursor-pointer",
+														"flex items-center  rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-colors cursor-pointer",
 														isMenuActive(menu)
 															? "bg-[#29323A] text-white"
 															: "text-white/70 hover:bg-[#29323A]",
@@ -117,7 +122,7 @@ export default function DashboardLayout({
 													<div
 														className={cn(
 															"!w-7 !h-7 flex-shrink-0 rounded-sm flex items-center justify-center bg-[#29323A] ",
-															isOpen ? "mr-4" : "mr-0",
+															isOpen ? "mr-2" : "mr-0",
 														)}
 													>
 														<Icon
@@ -168,7 +173,7 @@ export default function DashboardLayout({
 																	>
 																		<div
 																			className={cn(
-																				"flex items-center rounded-lg p-[8px] h-[38px] text-sm font-normal transition-colors",
+																				"flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-colors",
 																			pathname === sub.path
 																				? "bg-[#29323A] text-white"
 																				: "text-white/70 hover:bg-[#29323A]",
@@ -201,7 +206,7 @@ export default function DashboardLayout({
 													animate={{ opacity: 1, x: 0 }}
 													exit={{ opacity: 0, x: -5 }}
 													transition={{ duration: 0.2 }}
-													className="fixed ml-16 mt-[-30px] bg-[#29323A] border border-lightBorderV1 text-white text-xs py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
+													className="fixed ml-16 mt-[-30px] bg-[#29323A] border border-lightBorderV1 text-white text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
 												>
 													<span className="w-1.5 h-1.5 rounded-full bg-mainActiveV1 mr-1.5"></span>
 													<span className="font-medium">{menu.name}</span>
@@ -219,11 +224,21 @@ export default function DashboardLayout({
 			{/* Main content */}
 			<div className="flex-1 flex flex-col">
 				<DashboardHeader />
-				<main
-					className={`flex-1 overflow-auto bg-mainDarkBackgroundV1 ${isOpen ? "pl-[276px]" : "pl-[68px]"} mt-[78px] min-h-screen transition-all duration-300 p-4`}
-				>
-					{children}
-				</main>
+				{
+					isStudent ? (
+						<main
+							className={`flex-1 overflow-auto bg-mainDarkBackgroundV1 ${isOpen ? "pl-[140px]" : "pl-[38px]"} mt-[32px] min-h-screen transition-all duration-300 p-4`}
+						>
+							{children}
+						</main>
+					) : (
+						<main
+							className={`flex-1 overflow-auto bg-mainDarkBackgroundV1 ${isOpen ? "pl-[276px]" : "pl-[68px]"} mt-[78px] min-h-screen transition-all duration-300 p-4`}
+						>
+							{children}
+						</main>
+					)
+				}
 			</div>
 		</div>
 	);

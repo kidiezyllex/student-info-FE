@@ -1,5 +1,5 @@
-import StatisticsPage from "@/components/StatisticsPage";
+import RoleBasedRedirect from "@/components/auth/RoleBasedRedirect";
 
 export default function MainPage() {
-	return <StatisticsPage />;
+	return <RoleBasedRedirect />;
 }

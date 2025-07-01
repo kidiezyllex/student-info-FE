@@ -42,8 +42,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // If user has token and trying to access login page, redirect to admin
+  // If user has token and trying to access login page, redirect to dashboard
   if (hasAccessToken && isPublicRoute) {
+    // Default redirect to admin, role-based routing will be handled by client-side
     url.pathname = '/admin';
     return NextResponse.redirect(url);
   }

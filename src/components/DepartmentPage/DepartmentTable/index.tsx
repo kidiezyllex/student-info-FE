@@ -23,11 +23,11 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
       <Table>
         <TableHeader>
           <TableRow className="bg-[#1B61FF20] hover:bg-gray-50">
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Tên khoa</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Mã khoa</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Mô tả</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Quản trị ngành</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Thao tác</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Department Name</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Department Code</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Description</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Coordinator</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -66,7 +66,14 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
-                    <span className="text-secondaryTextV1">{department.coordinatorId || "Chưa chỉ định"}</span>
+                    {department.coordinator ? (
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium text-mainTextV1">{department.coordinator.name}</p>
+                        <p className="text-xs text-secondaryTextV1">{department.coordinator.email}</p>
+                      </div>
+                    ) : (
+                      <span className="text-secondaryTextV1">No coordinator</span>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">

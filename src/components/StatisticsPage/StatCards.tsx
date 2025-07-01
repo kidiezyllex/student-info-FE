@@ -1,10 +1,16 @@
 "use client";
 
-import { useGetGeneralStatistics } from "@/hooks/useStatistics";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { Building, Home, Servicemark, Users } from "tabler-icons-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Users, School, Gift, CalendarEvent } from "tabler-icons-react";
+
+// Mock data for student information system
+const mockData = {
+  studentsCount: 2847,
+  departmentsCount: 12,
+  eventsCount: 24,
+  scholarshipsCount: 15,
+};
 
 const StatCard = ({
   title,
@@ -67,7 +73,7 @@ const StatCard = ({
               style={{ backgroundColor: color }}
             />
             <span className="text-xs text-gray-500 font-medium">
-              Tổng số hiện tại
+            Current total
             </span>
           </div>
         </div>
@@ -83,74 +89,30 @@ const StatCard = ({
 };
 
 export default function StatCards() {
-  const { data, isLoading, error } = useGetGeneralStatistics();
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[...Array(4)].map((_, i) => (
-          <Card key={i} className="p-6 h-full bg-gradient-to-br from-white to-gray-50/50 shadow-md">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex-1">
-                <Skeleton className="h-4 w-24 mb-1" />
-              </div>
-              <Skeleton className="w-14 h-14 rounded-2xl" />
-            </div>
-            <div className="mt-auto">
-              <Skeleton className="h-10 w-20 mb-2" />
-              <div className="flex items-center space-x-2">
-                <Skeleton className="h-1 w-12 rounded-full" />
-                <Skeleton className="h-3 w-20" />
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl p-6 shadow-sm">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-red-800 font-semibold">Lỗi tải dữ liệu</h3>
-            <p className="text-red-600 text-sm">{error.message}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const stats = [
     {
-      title: "Tổng số nhà",
-      value: data?.data?.homesCount || 0,
-      icon: Home,
-      color: "#1B61FF",
-    },
-    {
-      title: "Tổng số khách",
-      value: data?.data?.guestsCount || 0,
+      title: "Students",
+      value: mockData.studentsCount,
       icon: Users,
       color: "#1B61FF",
     },
     {
-      title: "Chủ nhà",
-      value: data?.data?.homeOwnersCount || 0,
-      icon: Building,
+      title: "Departments",
+      value: mockData.departmentsCount,
+      icon: School,
       color: "#5CC184",
     },
     {
-      title: "Dịch vụ",
-      value: data?.data?.servicesCount || 0,
-      icon: Servicemark,
+      title: "Events",
+      value: mockData.eventsCount,
+      icon: CalendarEvent,
       color: "#F0934E",
+    },
+    {
+      title: "Scholarships",
+      value: mockData.scholarshipsCount,
+      icon: Gift,
+      color: "#E91E63",
     },
   ];
 

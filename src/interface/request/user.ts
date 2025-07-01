@@ -23,7 +23,7 @@ export interface ICreateUserBody {
   email: string;
   password: string;
   studentId?: string;
-  fullName?: string;
+  fullName: string;
   phoneNumber?: string;
   avatar?: string;
   role?: string;

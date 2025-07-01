@@ -4,17 +4,11 @@ import { motion } from "framer-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Home } from "tabler-icons-react";
 import StatCards from "./StatCards";
-import RevenueChart from "./RevenueChart";
-import HomeStats from "./HomeStats";
-import ContractStats from "./ContractStats";
-import PaymentStats from "./PaymentStats";
-import DuePayments from "./DuePayments";
-import EnhancedRevenueChart from "./EnhancedRevenueChart";
-import ContractsComparisonChart from "./ContractsComparisonChart";
-import PaymentMethodsPieChart from "./PaymentMethodsPieChart";
-import RevenueTrendChart from "./RevenueTrendChart";
-import HomesRentalStatusPieChart from "./HomesRentalStatusPieChart";
-import PaymentsMonthlyChart from "./PaymentsMonthlyChart";
+import ScholarshipStats from "./ScholarshipStats";
+import EventStats from "./EventStats";
+import StudentRegistrationChart from "./StudentRegistrationChart";
+import DepartmentComparisonChart from "./DepartmentComparisonChart";
+import ScholarshipTrendChart from "./ScholarshipTrendChart";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -35,26 +29,13 @@ const item = {
 
 export default function StatisticsPage() {
 	return (
-		<div className="min-h-screen bg-mainBackgroundV1 text-mainTextV1 p-6">
-			<ToastContainer
-				position="top-right"
-				autoClose={3000}
-				hideProgressBar={false}
-				newestOnTop
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="light"
-			/>
-			
+		<div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
 			<Breadcrumb className="mb-6">
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink href="/">
 							<Home size={16} className="mr-1" />
-							Trang chủ
+							Home
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
@@ -71,7 +52,7 @@ export default function StatisticsPage() {
 				animate="show"
 			>
 				<motion.div variants={item}>
-					<h1 className="text-3xl font-semibold mb-8 text-mainTextV1">Bảng điều khiển</h1>
+					<h1 className="text-3xl font-semibold mb-8 text-mainTextV1">Student Information Dashboard</h1>
 				</motion.div>
 
 				<motion.div variants={item}>
@@ -80,24 +61,24 @@ export default function StatisticsPage() {
 
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 					<motion.div variants={item}>
-						<ContractStats />
+						<ScholarshipStats />
 					</motion.div>
 					<motion.div variants={item}>
-						<PaymentStats />
+						<EventStats />
 					</motion.div>
 				</div>
 
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 					<motion.div variants={item}>
-						<EnhancedRevenueChart />
+						<StudentRegistrationChart />
 					</motion.div>
 					<motion.div variants={item}>
-						<ContractsComparisonChart />
+						<DepartmentComparisonChart />
 					</motion.div>
 				</div>
 				<div className="grid grid-cols-1 gap-8">
 					<motion.div variants={item}>
-						<RevenueTrendChart />
+						<ScholarshipTrendChart />
 					</motion.div>
 				</div>
 			</motion.div>

@@ -50,7 +50,6 @@ export const useUpdateUserProfile = () => {
   });
 };
 
-// New hooks for user management
 export const useGetAllUsers = () => {
   return useQuery<IGetAllUsersResponse, Error>({
     queryKey: ['users'],

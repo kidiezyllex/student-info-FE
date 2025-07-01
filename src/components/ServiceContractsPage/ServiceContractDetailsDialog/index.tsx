@@ -465,12 +465,12 @@ export const ServiceContractDetailsDialog = ({ isOpen, onClose, contractId, onSu
                 <Button type="submit" disabled={isUpdating}>
                   {isUpdating ? (
                     <>
-                      <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <IconLoader2 className="h-4 w-4 animate-spin" />
                       Đang cập nhật...
                     </>
                   ) : (
                     <>
-                      <IconCheck className="mr-2 h-4 w-4" />
+                      <IconCheck className="h-4 w-4" />
                       Lưu thay đổi
                     </>
                   )}
@@ -502,12 +502,12 @@ export const ServiceContractDetailsDialog = ({ isOpen, onClose, contractId, onSu
             <Button variant="destructive" onClick={confirmDelete} disabled={isDeleting}>
               {isDeleting ? (
                 <>
-                  <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <IconLoader2 className="h-4 w-4 animate-spin" />
                   Đang xóa...
                 </>
               ) : (
                 <>
-                  <IconTrash className="mr-2 h-4 w-4" />
+                  <IconTrash className="h-4 w-4" />
                   Xóa
                 </>
               )}

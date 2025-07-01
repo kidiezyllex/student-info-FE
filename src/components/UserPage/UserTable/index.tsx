@@ -50,11 +50,11 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
   const getStatusBadge = (active: boolean) => {
     return active ? (
       <Badge className="bg-green-500 hover:bg-green-600 text-white text-nowrap">
-        Hoạt động
+        Active
       </Badge>
     ) : (
       <Badge variant="destructive" className="text-nowrap">
-        Không hoạt động
+        Inactive
       </Badge>
     );
   };
@@ -64,20 +64,20 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
       <Table>
         <TableHeader>
           <TableRow className="bg-[#1B61FF20] hover:bg-gray-50">
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Thông tin người dùng</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">User Information</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Email</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Mã sinh viên</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Khoa</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Vai trò</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Trạng thái</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Thao tác</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Student ID</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Department</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Role</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Status</TableHead>
+            <TableHead className="font-medium text-mainTextV1 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {users.length === 0 ? (
             <TableRow>
               <TableCell colSpan={7} className="text-center py-8 text-secondaryTextV1">
-                {isSearching ? "Không tìm thấy người dùng phù hợp" : "Chưa có người dùng nào"}
+                {isSearching ? "No user found" : "No user found"}
               </TableCell>
             </TableRow>
           ) : (
@@ -120,7 +120,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                         {user.studentId}
                       </Badge>
                     ) : (
-                      <span className="text-secondaryTextV1 text-sm">Chưa có</span>
+                      <span className="text-secondaryTextV1 text-sm">No student ID</span>
                     )}
                   </div>
                 </TableCell>
@@ -134,7 +134,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                         </Badge>
                       </div>
                     ) : (
-                      <span className="text-secondaryTextV1 text-sm">Chưa phân khoa</span>
+                      <span className="text-secondaryTextV1 text-sm">No department</span>
                     )}
                   </div>
                 </TableCell>

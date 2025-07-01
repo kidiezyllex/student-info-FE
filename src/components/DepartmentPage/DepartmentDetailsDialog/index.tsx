@@ -43,7 +43,7 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
         name: departmentData.data.name,
         code: departmentData.data.code,
         description: departmentData.data.description,
-        coordinatorId: departmentData.data.coordinatorId,
+        coordinatorId: departmentData.data.coordinator?._id || departmentData.data.coordinatorId || "",
       });
     }
   }, [departmentData]);
@@ -51,7 +51,7 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
@@ -62,28 +62,22 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
     const newErrors: Record<string, string> = {};
 
     if (!formData.name?.trim()) {
-      newErrors.name = "Tên khoa là bắt buộc";
+      newErrors.name = "Department name is required";
     }
 
     if (!formData.code?.trim()) {
-      newErrors.code = "Mã khoa là bắt buộc";
+      newErrors.code = "Department code is required";
     }
 
     if (!formData.description?.trim()) {
-      newErrors.description = "Mô tả là bắt buộc";
-    }
-
-    if (!formData.coordinatorId?.trim()) {
-      newErrors.coordinatorId = "ID Quản trị ngành là bắt buộc";
+      newErrors.description = "Description is required";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleSubmit = () => {
     if (!validateForm()) {
       return;
     }
@@ -92,12 +86,13 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
       { id: departmentId, data: formData },
       {
         onSuccess: (response) => {
-          toast.success("Cập nhật khoa thành công!");
+          toast.success("Update department successfully!");
           setIsEditing(false);
           onSuccess?.();
         },
         onError: (error: any) => {
-          toast.error(error?.response?.data?.message || "Có lỗi xảy ra khi cập nhật khoa!");
+          const errorMessage = error?.message || error?.response?.data?.message || "There was an error updating the department!";
+          toast.error(errorMessage);
         },
       }
     );
@@ -122,17 +117,19 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
         name: departmentData.data.name,
         code: departmentData.data.code,
         description: departmentData.data.description,
-        coordinatorId: departmentData.data.coordinatorId,
+        coordinatorId: departmentData.data.coordinator?._id || departmentData.data.coordinatorId || "",
       });
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        size="medium"
+        className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-mainTextV1">
-            {isEditing ? "Chỉnh sửa khoa" : "Chi tiết khoa"}
+            {isEditing ? "Edit department" + " " + departmentData?.data?.name : "Department details" + " " + departmentData?.data?.name}
           </DialogTitle>
         </DialogHeader>
 
@@ -156,17 +153,17 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-mainTextV1">
-                Tên khoa {isEditing && <span className="text-red-500">*</span>}
+                Department name {isEditing && <span className="text-red-500">*</span>}
               </Label>
               <Input
                 id="name"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Nhập tên khoa"
+                placeholder="Enter department name"
                 disabled={!isEditing}
                 className={`${errors.name ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />
@@ -177,7 +174,7 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
 
             <div className="space-y-2">
               <Label htmlFor="code" className="text-mainTextV1">
-                Mã khoa {isEditing && <span className="text-red-500">*</span>}
+                Department code {isEditing && <span className="text-red-500">*</span>}
               </Label>
               <Input
                 id="code"
@@ -195,14 +192,14 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
 
             <div className="space-y-2">
               <Label htmlFor="description" className="text-mainTextV1">
-                Mô tả {isEditing && <span className="text-red-500">*</span>}
+                Description {isEditing && <span className="text-red-500">*</span>}
               </Label>
               <Textarea
                 id="description"
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Nhập mô tả về khoa"
+                placeholder="Enter description"
                 rows={3}
                 disabled={!isEditing}
                 className={`${errors.description ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
@@ -212,42 +209,43 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
               )}
             </div>
 
+            {/* Coordinator Information */}
             <div className="space-y-2">
-              <Label htmlFor="coordinatorId" className="text-mainTextV1">
-                ID Quản trị ngành {isEditing && <span className="text-red-500">*</span>}
+              <Label className="text-mainTextV1">
+                Coordinator
               </Label>
-              <Input
-                id="coordinatorId"
-                name="coordinatorId"
-                value={formData.coordinatorId}
-                onChange={handleChange}
-                placeholder="Nhập ID Quản trị ngành"
-                disabled={!isEditing}
-                className={`${errors.coordinatorId ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
-              />
-              {errors.coordinatorId && (
-                <p className="text-red-500 text-sm">{errors.coordinatorId}</p>
-              )}
+              <div className="p-3 bg-gray-50 rounded-md border">
+                {departmentData?.data?.coordinator ? (
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-mainTextV1">
+                      {departmentData.data.coordinator.name}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {departmentData.data.coordinator.email}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">No coordinator</p>
+                )}
+              </div>
             </div>
 
-            <div className="flex gap-2 pt-4">
+            <div className="flex gap-2 pt-4 justify-end w-full">
               {!isEditing ? (
                 <>
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handleClose}
-                    className="flex-1"
                   >
-                    Đóng
+                    Close
                   </Button>
                   <Button
                     type="button"
                     onClick={handleEdit}
-                    className="flex-1 bg-mainTextHoverV1 hover:bg-primary/90 text-white"
                   >
-                    <IconEdit className="mr-2 h-4 w-4" />
-                    Chỉnh sửa
+                    <IconEdit className="h-4 w-4" />
+                    Edit
                   </Button>
                 </>
               ) : (
@@ -257,28 +255,30 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
                     variant="outline"
                     onClick={handleCancelEdit}
                     disabled={isUpdating}
-                    className="flex-1"
                   >
-                    Hủy
+                    Cancel
                   </Button>
                   <Button
-                    type="submit"
+                    type="button"
+                    onClick={handleSubmit}
                     disabled={isUpdating}
-                    className="flex-1 bg-mainTextHoverV1 hover:bg-primary/90 text-white"
                   >
                     {isUpdating ? (
                       <>
-                        <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Đang cập nhật...
+                        <IconLoader2 className="h-4 w-4 animate-spin" />
+                        Updating...
                       </>
                     ) : (
-                      "Cập nhật"
+                      <>
+                        <IconEdit className="h-4 w-4 mr-2" />
+                        Update
+                      </>
                     )}
                   </Button>
                 </>
               )}
             </div>
-          </form>
+          </div>
         )}
       </DialogContent>
     </Dialog>

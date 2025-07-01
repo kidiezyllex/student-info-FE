@@ -162,7 +162,7 @@ export default function HomeContractsPage() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-4 w-full md:w-auto">
             <div className="flex items-center gap-2">
-              <div className="relative w-full md:w-64">
+              <div className="relative w-full md:w-96">
                 <Input
                   placeholder="Tìm kiếm hợp đồng..."
                   value={searchQuery}
@@ -184,7 +184,7 @@ export default function HomeContractsPage() {
               className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
               onClick={() => setIsCreateDialogOpen(true)}
             >
-              <IconPlus className="mr-2 h-4 w-4" />
+              <IconPlus className="h-4 w-4" />
               Thêm hợp đồng
             </Button>
           </div>

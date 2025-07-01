@@ -287,10 +287,10 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent size="medium" className="max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">
-            {isEditing ? "Chỉnh sửa người dùng" : "Chi tiết người dùng"}
+          <DialogTitle>
+            {isEditing ? "Edit User" : "User Details"}
           </DialogTitle>
         </DialogHeader>
 
@@ -321,7 +321,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
             {!isEditing && userData?.data && (
               <Card className="border border-lightBorderV1">
                 <CardHeader>
-                  <CardTitle className="text-lg text-mainTextV1">Thông tin cơ bản</CardTitle>
+                Basic Information
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* User Header */}
@@ -353,29 +353,29 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
                     <div className="space-y-4">
                       <div className="flex items-center gap-3">
-                        <IconMail className="w-5 h-5 text-blue-600" />
+                        <IconMail className="w-5 h-5 text-mainTextV1" />
                         <div>
                           <p className="text-sm text-secondaryTextV1">Email</p>
-                          <p className="font-medium text-mainTextV1">{userData.data.email}</p>
+                          <p className="font-medium text-mainTextV1 text-sm">{userData.data.email}</p>
                         </div>
                       </div>
 
                       {userData.data.phoneNumber && (
                         <div className="flex items-center gap-3">
-                          <IconPhone className="w-5 h-5 text-green-600" />
+                          <IconPhone className="w-5 h-5 text-mainTextV1" />
                           <div>
-                            <p className="text-sm text-secondaryTextV1">Số điện thoại</p>
-                            <p className="font-medium text-mainTextV1">{userData.data.phoneNumber}</p>
+                            <p className="text-sm text-secondaryTextV1">Phone Number</p>
+                            <p className="font-medium text-mainTextV1 text-sm">{userData.data.phoneNumber}</p>
                           </div>
                         </div>
                       )}
 
                       {userData.data.studentId && (
                         <div className="flex items-center gap-3">
-                          <IconId className="w-5 h-5 text-purple-600" />
-                          <div>
-                            <p className="text-sm text-secondaryTextV1">Mã sinh viên</p>
-                            <Badge className="bg-blue-100 text-blue-800 border border-blue-200">
+                          <IconId className="w-5 h-5 text-mainTextV1" />
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm text-secondaryTextV1">Student ID</p>
+                            <Badge className="bg-blue-100 text-blue-800 border border-blue-200 text-sm">
                               {userData.data.studentId}
                             </Badge>
                           </div>
@@ -386,10 +386,9 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                     <div className="space-y-4">
                       {userData.data.department && (
                         <div className="flex items-center gap-3">
-                          <IconBuildingBank className="w-5 h-5 text-orange-600" />
-                          <div>
-                            <p className="text-sm text-secondaryTextV1">Khoa</p>
-                            <p className="font-medium text-mainTextV1">{userData.data.department.name}</p>
+                          <IconBuildingBank className="w-5 h-5 text-mainTextV1" />
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm text-secondaryTextV1">Department: {userData.data.department.name}</p>
                             <Badge className="bg-purple-100 text-purple-800 border border-purple-200">
                               {userData.data.department.code}
                             </Badge>
@@ -398,19 +397,19 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                       )}
 
                       <div className="flex items-center gap-3">
-                        <IconCalendar className="w-5 h-5 text-gray-600" />
+                        <IconCalendar className="w-5 h-5 text-mainTextV1" />
                         <div>
-                          <p className="text-sm text-secondaryTextV1">Ngày tạo</p>
-                          <p className="font-medium text-mainTextV1">{formatDate(userData.data.createdAt)}</p>
+                          <p className="text-sm text-mainTextV1">Created At</p>
+                          <p className="font-medium text-mainTextV1 text-sm">{formatDate(userData.data.createdAt)}</p>
                         </div>
                       </div>
 
                       {userData.data.lastLogin && (
                         <div className="flex items-center gap-3">
-                          <IconCalendar className="w-5 h-5 text-gray-600" />
+                          <IconCalendar className="w-5 h-5 text-mainTextV1" />
                           <div>
-                            <p className="text-sm text-secondaryTextV1">Đăng nhập cuối</p>
-                            <p className="font-medium text-mainTextV1">{formatDate(userData.data.lastLogin)}</p>
+                            <p className="text-sm text-mainTextV1">Last Login</p>
+                            <p className="font-medium text-mainTextV1 text-sm">{formatDate(userData.data.lastLogin)}</p>
                           </div>
                         </div>
                       )}
@@ -423,18 +422,18 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
             {isEditing && (
               <Card className="border border-lightBorderV1">
                 <CardHeader>
-                  <CardTitle className="text-lg text-mainTextV1">Chỉnh sửa thông tin</CardTitle>
+                Chỉnh sửa thông tin
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Avatar Upload */}
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <Label className="text-secondaryTextV1">Ảnh đại diện</Label>
+                        <Label className="text-secondaryTextV1">Avatar</Label>
                         {isUploadingAvatar && (
                           <div className="flex items-center gap-2 text-sm text-blue-600">
                             <IconLoader2 className="h-4 w-4 animate-spin" />
-                            <span>Đang tải ảnh...</span>
+                            <span>Uploading avatar...</span>
                           </div>
                         )}
                       </div>
@@ -462,7 +461,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                                   {isUploadingAvatar ? "Đang tải ảnh..." : "Tải ảnh đại diện lên"}
                                 </div>
                                 <div className="text-xs text-gray-500 mt-1">
-                                  Chọn ảnh (tối đa 10MB)
+                                  Select image (max 10MB)
                                 </div>
                               </div>
                             </div>
@@ -498,14 +497,14 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="name" className="text-mainTextV1">
-                          Tên đăng nhập <span className="text-red-500">*</span>
+                          Username <span className="text-red-500">*</span>
                         </Label>
                         <Input
                           id="name"
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          placeholder="Nhập tên đăng nhập"
+                          placeholder="Enter username"
                           className={`${errors.name ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                         />
                         {errors.name && (
@@ -515,7 +514,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
                       <div className="space-y-2">
                         <Label htmlFor="fullName" className="text-mainTextV1">
-                          Họ tên đầy đủ <span className="text-red-500">*</span>
+                          Full Name <span className="text-red-500">*</span>
                         </Label>
                         <Input
                           id="fullName"
@@ -550,7 +549,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
                       <div className="space-y-2">
                         <Label htmlFor="password" className="text-mainTextV1">
-                          Mật khẩu mới (để trống nếu không thay đổi)
+                          New Password (leave blank if not changing)
                         </Label>
                         <Input
                           id="password"
@@ -558,7 +557,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                           type="password"
                           value={formData.password}
                           onChange={handleChange}
-                          placeholder="Nhập mật khẩu mới"
+                          placeholder="Enter new password"
                           className={`${errors.password ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                         />
                         {errors.password && (
@@ -574,15 +573,15 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                           id="studentId"
                           name="studentId"
                           value={formData.studentId}
-                          onChange={handleChange}
-                          placeholder="Nhập mã sinh viên"
+                            onChange={handleChange}
+                            placeholder="Enter student ID"
                           className="border-lightBorderV1 focus:border-mainTextHoverV1"
                         />
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="phoneNumber" className="text-mainTextV1">
-                          Số điện thoại
+                          Phone Number
                         </Label>
                         <Input
                           id="phoneNumber"
@@ -599,7 +598,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
                       <div className="space-y-2">
                         <Label htmlFor="role" className="text-mainTextV1">
-                          Vai trò
+                          Role
                         </Label>
                         <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
                           <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
@@ -615,18 +614,17 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
                       <div className="space-y-2">
                         <Label htmlFor="department" className="text-mainTextV1">
-                          Khoa
+                          Department
                         </Label>
                         <Select 
-                          value={formData.department} 
-                          onValueChange={(value) => handleSelectChange('department', value)}
+                          value={formData.department || undefined} 
+                          onValueChange={(value) => handleSelectChange('department', value || "")}
                           disabled={isLoadingDepartments}
                         >
                           <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
                             <SelectValue placeholder={isLoadingDepartments ? "Đang tải..." : "Chọn khoa"} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Không chọn khoa</SelectItem>
                             {departments.map((department) => (
                               <SelectItem key={department._id} value={department._id}>
                                 {department.name} ({department.code})
@@ -639,7 +637,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
                     <div className="flex items-center justify-between space-x-2">
                       <Label htmlFor="active" className="text-mainTextV1">
-                        Trạng thái hoạt động
+                        Active
                       </Label>
                       <Switch
                         id="active"
@@ -652,24 +650,22 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
               </Card>
             )}
 
-            <div className="flex gap-2 pt-4">
+            <div className="flex gap-2 pt-4 justify-end">
               {!isEditing ? (
                 <>
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handleClose}
-                    className="flex-1"
                   >
-                    Đóng
+                    Close
                   </Button>
                   <Button
                     type="button"
                     onClick={handleEdit}
-                    className="flex-1 bg-mainTextHoverV1 hover:bg-primary/90 text-white"
                   >
-                    <IconEdit className="mr-2 h-4 w-4" />
-                    Chỉnh sửa
+                    <IconEdit className="h-4 w-4" />
+                    Edit
                   </Button>
                 </>
               ) : (
@@ -679,23 +675,21 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                     variant="outline"
                     onClick={handleCancelEdit}
                     disabled={isUpdating}
-                    className="flex-1"
                   >
-                    Hủy
+                    Cancel
                   </Button>
                   <Button
                     type="submit"
                     onClick={handleSubmit}
                     disabled={isUpdating}
-                    className="flex-1 bg-mainTextHoverV1 hover:bg-primary/90 text-white"
                   >
                     {isUpdating ? (
                       <>
-                        <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Đang cập nhật...
+                        <IconLoader2 className="h-4 w-4 animate-spin" />
+                        Updating...
                       </>
                     ) : (
-                      "Cập nhật"
+                      "Update"
                     )}
                   </Button>
                 </>

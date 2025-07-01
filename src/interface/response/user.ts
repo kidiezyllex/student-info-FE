@@ -21,7 +21,6 @@ export interface IUpdateUserProfileResponse {
   };
 }
 
-// Department interface for user responses
 export interface IDepartmentInfo {
   _id: string;
   name: string;
@@ -29,7 +28,6 @@ export interface IDepartmentInfo {
   description?: string;
 }
 
-// Address interface
 export interface IAddress {
   street: string;
   ward: string;
@@ -44,7 +42,6 @@ export interface IEmergencyContact {
   phoneNumber: string;
 }
 
-// Student info interfaces
 export interface IScholarship {
   name: string;
   amount: number;
@@ -73,7 +70,6 @@ export interface IStudentInfo {
   achievements: IAchievement[];
 }
 
-// Coordinator info interfaces
 export interface IQualification {
   degree: string;
   field: string;
@@ -107,7 +103,6 @@ export interface ICoordinatorInfo {
   publications: IPublication[];
 }
 
-// Profile settings interface
 export interface IProfileSettings {
   isPublic: boolean;
   showEmail: boolean;
@@ -116,7 +111,6 @@ export interface IProfileSettings {
   emailNotifications: boolean;
 }
 
-// Social links interface
 export interface ISocialLinks {
   facebook: string;
   linkedin: string;
@@ -124,7 +118,6 @@ export interface ISocialLinks {
   website: string;
 }
 
-// Basic user interface for lists
 export interface IUser {
   _id: string;
   name: string;
@@ -140,7 +133,6 @@ export interface IUser {
   updatedAt: string;
 }
 
-// Detailed user interface for single user
 export interface IUserDetailed {
   _id: string;
   name: string;
@@ -167,7 +159,6 @@ export interface IUserDetailed {
   updatedAt: string;
 }
 
-// API Response interfaces
 export interface IGetAllUsersResponse {
   message: string;
   data: IUser[];
@@ -183,7 +174,6 @@ export interface IGetUsersByRoleResponse {
   count: number;
   data: IUser[];
 }
-
 export interface IGetUsersByDepartmentResponse {
   message: string;
   count: number;

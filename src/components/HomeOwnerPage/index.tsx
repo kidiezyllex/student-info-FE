@@ -118,7 +118,7 @@ export default function HomeOwnerPage() {
       >
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-4 w-full md:w-auto">
-            <div className="relative w-full md:w-64">
+            <div className="relative w-full md:w-96">
               <Input
                 placeholder="Tìm kiếm chủ nhà..."
                 value={searchQuery}
@@ -131,7 +131,7 @@ export default function HomeOwnerPage() {
               onClick={() => setIsCreateDialogOpen(true)}
               className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
             >
-              <IconPlus className="mr-2 h-4 w-4" />
+              <IconPlus className="h-4 w-4" />
               Thêm chủ nhà
             </Button>
           </div>

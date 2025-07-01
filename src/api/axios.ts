@@ -81,7 +81,15 @@ export const sendPost = (url: string, params?: any, queryParams?: any) => {
 		});
 };
 
-export const sendPut = (url: string, params?: any) => instance.put(url, params).then((res) => res?.data);
+export const sendPut = (url: string, params?: any) => 
+	instance.put(url, params)
+		.then((res) => res?.data)
+		.catch((error) => {
+			if (error.response?.data) {
+				throw error.response.data;
+			}
+			throw error;
+		});
 
 export const sendPatch = (url: string, params?: any) => instance.patch(url, params).then((res) => res?.data);
 

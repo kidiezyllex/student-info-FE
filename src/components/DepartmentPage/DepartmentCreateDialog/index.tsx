@@ -8,10 +8,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCreateDepartment } from "@/hooks/useDepartment";
 import { ICreateDepartmentBody } from "@/interface/request/department";
 import { toast } from "react-toastify";
-import { IconLoader2, IconBuilding } from "@tabler/icons-react";
+import { IconLoader2, IconBuilding, IconPlus } from "@tabler/icons-react";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -36,7 +37,7 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
@@ -68,7 +69,7 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -98,22 +99,24 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        size="medium"
+        className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Thêm khoa mới</DialogTitle>
+          <DialogTitle className="text-mainTextV1">Add new department</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1 h-full">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-mainTextV1">
-              Tên khoa <span className="text-red-500">*</span>
+              Department name <span className="text-red-500">*</span>
             </Label>
             <Input
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Nhập tên khoa"
+              placeholder="Enter department name"
               className={`${errors.name ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.name && (
@@ -123,14 +126,14 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
 
           <div className="space-y-2">
             <Label htmlFor="code" className="text-mainTextV1">
-              Mã khoa <span className="text-red-500">*</span>
+              Department code <span className="text-red-500">*</span>
             </Label>
             <Input
               id="code"
               name="code"
               value={formData.code}
               onChange={handleChange}
-              placeholder="Nhập mã khoa (VD: IT, CS, EE)"
+              placeholder="Enter department code (e.g. IT, CS, EE)"
               className={`${errors.code ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.code && (
@@ -140,14 +143,14 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
 
           <div className="space-y-2">
             <Label htmlFor="description" className="text-mainTextV1">
-              Mô tả <span className="text-red-500">*</span>
+              Description <span className="text-red-500">*</span>
             </Label>
             <Textarea
               id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Nhập mô tả về khoa"
+              placeholder="Enter description"
               rows={3}
               className={`${errors.description ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
@@ -158,14 +161,14 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
 
           <div className="space-y-2">
             <Label htmlFor="coordinatorId" className="text-mainTextV1">
-              ID Quản trị ngành <span className="text-red-500">*</span>
+              Coordinator ID <span className="text-red-500">*</span>
             </Label>
             <Input
               id="coordinatorId"
               name="coordinatorId"
               value={formData.coordinatorId}
               onChange={handleChange}
-              placeholder="Nhập ID Quản trị ngành"
+              placeholder="Enter coordinator ID"
               className={`${errors.coordinatorId ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.coordinatorId && (
@@ -173,29 +176,30 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
             )}
           </div>
 
-          <div className="flex gap-2 pt-4">
+          <div className="flex flex-1 h-full gap-2 justify-end">
             <Button
               type="button"
               variant="outline"
               onClick={handleClose}
               disabled={isPending}
-              className="flex-1"
             >
-              Hủy
+              Cancel
             </Button>
             <Button
               type="submit"
               disabled={isPending}
-              className="flex-1 bg-mainTextHoverV1 hover:bg-primary/90 text-white"
             >
               {isPending ? (
                 <>
-                  <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Đang tạo...
+                  <IconLoader2 className="h-4 w-4 animate-spin" />
+                  Creating...
                 </>
-              ) : (
-                "Tạo khoa"
-              )}
+              ) :
+                <>
+                  <IconPlus className="h-4 w-4" />
+                  Create department
+                </>
+              }
             </Button>
           </div>
         </form>

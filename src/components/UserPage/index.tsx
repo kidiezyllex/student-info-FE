@@ -41,7 +41,12 @@ export default function UserPage() {
         const filtered = usersData.data.filter(user =>
           user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          user.role.toLowerCase().includes(searchQuery.toLowerCase())
+          user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (user.fullName && user.fullName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.studentId && user.studentId.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.phoneNumber && user.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.department && user.department.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (user.department && user.department.code.toLowerCase().includes(searchQuery.toLowerCase()))
         );
         setFilteredUsers(filtered);
       } else {
@@ -86,11 +91,7 @@ export default function UserPage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/admin/users">Quản lý người dùng</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Quản lý tài khoản</BreadcrumbPage>
+            <BreadcrumbPage>User Management</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -101,9 +102,9 @@ export default function UserPage() {
       >
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-4 w-full md:w-auto">
-            <div className="relative w-full md:w-64">
+            <div className="relative w-full md:w-96">
               <Input
-                placeholder="Tìm kiếm người dùng..."
+                placeholder="Search by name, email, role, department..."
                 value={searchQuery}
                 onChange={handleSearch}
                 className="pl-10 pr-4 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-secondaryTextV1"
@@ -114,8 +115,8 @@ export default function UserPage() {
             onClick={() => setIsCreateDialogOpen(true)}
             className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
           >
-            <IconPlus className="mr-2 h-4 w-4" />
-            Thêm người dùng
+            <IconPlus className="h-4 w-4" />
+            Add User
           </Button>
           </div>
 

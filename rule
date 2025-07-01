@@ -1,0 +1,31 @@
+1. Styling các Badge như thế này nhưng có thể chọn màu cho phù hợp:
+  const getRoleBadge = (role: string) => {
+    switch (role.toLowerCase()) {
+      case 'admin':
+        return (
+          <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100 text-nowrap flex items-center gap-1">
+            Admin
+          </Badge>
+        );
+      case 'student':
+        return (
+          <Badge className="bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100 text-nowrap flex items-center gap-1">
+            Student
+          </Badge>
+        );
+      case 'coordinator':
+        return (
+          <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100 text-nowrap flex items-center gap-1">
+            Coordinator
+          </Badge>
+        );
+      default:
+        return (
+          <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100 text-nowrap flex items-center gap-1">
+            {role}
+          </Badge>
+        );
+    }
+  };
+
+2. Content text phải sử dụng tiếng Anh

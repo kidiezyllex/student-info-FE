@@ -12,7 +12,7 @@ import { useUploadFile } from "@/hooks/useUpload";
 import { ICreateUserBody } from "@/interface/request/user";
 import { IUploadResponse } from "@/interface/response/upload";
 import { toast } from "react-toastify";
-import { IconLoader2, IconUser, IconX, IconUpload } from "@tabler/icons-react";
+import { IconLoader2, IconUser, IconX, IconUpload, IconPlus } from "@tabler/icons-react";
 import { motion } from 'framer-motion';
 import {
   Dialog,
@@ -37,7 +37,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
     phoneNumber: "",
     avatar: "",
     role: "student",
-    department: "",
+    department: "none",
     active: true,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -52,7 +52,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
@@ -77,13 +77,13 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
     // Validate file type and size
     const isValidType = file.type.startsWith('image/');
     const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
-    
+
     if (!isValidType) {
-      toast.error(`File ${file.name} không phải là hình ảnh hợp lệ`);
+      toast.error(`File ${file.name} is not a valid image`);
       return;
     }
     if (!isValidSize) {
-      toast.error(`File ${file.name} quá lớn (tối đa 10MB)`);
+      toast.error(`File ${file.name} is too large (max 10MB)`);
       return;
     }
 
@@ -93,29 +93,26 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
       onSuccess: (response: IUploadResponse) => {
         if (response?.statusCode === 200 || response?.statusCode === 201) {
           const imageUrl = response?.data?.url;
-          
+
           if (imageUrl) {
             setFormData(prev => ({ ...prev, avatar: imageUrl }));
-            toast.success(`Upload ảnh "${file.name}" thành công!`);
+            toast.success(`Upload image "${file.name}" successfully!`);
           } else {
-            console.error('No URL in response:', response);
-            toast.error(`Lỗi: Không nhận được URL ảnh từ server cho file "${file.name}"`);
+            toast.error(`Error: Cannot get image URL from server for file "${file.name}"`);
           }
         } else {
-          console.error('Upload failed with status:', response?.statusCode, response?.message);
-          toast.error(`Lỗi upload ảnh "${file.name}": ${response?.message || 'Lỗi không xác định'}`);
+          toast.error(`Error uploading image "${file.name}": ${response?.message || 'Unknown error'}`);
         }
         setIsUploadingAvatar(false);
       },
       onError: (error: any) => {
         console.error('Upload error for file:', file.name, error);
         const errorMessage = error?.response?.data?.message || error?.message || 'Không thể upload ảnh';
-        toast.error(`Lỗi upload ảnh "${file.name}": ${errorMessage}`);
+        toast.error(`Error uploading image "${file.name}": ${errorMessage}`);
         setIsUploadingAvatar(false);
       }
     });
 
-    // Clear the input value to allow re-uploading the same file
     e.target.value = '';
   };
 
@@ -123,27 +120,27 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Tên đăng nhập là bắt buộc";
+      newErrors.name = "Username is required";
     }
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "Họ tên đầy đủ là bắt buộc";
+      newErrors.fullName = "Full name is required";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email là bắt buộc";
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email không hợp lệ";
+      newErrors.email = "Email is not valid";
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = "Mật khẩu là bắt buộc";
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     if (formData.phoneNumber && !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = "Số điện thoại không hợp lệ";
+      newErrors.phoneNumber = "Phone number is not valid";
     }
 
     setErrors(newErrors);
@@ -152,19 +149,24 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
-    createUserMutation(formData, {
+    const submitData = {
+      ...formData,
+      department: formData.department === "none" ? "" : formData.department,
+    };
+
+    createUserMutation(submitData, {
       onSuccess: (response) => {
-        toast.success("Tạo người dùng thành công!");
+        toast.success("Create user successfully!");
         handleClose();
         onSuccess?.();
       },
       onError: (error: any) => {
-        toast.error(error?.response?.data?.message || "Có lỗi xảy ra khi tạo người dùng!");
+        toast.error(error?.response?.data?.message || "There was an error creating the user!");
       },
     });
   };
@@ -179,7 +181,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
       phoneNumber: "",
       avatar: "",
       role: "student",
-      department: "",
+      department: "none",
       active: true,
     });
     setErrors({});
@@ -188,11 +190,11 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent size="medium" className="max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Thêm người dùng mới</DialogTitle>
+          <DialogTitle className="text-mainTextV1">Add New User</DialogTitle>
         </DialogHeader>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -202,11 +204,11 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
             {/* Avatar Upload */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="text-secondaryTextV1">Ảnh đại diện</Label>
+                <Label className="text-secondaryTextV1">Avatar</Label>
                 {isUploadingAvatar && (
                   <div className="flex items-center gap-2 text-sm text-blue-600">
                     <IconLoader2 className="h-4 w-4 animate-spin" />
-                    <span>Đang tải ảnh...</span>
+                    <span>Uploading avatar...</span>
                   </div>
                 )}
               </div>
@@ -231,10 +233,10 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                       </div>
                       <div className="text-center">
                         <div className="text-sm font-medium text-mainTextV1 group-hover:text-mainTextHoverV1">
-                          {isUploadingAvatar ? "Đang tải ảnh..." : "Tải ảnh đại diện lên"}
+                          {isUploadingAvatar ? "Uploading avatar..." : "Upload avatar"}
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          Chọn ảnh (tối đa 10MB)
+                          Select image (max 10MB)
                         </div>
                       </div>
                     </div>
@@ -248,7 +250,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                       <div className="w-20 h-20 border border-lightBorderV1 rounded-full overflow-hidden">
                         <img
                           src={formData.avatar}
-                          alt="Ảnh đại diện"
+                          alt="Avatar"
                           className="w-full h-full object-cover"
                         />
                       </div>
@@ -270,14 +272,14 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-mainTextV1">
-                  Tên đăng nhập <span className="text-red-500">*</span>
+                  Username <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Nhập tên đăng nhập"
+                  placeholder="Enter username"
                   className={`${errors.name ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                 />
                 {errors.name && (
@@ -287,14 +289,14 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="text-mainTextV1">
-                  Họ tên đầy đủ <span className="text-red-500">*</span>
+                  Full Name <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="fullName"
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
-                  placeholder="Nhập họ tên đầy đủ"
+                  placeholder="Enter full name"
                   className={`${errors.fullName ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                 />
                 {errors.fullName && (
@@ -312,7 +314,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Nhập email"
+                  placeholder="Enter email"
                   className={`${errors.email ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                 />
                 {errors.email && (
@@ -322,7 +324,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-mainTextV1">
-                  Mật khẩu <span className="text-red-500">*</span>
+                  Password <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="password"
@@ -330,7 +332,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Nhập mật khẩu"
+                  placeholder="Enter password"
                   className={`${errors.password ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                 />
                 {errors.password && (
@@ -340,28 +342,28 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
               <div className="space-y-2">
                 <Label htmlFor="studentId" className="text-mainTextV1">
-                  Mã sinh viên
+                  Student ID
                 </Label>
                 <Input
                   id="studentId"
                   name="studentId"
                   value={formData.studentId}
                   onChange={handleChange}
-                  placeholder="Nhập mã sinh viên"
+                  placeholder="Enter student ID"
                   className="border-lightBorderV1 focus:border-mainTextHoverV1"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="phoneNumber" className="text-mainTextV1">
-                  Số điện thoại
+                  Phone Number
                 </Label>
                 <Input
                   id="phoneNumber"
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleChange}
-                  placeholder="Nhập số điện thoại"
+                  placeholder="Enter phone number"
                   className={`${errors.phoneNumber ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                 />
                 {errors.phoneNumber && (
@@ -371,7 +373,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
               <div className="space-y-2">
                 <Label htmlFor="role" className="text-mainTextV1">
-                  Vai trò
+                  Role
                 </Label>
                 <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
                   <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
@@ -387,10 +389,10 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
               <div className="space-y-2">
                 <Label htmlFor="department" className="text-mainTextV1">
-                  Khoa
+                  Department
                 </Label>
-                <Select 
-                  value={formData.department} 
+                <Select
+                  value={formData.department}
                   onValueChange={(value) => handleSelectChange('department', value)}
                   disabled={isLoadingDepartments}
                 >
@@ -398,7 +400,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                     <SelectValue placeholder={isLoadingDepartments ? "Đang tải..." : "Chọn khoa"} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Không chọn khoa</SelectItem>
+                    <SelectItem value="none">No department</SelectItem>
                     {departments.map((department) => (
                       <SelectItem key={department._id} value={department._id}>
                         {department.name} ({department.code})
@@ -411,7 +413,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
             <div className="flex items-center justify-between space-x-2">
               <Label htmlFor="active" className="text-mainTextV1">
-                Trạng thái hoạt động
+                Active
               </Label>
               <Switch
                 id="active"
@@ -420,29 +422,29 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
               />
             </div>
 
-            <div className="flex gap-2 pt-4">
+            <div className="flex gap-2 pt-4 justify-end">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
                 disabled={isPending}
-                className="flex-1"
               >
-                Hủy
+                Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={isPending}
-                className="flex-1 bg-mainTextHoverV1 hover:bg-primary/90 text-white"
               >
                 {isPending ? (
                   <>
-                    <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Đang tạo...
+                    <IconLoader2 className="h-4 w-4 animate-spin" />
+                    Creating...
                   </>
-                ) : (
-                  "Tạo người dùng"
-                )}
+                ) : <>
+                  <IconPlus className="h-4 w-4" />
+                  Create User
+                </>
+                }
               </Button>
             </div>
           </form>

@@ -19,57 +19,43 @@ import {
 export const getDashboardMenuItems = (): MenuItem[] => [
 	{
 		id: "dashboard",
-		name: "Tổng quan",
+		name: "Overview",
 		path: "/admin",
 		icon: mdiViewDashboard,
 	},
 	{
 		id: "user-management",
-		name: "Quản lý người dùng",
+		name: "User Management",
 		path: "/admin/users",
 		icon: mdiAccountGroup,
 	},
 	{
 		id: "department-management",
-		name: "Quản lý khoa",
+		name: "Department Management",
 		path: "/admin/departments",
 		icon: mdiSchool,
 	},
 	{
 		id: "event-management",
-		name: "Quản lý sự kiện",
+		name: "Event Management",
 		path: "/admin/events",
 		icon: mdiCalendarMonth,
-		subMenu: [
-			{
-				id: "all-events",
-				name: "Tất cả sự kiện",
-				path: "/admin/events/all",
-				icon: mdiCalendarMonth,
-			},
-			{
-				id: "upcoming-events",
-				name: "Sự kiện sắp tới",
-				path: "/admin/events",
-				icon: mdiCalendarMonth,
-			},
-		],
 	},
 	{
 		id: "scholarship-management",
-		name: "Quản lý học bổng",
+		name: "Scholarship Management",
 		path: "/admin/scholarships",
 		icon: mdiGift,
 		subMenu: [
 			{
 				id: "all-scholarships",
-				name: "Tất cả học bổng",
+				name: "All Scholarships",
 				path: "/admin/scholarships/all",
 				icon: mdiGift,
 			},
 			{
 				id: "active-scholarships",
-				name: "Học bổng đang mở",
+				name: "Active Scholarships",
 				path: "/admin/scholarships",
 				icon: mdiGift,
 			},
@@ -77,31 +63,31 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 	},
 	{
 		id: "notification-management",
-		name: "Quản lý thông báo",
+		name: "Notification Management",
 		path: "/admin/notifications",
 		icon: mdiBell,
 	},
 	{
 		id: "message-management",
-		name: "Quản lý tin nhắn",
+		name: "Message Management",
 		path: "/admin/messages",
 		icon: mdiMessageText,
 	},
 	{
 		id: "ai-management",
-		name: "Quản lý AI",
+		name: "AI Management",
 		path: "/admin/ai",
 		icon: mdiRobot,
 		subMenu: [
 			{
 				id: "ai-training",
-				name: "Train AI",
+				name: "AI Training",
 				path: "/admin/ai/training",
 				icon: mdiRobot,
 			},
 			{
 				id: "training-history",
-				name: "Lịch sử train AI",
+				name: "Training History",
 				path: "/admin/ai/training-history",
 				icon: mdiChartLine,
 			},
@@ -109,28 +95,61 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 	},
 	{
 		id: "dataset-management", 
-		name: "Quản lý dữ liệu",
+		name: "Dataset Management",
 		path: "/admin/dataset",
 		icon: mdiDatabase,
 	},
 	{
 		id: "chat-management",
-		name: "Quản lý Chat",
+		name: "Chat Management",
 		path: "/admin/chat",
 		icon: mdiMessageText,
 		subMenu: [
 			{
 				id: "chat-sessions",
-				name: "Phiên chat",
+				name: "Chat Sessions",
 				path: "/admin/chat/sessions",
 				icon: mdiMessageText,
 			},
 			{
 				id: "chat-statistics",
-				name: "Thống kê chat",
+				name: "Chat Statistics",
 				path: "/admin/chat/statistics",
 				icon: mdiChartLine,
 			},
 		],
+	},
+]; 
+
+export const getStudentMenuItems = (): MenuItem[] => [
+	{
+		id: "student-dashboard",
+		name: "Dashboard",
+		path: "/student",
+		icon: mdiViewDashboard,
+	},
+	{
+		id: "student-chat",
+		name: "AI Chat",
+		path: "/student/chat",
+		icon: mdiRobot,
+	},
+	{
+		id: "student-scholarships",
+		name: "Scholarships",
+		path: "/student/scholarships",
+		icon: mdiGift,
+	},
+	{
+		id: "student-events",
+		name: "Events",
+		path: "/student/events",
+		icon: mdiCalendarMonth,
+	},
+	{
+		id: "student-notifications",
+		name: "Notifications",
+		path: "/student/notifications",
+		icon: mdiBell,
 	},
 ]; 
