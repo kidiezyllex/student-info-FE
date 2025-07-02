@@ -53,14 +53,14 @@ export default function LoginPage() {
               isAdmin: response.data.isAdmin
             }
             loginUser(userInfo, response.data.token)
-            toast.success(response.message || "Đăng nhập thành công!")
+            toast.success(response.message || "Login successfully!")
             router.push("/admin")
           } else {
-            toast.error(response.message || "Đăng nhập thất bại!")
+            toast.error(response.message || "Login failed!")
           }
         },
         onError: (error: any) => {
-          let errorMessage = "Đăng nhập thất bại, vui lòng thử lại!"
+          let errorMessage = "Login failed, please try again!"
           if (error?.message) {
             errorMessage = error.message
           } else if (error?.response?.data?.message) {
@@ -88,7 +88,7 @@ export default function LoginPage() {
 						draggable={false}
 						quality={100}
 						src="/images/logo.svg" alt="logo" className="w-auto h-8" />
-          <p className="text-2xl font-bold leading-none tracking-tight uppercase text-primary">Đăng nhập để tiếp tục</p>
+          <p className="text-2xl font-bold leading-none tracking-tight uppercase text-primary">Login to continue</p>
         </CardHeader>
 
         <CardContent className="space-y-6">
@@ -120,7 +120,7 @@ export default function LoginPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel className="text-sm font-medium text-gray-700">Mật khẩu</FormLabel>
+                    <FormLabel className="text-sm font-medium text-gray-700">Password</FormLabel>
                     <FormControl>
                       <div className="relative group">
                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-blue-500 transition-colors" />
@@ -154,12 +154,12 @@ export default function LoginPage() {
                 {isPending ? (
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    <span>Đang đăng nhập...</span>
+                    <span>Logging in...</span>
                   </div>
                 ) : (
                   <div className="flex items-center space-x-2">
                     <LogIn className="w-4 h-4" />
-                    <span>Đăng nhập</span>
+                    <span>Login</span>
                   </div>
                 )}
               </Button>
@@ -169,7 +169,7 @@ export default function LoginPage() {
           {/* Additional links */}
           <div className="text-center space-y-4">
             <button className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors">
-              Quên mật khẩu?
+              Forgot password?
             </button>
 
             <div className="relative">
@@ -177,13 +177,13 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-mainTextV1">hoặc</span>
+                <span className="bg-white px-2 text-mainTextV1">or</span>
               </div>
             </div>
 
             <p className="text-sm text-gray-500">
-              Chưa có tài khoản?{" "}
-              <button className="text-blue-600 hover:text-blue-700 font-medium transition-colors">Đăng ký ngay</button>
+              Don't have an account?{" "}
+              <button className="text-blue-600 hover:text-blue-700 font-medium transition-colors">Register now</button>
             </p>
           </div>
         </CardContent>

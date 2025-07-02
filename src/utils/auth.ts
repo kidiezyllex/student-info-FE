@@ -73,9 +73,6 @@ export const checkAuthAndRedirect = (
   return true;
 };
 
-/**
- * Xóa tất cả thông tin xác thực khỏi ứng dụng (đăng xuất)
- */
 export const clearAuthData = (): void => {
   cookies.remove("accessToken");
   

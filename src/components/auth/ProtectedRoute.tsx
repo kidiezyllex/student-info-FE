@@ -12,7 +12,6 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isLoading, isAuth, checkAndRedirect, profileData } = useAuth();
 
   useEffect(() => {
-    // Nếu API trả về lỗi 401 hoặc Chưa có token hợp lệ, chuyển hướng về trang đăng nhập
     if (!isLoading && !isAuth) {
       checkAndRedirect();
     }
@@ -22,7 +21,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     return (
       <div className="min-h-screen">
         <LoadingSpinnerWithText 
-          text="Đang tải..." 
+          text="Loading..." 
           size="lg" 
           className="min-h-screen"
         />
@@ -30,11 +29,9 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  // Nếu không được xác thực, không hiển thị nội dung
   if (!isAuth) {
     return null;
   }
 
-  // Người dùng đã được xác thực
   return <>{children}</>;
 } 

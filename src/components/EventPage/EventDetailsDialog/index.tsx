@@ -94,11 +94,11 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
     const end = new Date(endDate);
 
     if (now < start) {
-      return { status: "upcoming", label: "Sắp diễn ra", color: "bg-blue-100 text-blue-800 border-blue-200" };
+      return { status: "upcoming", label: "Upcoming", color: "bg-blue-100 text-blue-800 border-blue-200" };
     } else if (now >= start && now <= end) {
-      return { status: "ongoing", label: "Đang diễn ra", color: "bg-green-100 text-green-800 border-green-200" };
+      return { status: "ongoing", label: "Ongoing", color: "bg-green-100 text-green-800 border-green-200" };
     } else {
-      return { status: "ended", label: "Đã kết thúc", color: "bg-gray-100 text-gray-800 border-gray-200" };
+      return { status: "ended", label: "Ended", color: "bg-gray-100 text-gray-800 border-gray-200" };
     }
   };
 

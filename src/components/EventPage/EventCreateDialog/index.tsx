@@ -124,7 +124,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
       const endDate = new Date(formData.endDate);
 
       if (endDate <= startDate) {
-        newErrors.endDate = "Thời gian kết thúc phải sau thời gian bắt đầu";
+        newErrors.endDate = "End time must be after start time";
       }
     }
 
@@ -250,7 +250,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
 
             <div>
               <Label htmlFor="location" className="text-sm font-medium text-mainTextV1">
-                Địa điểm <span className="text-red-500">*</span>
+                Location <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="location"

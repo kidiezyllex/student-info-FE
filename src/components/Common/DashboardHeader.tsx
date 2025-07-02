@@ -35,6 +35,7 @@ export default function DashboardHeader() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const inputRef = useRef<HTMLInputElement>(null);
 	const { data: userProfile } = useGetUserProfile();
+	console.log(userProfile);
 	const username = userProfile?.data?.user?.name || "User";
 	const isLoading = false;
 	const { logoutUser } = useUser();
@@ -112,16 +113,16 @@ export default function DashboardHeader() {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="w-56 mt-4">
 							<div className="px-3 py-2 text-sm text-mainTextV1 font-semibold select-none">
-								Xin chào, {username}
+								Hello, {username}
 							</div>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem className="gap-2 text-mainTextV1 font-medium">
 								<User className="w-4 h-4" />
-								Tài khoản
+								Account
 							</DropdownMenuItem>
 							<DropdownMenuItem className="gap-2 text-red-500 font-medium" onClick={logoutUser}>
 								<LogOut className="w-4 h-4" />	
-								Đăng xuất
+								Logout
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
