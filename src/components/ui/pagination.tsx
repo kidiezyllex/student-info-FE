@@ -41,7 +41,7 @@ export function Pagination({
 						onClick={() => onPageChange(page - 1)}
 						disabled={page === 1}
 					>
-						Trước
+						Previous
 					</button>
 				</li>
 				{getPages().map((p) => (
@@ -66,7 +66,7 @@ export function Pagination({
 						onClick={() => onPageChange(page + 1)}
 						disabled={page === totalPages}
 					>
-						Sau
+						Next
 					</button>
 				</li>
 			</ul>

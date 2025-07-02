@@ -435,7 +435,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                         disabled={isLoadingDepartments}
                       >
                         <SelectTrigger className={`mt-1 ${errors.department ? 'border-red-500' : ''}`}>
-                          <SelectValue placeholder="Chọn khoa tổ chức" />
+                          <SelectValue placeholder="Select department" />
                         </SelectTrigger>
                         <SelectContent>
                           {departments.map((department) => (

@@ -47,7 +47,7 @@ const mockScholarshipTrendData = {
 
 const chartConfig = {
   applications: {
-    label: "Đơn xin học bổng",
+    label: "Scholarship Application",
     color: "#1B61FF",
   }
 } satisfies ChartConfig;
@@ -112,7 +112,7 @@ export default function ScholarshipTrendChart() {
                 content={
                   <ChartTooltipContent 
                     formatter={(value, name) => [
-                      `${value} đơn`,
+                      `${value} applications`,
                       name === "applications" ? chartConfig.applications?.label : name
                     ]}
                   />

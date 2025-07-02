@@ -1,3 +1,5 @@
+import { IStudentInfo, ICoordinatorInfo, IProfileSettings } from './user';
+
 export interface IUser {
   _id: string;
   name: string;
@@ -28,13 +30,24 @@ export interface IRegisterResponse {
   };
 }
 
+export interface IProfileData {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  active: boolean;
+  savedNotifications: any[];
+  createdAt: string;
+  updatedAt: string;
+  lastLogin: string;
+  lastProfileUpdate: string;
+  __v: number;
+  studentInfo: IStudentInfo;
+  coordinatorInfo: ICoordinatorInfo;
+  profileSettings: IProfileSettings;
+}
+
 export interface IProfileResponse {
   message: string;
-  data: {
-    _id: string;
-    name: string;
-    email: string;
-    isAdmin: boolean;
-    role: string;
-  };
+  data: IProfileData;
 } 

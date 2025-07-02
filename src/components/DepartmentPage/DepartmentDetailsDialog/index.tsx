@@ -181,7 +181,7 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
                 name="code"
                 value={formData.code}
                 onChange={handleChange}
-                placeholder="Nhập mã khoa"
+                placeholder="Enter department code"
                 disabled={!isEditing}
                 className={`${errors.code ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />

@@ -25,14 +25,11 @@ html,
 
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
-  /* Màu của thanh cuộn */
   border-radius: 10px;
-  /* Bo tròn góc thanh cuộn */
 }
 
 ::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0.1);
-  /* Màu nền của vùng cuộn */
 }
 
 .ant-table-cell::before {
@@ -257,7 +254,6 @@ ul.ant-menu.ant-menu-sub.ant-menu-inline {
   }
 }
 
-/* Ẩn spinner loader của NextTopLoader */
 .nextjs-toploader-spinner {
   display: none !important;
 }

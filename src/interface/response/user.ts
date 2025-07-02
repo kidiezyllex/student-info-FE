@@ -57,17 +57,9 @@ export interface IAchievement {
 }
 
 export interface IStudentInfo {
-  class: string;
-  course: string;
-  academicYear: string;
-  semester: string;
-  gpa: number;
-  credits: number;
-  admissionDate: string;
-  expectedGraduationDate: string;
+  achievements: any[];
+  scholarships: any[];
   status: string;
-  scholarships: IScholarship[];
-  achievements: IAchievement[];
 }
 
 export interface IQualification {
@@ -93,14 +85,11 @@ export interface IPublication {
 }
 
 export interface ICoordinatorInfo {
-  position: string;
-  officeLocation: string;
-  officeHours: string;
-  specialization: string[];
-  qualifications: IQualification[];
-  experience: IExperience[];
-  researchInterests: string[];
-  publications: IPublication[];
+  experience: any[];
+  publications: any[];
+  qualifications: any[];
+  researchInterests: any[];
+  specialization: any[];
 }
 
 export interface IProfileSettings {

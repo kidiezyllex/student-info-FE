@@ -30,15 +30,15 @@ export const EventDeleteDialog = ({
     try {
       const response = await onConfirm();
       if (response?.statusCode === 200 || response?.statusCode === 201) {
-        toast.success(response.message || "Xóa sự kiện thành công!");
+        toast.success(response.message || "Delete event successfully!");
         onClose();
       } else if (response?.statusCode === 500) {
-        toast.error(response.message || "Lỗi hệ thống, vui lòng thử lại sau");
+        toast.error(response.message || "System error, please try again later");
       } else {
-        toast.error(response.message || "Xóa sự kiện thất bại");
+        toast.error(response.message || "Delete event failed");
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || error.message || "Có lỗi xảy ra khi xóa sự kiện";
+      const errorMessage = error.response?.data?.message || error.message || "An error occurred while deleting event";
       toast.error(errorMessage);
     }
   };

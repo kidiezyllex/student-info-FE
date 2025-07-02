@@ -34,7 +34,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
           {departments.length === 0 ? (
             <TableRow>
               <TableCell colSpan={5} className="text-center py-8 text-secondaryTextV1">
-                {isSearching ? "Không tìm thấy khoa phù hợp" : "Chưa có khoa nào"}
+                {isSearching ? "No department found" : "No department"}
               </TableCell>
             </TableRow>
           ) : (

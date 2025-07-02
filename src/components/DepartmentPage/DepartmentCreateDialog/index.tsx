@@ -48,19 +48,19 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Tên khoa là bắt buộc";
+      newErrors.name = "Department name is required";
     }
 
     if (!formData.code.trim()) {
-      newErrors.code = "Mã khoa là bắt buộc";
+      newErrors.code = "Department code is required";
     }
 
     if (!formData.description.trim()) {
-      newErrors.description = "Mô tả là bắt buộc";
+      newErrors.description = "Description is required";
     }
 
     if (!formData.coordinatorId.trim()) {
-      newErrors.coordinatorId = "ID Quản trị ngành là bắt buộc";
+      newErrors.coordinatorId = "Coordinator ID is required";
     }
 
     setErrors(newErrors);
@@ -76,12 +76,12 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
 
     createDepartmentMutation(formData, {
       onSuccess: (response) => {
-        toast.success("Tạo khoa thành công!");
+        toast.success("Create department successfully!");
         handleClose();
         onSuccess?.();
       },
       onError: (error: any) => {
-        toast.error(error?.response?.data?.message || "Có lỗi xảy ra khi tạo khoa!");
+        toast.error(error?.response?.data?.message || "An error occurred while creating department");
       },
     });
   };

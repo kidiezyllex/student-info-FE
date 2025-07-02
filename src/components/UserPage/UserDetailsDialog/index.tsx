@@ -47,16 +47,11 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-
   const { data: userData, isLoading: isLoadingUser } = useGetUserById(userId);
   const { mutate: updateUserMutation, isPending: isUpdating } = useUpdateUser();
   const { mutate: uploadFileMutation } = useUploadFile();
   const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments();
-
   const departments = departmentsData?.data || [];
-
-  console.log(userData);
-
   useEffect(() => {
     if (userData?.data) {
       const user = userData.data;
@@ -79,7 +74,6 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -100,16 +94,15 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type and size
     const isValidType = file.type.startsWith('image/');
     const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
     
     if (!isValidType) {
-      toast.error(`File ${file.name} không phải là hình ảnh hợp lệ`);
+      toast.error(`File ${file.name} is not a valid image`);
       return;
     }
     if (!isValidSize) {
-      toast.error(`File ${file.name} quá lớn (tối đa 10MB)`);
+      toast.error(`File ${file.name} is too large (maximum 10MB)`);
       return;
     }
 
@@ -122,26 +115,23 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
           
           if (imageUrl) {
             setFormData(prev => ({ ...prev, avatar: imageUrl }));
-            toast.success(`Upload ảnh "${file.name}" thành công!`);
+            toast.success(`Upload image "${file.name}" successfully!`);
           } else {
-            console.error('No URL in response:', response);
-            toast.error(`Lỗi: Không nhận được URL ảnh từ server cho file "${file.name}"`);
+            toast.error(`Error: Cannot get image URL from server for file "${file.name}"`);
           }
         } else {
-          console.error('Upload failed with status:', response?.statusCode, response?.message);
-          toast.error(`Lỗi upload ảnh "${file.name}": ${response?.message || 'Lỗi không xác định'}`);
+          toast.error(`Error uploading image "${file.name}": ${response?.message || 'Unknown error'}`);
         }
         setIsUploadingAvatar(false);
       },
       onError: (error: any) => {
         console.error('Upload error for file:', file.name, error);
-        const errorMessage = error?.response?.data?.message || error?.message || 'Không thể upload ảnh';
-        toast.error(`Lỗi upload ảnh "${file.name}": ${errorMessage}`);
+        const errorMessage = error?.response?.data?.message || error?.message || 'Cannot upload image';
+        toast.error(`Error uploading image "${file.name}": ${errorMessage}`);
         setIsUploadingAvatar(false);
       }
     });
 
-    // Clear the input value to allow re-uploading the same file
     e.target.value = '';
   };
 
@@ -149,25 +139,25 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
     const newErrors: Record<string, string> = {};
 
     if (!formData.name?.trim()) {
-      newErrors.name = "Tên đăng nhập là bắt buộc";
+      newErrors.name = "Login name is required";
     }
 
     if (!formData.fullName?.trim()) {
-      newErrors.fullName = "Họ tên đầy đủ là bắt buộc";
+      newErrors.fullName = "Full name is required";
     }
 
     if (!formData.email?.trim()) {
-      newErrors.email = "Email là bắt buộc";
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Email không hợp lệ";
+      newErrors.email = "Email is not valid";
     }
 
     if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     if (formData.phoneNumber && !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = "Số điện thoại không hợp lệ";
+      newErrors.phoneNumber = "Phone number is not valid";
     }
 
     setErrors(newErrors);
@@ -202,12 +192,12 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
       { id: userId, data: updateData },
       {
         onSuccess: (response) => {
-          toast.success("Cập nhật người dùng thành công!");
+          toast.success("Update user successfully!");
           setIsEditing(false);
           onSuccess?.();
         },
         onError: (error: any) => {
-          toast.error(error?.response?.data?.message || "Có lỗi xảy ra khi cập nhật người dùng!");
+          toast.error(error?.response?.data?.message || "An error occurred while updating user!");
         },
       }
     );
@@ -276,11 +266,11 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
   const getStatusBadge = (active: boolean) => {
     return active ? (
       <Badge className="bg-green-500 hover:bg-green-600 text-white text-nowrap">
-        Hoạt động
+        Active
       </Badge>
     ) : (
       <Badge variant="destructive" className="text-nowrap">
-        Không hoạt động
+        Inactive
       </Badge>
     );
   };
@@ -422,7 +412,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
             {isEditing && (
               <Card className="border border-lightBorderV1">
                 <CardHeader>
-                Chỉnh sửa thông tin
+                Edit information
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -521,7 +511,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                           name="fullName"
                           value={formData.fullName}
                           onChange={handleChange}
-                          placeholder="Nhập họ tên đầy đủ"
+                          placeholder="Enter full name"
                           className={`${errors.fullName ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                         />
                         {errors.fullName && (
@@ -567,7 +557,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
                       <div className="space-y-2">
                         <Label htmlFor="studentId" className="text-mainTextV1">
-                          Mã sinh viên
+                          Student ID
                         </Label>
                         <Input
                           id="studentId"
@@ -588,7 +578,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                           name="phoneNumber"
                           value={formData.phoneNumber}
                           onChange={handleChange}
-                          placeholder="Nhập số điện thoại"
+                          placeholder="Enter phone number"
                           className={`${errors.phoneNumber ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
                         />
                         {errors.phoneNumber && (
@@ -602,7 +592,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                         </Label>
                         <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
                           <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
-                            <SelectValue placeholder="Chọn vai trò" />
+                            <SelectValue placeholder="Select role" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="student">Student</SelectItem>

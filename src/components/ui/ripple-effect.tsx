@@ -90,7 +90,6 @@ export const RippleEffect: React.FC<RippleEffectProps> = ({
   );
 };
 
-// Hook để sử dụng ripple effect
 export const useRipple = (
   rippleColor: string = 'rgba(255, 255, 255, 0.3)',
   duration: number = 600

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useMenuSidebar } from "@/stores/useMenuSidebar";
 import { mdiLoading } from "@mdi/js";
 import { Icon } from "@mdi/react";
-import { IconChevronsLeft, IconChevronsRight, IconHomeFilled } from "@tabler/icons-react";
+import { IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
 import Link from "next/link";
 import type React from "react";
 import { useRef, useState } from "react";
@@ -23,12 +23,6 @@ import { Bell, Settings, User, LogOut } from "lucide-react";
 import { useUser } from "@/context/useUserContext";
 import Image from "next/image";
 
-declare global {
-	interface Window {
-		ethereum?: any;
-	}
-}
-
 export default function DashboardHeader() {
 	const { toggle } = useMenuSidebar();
 	const { isOpen } = useMenuSidebar();
@@ -36,7 +30,7 @@ export default function DashboardHeader() {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const { data: userProfile } = useGetUserProfile();
 	console.log(userProfile);
-	const username = userProfile?.data?.user?.name || "User";
+	const username = userProfile?.data?.name || "User";
 	const isLoading = false;
 	const { logoutUser } = useUser();
 	const handleSearchSubmit = () => {
@@ -96,19 +90,13 @@ export default function DashboardHeader() {
 					</form>
 				</div>
 				<div className="flex items-center gap-2">
-					<ActionIcon variant="ghost" size="default" className="mr-1">
-						<Bell className="text-mainTextV1" size={24} />
-					</ActionIcon>
-					<ActionIcon variant="ghost" size="default" className="mr-1">
-						<Settings className="text-mainTextV1" size={24} />
-					</ActionIcon>
 					<DropdownMenu modal={false}>
 						<DropdownMenuTrigger asChild>
-							<div className="cursor-pointer">
-								<Avatar className="w-10 h-10 p-1 border border-lightBorderV1 bg-white">
-									<AvatarImage src={"/images/sample-img.png"} alt={username} />
-									<AvatarFallback>{username?.charAt(0)?.toUpperCase() || "U"}</AvatarFallback>
-								</Avatar>
+							<div className="h-11 w-11 border-2 border-primary rounded-full overflow-hidden cursor-pointer bg-mainBackgroundV1">
+								<Image 
+								draggable={false}
+								quality={100}
+								src={"/images/admin.webp"} alt={username} className="object-cover h-full w-full" width={100} height={100}/>
 							</div>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="w-56 mt-4">

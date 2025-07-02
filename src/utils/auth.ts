@@ -1,30 +1,27 @@
 import cookies from "js-cookie";
 
 /**
- * Kiểm tra xem người dùng có được xác thực không bằng cách kiểm tra cả cookies và localStorage
- * @returns {boolean} - Trả về true nếu người dùng đã xác thực, ngược lại là false
+ * Check if user is authenticated by checking both cookies and localStorage
+ * @returns {boolean} - Returns true if user is authenticated, otherwise false
  */
 export const isAuthenticated = (): boolean => {
   const cookieToken = cookies.get("accessToken");
   let localStorageToken = null;
 
-  // Chỉ kiểm tra localStorage ở client-side
   if (typeof window !== "undefined") {
     try {
-      // Kiểm tra token trong localStorage dưới dạng chuỗi JSON
       const tokenString = localStorage.getItem("token");
       if (tokenString) {
         const tokenObj = JSON.parse(tokenString);
         localStorageToken = tokenObj.token || tokenObj;
       }
       
-      // Kiểm tra token trực tiếp trong localStorage
       const accessToken = localStorage.getItem("accessToken");
       if (accessToken) {
         localStorageToken = accessToken;
       }
     } catch (error) {
-      console.error("Lỗi khi đọc token từ localStorage:", error);
+      console.error("Error reading token from localStorage:", error);
     }
   }
 
@@ -32,38 +29,34 @@ export const isAuthenticated = (): boolean => {
 };
 
 /**
- * Kiểm tra profile API response có hợp lệ không
- * @param profileData - Dữ liệu profile trả về từ API
- * @returns {boolean} - Trả về true nếu profile hợp lệ, false nếu có lỗi
+ * Check if profile API response is valid
+ * @param profileData - Profile data returned from API
+ * @returns {boolean} - Returns true if profile is valid, false if there is an error
  */
 export const isValidProfileResponse = (profileData: any): boolean => {
   if (!profileData) return false;
   
-  // Kiểm tra có data và thông tin cơ bản
   if (profileData.data && profileData.data._id) return true;
   
   return false;
 };
 
 /**
- * Kiểm tra xác thực và chuyển hướng nếu chưa đăng nhập
- * @param {Function} redirectFn - Hàm chuyển hướng (thường là router.replace)
- * @param {any} profileData - Dữ liệu profile từ API (tùy chọn)
- * @returns {boolean} - Trạng thái xác thực
+ * Check authentication and redirect if not logged in
+ * @param {Function} redirectFn - Redirect function (usually router.replace)
+ * @param {any} profileData - Profile data from API (optional)
+ * @returns {boolean} - Authentication status
  */
 export const checkAuthAndRedirect = (
   redirectFn: (path: string) => void, 
   profileData?: any
 ): boolean => {
-  // Kiểm tra profile response trước
   if (profileData && !isValidProfileResponse(profileData)) {
-    // Xóa token không hợp lệ trước khi chuyển hướng
     clearAuthData();
     redirectFn("/login");
     return false;
   }
   
-  // Kiểm tra token
   const isAuth = isAuthenticated();
   if (!isAuth) {
     redirectFn("/login");

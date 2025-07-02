@@ -16,8 +16,8 @@ import { toast } from "react-toastify"
 import Image from "next/image"
 
 const formSchema = z.object({
-  email: z.string().email("Email không hợp lệ").min(1, "Email là trường bắt buộc"),
-  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
+  email: z.string().email("Invalid email").min(1, "Email is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -54,7 +54,11 @@ export default function LoginPage() {
             }
             loginUser(userInfo, response.data.token)
             toast.success(response.message || "Login successfully!")
-            router.push("/admin")
+            if (response.data.isAdmin) {
+              router.push("/admin")
+            } else {
+              router.push("/student")
+            }
           } else {
             toast.error(response.message || "Login failed!")
           }
@@ -182,7 +186,7 @@ export default function LoginPage() {
             </div>
 
             <p className="text-sm text-gray-500">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <button className="text-blue-600 hover:text-blue-700 font-medium transition-colors">Register now</button>
             </p>
           </div>

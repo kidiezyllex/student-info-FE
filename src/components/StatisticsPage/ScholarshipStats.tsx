@@ -22,7 +22,6 @@ const mockScholarshipData = {
 };
 
 export default function ScholarshipStats() {
-  // Biểu đồ loại học bổng
   const scholarshipTypeData = [
     {
       name: "Academic Scholarship",
@@ -46,7 +45,6 @@ export default function ScholarshipStats() {
     }
   ];
 
-  // Biểu đồ tình trạng học bổng
   const scholarshipStatusData = [
     {
       name: "Active",

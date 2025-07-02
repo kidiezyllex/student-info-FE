@@ -47,9 +47,9 @@ const config: Config = {
 				},
 				bgBackground: "#F9F9FC",
 				mainBackgroundV1: "#F9F9FC",
-				mainTextV1: "#5D7186", // áp dụng cho icon luôn
-				secondaryTextV1: "#687D92", // áp dụng cho text
-				mainTextHoverV1: "#1B61FF", // áp dụng cho icon khi hover
+				mainTextV1: "#5D7186",
+				secondaryTextV1: "#687D92",
+				mainTextHoverV1: "#1B61FF",
 				mainDarkBackgroundV1: "#1C252E",
 				mainSuccessV1: "#5CC184",
 				mainSuccessHoverV1: "#53AE77",

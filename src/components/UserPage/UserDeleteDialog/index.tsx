@@ -28,10 +28,10 @@ export const UserDeleteDialog = ({
   const handleConfirm = async () => {
     try {
       await onConfirm();
-      toast.success("Xóa người dùng thành công!");
+      toast.success("Delete user successfully!");
       onClose();
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Có lỗi xảy ra khi xóa người dùng!");
+      toast.error(error?.response?.data?.message || "An error occurred while deleting user!");
     }
   };
 
@@ -39,15 +39,15 @@ export const UserDeleteDialog = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Xác nhận xóa người dùng</DialogTitle>
+          <DialogTitle className="text-mainTextV1">Confirm delete user</DialogTitle>
         </DialogHeader>
 
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-start gap-3">
             <IconAlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
             <div className="text-sm text-red-800">
-              <p className="font-medium mb-1">Cảnh báo:</p>
-              <p>Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến người dùng này sẽ bị xóa vĩnh viễn.</p>
+              <p className="font-medium mb-1">Warning:</p>
+              <p>This action cannot be undone. All data related to this user will be deleted permanently.</p>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@ export const UserDeleteDialog = ({
             disabled={isDeleting}
             className="flex-1"
           >
-            Hủy
+            Cancel
           </Button>
           <Button
             variant="destructive"
@@ -70,12 +70,12 @@ export const UserDeleteDialog = ({
             {isDeleting ? (
               <>
                 <IconLoader2 className="h-4 w-4 animate-spin" />
-                Đang xóa...
+                Deleting...
               </>
             ) : (
               <>
                 <IconTrash className="h-4 w-4" />
-                Xóa người dùng
+                Delete user
               </>
             )}
           </Button>

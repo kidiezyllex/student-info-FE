@@ -53,7 +53,6 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -74,9 +73,8 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type and size
     const isValidType = file.type.startsWith('image/');
-    const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
+    const isValidSize = file.size <= 10 * 1024 * 1024;
 
     if (!isValidType) {
       toast.error(`File ${file.name} is not a valid image`);
@@ -107,7 +105,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
       },
       onError: (error: any) => {
         console.error('Upload error for file:', file.name, error);
-        const errorMessage = error?.response?.data?.message || error?.message || 'Không thể upload ảnh';
+        const errorMessage = error?.response?.data?.message || error?.message || 'Cannot upload image';
         toast.error(`Error uploading image "${file.name}": ${errorMessage}`);
         setIsUploadingAvatar(false);
       }
@@ -377,7 +375,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                 </Label>
                 <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
                   <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
-                    <SelectValue placeholder="Chọn vai trò" />
+                    <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="student">Student</SelectItem>
