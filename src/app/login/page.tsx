@@ -133,7 +133,6 @@ export default function LoginPage() {
                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-blue-500 transition-colors" />
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
                           className="pl-10 pr-12 h-12 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 bg-white/50"
                           {...field}
                         />
