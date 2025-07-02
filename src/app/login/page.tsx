@@ -45,7 +45,6 @@ export default function LoginPage() {
       {
         onSuccess: (response) => {
           if (response.data && response.data.token) {
-            // Create user object for loginUser function
             const userInfo = {
               _id: response.data._id,
               name: response.data.name,
@@ -54,9 +53,13 @@ export default function LoginPage() {
             }
             loginUser(userInfo, response.data.token)
             toast.success(response.message || "Login successfully!")
-            if (response.data.isAdmin) {
+            if (response.data.role === "admin") {
               router.push("/admin")
-            } else {
+            } 
+            else if (response.data.role === "coordinator") {
+              router.push("/coordinator")
+            }
+            else {
               router.push("/student")
             }
           } else {

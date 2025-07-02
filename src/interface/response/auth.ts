@@ -14,6 +14,7 @@ export interface ILoginResponse {
     _id: string;
     name: string;
     email: string;
+    role: string;
     isAdmin: boolean;
     token: string;
   };
