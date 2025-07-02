@@ -384,25 +384,25 @@ export default function StudentChatPage() {
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => handleRateMessage(message.messageIndex!, true)}
-                                  className={`h-6 w-6 p-0 ${
+                                  className={`h-8 w-8 p-0 ${
                                     message.isAccurate === true 
                                       ? 'text-green-600 bg-green-50' 
                                       : 'text-gray-400 hover:text-green-600'
                                   }`}
                                 >
-                                  <IconThumbUp className="w-3 h-3" />
+                                  <IconThumbUp className="w-5 h-5" />
                                 </Button>
                                 <Button
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => handleRateMessage(message.messageIndex!, false)}
-                                  className={`h-6 w-6 p-0 ${
+                                  className={`h-8 w-8 p-0 ${
                                     message.isAccurate === false 
                                       ? 'text-red-600 bg-red-50' 
                                       : 'text-gray-400 hover:text-red-600'
                                   }`}
                                 >
-                                  <IconThumbDown className="w-3 h-3" />
+                                  <IconThumbDown className="w-5 h-5" />
                                 </Button>
                               </div>
                             )}
