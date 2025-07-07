@@ -46,20 +46,6 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		name: "Scholarship Management",
 		path: "/admin/scholarships",
 		icon: mdiGift,
-		subMenu: [
-			{
-				id: "all-scholarships",
-				name: "All Scholarships",
-				path: "/admin/scholarships/all",
-				icon: mdiGift,
-			},
-			{
-				id: "active-scholarships",
-				name: "Active Scholarships",
-				path: "/admin/scholarships",
-				icon: mdiGift,
-			},
-		],
 	},
 	{
 		id: "notification-management",
@@ -99,26 +85,6 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		path: "/admin/dataset",
 		icon: mdiDatabase,
 	},
-	{
-		id: "chat-management",
-		name: "Chat Management",
-		path: "/admin/chat",
-		icon: mdiMessageText,
-		subMenu: [
-			{
-				id: "chat-sessions",
-				name: "Chat Sessions",
-				path: "/admin/chat/sessions",
-				icon: mdiMessageText,
-			},
-			{
-				id: "chat-statistics",
-				name: "Chat Statistics",
-				path: "/admin/chat/statistics",
-				icon: mdiChartLine,
-			},
-		],
-	},
 ]; 
 
 export const getStudentMenuItems = (): MenuItem[] => [
@@ -133,6 +99,12 @@ export const getStudentMenuItems = (): MenuItem[] => [
 		name: "AI Chat",
 		path: "/student/chat",
 		icon: mdiRobot,
+	},
+	{
+		id: "chat-management",
+		name: "Chat Management",
+		path: "/student/messages",
+		icon: mdiChartLine,
 	},
 	{
 		id: "student-scholarships",
