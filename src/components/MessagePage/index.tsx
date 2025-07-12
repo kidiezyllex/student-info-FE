@@ -103,6 +103,10 @@ export default function MessagePage() {
     return messageDate.toLocaleDateString();
   };
 
+  const formatMessageContent = (content: string) => {
+    return content.replace(/\*\*(VGU Research Day)\*\*/g, '<strong>$1</strong>');
+  };
+
   // Filter conversations based on search
   const filteredConversations = conversationsData?.data?.filter((conversation: IConversation) =>
     conversation.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -296,7 +300,7 @@ export default function MessagePage() {
                                     : 'bg-gray-100 text-mainTextV1'
                                 }`}
                               >
-                                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                                <p className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }}></p>
                               </div>
                               
                               <div className="flex items-center justify-between mt-1 px-1">

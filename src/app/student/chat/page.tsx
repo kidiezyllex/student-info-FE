@@ -239,8 +239,8 @@ export default function StudentChatPage() {
                     New Chat
                   </Button>
                 </div>
-                <ScrollArea className="h-[calc(100vh-280px)]">
-                  <div className="px-4 space-y-2">
+                <ScrollArea className="h-[calc(100vh-280px)] max-w-[320px] w-[320px]">
+                  <div className="px-4 space-y-2 max-w-[320px] w-[320px]">
                     {historyLoading ? (
                       <div className="text-sm text-secondaryTextV1">Loading history...</div>
                     ) : (
@@ -257,7 +257,7 @@ export default function StudentChatPage() {
                             onClick={() => handleLoadSession(session._id)}
                             className="flex-1"
                           >
-                            <h4 className="font-medium text-sm text-mainTextV1 truncate">
+                            <h4 className="font-medium text-base text-mainTextV1 truncate">
                               {session.title}
                             </h4>
                             <p className="text-xs text-secondaryTextV1 mt-1">

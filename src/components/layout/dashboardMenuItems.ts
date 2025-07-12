@@ -101,12 +101,6 @@ export const getStudentMenuItems = (): MenuItem[] => [
 		icon: mdiRobot,
 	},
 	{
-		id: "chat-management",
-		name: "Chat Management",
-		path: "/student/messages",
-		icon: mdiChartLine,
-	},
-	{
 		id: "student-scholarships",
 		name: "Scholarships",
 		path: "/student/scholarships",

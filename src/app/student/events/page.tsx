@@ -209,15 +209,15 @@ export default function StudentEventsPage() {
                   <Card className="border border-lightBorderV1 hover:border-mainTextHoverV1 transition-colors h-full flex flex-col">
                     <CardHeader>
                       <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1">
+                        <div className="flex-1 flex flex-col">
                           <CardTitle className="text-lg text-mainTextV1 line-clamp-2">
                             {event.title}
                           </CardTitle>
                           <CardDescription className="text-secondaryTextV1 mt-1">
                             Organized by {event.organizer}
                           </CardDescription>
+                          {getStatusBadge(event)}
                         </div>
-                        {getStatusBadge(event)}
                       </div>
                     </CardHeader>
                     

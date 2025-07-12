@@ -20,6 +20,7 @@ import { motion } from "framer-motion";
 import { IconSearch, IconGift, IconCalendar, IconCurrencyDollar, IconFilter, IconExternalLink } from "@tabler/icons-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IScholarship } from "@/interface/response/scholarship";
+import Image from "next/image";
 
 type ScholarshipFilter = "all" | "active";
 
@@ -39,7 +40,7 @@ export default function StudentScholarshipsPage() {
   useEffect(() => {
     if (scholarshipsData?.data) {
       let filtered = scholarshipsData.data;
-      
+
       // Apply search filter
       if (searchQuery.trim()) {
         filtered = filtered.filter(scholarship =>
@@ -49,7 +50,7 @@ export default function StudentScholarshipsPage() {
           (scholarship.department && scholarship.department.name.toLowerCase().includes(searchQuery.toLowerCase()))
         );
       }
-      
+
       setFilteredScholarships(filtered);
     } else {
       setFilteredScholarships([]);
@@ -72,7 +73,7 @@ export default function StudentScholarshipsPage() {
   const getStatusBadge = (scholarship: IScholarship) => {
     const now = new Date();
     const deadline = new Date(scholarship.applicationDeadline);
-    
+
     if (deadline < now) {
       return (
         <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100">
@@ -80,19 +81,19 @@ export default function StudentScholarshipsPage() {
         </Badge>
       );
     }
-    
+
     const daysLeft = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 3600 * 24));
-    
+
     if (daysLeft <= 7) {
       return (
-        <Badge className="bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-100">
+        <Badge className="bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-100/50">
           Ending Soon
         </Badge>
       );
     }
-    
+
     return (
-      <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100">
+      <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100/50">
         Active
       </Badge>
     );
@@ -144,7 +145,7 @@ export default function StudentScholarshipsPage() {
                 />
                 <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <IconFilter className="w-5 h-5 text-mainTextV1" />
                 <Select value={scholarshipFilter} onValueChange={handleFilterChange}>
@@ -189,25 +190,31 @@ export default function StudentScholarshipsPage() {
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
                   <Card className="border border-lightBorderV1 hover:border-mainTextHoverV1 transition-colors h-full flex flex-col">
-                    <CardHeader>
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1">
-                          <CardTitle className="text-lg text-mainTextV1 line-clamp-2">
-                            {scholarship.title}
-                          </CardTitle>
-                          <CardDescription className="text-secondaryTextV1 mt-1">
-                            {scholarship.provider}
-                          </CardDescription>
-                        </div>
+                    <CardHeader
+                      className="relative bg-black h-32"
+                    >
+                      <Image
+                        src="/images/school-bg.png"
+                        alt="school-bg"
+                        fill
+                        className="object-cover absolute opacity-40 z-0"
+                      />
+                      <div className="flex-1 flex flex-col absolute z-10 gap-2">
+                        <CardTitle className="text-base text-white line-clamp-2">
+                          {scholarship.title}
+                        </CardTitle>
+                        <CardDescription className="text-white font-normal">
+                          {scholarship.provider}
+                        </CardDescription>
                         {getStatusBadge(scholarship)}
                       </div>
                     </CardHeader>
-                    
+
                     <CardContent className="flex-1 flex flex-col">
                       <p className="text-sm text-secondaryTextV1 line-clamp-3 mb-4">
                         {scholarship.description}
                       </p>
-                      
+
                       <div className="space-y-3 mt-auto">
                         <div className="flex items-center gap-2 text-sm">
                           <IconCurrencyDollar className="w-4 h-4 text-green-600" />
@@ -215,14 +222,14 @@ export default function StudentScholarshipsPage() {
                             {scholarship.value}
                           </span>
                         </div>
-                        
+
                         <div className="flex items-center gap-2 text-sm">
                           <IconCalendar className="w-4 h-4 text-blue-600" />
                           <span className="text-secondaryTextV1">
                             Deadline: {formatDate(scholarship.applicationDeadline)}
                           </span>
                         </div>
-                        
+
                         {scholarship.department && (
                           <div className="flex items-center gap-2 text-sm">
                             <IconGift className="w-4 h-4 text-purple-600" />
@@ -231,7 +238,7 @@ export default function StudentScholarshipsPage() {
                             </span>
                           </div>
                         )}
-                        
+
                         <Button
                           onClick={() => handleViewDetails(scholarship)}
                           className="w-full bg-mainTextHoverV1 hover:bg-primary/90 text-white mt-4"
@@ -253,8 +260,8 @@ export default function StudentScholarshipsPage() {
                   No scholarships found
                 </h3>
                 <p className="text-secondaryTextV1">
-                  {searchQuery ? 
-                    "Try adjusting your search terms or filters." : 
+                  {searchQuery ?
+                    "Try adjusting your search terms or filters." :
                     "There are no scholarships available at the moment."
                   }
                 </p>
@@ -275,7 +282,7 @@ export default function StudentScholarshipsPage() {
               Provided by {selectedScholarship?.provider}
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedScholarship && (
             <div className="space-y-6">
               <div className="flex items-center gap-4">
@@ -284,14 +291,14 @@ export default function StudentScholarshipsPage() {
                   {selectedScholarship.value}
                 </span>
               </div>
-              
+
               <div>
                 <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Description</h4>
                 <p className="text-secondaryTextV1 whitespace-pre-wrap">
                   {selectedScholarship.description}
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">Application Deadline</h4>
@@ -299,7 +306,7 @@ export default function StudentScholarshipsPage() {
                     {formatDate(selectedScholarship.applicationDeadline)}
                   </p>
                 </div>
-                
+
                 {selectedScholarship.department && (
                   <div>
                     <h4 className="text-md font-semibold text-mainTextV1 mb-2">Department</h4>
@@ -309,7 +316,7 @@ export default function StudentScholarshipsPage() {
                   </div>
                 )}
               </div>
-              
+
               {selectedScholarship.requirements && (
                 <div>
                   <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Requirements</h4>
@@ -318,7 +325,7 @@ export default function StudentScholarshipsPage() {
                   </p>
                 </div>
               )}
-              
+
               {selectedScholarship.applicationProcess && (
                 <div>
                   <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Application Process</h4>

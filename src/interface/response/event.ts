@@ -12,6 +12,8 @@ export interface IEvent {
   location: string;
   department: IEventDepartment;
   organizer: string;
+  requirements?: string;
+  agenda?: string;
 }
 
 export interface IEventCreate {
