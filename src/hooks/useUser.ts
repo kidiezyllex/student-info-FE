@@ -32,10 +32,11 @@ import {
   IUpdateUserProfileDetailedBody 
 } from '@/interface/request/user';
 
-export const useGetUserProfile = () => {
+export const useGetUserProfile = (options?: { enabled?: boolean }) => {
   return useQuery<IProfileResponse, Error>({
     queryKey: ['user', 'profile'],
     queryFn: getProfile,
+    ...options,
   });
 };
 

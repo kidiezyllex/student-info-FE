@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useGetUserProfile } from "./useUser";
-import { isAuthenticated, isValidProfileResponse } from "@/utils/auth";
+import { isAuthenticated } from "@/utils/auth";
 import { useUser } from "@/context/useUserContext";
 import cookies from "js-cookie";
 import { useMutation } from '@tanstack/react-query';
@@ -21,8 +21,11 @@ import { ILoginResponse, IRegisterResponse } from '@/interface/response/auth';
  */
 export const useAuth = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { isAuthenticated: userContextAuth } = useUser();
-  const { data: profileData, error: profileError, isError } = useGetUserProfile();
+  const hasAccessToken = cookies.get("accessToken");
+  const isPublicRoute = pathname === "/login" || pathname === "/register";
+  const { data: profileData, error: profileError, isError } = useGetUserProfile({ enabled: !!hasAccessToken && !isPublicRoute });
   const [isLoading, setIsLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
 

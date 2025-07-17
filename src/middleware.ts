@@ -6,8 +6,12 @@ export function middleware(request: NextRequest) {
   const path = url.pathname;
   const hasAccessToken = request.cookies.has('accessToken') &&
     request.cookies.get('accessToken')?.value;
-  const isPublicRoute = path === '/login' || path.includes('sign-up');
+  const isPublicRoute = path === '/login' || path === '/register';
   const isApiRoute = path.startsWith('/api/');
+
+  console.log('Middleware Path:', path);
+  console.log('Middleware Has Access Token:', hasAccessToken);
+  console.log('Middleware Is Public Route:', isPublicRoute);
 
   if (isApiRoute) {
     if (request.method === 'OPTIONS') {
@@ -22,11 +26,7 @@ export function middleware(request: NextRequest) {
         },
       });
     }
-    
-    // Handle the actual API request
     const response = NextResponse.next();
-    
-    // Add CORS headers to the response
     const origin = request.headers.get('origin') || '*';
     response.headers.set('Access-Control-Allow-Origin', origin);
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -36,15 +36,12 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  // Authentication check for non-API routes - redirect to login if no token
   if (!hasAccessToken && !isPublicRoute) {
     url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 
-  // If user has token and trying to access login page, redirect to dashboard
   if (hasAccessToken && isPublicRoute) {
-    // Default redirect to admin, role-based routing will be handled by client-side
     url.pathname = '/admin';
     return NextResponse.redirect(url);
   }
@@ -60,9 +57,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/',
-    '/app/:path*',
-    '/api/v1/:path*',
-    '/((?!_next|_vercel|favicon.ico|.*\\..*).*)' 
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)',
   ]
 };

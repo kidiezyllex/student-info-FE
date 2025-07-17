@@ -329,4 +329,14 @@ button[type="button"].absolute:focus {
   animation: ripple 600ms ease-out;
 }
 
+/* Other styles */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 

@@ -29,7 +29,6 @@ export default function DashboardHeader() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const inputRef = useRef<HTMLInputElement>(null);
 	const { data: userProfile } = useGetUserProfile();
-	console.log(userProfile);
 	const username = userProfile?.data?.name || "User";
 	const isLoading = false;
 	const { logoutUser } = useUser();

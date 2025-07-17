@@ -66,7 +66,7 @@ const QuickActionCard = ({ href, icon: Icon, title, description, color, delay = 
                     <CardHeader className="flex flex-col items-center justify-center gap-4">
                         {/* Icon container with enhanced styling */}
                         <div
-                            className="mx-auto w-20 h-20 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 relative"
+                            className="mx-auto w-20 h-20 rounded-3xl flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 relative"
                             style={{
                                 background: `linear-gradient(135deg, ${color}15 0%, ${color}25 50%, ${color}35 100%)`,
                                 border: `2px solid ${color}20`

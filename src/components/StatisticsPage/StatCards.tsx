@@ -32,7 +32,7 @@ const StatCard = ({
       transition={{ duration: 0.5, delay }}
       className="w-full"
     >
-      <Card className="group relative overflow-hidden p-6 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 border-0 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+      <Card className="group relative overflow-hidden p-6 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 border-0 shadow-md hover:shadow-sm transition-all duration-300 hover:-translate-y-1">
         {/* Background decoration */}
         <div 
           className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -mr-8 -mt-8"

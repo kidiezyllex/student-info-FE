@@ -12,9 +12,8 @@ function getLocalAccessToken() {
 		try {
 			const tokenFromStorage = localStorage.getItem("token");
 			if (tokenFromStorage) {
-				const parsedToken = JSON.parse(tokenFromStorage);
-				cookies.set("accessToken", parsedToken.token || parsedToken);
-				return parsedToken.token || parsedToken;
+				cookies.set("accessToken", tokenFromStorage);
+				return tokenFromStorage;
 			}
 		} catch (error) {
 			console.error("Lỗi khi lấy token từ localStorage:", error);

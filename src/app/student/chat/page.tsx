@@ -343,7 +343,7 @@ export default function StudentChatPage() {
           </Card>
 
           {/* Chat Messages */}
-          <Card className="flex-1 overflow-hidden rounded-none border-t-0">
+          <Card className="flex-1 overflow-hidden rounded-none border-t-0 min-h-0">
             <CardContent className="p-0 h-full">
               <ScrollArea className="h-full p-4">
                 <div className="space-y-4">
