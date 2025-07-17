@@ -9,6 +9,7 @@ export interface IUser {
 }
 
 export interface ILoginResponse {
+  status: boolean;
   message: string;
   data: {
     _id: string;
@@ -18,6 +19,8 @@ export interface ILoginResponse {
     isAdmin: boolean;
     token: string;
   };
+  errors: {};
+  timestamp: string;
 }
 
 export interface IRegisterResponse {
@@ -49,6 +52,9 @@ export interface IProfileData {
 }
 
 export interface IProfileResponse {
+  status: boolean;
   message: string;
   data: IProfileData;
+  errors: {};
+  timestamp: string;
 } 

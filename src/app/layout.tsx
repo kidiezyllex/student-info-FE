@@ -10,6 +10,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { CustomScrollArea } from "@/components/ui/custom-scroll-area";
 import { Open_Sans } from "next/font/google";
 import { UserProvider } from "@/context/useUserContext";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AppLayoutWrapper from "@/components/layout/AppLayoutWrapper";
 
 const openSans = Open_Sans({
@@ -46,7 +47,9 @@ export default function RootLayout({
 							showSpinner={false}
 						/>
 						<ToastProvider />
-						<AppLayoutWrapper>{children}</AppLayoutWrapper>
+						<AppLayoutWrapper>
+							<ProtectedRoute>{children}</ProtectedRoute>
+						</AppLayoutWrapper>
 					</UserProvider>
 				</ReactQueryClientProvider>
 			</body>

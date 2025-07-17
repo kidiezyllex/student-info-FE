@@ -30,6 +30,15 @@ export const useAuth = () => {
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
+    if (!hasAccessToken) {
+      setIsAuth(false);
+      setIsLoading(false);
+      if (!isPublicRoute) {
+        router.replace("/login");
+      }
+      return;
+    }
+
     if (isError || profileError) {
       cookies.remove("accessToken");
       if (typeof window !== "undefined") {
@@ -38,34 +47,35 @@ export const useAuth = () => {
       }
       setIsAuth(false);
       setIsLoading(false);
+      if (!isPublicRoute) {
+        router.replace("/login");
+      }
       return;
     }
     
-    const hasToken = isAuthenticated();
-    if (hasToken && profileData) {
+    if (hasAccessToken && profileData) {
       setIsAuth(true);
-    } else if (hasToken) {
-      setIsAuth(true);
-    } else {
-      setIsAuth(false);
-    }
-    
-    if (!hasToken || profileData || isError) {
       setIsLoading(false);
+    } else if (hasAccessToken && !profileData) {
+      // Still loading profile data
+      setIsLoading(true);
     }
-  }, [profileData, userContextAuth, isError, profileError]);
+  }, [profileData, userContextAuth, isError, profileError, hasAccessToken, isPublicRoute, router]);
 
   const checkAndRedirect = useCallback(() => {
-    if (!isAuth && !isLoading) {
+    // This function might not be strictly needed now, as redirection is handled in useEffect
+    // but keeping it for potential future use or other scenarios
+    if (!isAuth && !isLoading && !isPublicRoute) {
       router.replace("/login");
     }
-  }, [isAuth, isLoading, router]);
+  }, [isAuth, isLoading, router, isPublicRoute]);
 
   return {
     isLoading,
     isAuth,
     checkAndRedirect,
-    profileData
+    profileData,
+    isPublicRoute
   };
 };
 
