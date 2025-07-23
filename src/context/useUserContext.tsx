@@ -88,7 +88,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       setIsLoadingProfile(true)
       await refetchProfile()
     } catch (error) {
-      console.error("Failed to fetch user profile:", error)
+      console.error(error)
     } finally {
       setIsLoadingProfile(false)
     }

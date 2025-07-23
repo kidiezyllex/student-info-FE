@@ -21,7 +21,7 @@ export const isAuthenticated = (): boolean => {
         localStorageToken = accessToken;
       }
     } catch (error) {
-      console.error("Error reading token from localStorage:", error);
+      console.error(error);
     }
   }
 

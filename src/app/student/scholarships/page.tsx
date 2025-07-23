@@ -275,7 +275,7 @@ export default function StudentScholarshipsPage() {
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 {getStatusBadge(selectedScholarship)}
-                <span className="text-2xl font-bold text-green-600">
+                <span className="text-2xl font-semibold text-green-600">
                   {selectedScholarship.value}
                 </span>
               </div>

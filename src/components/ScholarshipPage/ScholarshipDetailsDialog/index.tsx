@@ -244,7 +244,6 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
                 placeholder="Enter scholarship description"
                 rows={3}
                 disabled={!isEditing}
-                className={`${errors.description ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />
               {errors.description && (
                 <p className="text-red-500 text-sm">{errors.description}</p>
@@ -330,7 +329,6 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
                 placeholder="Enter scholarship requirements"
                 rows={3}
                 disabled={!isEditing}
-                className={`${errors.requirements ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />
               {errors.requirements && (
                 <p className="text-red-500 text-sm">{errors.requirements}</p>
@@ -349,7 +347,6 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
                 placeholder="Enter eligibility criteria"
                 rows={3}
                 disabled={!isEditing}
-                className={`${errors.eligibility ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />
               {errors.eligibility && (
                 <p className="text-red-500 text-sm">{errors.eligibility}</p>
@@ -368,7 +365,6 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
                 placeholder="Enter application process"
                 rows={3}
                 disabled={!isEditing}
-                className={`${errors.applicationProcess ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />
               {errors.applicationProcess && (
                 <p className="text-red-500 text-sm">{errors.applicationProcess}</p>

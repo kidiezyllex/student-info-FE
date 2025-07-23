@@ -313,7 +313,7 @@ export default function StudentChatPage() {
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
                 <div className="flex-1">
-                  <CardTitle className="text-xl font-bold text-mainTextV1 mb-1">AI Assistant</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-mainTextV1 mb-1">AI Assistant</CardTitle>
                   <div className="flex items-center gap-2">
                     <p className="text-sm text-secondaryTextV1 font-medium">
                       {currentSessionId ? "Continuing conversation" : "Ready to help with your questions"}

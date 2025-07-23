@@ -227,7 +227,6 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
                 placeholder="Enter notification content"
                 rows={4}
                 disabled={!isEditing}
-                className={`${errors.content ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />
               {errors.content && (
                 <p className="text-red-500 text-sm">{errors.content}</p>

@@ -82,7 +82,7 @@ const QuickActionCard = ({ href, icon: Icon, title, description, color, delay = 
                         </div>
 
                         {/* Title with enhanced typography */}
-                        <CardTitle className="text-xl font-bold text-mainTextV1 group-hover:text-opacity-90 transition-all duration-300">
+                        <CardTitle className="text-xl font-semibold text-mainTextV1 group-hover:text-opacity-90 transition-all duration-300">
                             {title}
                         </CardTitle>
                     </CardHeader>
@@ -130,7 +130,7 @@ const StatCard = ({ icon: Icon, title, count, color }: {
                         {title}
                     </p>
                     <p
-                        className="text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent"
+                        className="text-2xl font-semibold bg-gradient-to-r bg-clip-text text-transparent"
                         style={{
                             backgroundImage: `linear-gradient(135deg, ${color} 0%, ${color}80 100%)`
                         }}

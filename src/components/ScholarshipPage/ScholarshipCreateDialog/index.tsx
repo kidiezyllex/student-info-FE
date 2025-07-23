@@ -194,7 +194,6 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
               onChange={handleChange}
               placeholder="Enter scholarship description"
               rows={3}
-              className={`${errors.description ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.description && (
               <p className="text-red-500 text-sm">{errors.description}</p>
@@ -269,7 +268,6 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
               onChange={handleChange}
               placeholder="Enter scholarship requirements"
               rows={3}
-              className={`${errors.requirements ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.requirements && (
               <p className="text-red-500 text-sm">{errors.requirements}</p>
@@ -287,7 +285,6 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
               onChange={handleChange}
               placeholder="Enter eligibility criteria"
               rows={3}
-              className={`${errors.eligibility ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.eligibility && (
               <p className="text-red-500 text-sm">{errors.eligibility}</p>
@@ -305,7 +302,6 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
               onChange={handleChange}
               placeholder="Enter application process"
               rows={3}
-              className={`${errors.applicationProcess ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.applicationProcess && (
               <p className="text-red-500 text-sm">{errors.applicationProcess}</p>

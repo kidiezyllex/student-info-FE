@@ -71,7 +71,7 @@ export default function DashboardHeader() {
 							<Input
 								ref={inputRef}
 								placeholder="Search..."
-								className="w-[90%] h-9 text-maintext pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-mainTextV1"
+								className="w-[90%] text-maintext pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-mainTextV1"
 								value={searchTerm}
 								onChange={handleSearchChange}
 								disabled={isLoading}

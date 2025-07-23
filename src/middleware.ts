@@ -8,11 +8,6 @@ export function middleware(request: NextRequest) {
     request.cookies.get('accessToken')?.value;
   const isPublicRoute = path === '/login' || path === '/register';
   const isApiRoute = path.startsWith('/api/');
-
-  console.log('Middleware Path:', path);
-  console.log('Middleware Has Access Token:', hasAccessToken);
-  console.log('Middleware Is Public Route:', isPublicRoute);
-
   if (isApiRoute) {
     if (request.method === 'OPTIONS') {
       return new NextResponse(null, {

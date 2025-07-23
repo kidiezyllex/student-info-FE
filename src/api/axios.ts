@@ -16,7 +16,7 @@ function getLocalAccessToken() {
 				return tokenFromStorage;
 			}
 		} catch (error) {
-			console.error("Lỗi khi lấy token từ localStorage:", error);
+			console.error(error);
 		}
 	}
 

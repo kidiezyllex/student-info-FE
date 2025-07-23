@@ -155,7 +155,6 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
               onChange={handleChange}
               placeholder="Enter dataset value"
               rows={4}
-              className={`${errors.value ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.value && (
               <p className="text-red-500 text-sm">{errors.value}</p>

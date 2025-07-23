@@ -60,7 +60,7 @@ const StatCard = ({
         {/* Value */}
         <div className="mt-auto">
           <p 
-            className="text-4xl font-bold mb-2 bg-gradient-to-r bg-clip-text text-transparent"
+            className="text-4xl font-semibold mb-2 bg-gradient-to-r bg-clip-text text-transparent"
             style={{ 
               backgroundImage: `linear-gradient(135deg, ${color} 0%, ${color}80 100%)` 
             }}

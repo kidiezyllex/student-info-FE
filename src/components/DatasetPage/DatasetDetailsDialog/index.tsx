@@ -204,7 +204,6 @@ export const DatasetDetailsDialog = ({ isOpen, onClose, datasetItemId, onSuccess
                 placeholder="Enter dataset value"
                 rows={4}
                 disabled={!isEditing}
-                className={`${errors.value ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />
               {errors.value && (
                 <p className="text-red-500 text-sm">{errors.value}</p>

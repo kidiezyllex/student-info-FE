@@ -72,13 +72,11 @@ export default function MessagePage() {
 
   const handleSelectConversation = async (userId: string) => {
     setSelectedConversation(userId);
-    
-    // Mark all messages as read when opening conversation
     try {
       await markAllAsRead(userId);
       refetchConversations();
     } catch (error) {
-      console.error("Failed to mark messages as read:", error);
+      toast.error("Failed to mark messages as read");
     }
   };
 
@@ -256,7 +254,7 @@ export default function MessagePage() {
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                   <div>
-                    <CardTitle className="text-xl font-bold text-mainTextV1">
+                    <CardTitle className="text-xl font-semibold text-mainTextV1">
                       {selectedUser?.name}
                     </CardTitle>
                     <p className="text-sm text-secondaryTextV1">

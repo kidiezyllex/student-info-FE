@@ -213,7 +213,6 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
                 onChange={handleChange}
                 placeholder="Enter event description"
                 rows={4}
-                className={`mt-1 ${errors.description ? 'border-red-500' : ''}`}
               />
               {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
             </div>

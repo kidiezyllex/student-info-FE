@@ -11,7 +11,7 @@ export const getTokenFromLocalStorage = async () => {
       const tokenString = JSON.stringify({ token });
       localStorage.setItem("token", tokenString);
     } catch (error) {
-      console.error("Lỗi:", error);
+      console.error(error);
     }
   };
   
@@ -20,7 +20,7 @@ export const getTokenFromLocalStorage = async () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     } catch (error) {
-      console.error("Lỗi khi xóa token khỏi localStorage:", error);
+      console.error(error);
     }
   };
   

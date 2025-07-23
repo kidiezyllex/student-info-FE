@@ -45,7 +45,6 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
   const { data: departmentData, isLoading: isLoadingDepartment } = useGetDepartmentById(departmentId);
   const { mutate: updateDepartmentMutation, isPending: isUpdating } = useUpdateDepartment();
   const { data: coordinatorsData, isLoading: isLoadingCoordinators } = useGetUsersByRole('coordinator');
-
   useEffect(() => {
     if (departmentData?.data) {
       setFormData({
@@ -61,7 +60,6 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -222,7 +220,6 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
                 placeholder="Enter description"
                 rows={3}
                 disabled={!isEditing}
-                className={`${errors.description ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1 ${!isEditing ? 'bg-gray-50' : ''}`}
               />
               {errors.description && (
                 <p className="text-red-500 text-sm">{errors.description}</p>
@@ -252,23 +249,34 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
                           No coordinators found
                         </SelectItem>
                       )}
-                      {coordinatorsData?.data?.map((user) => (
+                      {coordinatorsData?.data
+                        ?.filter(
+                          (user) =>
+                            !user.department ||
+                            user.department._id === departmentData?.data?._id
+                        )
+                        .map((user) => (
                         <SelectItem key={user._id} value={user._id}>
-                          {user.name} ({user.email})
+                          {user.name}
+                          {
+                            user.department?.name && (
+                              <span className="font-semibold ml-1">({user.department.name})</span>
+                            )
+                          }
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 )
               ) : (
-                <div className="p-3 bg-gray-50 rounded-md border">
+                <div className="h-10 bg-gray-50 rounded-md border flex items-center px-3">
                   {departmentData?.data?.coordinator ? (
-                    <div className="space-y-1">
+                    <div className="flex items-center gap-1">
                       <p className="text-sm font-medium text-mainTextV1">
                         {departmentData.data.coordinator.name}
                       </p>
-                      <p className="text-sm text-gray-600">
-                        {departmentData.data.coordinator.email}
+                      <p className="text-sm text-mainTextV1 font-semibold">
+                        ({departmentData.data.coordinator.email})
                       </p>
                     </div>
                   ) : (

@@ -184,7 +184,6 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
               onChange={handleChange}
               placeholder="Enter notification content"
               rows={4}
-              className={`${errors.content ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
             />
             {errors.content && (
               <p className="text-red-500 text-sm">{errors.content}</p>
