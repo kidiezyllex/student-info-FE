@@ -20,6 +20,7 @@ import { motion } from "framer-motion";
 import { IconSearch, IconCalendar, IconMapPin, IconUser, IconFilter, IconExternalLink, IconClock } from "@tabler/icons-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IEvent } from "@/interface/response/event";
+import { Activity } from "lucide-react";
 
 type EventFilter = "upcoming" | "all";
 
@@ -39,8 +40,6 @@ export default function StudentEventsPage() {
   useEffect(() => {
     if (eventsData?.data) {
       let filtered = eventsData.data;
-      
-      // Apply search filter
       if (searchQuery.trim()) {
         filtered = filtered.filter(event =>
           event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -50,7 +49,7 @@ export default function StudentEventsPage() {
           (event.department && event.department.name.toLowerCase().includes(searchQuery.toLowerCase()))
         );
       }
-      
+
       setFilteredEvents(filtered);
     } else {
       setFilteredEvents([]);
@@ -74,7 +73,7 @@ export default function StudentEventsPage() {
     const now = new Date();
     const startDate = new Date(event.startDate);
     const endDate = new Date(event.endDate);
-    
+
     if (now < startDate) {
       const daysLeft = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 3600 * 24));
       if (daysLeft <= 7) {
@@ -82,11 +81,14 @@ export default function StudentEventsPage() {
       }
       return <Badge variant="blue">Upcoming</Badge>;
     }
-    
+
     if (now >= startDate && now <= endDate) {
-      return <Badge variant="green">Ongoing</Badge>;
+      return <Badge variant="green">
+        <Activity className="h-3 w-3" />
+        Ongoing
+      </Badge>;
     }
-    
+
     return <Badge variant="red">Ended</Badge>;
   };
 
@@ -146,7 +148,7 @@ export default function StudentEventsPage() {
                 />
                 <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <IconFilter className="w-5 h-5 text-mainTextV1" />
                 <Select value={eventFilter} onValueChange={handleFilterChange}>
@@ -172,7 +174,7 @@ export default function StudentEventsPage() {
                     <Skeleton className="h-4 w-1/2" />
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       <Skeleton className="h-4 w-full" />
                       <Skeleton className="h-4 w-2/3" />
                       <Skeleton className="h-8 w-24" />
@@ -204,34 +206,34 @@ export default function StudentEventsPage() {
                         </div>
                       </div>
                     </CardHeader>
-                    
+
                     <CardContent className="flex-1 flex flex-col">
                       <p className="text-sm text-secondaryTextV1 line-clamp-3 mb-4">
                         {event.description}
                       </p>
-                      
-                      <div className="space-y-3 mt-auto">
+
+                      <div className="space-y-2 mt-auto">
                         <div className="flex items-center gap-2 text-sm">
                           <IconCalendar className="w-4 h-4 text-orange-600" />
                           <span className="text-secondaryTextV1">
                             {formatDate(event.startDate)}
                           </span>
                         </div>
-                        
+
                         <div className="flex items-center gap-2 text-sm">
                           <IconClock className="w-4 h-4 text-purple-600" />
                           <span className="text-secondaryTextV1">
                             {formatTime(event.startDate)} - {formatTime(event.endDate)}
                           </span>
                         </div>
-                        
+
                         <div className="flex items-center gap-2 text-sm">
                           <IconMapPin className="w-4 h-4 text-red-600" />
                           <span className="text-secondaryTextV1 line-clamp-1">
                             {event.location}
                           </span>
                         </div>
-                        
+
                         {event.department && (
                           <div className="flex items-center gap-2 text-sm">
                             <IconUser className="w-4 h-4 text-green-600" />
@@ -240,7 +242,7 @@ export default function StudentEventsPage() {
                             </span>
                           </div>
                         )}
-                        
+
                         <Button
                           onClick={() => handleViewDetails(event)}
                           className="w-full bg-mainTextHoverV1 hover:bg-primary/90 text-white mt-4"
@@ -262,8 +264,8 @@ export default function StudentEventsPage() {
                   No events found
                 </h3>
                 <p className="text-secondaryTextV1">
-                  {searchQuery ? 
-                    "Try adjusting your search terms or filters." : 
+                  {searchQuery ?
+                    "Try adjusting your search terms or filters." :
                     "There are no events available at the moment."
                   }
                 </p>
@@ -284,7 +286,7 @@ export default function StudentEventsPage() {
               Organized by {selectedEvent?.organizer}
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedEvent && (
             <div className="space-y-6">
               <div className="flex items-center gap-4">
@@ -295,14 +297,14 @@ export default function StudentEventsPage() {
                   </Badge>
                 )}
               </div>
-              
+
               <div>
                 <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Description</h4>
                 <p className="text-secondaryTextV1 whitespace-pre-wrap">
                   {selectedEvent.description}
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">Start Date & Time</h4>
@@ -310,21 +312,21 @@ export default function StudentEventsPage() {
                     {formatDateTime(selectedEvent.startDate)}
                   </p>
                 </div>
-                
+
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">End Date & Time</h4>
                   <p className="text-secondaryTextV1">
                     {formatDateTime(selectedEvent.endDate)}
                   </p>
                 </div>
-                
+
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">Location</h4>
                   <p className="text-secondaryTextV1">
                     {selectedEvent.location}
                   </p>
                 </div>
-                
+
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">Organizer</h4>
                   <p className="text-secondaryTextV1">
@@ -332,7 +334,7 @@ export default function StudentEventsPage() {
                   </p>
                 </div>
               </div>
-              
+
               {selectedEvent.requirements && (
                 <div>
                   <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Requirements</h4>
@@ -341,7 +343,7 @@ export default function StudentEventsPage() {
                   </p>
                 </div>
               )}
-              
+
               {selectedEvent.agenda && (
                 <div>
                   <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Agenda</h4>

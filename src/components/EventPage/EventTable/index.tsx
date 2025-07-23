@@ -8,6 +8,7 @@ import { IEvent } from "@/interface/response/event";
 import { formatDate } from "@/utils/dateFormat";
 import { motion } from "framer-motion";
 import { IconEdit, IconTrash, IconCalendar, IconMapPin, IconUser, IconBuilding } from "@tabler/icons-react";
+import { Activity, AlarmClock, AlarmClockOff } from "lucide-react";
 
 interface EventTableProps {
   events: IEvent[];
@@ -32,9 +33,7 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
       );
     } else if (now >= start && now <= end) {
       return (
-        <Badge variant="green">
-          Ongoing
-        </Badge>
+        <Badge variant="green"><Activity className="h-3 w-3" />Ongoing</Badge>
       );
     } else {
       return (
@@ -50,13 +49,13 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-medium text-mainTextV1">Event Name</TableHead>
-            <TableHead className="font-medium text-mainTextV1">Time</TableHead>
-            <TableHead className="font-medium text-mainTextV1">Location</TableHead>
-            <TableHead className="font-medium text-mainTextV1">Department</TableHead>
-            <TableHead className="font-medium text-mainTextV1">Organizer</TableHead>
-            <TableHead className="font-medium text-mainTextV1">Status</TableHead>
-            <TableHead className="font-medium text-mainTextV1">Action</TableHead>
+            <TableHead className="font-semibold text-mainTextV1">Event Name</TableHead>
+            <TableHead className="font-semibold text-mainTextV1">Time</TableHead>
+            <TableHead className="font-semibold text-mainTextV1">Location</TableHead>
+            <TableHead className="font-semibold text-mainTextV1">Department</TableHead>
+            <TableHead className="font-semibold text-mainTextV1">Organizer</TableHead>
+            <TableHead className="font-semibold text-mainTextV1">Status</TableHead>
+            <TableHead className="font-semibold text-mainTextV1">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -75,20 +74,27 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                   onMouseEnter={() => setHoveredRow(event._id)}
                   onMouseLeave={() => setHoveredRow(null)}
                 >
-                  <TableCell>
+                  <TableCell className="flex items-center gap-2">
+                    <div className="w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 flex items-center justify-center">
+                      <IconCalendar className="w-6 h-6 text-orange-400" />
+                    </div>
                     <div>
-                      <p className="font-medium text-primary">{event.title}</p>
-                      <p className="text-sm text-secondaryTextV1 line-clamp-2">{event.description}</p>
+                      <p className="text-mainTextV1 font-semibold">{event.title}</p>
+                      <p className="text-sm text-secondaryTextV1 line-clamp-2">Desc: {event.description}</p>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-start gap-2">
-                      <div className="text-sm">
-                        <p className="text-mainTextV1 font-medium">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-1"> 
+                        <AlarmClock className="w-4 h-4 text-mainTextV1" />
+                        <p className="text-mainTextV1 text-nowrap text-sm">
                           {formatDate(event.startDate)}
                         </p>
-                        <p className="text-secondaryTextV1">
-                          to {formatDate(event.endDate)}
+                      </div>
+                      <div className="flex items-center gap-1"> 
+                        <AlarmClockOff className="w-4 h-4 text-mainTextV1" />
+                        <p className="text-secondaryTextV1 text-nowrap text-sm">
+                          {formatDate(event.endDate)}
                         </p>
                       </div>
                     </div>
@@ -101,14 +107,14 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <div>
-                        <p className="text-mainTextV1 font-medium text-sm">
+                        <p className="text-mainTextV1 font-semibold text-sm">
                           {event.department?.name || "Not updated"}
                         </p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 font-semibold">
                       <span className="text-secondaryTextV1 text-sm">{event.organizer}</span>
                     </div>
                   </TableCell>

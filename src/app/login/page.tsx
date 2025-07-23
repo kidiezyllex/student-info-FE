@@ -155,7 +155,7 @@ export default function LoginPage() {
                   name="name"
                   render={({ field }) => (
                     <FormItem className="space-y-2">
-                      <FormLabel className="text-sm font-medium text-gray-700">Name</FormLabel>
+                      <FormLabel className="text-sm font-semibold text-gray-700">Name</FormLabel>
                       <FormControl>
                         <div className="relative group">
                           <UserRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
@@ -176,7 +176,7 @@ export default function LoginPage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel className="text-sm font-medium text-gray-700">Email</FormLabel>
+                    <FormLabel className="text-sm font-semibold text-gray-700">Email</FormLabel>
                     <FormControl>
                       <div className="relative group">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
@@ -197,7 +197,7 @@ export default function LoginPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel className="text-sm font-medium text-gray-700">Password</FormLabel>
+                    <FormLabel className="text-sm font-semibold text-gray-700">Password</FormLabel>
                     <FormControl>
                       <div className="relative group">
                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
@@ -224,7 +224,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium  shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm"
+                className="w-full h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold  shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm"
                 disabled={isLogin ? isLoginPending : isRegisterPending}
               >
                 {isLogin ? (
@@ -259,7 +259,7 @@ export default function LoginPage() {
           {/* Additional links */}
           <div className="text-center space-y-4">
             {isLogin ? (
-              <button className="text-sm text-orange-600 hover:text-orange-700 font-medium transition-colors">
+              <button className="text-sm text-orange-600 hover:text-orange-700 font-semibold transition-colors">
                 Forgot password?
               </button>
             ) : null}
@@ -279,7 +279,7 @@ export default function LoginPage() {
                 Don&apos;t have an account?{" "}
                 <button
                 onClick={toggleForm}
-                className="text-orange-600 hover:text-orange-700 font-medium transition-colors">
+                className="text-orange-600 hover:text-orange-700 font-semibold transition-colors">
                   Register now
                 </button>
               </p>
@@ -288,7 +288,7 @@ export default function LoginPage() {
                 Already have an account?{" "}
                 <button
                   onClick={toggleForm}
-                  className="text-orange-600 hover:text-orange-700 font-medium transition-colors"
+                  className="text-orange-600 hover:text-orange-700 font-semibold transition-colors"
                 >
                   Login here
                 </button>

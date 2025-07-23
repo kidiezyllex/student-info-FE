@@ -152,7 +152,7 @@ export default function MessagePage() {
             {/* New Message Section */}
             {showNewMessageModal && (
               <div className="p-4 border-b bg-orange-50">
-                <h3 className="font-medium text-sm mb-2">Start new conversation</h3>
+                <h3 className="font-semibold text-sm mb-2">Start new conversation</h3>
                 <div className="space-y-2">
                   {availableUsers.length === 0 ? (
                     <p className="text-sm text-secondaryTextV1">No available users found</p>
@@ -161,13 +161,13 @@ export default function MessagePage() {
                       <div
                         key={user._id}
                         onClick={() => handleStartNewConversation(user._id)}
-                        className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100"
+                        className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-100"
                       >
                         <div className="w-8 h-8 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center">
                           <IconUser className="w-4 h-4 text-orange-600" />
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium text-sm text-mainTextV1">{user.name}</p>
+                          <p className="font-semibold text-sm text-mainTextV1">{user.name}</p>
                           <p className="text-xs text-secondaryTextV1">{user.email}</p>
                         </div>
                       </div>
@@ -194,13 +194,13 @@ export default function MessagePage() {
                         : "hover:bg-gray-50"
                     }`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center">
                         <IconUser className="w-5 h-5 text-orange-600" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <h4 className="font-medium text-sm text-mainTextV1 truncate">
+                          <h4 className="font-semibold text-sm text-mainTextV1 truncate">
                             {conversation.name}
                           </h4>
                           {conversation.unreadCount > 0 && (
@@ -280,7 +280,7 @@ export default function MessagePage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: index * 0.1 }}
-                            className={`flex gap-3 ${
+                            className={`flex gap-2 ${
                               message.senderId === profile?.data?._id ? 'justify-end' : 'justify-start'
                             }`}
                           >

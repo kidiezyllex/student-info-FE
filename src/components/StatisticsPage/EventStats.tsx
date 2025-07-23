@@ -116,7 +116,7 @@ export default function EventStats() {
           <div key={item.name} className="flex items-center justify-between bg-white p-3 rounded-md border border-lightBorderV1">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-              <span className="text-sm font-medium text-secondaryTextV1">{item.name}</span>
+              <span className="text-sm font-semibold text-secondaryTextV1">{item.name}</span>
             </div>
             <span className="font-semibold" style={{ color: item.color }}>{item.value}</span>
           </div>

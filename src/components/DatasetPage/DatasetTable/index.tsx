@@ -41,12 +41,12 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Key</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Value</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Category</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Department</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Created At</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Key</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Value</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Category</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Created At</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -64,12 +64,12 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
                 onMouseEnter={() => setHoveredRow(item._id)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
-                <TableCell className="flex items-center gap-3">
+                <TableCell className="flex items-center gap-2">
                   <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
                     <IconKey className="w-6 h-6 text-slate-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-mainTextV1">{item.key}</p>
+                    <p className="font-semibold text-mainTextV1">{item.key}</p>
                     <p className="text-sm text-secondaryTextV1">ID: {item._id}</p>
                   </div>
                 </TableCell>
@@ -87,7 +87,7 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
                   <div className="flex items-center">
                     {item.department ? (
                       <div className="space-y-1">
-                        <p className="text-sm font-medium text-mainTextV1">{item.department.name}</p>
+                        <p className="text-sm font-semibold text-mainTextV1">{item.department.name}</p>
                         <p className="text-xs text-secondaryTextV1">ID: {item.department._id}</p>
                       </div>
                     ) : (

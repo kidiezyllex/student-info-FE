@@ -188,7 +188,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <Label htmlFor="title" className="text-sm font-medium text-mainTextV1">
+              <Label htmlFor="title" className="text-sm font-semibold text-mainTextV1">
                 Event name <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -202,8 +202,8 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
               {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
             </div>
 
-            <div className="md:col-span-2">
-              <Label htmlFor="description" className="text-sm font-medium text-mainTextV1">
+            <div className="space-y-1">
+              <Label htmlFor="description" className="text-sm font-semibold text-mainTextV1">
                 Event description <span className="text-red-500">*</span>
               </Label>
               <Textarea
@@ -218,7 +218,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div>
-              <Label htmlFor="startDate" className="text-sm font-medium text-mainTextV1">
+              <Label htmlFor="startDate" className="text-sm font-semibold text-mainTextV1">
                 Start time <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -233,7 +233,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div>
-              <Label htmlFor="endDate" className="text-sm font-medium text-mainTextV1">
+              <Label htmlFor="endDate" className="text-sm font-semibold text-mainTextV1">
                 End time <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -248,7 +248,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div>
-              <Label htmlFor="location" className="text-sm font-medium text-mainTextV1">
+              <Label htmlFor="location" className="text-sm font-semibold text-mainTextV1">
                 Location <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -262,8 +262,8 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
               {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
             </div>
 
-            <div>
-              <Label htmlFor="department" className="text-sm font-medium text-mainTextV1">
+            <div className="space-y-1">
+              <Label htmlFor="department" className="text-sm font-semibold text-mainTextV1">
                 Department <span className="text-red-500">*</span>
               </Label>
               <Select
@@ -286,7 +286,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div className="md:col-span-2">
-              <Label htmlFor="organizer" className="text-sm font-medium text-mainTextV1">
+              <Label htmlFor="organizer" className="text-sm font-semibold text-mainTextV1">
                 Organizer <span className="text-red-500">*</span>
               </Label>
               <Input

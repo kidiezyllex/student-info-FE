@@ -68,13 +68,13 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Title</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Type</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Department</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Period</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Status</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Priority</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Title</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Type</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Period</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Status</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Priority</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -92,12 +92,12 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                 onMouseEnter={() => setHoveredRow(notification._id)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
-                <TableCell className="flex items-center gap-3">
+                <TableCell className="flex items-center gap-2">
                   <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
                     <IconBell className="w-6 h-6 text-slate-400" />
                   </div>
                   <div className="max-w-xs">
-                    <p className="font-medium text-mainTextV1">{notification.title}</p>
+                    <p className="font-semibold text-mainTextV1">{notification.title}</p>
                     <p className="text-sm text-secondaryTextV1 line-clamp-2">{notification.content}</p>
                   </div>
                 </TableCell>
@@ -110,7 +110,7 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                   <div className="flex items-center">
                     {notification.department ? (
                       <div className="space-y-1">
-                        <p className="text-sm font-medium text-mainTextV1">{notification.department.name}</p>
+                        <p className="text-sm font-semibold text-mainTextV1">{notification.department.name}</p>
                         <p className="text-xs text-secondaryTextV1">ID: {notification.department._id}</p>
                       </div>
                     ) : (

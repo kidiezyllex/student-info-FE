@@ -78,7 +78,7 @@ export default function DashboardLayout({
 												>
 													<div
 														className={cn(
-															"flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-colors",
+															"flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-colors",
 															isMenuActive(menu)
 																? "bg-[#29323A] text-white"
 																: "text-white/70 hover:bg-[#29323A]",
@@ -112,7 +112,7 @@ export default function DashboardLayout({
 											>
 												<div
 													className={cn(
-														"flex items-center  rounded-lg p-[10px] h-[46px] text-[13px] font-medium transition-colors cursor-pointer",
+														"flex items-center  rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-colors cursor-pointer",
 														isMenuActive(menu)
 															? "bg-[#29323A] text-white"
 															: "text-white/70 hover:bg-[#29323A]",
@@ -209,7 +209,7 @@ export default function DashboardLayout({
 													className="fixed ml-16 mt-[-30px] bg-[#29323A] border border-lightBorderV1 text-white text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
 												>
 													<span className="w-1.5 h-1.5 rounded-full bg-mainActiveV1 mr-1.5"></span>
-													<span className="font-medium">{menu.name}</span>
+													<span className="font-semibold">{menu.name}</span>
 												</motion.div>
 											</AnimatePresence>
 										)}

@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { DepartmentTable } from "@/components/DepartmentPage/DepartmentTable";
-import { DepartmentDeleteDialog } from "@/components/DepartmentPage/DepartmentDeleteDialog";
 import { DepartmentCreateDialog } from "@/components/DepartmentPage/DepartmentCreateDialog";
 import { DepartmentDetailsDialog } from "@/components/DepartmentPage/DepartmentDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,6 +21,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { IconSearch, IconPlus } from "@tabler/icons-react";
 import { IDepartment } from "@/interface/response/department";
+import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function DepartmentPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,11 +30,8 @@ export default function DepartmentPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(null);
   const [filteredDepartments, setFilteredDepartments] = useState<IDepartment[]>([]);
-
   const { data: departmentsData, isLoading, refetch } = useGetAllDepartments();
   const { mutateAsync: deleteDepartmentMutation, isPending: isDeleting } = useDeleteDepartment();
-
-  // Filter departments based on search query
   useEffect(() => {
     if (departmentsData?.data) {
       if (searchQuery.trim()) {
@@ -68,7 +65,6 @@ export default function DepartmentPage() {
     if (!selectedDepartmentId) {
       return Promise.resolve();
     }
-
     try {
       const response = await deleteDepartmentMutation(selectedDepartmentId);
       return response;
@@ -141,11 +137,17 @@ export default function DepartmentPage() {
           </Card>
         </div>
       </motion.div>
-      <DepartmentDeleteDialog
+      <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
+        title="Delete Department"
+        description="Are you sure you want to delete this department? This action cannot be undone."
+        confirmText="Delete Department"
+        successMessage="Department deleted successfully!"
+        errorMessage="Failed to delete department."
+        warningMessage="This will permanently remove the department and all associated data."
       />
       
       <DepartmentCreateDialog

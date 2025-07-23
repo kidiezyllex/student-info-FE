@@ -272,7 +272,7 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
                 <div className="h-10 bg-gray-50 rounded-md border flex items-center px-3">
                   {departmentData?.data?.coordinator ? (
                     <div className="flex items-center gap-1">
-                      <p className="text-sm font-medium text-mainTextV1">
+                      <p className="text-sm font-semibold text-mainTextV1">
                         {departmentData.data.coordinator.name}
                       </p>
                       <p className="text-sm text-mainTextV1 font-semibold">

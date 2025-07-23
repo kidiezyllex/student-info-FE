@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatasetTable } from "@/components/DatasetPage/DatasetTable";
-import { DatasetDeleteDialog } from "@/components/DatasetPage/DatasetDeleteDialog";
 import { DatasetCreateDialog } from "@/components/DatasetPage/DatasetCreateDialog";
 import { DatasetDetailsDialog } from "@/components/DatasetPage/DatasetDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -23,6 +22,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { IconSearch, IconPlus, IconFilter } from "@tabler/icons-react";
 import { IDatasetItem } from "@/interface/response/dataset";
+import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function DatasetPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -182,11 +182,17 @@ export default function DatasetPage() {
         </div>
       </motion.div>
       
-      <DatasetDeleteDialog
+      <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
+        title="Delete Dataset Item"
+        description="Are you sure you want to delete this dataset item? This action cannot be undone."
+        confirmText="Delete Item"
+        successMessage="Dataset item deleted successfully!"
+        errorMessage="Failed to delete dataset item."
+        warningMessage="This will permanently remove the dataset item and its associated data."
       />
       
       <DatasetCreateDialog

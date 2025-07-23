@@ -23,6 +23,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Activity } from "lucide-react";
 
 interface UserDetailsDialogProps {
   isOpen: boolean;
@@ -239,7 +240,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
   };
 
   const getStatusBadge = (active: boolean) => {
-    return active ? <Badge variant="green">Active</Badge> : <Badge variant="red">Inactive</Badge>;
+    return active ? <Badge variant="green"><Activity className="h-3 w-3" />Active</Badge> : <Badge variant="red">Inactive</Badge>;
   };
 
   return (
@@ -312,26 +313,26 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
                         <IconMail className="w-5 h-5 text-mainTextV1" />
                         <div>
                           <p className="text-sm text-secondaryTextV1">Email</p>
-                          <p className="font-medium text-mainTextV1 text-sm">{userData.data.email}</p>
+                          <p className="font-semibold text-mainTextV1 text-sm">{userData.data.email}</p>
                         </div>
                       </div>
 
                       {userData.data.phoneNumber && (
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                           <IconPhone className="w-5 h-5 text-mainTextV1" />
                           <div>
                             <p className="text-sm text-secondaryTextV1">Phone Number</p>
-                            <p className="font-medium text-mainTextV1 text-sm">{userData.data.phoneNumber}</p>
+                            <p className="font-semibold text-mainTextV1 text-sm">{userData.data.phoneNumber}</p>
                           </div>
                         </div>
                       )}
 
                       {userData.data.studentId && (
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                           <IconId className="w-5 h-5 text-mainTextV1" />
                           <div>
                             <p className="text-sm text-secondaryTextV1">Student ID</p>
@@ -345,34 +346,34 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
                     <div className="space-y-4">
                       {userData.data.department && (
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                           <IconBuildingBank className="w-5 h-5 text-mainTextV1" />
                           <div>
                             <p className="text-sm text-secondaryTextV1 text-nowrap">Department</p>
                             <div className="flex items-center gap-1">
-                              <p className="font-medium text-mainTextV1 text-sm">{userData.data.department.name}</p>
-                              <Badge variant="slate">
+                            <Badge variant="slate">
                                 {userData.data.department.code}
                               </Badge>
+                              <p className="font-semibold text-mainTextV1 text-sm">{userData.data.department.name}</p>
                             </div>
                           </div>
                         </div>
                       )}
 
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
                         <IconCalendar className="w-5 h-5 text-mainTextV1" />
                         <div>
                           <p className="text-sm text-mainTextV1">Created At</p>
-                          <p className="font-medium text-mainTextV1 text-sm">{formatDate(userData.data.createdAt)}</p>
+                          <p className="font-semibold text-mainTextV1 text-sm">{formatDate(userData.data.createdAt)}</p>
                         </div>
                       </div>
 
                       {userData.data.lastLogin && (
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                           <IconCalendar className="w-5 h-5 text-mainTextV1" />
                           <div>
                             <p className="text-sm text-mainTextV1">Last Login</p>
-                            <p className="font-medium text-mainTextV1 text-sm">{formatDate(userData.data.lastLogin)}</p>
+                            <p className="font-semibold text-mainTextV1 text-sm">{formatDate(userData.data.lastLogin)}</p>
                           </div>
                         </div>
                       )}
@@ -411,7 +412,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                             disabled={isUploadingAvatar}
                           />
                           <Label htmlFor="avatar-upload" className={`cursor-pointer ${isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                            <div className="flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
+                            <div className="flex items-center justify-center gap-2 px-6 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
                               <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors duration-200">
                                 {isUploadingAvatar ? (
                                   <IconLoader2 className="h-5 w-5 text-orange-600 animate-spin" />
@@ -420,7 +421,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                                 )}
                               </div>
                               <div className="text-center">
-                                <div className="text-sm font-medium text-mainTextV1 group-hover:text-mainTextHoverV1">
+                                <div className="text-sm font-semibold text-mainTextV1 group-hover:text-mainTextHoverV1">
                                   {isUploadingAvatar ? "Đang tải ảnh..." : "Tải ảnh đại diện lên"}
                                 </div>
                                 <div className="text-xs text-gray-500 mt-1">

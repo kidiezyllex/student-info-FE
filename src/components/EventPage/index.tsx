@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EventTable } from "@/components/EventPage/EventTable";
-import { EventDeleteDialog } from "@/components/EventPage/EventDeleteDialog";
 import { EventCreateDialog } from "@/components/EventPage/EventCreateDialog";
 import { EventDetailsDialog } from "@/components/EventPage/EventDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -23,6 +22,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { IconSearch, IconPlus, IconCalendar, IconFilter } from "@tabler/icons-react";
 import { IEvent } from "@/interface/response/event";
+import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 type EventFilter = "all" | "upcoming";
 
@@ -131,10 +131,7 @@ export default function EventPage() {
                 />
                 <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
               </div>
-              
-              <div className="flex items-center gap-2">
-                <IconFilter className="w-5 h-5 text-mainTextV1" />
-                <Select value={eventFilter} onValueChange={handleFilterChange}>
+              <Select value={eventFilter} onValueChange={handleFilterChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
                   </SelectTrigger>
@@ -143,7 +140,6 @@ export default function EventPage() {
                     <SelectItem value="upcoming">Upcoming events</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
             </div>
             
             <Button
@@ -182,11 +178,17 @@ export default function EventPage() {
         </div>
       </motion.div>
       
-      <EventDeleteDialog
+      <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
+        title="Delete Event"
+        description="Are you sure you want to delete this event? This action cannot be undone."
+        confirmText="Delete Event"
+        successMessage="Event deleted successfully!"
+        errorMessage="Failed to delete event."
+        warningMessage="This will permanently remove the event and all associated data."
       />
       
       <EventCreateDialog

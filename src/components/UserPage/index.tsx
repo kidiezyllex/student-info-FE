@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { UserTable } from "@/components/UserPage/UserTable";
-import { UserDeleteDialog } from "@/components/UserPage/UserDeleteDialog";
 import { UserCreateDialog } from "@/components/UserPage/UserCreateDialog";
 import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,6 +21,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { IconSearch, IconPlus } from "@tabler/icons-react";
 import { IUser } from "@/interface/response/user";
+import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -146,11 +146,17 @@ export default function UserPage() {
           </Card>
         </div>
       </motion.div>
-      <UserDeleteDialog
+      <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
+        title="Delete User"
+        description="Are you sure you want to delete this user? This action cannot be undone."
+        confirmText="Delete User"
+        successMessage="User deleted successfully!"
+        errorMessage="Failed to delete user."
+        warningMessage="This will permanently remove the user and all associated data."
       />
       
       <UserCreateDialog

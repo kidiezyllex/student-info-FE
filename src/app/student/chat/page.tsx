@@ -257,7 +257,7 @@ export default function StudentChatPage() {
                             onClick={() => handleLoadSession(session._id)}
                             className="flex-1"
                           >
-                            <h4 className="font-medium text-base text-mainTextV1 truncate">
+                            <h4 className="font-semibold text-base text-mainTextV1 truncate">
                               {session.title}
                             </h4>
                             <p className="text-xs text-secondaryTextV1 mt-1">
@@ -315,7 +315,7 @@ export default function StudentChatPage() {
                 <div className="flex-1">
                   <CardTitle className="text-xl font-semibold text-mainTextV1 mb-1">AI Assistant</CardTitle>
                   <div className="flex items-center gap-2">
-                    <p className="text-sm text-secondaryTextV1 font-medium">
+                    <p className="text-sm text-secondaryTextV1 font-semibold">
                       {currentSessionId ? "Continuing conversation" : "Ready to help with your questions"}
                     </p>
                   </div>
@@ -354,7 +354,7 @@ export default function StudentChatPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: index * 0.1 }}
-                        className={`flex gap-3 ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                        className={`flex gap-2 ${message.isUser ? 'justify-end' : 'justify-start'}`}
                       >
                         {!message.isUser && (
                           <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -423,7 +423,7 @@ export default function StudentChatPage() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="flex gap-3"
+                      className="flex gap-2"
                     >
                       <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />

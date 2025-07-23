@@ -23,6 +23,7 @@ import {
   IconMapPin, 
   IconUser, 
   IconBuilding,
+  IconFileDescription,
 } from "@tabler/icons-react";
 import {
   Dialog,
@@ -291,7 +292,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
             <div className="space-y-6">
               <Card className="border border-lightBorderV1">
                 <CardHeader>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between w-full">
                     <CardTitle className="text-lg text-mainTextV1">{event.title}</CardTitle>
                     <Badge variant={eventStatus.color as any}>
                       {eventStatus.label}
@@ -300,45 +301,48 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-4">
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-2">
                       <IconCalendar className="w-5 h-5 text-mainTextV1 mt-0.5" />
                       <div>
                         <p className="text-sm text-secondaryTextV1">Time</p>
-                        <p className="font-medium text-mainTextV1 text-sm">
+                        <p className="font-semibold text-mainTextV1 text-sm">
                           {formatDate(event.startDate)} - {formatDate(event.endDate)}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <IconMapPin className="w-5 h-5 text-mainTextV1" />
                       <div>
                         <p className="text-sm text-secondaryTextV1">Location</p>
-                        <p className="font-medium text-mainTextV1 text-sm">{event.location}</p>
+                        <p className="font-semibold text-mainTextV1 text-sm">{event.location}</p>
                       </div>
                     </div>
 
                     {event.department && (
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
                         <IconBuilding className="w-5 h-5 text-mainTextV1" />
                         <div>
                           <p className="text-sm text-secondaryTextV1">Department</p>
-                          <p className="font-medium text-mainTextV1 text-sm">{event.department.name}</p>
+                          <p className="font-semibold text-mainTextV1 text-sm">{event.department.name}</p>
                         </div>
                       </div>
                     )}
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <IconUser className="w-5 h-5 text-mainTextV1" />
                       <div>
                         <p className="text-sm text-secondaryTextV1">Organizer</p>
-                        <p className="font-medium text-mainTextV1 text-sm">{event.organizer}</p>
+                        <p className="font-semibold text-mainTextV1 text-sm">{event.organizer}</p>
                       </div>
                     </div>
 
-                    <div className="pt-2">
-                      <p className="text-sm text-secondaryTextV1 mb-2">Description</p>
-                      <p className="text-mainTextV1 text-sm leading-relaxed">{event.description}</p>
+                    <div className="flex items-center gap-2">
+                      <IconFileDescription className="w-5 h-5 text-mainTextV1" />
+                      <div>
+                      <p className="text-sm text-secondaryTextV1">Description</p>
+                      <p className="text-mainTextV1 text-sm leading-relaxed font-semibold">{event.description}</p>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -350,7 +354,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="md:col-span-2">
-                      <Label htmlFor="title" className="text-sm font-medium text-mainTextV1">
+                      <Label htmlFor="title" className="text-sm font-semibold text-mainTextV1">
                         Event name <span className="text-red-500">*</span>
                       </Label>
                       <Input
@@ -364,8 +368,8 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                       {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
                     </div>
 
-                    <div className="md:col-span-2">
-                      <Label htmlFor="description" className="text-sm font-medium text-mainTextV1">
+                    <div className="space-y-1">
+                      <Label htmlFor="description" className="text-sm font-semibold text-mainTextV1">
                         Event description <span className="text-red-500">*</span>
                       </Label>
                       <Textarea
@@ -380,7 +384,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                     </div>
 
                     <div>
-                      <Label htmlFor="startDate" className="text-sm font-medium text-mainTextV1">
+                      <Label htmlFor="startDate" className="text-sm font-semibold text-mainTextV1">
                         Start time <span className="text-red-500">*</span>
                       </Label>
                       <Input
@@ -395,7 +399,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                     </div>
 
                     <div>
-                      <Label htmlFor="endDate" className="text-sm font-medium text-mainTextV1">
+                      <Label htmlFor="endDate" className="text-sm font-semibold text-mainTextV1">
                         End time <span className="text-red-500">*</span>
                       </Label>
                       <Input
@@ -410,7 +414,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                     </div>
 
                     <div>
-                      <Label htmlFor="location" className="text-sm font-medium text-mainTextV1">
+                      <Label htmlFor="location" className="text-sm font-semibold text-mainTextV1">
                         Location <span className="text-red-500">*</span>
                       </Label>
                       <Input
@@ -424,8 +428,8 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                       {errors.location && <p className="text-red-500 text-sm mt-1">{errors.location}</p>}
                     </div>
 
-                    <div>
-                      <Label htmlFor="department" className="text-sm font-medium text-mainTextV1">
+                    <div className="space-y-1">
+                      <Label htmlFor="department" className="text-sm font-semibold text-mainTextV1">
                         Department <span className="text-red-500">*</span>
                       </Label>
                       <Select 
@@ -448,7 +452,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                     </div>
 
                     <div className="md:col-span-2">
-                      <Label htmlFor="organizer" className="text-sm font-medium text-mainTextV1">
+                      <Label htmlFor="organizer" className="text-sm font-semibold text-mainTextV1">
                         Organizer <span className="text-red-500">*</span>
                       </Label>
                       <Input

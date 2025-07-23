@@ -21,6 +21,7 @@ import { IconSearch, IconGift, IconCalendar, IconCurrencyDollar, IconFilter, Ico
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IScholarship } from "@/interface/response/scholarship";
 import Image from "next/image";
+import { Activity } from "lucide-react";
 
 type ScholarshipFilter = "all" | "active";
 
@@ -84,7 +85,7 @@ export default function StudentScholarshipsPage() {
       return <Badge variant="orange">Ending Soon</Badge>;
     }
 
-    return <Badge variant="green">Active</Badge>;
+    return <Badge variant="green"><Activity className="h-3 w-3" />Active</Badge>;
   };
 
   const formatCurrency = (amount: number) => {
@@ -159,7 +160,7 @@ export default function StudentScholarshipsPage() {
                     <Skeleton className="h-4 w-1/2" />
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       <Skeleton className="h-4 w-full" />
                       <Skeleton className="h-4 w-2/3" />
                       <Skeleton className="h-8 w-24" />
@@ -203,7 +204,7 @@ export default function StudentScholarshipsPage() {
                         {scholarship.description}
                       </p>
 
-                      <div className="space-y-3 mt-auto">
+                      <div className="space-y-2 mt-auto">
                         <div className="flex items-center gap-2 text-sm">
                           <IconCurrencyDollar className="w-4 h-4 text-green-600" />
                           <span className="font-semibold text-mainTextV1">

@@ -56,12 +56,12 @@ export default function DashboardHeader() {
 						variant="ghost"
 						size="icon"
 						onClick={toggle}
-						className="bg-[#29323A] hover:bg-[#29323A]/80 !text-white/70 h-7 w-7"
+						className="bg-[#29323A] hover:bg-[#29323A]/80 !text-white/70 h-9 w-9"
 					>
 						{isOpen ? (
-							<IconChevronsLeft size={24} className="text-mainActiveV1 !h-5 !w-5" />
+							<IconChevronsLeft size={24} className="text-mainActiveV1 !h-7 !w-7" />
 						) : (
-							<IconChevronsRight size={24} className="text-mainActiveV1 !h-5 !w-5" />
+							<IconChevronsRight size={24} className="text-mainActiveV1 !h-7 !w-7" />
 						)}
 					</Button>
 				</div>
@@ -103,11 +103,11 @@ export default function DashboardHeader() {
 								Hello, {username}
 							</div>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem className="gap-2 text-mainTextV1 font-medium">
+							<DropdownMenuItem className="gap-2 text-mainTextV1 font-semibold">
 								<User className="w-4 h-4" />
 								Account
 							</DropdownMenuItem>
-							<DropdownMenuItem className="gap-2 text-red-500 font-medium" onClick={logoutUser}>
+							<DropdownMenuItem className="gap-2 text-red-500 font-semibold" onClick={logoutUser}>
 								<LogOut className="w-4 h-4" />	
 								Logout
 							</DropdownMenuItem>

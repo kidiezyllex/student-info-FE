@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { IScholarship } from "@/interface/response/scholarship";
 import { motion } from "framer-motion";
 import { IconEdit, IconTrash, IconAward, IconCalendar } from "@tabler/icons-react";
+import { Activity, MonitorCheck } from "lucide-react";
 
 interface ScholarshipTableProps {
   scholarships: IScholarship[];
@@ -23,13 +24,13 @@ const getStatusBadge = (applicationDeadline: string) => {
   if (isActive) {
     return (
       <Badge variant="green">
-        <IconCalendar className="w-3 h-3" />
+        <Activity className="w-3 h-3" />
         Active
       </Badge>
     );
   } else {
     return (
-      <Badge variant="red">
+      <Badge variant="slate">
         <IconCalendar className="w-3 h-3" />
         Expired
       </Badge>
@@ -45,13 +46,13 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Title</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Provider</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Value</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Department</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Deadline</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Status</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Title</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Provider</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Value</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Deadline</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Status</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -69,26 +70,26 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
                 onMouseEnter={() => setHoveredRow(scholarship._id)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
-                <TableCell className="flex items-center gap-3">
-                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
-                    <IconAward className="w-6 h-6 text-slate-400" />
+                <TableCell className="flex items-center gap-2">
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 flex items-center justify-center">
+                    <IconAward className="w-6 h-6 text-orange-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-mainTextV1">{scholarship.title}</p>
-                    <p className="text-sm text-secondaryTextV1 line-clamp-1">{scholarship.description}</p>
+                    <p className="font-semibold text-mainTextV1 line-clamp-1">{scholarship.title}</p>
+                    <p className="text-sm text-secondaryTextV1 line-clamp-2">{scholarship.description}</p>
                   </div>
                 </TableCell>
                 <TableCell>
                   <span className="text-secondaryTextV1">{scholarship.provider}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="font-medium text-mainTextV1">{scholarship.value}</span>
+                  <span className="font-semibold text-mainTextV1">{scholarship.value}</span>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
                     {scholarship.department ? (
                       <div className="space-y-1">
-                        <p className="text-sm font-medium text-mainTextV1">{scholarship.department.name}</p>
+                        <p className="text-sm font-semibold text-mainTextV1">{scholarship.department.name}</p>
                         <p className="text-xs text-secondaryTextV1">ID: {scholarship.department._id}</p>
                       </div>
                     ) : (

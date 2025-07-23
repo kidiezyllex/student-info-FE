@@ -15,13 +15,13 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScholarshipTable } from "@/components/ScholarshipPage/ScholarshipTable";
-import { ScholarshipDeleteDialog } from "@/components/ScholarshipPage/ScholarshipDeleteDialog";
 import { ScholarshipCreateDialog } from "@/components/ScholarshipPage/ScholarshipCreateDialog";
 import { ScholarshipDetailsDialog } from "@/components/ScholarshipPage/ScholarshipDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { IconSearch, IconPlus, IconFilter } from "@tabler/icons-react";
 import { IScholarship } from "@/interface/response/scholarship";
+import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 type ScholarshipFilter = "all" | "active";
 
@@ -129,10 +129,7 @@ export default function ScholarshipPage() {
                 />
                 <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
               </div>
-              
-              <div className="flex items-center gap-2">
-                <IconFilter className="w-5 h-5 text-mainTextV1" />
-                <Select value={scholarshipFilter} onValueChange={handleFilterChange}>
+              <Select value={scholarshipFilter} onValueChange={handleFilterChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
                   </SelectTrigger>
@@ -141,7 +138,6 @@ export default function ScholarshipPage() {
                     <SelectItem value="active">Active scholarships</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
             </div>
             
             <Button
@@ -180,11 +176,17 @@ export default function ScholarshipPage() {
         </div>
       </motion.div>
       
-      <ScholarshipDeleteDialog
+      <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
+        title="Delete Scholarship"
+        description="Are you sure you want to delete this scholarship? This action cannot be undone."
+        confirmText="Delete Scholarship"
+        successMessage="Scholarship deleted successfully!"
+        errorMessage="Failed to delete scholarship."
+        warningMessage="This will permanently remove the scholarship and all associated data."
       />
       
       <ScholarshipCreateDialog

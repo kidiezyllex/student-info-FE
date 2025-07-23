@@ -15,13 +15,13 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NotificationTable } from "@/components/NotificationPage/NotificationTable";
-import { NotificationDeleteDialog } from "@/components/NotificationPage/NotificationDeleteDialog";
 import { NotificationCreateDialog } from "@/components/NotificationPage/NotificationCreateDialog";
 import { NotificationDetailsDialog } from "@/components/NotificationPage/NotificationDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { IconSearch, IconPlus, IconFilter } from "@tabler/icons-react";
 import { INotification } from "@/interface/response/notification";
+import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 const notificationTypes = [
   "announcement",
@@ -210,11 +210,17 @@ export default function NotificationPage() {
         </div>
       </motion.div>
       
-      <NotificationDeleteDialog
+      <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={confirmDelete}
+        title="Delete Notification"
+        description="Are you sure you want to delete this notification? This action cannot be undone."
+        confirmText="Delete Notification"
+        successMessage="Notification deleted successfully!"
+        errorMessage="Failed to delete notification."
+        warningMessage="This will permanently remove the notification and all associated data."
       />
       
       <NotificationCreateDialog

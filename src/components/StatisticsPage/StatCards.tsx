@@ -42,7 +42,7 @@ const StatCard = ({
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex-1">
-            <h3 className="text-gray-600 text-sm font-medium uppercase tracking-wider mb-1">
+            <h3 className="text-gray-600 text-sm font-semibold uppercase tracking-wider mb-1">
               {title}
             </h3>
           </div>
@@ -72,7 +72,7 @@ const StatCard = ({
               className="h-1 w-12 rounded-full"
               style={{ backgroundColor: color }}
             />
-            <span className="text-xs text-gray-500 font-medium">
+            <span className="text-xs text-gray-500 font-semibold">
             Current total
             </span>
           </div>

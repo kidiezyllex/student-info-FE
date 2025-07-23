@@ -126,7 +126,7 @@ const StatCard = ({ icon: Icon, title, count, color }: {
 
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-secondaryTextV1 text-sm font-medium uppercase tracking-wider mb-1">
+                    <p className="text-secondaryTextV1 text-sm font-semibold uppercase tracking-wider mb-1">
                         {title}
                     </p>
                     <p
@@ -266,7 +266,7 @@ export default function StudentDashboard() {
                         {/* Recent Notifications */}
                         <Card className="bg-gradient-to-br from-white to-orange-50/30 border-0 shadow-md">
                             <CardHeader className="pb-3">
-                                <CardTitle className="text-lg text-mainTextV1 flex items-center gap-3">
+                                <CardTitle className="text-lg text-mainTextV1 flex items-center gap-2">
                                     <div className="w-12 h-12 flex-shrink-0 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl flex items-center justify-center">
                                         <IconBell className="w-5 h-5 text-orange-600" />
                                     </div>
@@ -275,7 +275,7 @@ export default function StudentDashboard() {
                             </CardHeader>
                             <CardContent>
                                 {isLoadingNotifications ? (
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         {[...Array(3)].map((_, index) => (
                                             <div key={index} className="space-y-2">
                                                 <Skeleton className="h-4 w-full" />
@@ -284,10 +284,10 @@ export default function StudentDashboard() {
                                         ))}
                                     </div>
                                 ) : notificationsData?.data?.length ? (
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         {notificationsData.data.slice(0, 3).map((notification: any) => (
                                             <div key={notification._id} className="bg-white/60 backdrop-blur-sm p-3 rounded-lg border border-orange-100/50">
-                                                <p className="text-sm font-medium text-mainTextV1 line-clamp-2 mb-1">
+                                                <p className="text-sm font-semibold text-mainTextV1 line-clamp-2 mb-1">
                                                     {notification.title}
                                                 </p>
                                                 <p className="text-xs text-secondaryTextV1">
@@ -312,7 +312,7 @@ export default function StudentDashboard() {
                         {/* Upcoming Events */}
                         <Card className="bg-gradient-to-br from-white to-orange-50/30 border-0 shadow-md">
                             <CardHeader className="pb-3">
-                                <CardTitle className="text-lg text-mainTextV1 flex items-center gap-3">
+                                <CardTitle className="text-lg text-mainTextV1 flex items-center gap-2">
                                     <div className="w-12 h-12 flex-shrink-0 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
                                         <IconCalendar className="w-5 h-5 text-orange-600" />
                                     </div>
@@ -321,7 +321,7 @@ export default function StudentDashboard() {
                             </CardHeader>
                             <CardContent>
                                 {isLoadingEvents ? (
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         {[...Array(3)].map((_, index) => (
                                             <div key={index} className="space-y-2">
                                                 <Skeleton className="h-4 w-full" />
@@ -330,10 +330,10 @@ export default function StudentDashboard() {
                                         ))}
                                     </div>
                                 ) : eventsData?.data?.length ? (
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         {eventsData.data.slice(0, 3).map((event: any) => (
                                             <div key={event._id} className="bg-white/60 backdrop-blur-sm p-3 rounded-lg border border-blue-100/50">
-                                                <p className="text-sm font-medium text-mainTextV1 line-clamp-2 mb-1">
+                                                <p className="text-sm font-semibold text-mainTextV1 line-clamp-2 mb-1">
                                                     {event.title}
                                                 </p>
                                                 <p className="text-xs text-secondaryTextV1">
@@ -358,7 +358,7 @@ export default function StudentDashboard() {
                         {/* Active Scholarships */}
                         <Card className="bg-gradient-to-br from-white to-green-50/30 border-0 shadow-md">
                             <CardHeader className="pb-3">
-                                <CardTitle className="text-lg text-mainTextV1 flex items-center gap-3">
+                                <CardTitle className="text-lg text-mainTextV1 flex items-center gap-2">
                                     <div className="w-12 h-12 flex-shrink-0 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center">
                                         <IconGift className="w-5 h-5 text-green-600" />
                                     </div>
@@ -367,7 +367,7 @@ export default function StudentDashboard() {
                             </CardHeader>
                             <CardContent>
                                 {isLoadingScholarships ? (
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         {[...Array(3)].map((_, index) => (
                                             <div key={index} className="space-y-2">
                                                 <Skeleton className="h-4 w-full" />
@@ -376,10 +376,10 @@ export default function StudentDashboard() {
                                         ))}
                                     </div>
                                 ) : scholarshipsData?.data?.length ? (
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         {scholarshipsData.data.slice(0, 3).map((scholarship: any) => (
                                             <div key={scholarship._id} className="bg-white/60 backdrop-blur-sm p-3 rounded-lg border border-green-100/50">
-                                                <p className="text-sm font-medium text-mainTextV1 line-clamp-2 mb-1">
+                                                <p className="text-sm font-semibold text-mainTextV1 line-clamp-2 mb-1">
                                                     {scholarship.title}
                                                 </p>
                                                 <p className="text-xs text-secondaryTextV1">

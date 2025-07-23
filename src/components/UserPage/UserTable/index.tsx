@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { IUser } from "@/interface/response/user";
 import { motion } from "framer-motion";
 import { IconEdit, IconTrash, IconMail, IconUserCircle, IconShield, IconUser, IconId, IconBuildingBank } from "@tabler/icons-react";
-
+import { Activity } from "lucide-react";
 interface UserTableProps {
   users: IUser[];
   isSearching: boolean;
@@ -32,7 +32,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
   };
 
   const getStatusBadge = (active: boolean) => {
-    return active ? <Badge variant="green">Active</Badge> : <Badge variant="red">Inactive</Badge>;
+    return active ? <Badge variant="green"><Activity className="h-3 w-3" />Active</Badge> : <Badge variant="red">Inactive</Badge>;
   };
 
   return (
@@ -40,13 +40,13 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">User Information</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Email</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Student ID</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Department</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Role</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Status</TableHead>
-            <TableHead className="font-medium text-mainTextV1 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">User Information</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Email</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Student ID</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Role</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Status</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -64,7 +64,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                 onMouseEnter={() => setHoveredRow(user._id)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
-                <TableCell className="flex items-center gap-3">
+                <TableCell className="flex items-center gap-2">
                   <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center overflow-hidden">
                     {user.avatar ? (
                       <img
@@ -79,7 +79,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                     />}
                   </div>
                   <div>
-                    <p className="font-medium text-mainTextV1">{user.fullName || user.name}</p>
+                    <p className="font-semibold text-mainTextV1">{user.fullName || user.name}</p>
                     <p className="text-sm text-secondaryTextV1">{user.name}</p>
                     {user.phoneNumber && (
                       <p className="text-xs text-secondaryTextV1">{user.phoneNumber}</p>
@@ -104,13 +104,8 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                   <div className="flex items-center">
                     {user.department ? (
                       <div className="flex flex-col gap-1">
-                        <span className="text-sm font-medium text-mainTextV1 text-nowrap">{user.department.name}</span>
-                        <div className="flex items-center gap-1">
-                          <span className="text-sm font-medium text-mainTextV1 text-nowrap">Shorten: </span>
-                          <Badge variant="slate">
-                            {user.department.code}
-                          </Badge>
-                        </div>
+                        <span className="text-sm font-semibold text-mainTextV1 text-nowrap">{user.department.name}</span>
+                        <span className="text-sm font-semibold text-mainTextV1 text-nowrap">Code: {user.department.code}</span>
                       </div>
                     ) : ""}
                   </div>
