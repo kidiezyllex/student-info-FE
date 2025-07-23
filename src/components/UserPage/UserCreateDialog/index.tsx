@@ -74,14 +74,14 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
     if (!file) return;
 
     const isValidType = file.type.startsWith('image/');
-    const isValidSize = file.size <= 10 * 1024 * 1024;
+    const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
 
     if (!isValidType) {
       toast.error(`File ${file.name} is not a valid image`);
       return;
     }
     if (!isValidSize) {
-      toast.error(`File ${file.name} is too large (max 10MB)`);
+      toast.error(`File ${file.name} is too large (maximum 10MB)`);
       return;
     }
 
@@ -89,24 +89,17 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
     uploadFileMutation({ file }, {
       onSuccess: (response: IUploadResponse) => {
-        if (response?.statusCode === 200 || response?.statusCode === 201) {
+        if (response?.status) {
           const imageUrl = response?.data?.url;
-
-          if (imageUrl) {
-            setFormData(prev => ({ ...prev, avatar: imageUrl }));
-            toast.success(`Upload image "${file.name}" successfully!`);
-          } else {
-            toast.error(`Error: Cannot get image URL from server for file "${file.name}"`);
-          }
+          setFormData(prev => ({ ...prev, avatar: imageUrl }));
+          toast.success(response?.message);
         } else {
-          toast.error(`Error uploading image "${file.name}": ${response?.message || 'Unknown error'}`);
+          toast.error(response?.message);
         }
         setIsUploadingAvatar(false);
       },
       onError: (error: any) => {
-        console.error('Upload error for file:', file.name, error);
-        const errorMessage = error?.response?.data?.message || error?.message || 'Cannot upload image';
-        toast.error(`Error uploading image "${file.name}": ${errorMessage}`);
+        toast.error(error?.response?.data?.message);
         setIsUploadingAvatar(false);
       }
     });
@@ -137,7 +130,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
       newErrors.password = "Password must be at least 6 characters";
     }
 
-    if (formData.phoneNumber && !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phoneNumber)) {
+    if (formData.phoneNumber && !/^(0|\+84)[2|3|4|5|7|8|9][0-9]{8}$/.test(formData.phoneNumber)) {
       newErrors.phoneNumber = "Phone number is not valid";
     }
 
@@ -245,7 +238,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                 {formData.avatar && (
                   <div className="flex justify-center">
                     <div className="relative group">
-                      <div className="w-20 h-20 border border-lightBorderV1 rounded-full overflow-hidden">
+                      <div className="w-40 h-40 rounded-md border border-lightBorderV1 overflow-hidden">
                         <img
                           src={formData.avatar}
                           alt="Avatar"

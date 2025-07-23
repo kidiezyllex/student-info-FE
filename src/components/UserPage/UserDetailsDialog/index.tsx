@@ -48,7 +48,6 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const { data: userData, isLoading: isLoadingUser } = useGetUserById(userId);
-  console.log(userData)
   const { mutate: updateUserMutation, isPending: isUpdating } = useUpdateUser();
   const { mutate: uploadFileMutation } = useUploadFile();
   const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments();
@@ -150,7 +149,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
       newErrors.password = "Password must be at least 6 characters";
     }
 
-    if (formData.phoneNumber && !/^(0|\+84)[3|5|7|8|9][0-9]{8}$/.test(formData.phoneNumber)) {
+    if (formData.phoneNumber && !/^(0|\+84)[2|3|4|5|7|8|9][0-9]{8}$/.test(formData.phoneNumber)) {
       newErrors.phoneNumber = "Phone number is not valid";
     }
 
