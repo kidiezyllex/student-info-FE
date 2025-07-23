@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -268,7 +267,7 @@ export default function StudentDashboard() {
                         <Card className="bg-gradient-to-br from-white to-orange-50/30 border-0 shadow-md">
                             <CardHeader className="pb-3">
                                 <CardTitle className="text-lg text-mainTextV1 flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl flex items-center justify-center">
+                                    <div className="w-12 h-12 flex-shrink-0 bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl flex items-center justify-center">
                                         <IconBell className="w-5 h-5 text-orange-600" />
                                     </div>
                                     Recent Notifications
@@ -311,11 +310,11 @@ export default function StudentDashboard() {
                         </Card>
 
                         {/* Upcoming Events */}
-                        <Card className="bg-gradient-to-br from-white to-blue-50/30 border-0 shadow-md">
+                        <Card className="bg-gradient-to-br from-white to-orange-50/30 border-0 shadow-md">
                             <CardHeader className="pb-3">
                                 <CardTitle className="text-lg text-mainTextV1 flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
-                                        <IconCalendar className="w-5 h-5 text-blue-600" />
+                                    <div className="w-12 h-12 flex-shrink-0 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center">
+                                        <IconCalendar className="w-5 h-5 text-orange-600" />
                                     </div>
                                     Upcoming Events
                                 </CardTitle>
@@ -360,7 +359,7 @@ export default function StudentDashboard() {
                         <Card className="bg-gradient-to-br from-white to-green-50/30 border-0 shadow-md">
                             <CardHeader className="pb-3">
                                 <CardTitle className="text-lg text-mainTextV1 flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center">
+                                    <div className="w-12 h-12 flex-shrink-0 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center">
                                         <IconGift className="w-5 h-5 text-green-600" />
                                     </div>
                                     Active Scholarships

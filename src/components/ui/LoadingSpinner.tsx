@@ -8,7 +8,7 @@ interface LoadingSpinnerProps {
 export default function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: 'w-6 h-6',
-    md: 'w-10 h-10',
+    md: 'w-12 h-12',
     lg: 'w-16 h-16'
   };
 
@@ -19,8 +19,8 @@ export default function LoadingSpinner({ size = 'md', className = '' }: LoadingS
         <div 
           className={`${sizeClasses[size]} border-4 border-gray-200 rounded-full animate-spin`}
           style={{
-            borderTopColor: '#1B61FF',
-            borderRightColor: '#1B61FF',
+            borderTopColor: '#F56C14',
+            borderRightColor: '#F56C14',
             borderBottomColor: 'transparent',
             borderLeftColor: 'transparent',
             animationDuration: '1s'
@@ -31,7 +31,7 @@ export default function LoadingSpinner({ size = 'md', className = '' }: LoadingS
         <div 
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full animate-pulse"
           style={{
-            backgroundColor: '#1B61FF',
+            backgroundColor: '#F56C14',
             animationDuration: '1.5s'
           }}
         />

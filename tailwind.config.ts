@@ -38,7 +38,8 @@ const config: Config = {
 			},
 			colors: {
 				primary: {
-					DEFAULT: "#1B61FF",
+					// DEFAULT: "#F56C14",
+					DEFAULT: "#F56C14",
 					foreground: "hsl(var(--primary-foreground))",
 				},
 				secondary: {
@@ -49,7 +50,7 @@ const config: Config = {
 				mainBackgroundV1: "#F9F9FC",
 				mainTextV1: "#5D7186",
 				secondaryTextV1: "#687D92",
-				mainTextHoverV1: "#1B61FF",
+				mainTextHoverV1: "#F56C14",
 				mainDarkBackgroundV1: "#1C252E",
 				mainSuccessV1: "#5CC184",
 				mainSuccessHoverV1: "#53AE77",
@@ -57,7 +58,7 @@ const config: Config = {
 				mainWarningHoverV1: "#D88446",
 				mainDangerV1: "#E66666",
 				mainDangerHoverV1: '#D25D5D',
-				mainInfoV1: "#1B61FF",
+				mainInfoV1: "#F56C14",
 				mainInfoHoverV1: "#3EB1B9",
 				mainCardV1: "#FFFFFF",
 				lightBorderV1: "#E5E5E5",

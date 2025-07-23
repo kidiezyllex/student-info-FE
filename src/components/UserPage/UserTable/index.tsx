@@ -21,49 +21,25 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
   const getRoleBadge = (role: string) => {
     switch (role.toLowerCase()) {
       case 'admin':
-        return (
-          <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100 text-nowrap flex items-center gap-1">
-            Admin
-          </Badge>
-        );
+        return <Badge variant="cyan">Admin</Badge>;
       case 'student':
-        return (
-          <Badge className="bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100 text-nowrap flex items-center gap-1">
-            Student
-          </Badge>
-        );
+        return <Badge variant="indigo">Student</Badge>;
       case 'coordinator':
-        return (
-          <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100 text-nowrap flex items-center gap-1">
-            Coordinator
-          </Badge>
-        );
+        return <Badge variant="blue">Coordinator</Badge>;
       default:
-        return (
-          <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100 text-nowrap flex items-center gap-1">
-            {role}
-          </Badge>
-        );
+        return <Badge variant="outline">{role}</Badge>;
     }
   };
 
   const getStatusBadge = (active: boolean) => {
-    return active ? (
-      <Badge className="bg-green-500 hover:bg-green-600 text-white text-nowrap">
-        Active
-      </Badge>
-    ) : (
-      <Badge variant="destructive" className="text-nowrap">
-        Inactive
-      </Badge>
-    );
+    return active ? <Badge variant="green">Active</Badge> : <Badge variant="red">Inactive</Badge>;
   };
 
   return (
     <div className="w-full overflow-auto">
       <Table>
         <TableHeader>
-          <TableRow className="bg-[#1B61FF20] hover:bg-gray-50">
+          <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
             <TableHead className="font-medium text-mainTextV1 text-nowrap">User Information</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Email</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Student ID</TableHead>
@@ -89,16 +65,18 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                 onMouseLeave={() => setHoveredRow(null)}
               >
                 <TableCell className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center overflow-hidden">
                     {user.avatar ? (
-                      <img 
-                        src={user.avatar} 
+                      <img
+                        src={user.avatar}
                         alt={user.fullName || user.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover flex-shrink-0"
                       />
-                    ) : (
-                      <IconUserCircle className="w-6 h-6 text-slate-400" />
-                    )}
+                    ) : <img
+                      src={`/images/${user.gender ? user.gender : "male"}-${user.role}.webp`}
+                      alt={"default-avatar"}
+                      className="w-full h-full object-cover flex-shrink-0"
+                    />}
                   </div>
                   <div>
                     <p className="font-medium text-mainTextV1">{user.fullName || user.name}</p>
@@ -116,26 +94,25 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                 <TableCell>
                   <div className="flex items-center">
                     {user.studentId ? (
-                      <Badge className="bg-blue-100 text-blue-800 border border-blue-200 text-nowrap">
+                      <Badge variant="slate">
                         {user.studentId}
                       </Badge>
-                    ) : (
-                      <span className="text-secondaryTextV1 text-sm">No student ID</span>
-                    )}
+                    ) : ""}
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
                     {user.department ? (
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-mainTextV1">{user.department.name}</span>
-                        <Badge className="bg-purple-100 text-purple-800 border border-purple-200 text-nowrap w-fit">
-                          {user.department.code}
-                        </Badge>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-sm font-medium text-mainTextV1 text-nowrap">{user.department.name}</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-sm font-medium text-mainTextV1 text-nowrap">Shorten: </span>
+                          <Badge variant="slate">
+                            {user.department.code}
+                          </Badge>
+                        </div>
                       </div>
-                    ) : (
-                      <span className="text-secondaryTextV1 text-sm">No department</span>
-                    )}
+                    ) : ""}
                   </div>
                 </TableCell>
                 <TableCell>

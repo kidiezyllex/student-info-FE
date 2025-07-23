@@ -75,28 +75,16 @@ export default function StudentScholarshipsPage() {
     const deadline = new Date(scholarship.applicationDeadline);
 
     if (deadline < now) {
-      return (
-        <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100">
-          Expired
-        </Badge>
-      );
+      return <Badge variant="red">Expired</Badge>;
     }
 
     const daysLeft = Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 3600 * 24));
 
     if (daysLeft <= 7) {
-      return (
-        <Badge className="bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-100/50">
-          Ending Soon
-        </Badge>
-      );
+      return <Badge variant="orange">Ending Soon</Badge>;
     }
 
-    return (
-      <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100/50">
-        Active
-      </Badge>
-    );
+    return <Badge variant="green">Active</Badge>;
   };
 
   const formatCurrency = (amount: number) => {
@@ -224,7 +212,7 @@ export default function StudentScholarshipsPage() {
                         </div>
 
                         <div className="flex items-center gap-2 text-sm">
-                          <IconCalendar className="w-4 h-4 text-blue-600" />
+                          <IconCalendar className="w-4 h-4 text-orange-600" />
                           <span className="text-secondaryTextV1">
                             Deadline: {formatDate(scholarship.applicationDeadline)}
                           </span>

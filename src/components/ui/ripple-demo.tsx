@@ -32,12 +32,12 @@ export const RippleDemo: React.FC = () => {
           <RippleEffect
             rippleColor="rgba(59, 130, 246, 0.3)"
             duration={600}
-            className="p-6 bg-blue-100 rounded-lg cursor-pointer hover:bg-blue-200 transition-colors"
+            className="p-6 bg-orange-100 rounded-lg cursor-pointer hover:bg-orange-200 transition-colors"
           >
             <div className="text-center">
               <div className="text-2xl mb-2">🔵</div>
-              <h4 className="font-semibold text-blue-800">Blue Ripple</h4>
-              <p className="text-blue-600 text-sm">Click me!</p>
+              <h4 className="font-semibold text-orange-800">Blue Ripple</h4>
+              <p className="text-orange-600 text-sm">Click me!</p>
             </div>
           </RippleEffect>
 

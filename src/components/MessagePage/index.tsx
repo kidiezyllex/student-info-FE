@@ -153,7 +153,7 @@ export default function MessagePage() {
           <ScrollArea className="h-full">
             {/* New Message Section */}
             {showNewMessageModal && (
-              <div className="p-4 border-b bg-blue-50">
+              <div className="p-4 border-b bg-orange-50">
                 <h3 className="font-medium text-sm mb-2">Start new conversation</h3>
                 <div className="space-y-2">
                   {availableUsers.length === 0 ? (
@@ -165,8 +165,8 @@ export default function MessagePage() {
                         onClick={() => handleStartNewConversation(user._id)}
                         className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-100"
                       >
-                        <div className="w-8 h-8 overflow-hidden bg-blue-100 rounded-full flex items-center justify-center">
-                          <IconUser className="w-4 h-4 text-blue-600" />
+                        <div className="w-8 h-8 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center">
+                          <IconUser className="w-4 h-4 text-orange-600" />
                         </div>
                         <div className="flex-1">
                           <p className="font-medium text-sm text-mainTextV1">{user.name}</p>
@@ -192,13 +192,13 @@ export default function MessagePage() {
                     onClick={() => handleSelectConversation(conversation.userId)}
                     className={`p-3 rounded-lg cursor-pointer transition-colors ${
                       selectedConversation === conversation.userId
-                        ? "bg-blue-50 border-blue-200 border"
+                        ? "bg-orange-50 border-blue-200 border"
                         : "hover:bg-gray-50"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 overflow-hidden bg-blue-100 rounded-full flex items-center justify-center">
-                        <IconUser className="w-5 h-5 text-blue-600" />
+                      <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center">
+                        <IconUser className="w-5 h-5 text-orange-600" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
@@ -246,11 +246,11 @@ export default function MessagePage() {
         {selectedConversation ? (
           <div className="flex flex-col h-full max-h-[calc(100vh-180px)]">
             {/* Chat Header */}
-            <Card className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-b-none border-b-0">
+            <Card className="bg-gradient-to-r from-orange-50 to-purple-50 rounded-b-none border-b-0">
               <CardHeader className="p-3 w-full flex justify-between items-center">
                 <div className="flex items-center gap-4">
                   <div className="relative">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-md">
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-purple-500 rounded-full flex items-center justify-center shadow-md">
                       <IconUser className="w-7 h-7 text-white" />
                     </div>
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
@@ -287,8 +287,8 @@ export default function MessagePage() {
                             }`}
                           >
                             {message.senderId !== profile?.data?._id && (
-                              <div className="w-10 h-10 overflow-hidden bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                <IconUser className="w-5 h-5 text-blue-600" />
+                              <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <IconUser className="w-5 h-5 text-orange-600" />
                               </div>
                             )}
 
@@ -309,15 +309,15 @@ export default function MessagePage() {
                                 </p>
                                 {message.senderId === profile?.data?._id && (
                                   <div className="flex items-center gap-1">
-                                    <IconCheck className={`w-3 h-3 ${message.read ? 'text-blue-500' : 'text-gray-400'}`} />
-                                    {message.read && <IconCheck className="w-3 h-3 text-blue-500 -ml-1" />}
+                                    <IconCheck className={`w-3 h-3 ${message.read ? 'text-orange-500' : 'text-gray-400'}`} />
+                                    {message.read && <IconCheck className="w-3 h-3 text-orange-500 -ml-1" />}
                                   </div>
                                 )}
                               </div>
                             </div>
 
                             {message.senderId === profile?.data?._id && (
-                              <div className="w-10 h-10 overflow-hidden bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <Image src="/images/admin.webp" alt="Admin Avatar" width={50} height={50} className="w-full h-full object-cover" />
                               </div>
                             )}
@@ -332,7 +332,7 @@ export default function MessagePage() {
             </Card>
 
             {/* Message Input */}
-            <Card className="rounded-t-none border-t-0 bg-blue-50">
+            <Card className="rounded-t-none border-t-0 bg-orange-50">
               <CardContent className="p-4">
                 <div className="flex gap-2">
                   <Input

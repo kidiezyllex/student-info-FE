@@ -114,6 +114,7 @@ export interface IUser {
   email: string;
   studentId: string;
   role: string;
+  gender: string;
   department: IDepartmentInfo;
   phoneNumber: string;
   avatar: string;

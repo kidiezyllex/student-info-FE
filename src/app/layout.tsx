@@ -37,7 +37,7 @@ export default function RootLayout({
 				<ReactQueryClientProvider>
 					<UserProvider>
 						<NextTopLoader
-							color="#1B61FF"
+							color="#F56C14"
 							initialPosition={0.08}
 							crawlSpeed={200}
 							height={3}

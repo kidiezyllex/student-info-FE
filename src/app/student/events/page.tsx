@@ -78,32 +78,16 @@ export default function StudentEventsPage() {
     if (now < startDate) {
       const daysLeft = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 3600 * 24));
       if (daysLeft <= 7) {
-        return (
-          <Badge className="bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-100">
-            Starting Soon
-          </Badge>
-        );
+        return <Badge variant="orange">Starting Soon</Badge>;
       }
-      return (
-        <Badge className="bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100">
-          Upcoming
-        </Badge>
-      );
+      return <Badge variant="blue">Upcoming</Badge>;
     }
     
     if (now >= startDate && now <= endDate) {
-      return (
-        <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100">
-          Ongoing
-        </Badge>
-      );
+      return <Badge variant="green">Ongoing</Badge>;
     }
     
-    return (
-      <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100">
-        Ended
-      </Badge>
-    );
+    return <Badge variant="red">Ended</Badge>;
   };
 
   const formatDate = (dateString: string) => {
@@ -228,7 +212,7 @@ export default function StudentEventsPage() {
                       
                       <div className="space-y-3 mt-auto">
                         <div className="flex items-center gap-2 text-sm">
-                          <IconCalendar className="w-4 h-4 text-blue-600" />
+                          <IconCalendar className="w-4 h-4 text-orange-600" />
                           <span className="text-secondaryTextV1">
                             {formatDate(event.startDate)}
                           </span>
@@ -306,7 +290,7 @@ export default function StudentEventsPage() {
               <div className="flex items-center gap-4">
                 {getStatusBadge(selectedEvent)}
                 {selectedEvent.department && (
-                  <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100">
+                  <Badge variant="indigo">
                     {selectedEvent.department.name}
                   </Badge>
                 )}

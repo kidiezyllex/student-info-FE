@@ -204,7 +204,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
               <div className="flex items-center justify-between">
                 <Label className="text-secondaryTextV1">Avatar</Label>
                 {isUploadingAvatar && (
-                  <div className="flex items-center gap-2 text-sm text-blue-600">
+                  <div className="flex items-center gap-2 text-sm text-orange-600">
                     <IconLoader2 className="h-4 w-4 animate-spin" />
                     <span>Uploading avatar...</span>
                   </div>
@@ -221,12 +221,12 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                     disabled={isUploadingAvatar}
                   />
                   <Label htmlFor="avatar-upload" className={`cursor-pointer ${isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                    <div className="flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-blue-50/50 transition-all duration-200 group">
-                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 group-hover:bg-blue-200 transition-colors duration-200">
+                    <div className="flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
+                      <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors duration-200">
                         {isUploadingAvatar ? (
-                          <IconLoader2 className="h-5 w-5 text-blue-600 animate-spin" />
+                          <IconLoader2 className="h-5 w-5 text-orange-600 animate-spin" />
                         ) : (
-                          <IconUpload className="h-5 w-5 text-blue-600" />
+                          <IconUpload className="h-5 w-5 text-orange-600" />
                         )}
                       </div>
                       <div className="text-center">
@@ -266,7 +266,6 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
               </div>
             </div>
 
-            {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-mainTextV1">

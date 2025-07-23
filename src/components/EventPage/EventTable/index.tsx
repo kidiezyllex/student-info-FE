@@ -26,19 +26,19 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
 
     if (now < start) {
       return (
-        <Badge className="bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100 text-nowrap flex items-center gap-1">
+        <Badge variant="orange">
           Upcoming
         </Badge>
       );
     } else if (now >= start && now <= end) {
       return (
-        <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100 text-nowrap flex items-center gap-1">
+        <Badge variant="green">
           Ongoing
         </Badge>
       );
     } else {
       return (
-        <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100 text-nowrap flex items-center gap-1">
+        <Badge variant="gray">
           Ended
         </Badge>
       );
@@ -49,7 +49,7 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
     <div className="w-full overflow-auto">
       <Table>
         <TableHeader>
-          <TableRow className="bg-[#1B61FF20] hover:bg-gray-50">
+          <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
             <TableHead className="font-medium text-mainTextV1">Event Name</TableHead>
             <TableHead className="font-medium text-mainTextV1">Time</TableHead>
             <TableHead className="font-medium text-mainTextV1">Location</TableHead>

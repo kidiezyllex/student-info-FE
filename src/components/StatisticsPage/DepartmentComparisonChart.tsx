@@ -47,7 +47,7 @@ const mockDepartmentData = {
 const chartConfig = {
   engineering: {
     label: "Khoa Kỹ thuật",
-    color: "#1B61FF",
+    color: "#F56C14",
   },
   business: {
     label: "Khoa Kinh tế",
@@ -126,7 +126,7 @@ export default function DepartmentComparisonChart() {
               <Legend />
               <Bar 
                 dataKey="engineering" 
-                fill={chartConfig.engineering?.color || "#1B61FF"}
+                fill={chartConfig.engineering?.color || "#F56C14"}
                 radius={[4, 4, 0, 0]} 
                 barSize={15}
                 name={chartConfig.engineering?.label || "Khoa Kỹ thuật"}

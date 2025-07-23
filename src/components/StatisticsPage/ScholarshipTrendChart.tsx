@@ -48,7 +48,7 @@ const mockScholarshipTrendData = {
 const chartConfig = {
   applications: {
     label: "Scholarship Application",
-    color: "#1B61FF",
+    color: "#F56C14",
   }
 } satisfies ChartConfig;
 
@@ -121,10 +121,10 @@ export default function ScholarshipTrendChart() {
               <Line 
                 type="monotone"
                 dataKey="applications" 
-                stroke={chartConfig.applications?.color || "#1B61FF"}
+                stroke={chartConfig.applications?.color || "#F56C14"}
                 strokeWidth={3}
-                dot={{ fill: chartConfig.applications?.color || "#1B61FF", strokeWidth: 2, r: 4 }}
-                activeDot={{ r: 6, stroke: chartConfig.applications?.color || "#1B61FF", strokeWidth: 2 }}
+                dot={{ fill: chartConfig.applications?.color || "#F56C14", strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, stroke: chartConfig.applications?.color || "#F56C14", strokeWidth: 2 }}
               />
             </LineChart>
           </ResponsiveContainer>

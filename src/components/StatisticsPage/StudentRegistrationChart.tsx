@@ -47,7 +47,7 @@ const mockRegistrationData = {
 const chartConfig = {
   students: {
     label: "Sinh viên",
-    color: "#1B61FF",
+    color: "#F56C14",
   }
 } satisfies ChartConfig;
 
@@ -120,7 +120,7 @@ export default function StudentRegistrationChart() {
               />
               <Bar 
                 dataKey="students" 
-                fill={chartConfig.students?.color || "#1B61FF"}
+                fill={chartConfig.students?.color || "#F56C14"}
                 radius={[4, 4, 0, 0]} 
                 barSize={30}
               />

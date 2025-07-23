@@ -22,7 +22,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
     <div className="w-full overflow-auto">
       <Table>
         <TableHeader>
-          <TableRow className="bg-[#1B61FF20] hover:bg-gray-50">
+          <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Department Name</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Department Code</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Description</TableHead>
@@ -46,7 +46,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                 onMouseLeave={() => setHoveredRow(null)}
               >
                 <TableCell className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
                     <IconBuilding className="w-6 h-6 text-slate-400" />
                   </div>
                   <div>
@@ -56,7 +56,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
-                    <Badge className="bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100 text-nowrap flex items-center gap-1">
+                    <Badge variant="orange">
                       {department.code}
                     </Badge>
                   </div>

@@ -48,6 +48,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const { data: userData, isLoading: isLoadingUser } = useGetUserById(userId);
+  console.log(userData)
   const { mutate: updateUserMutation, isPending: isUpdating } = useUpdateUser();
   const { mutate: uploadFileMutation } = useUploadFile();
   const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments();
@@ -73,7 +74,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -96,7 +97,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
     const isValidType = file.type.startsWith('image/');
     const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
-    
+
     if (!isValidType) {
       toast.error(`File ${file.name} is not a valid image`);
       return;
@@ -112,7 +113,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
       onSuccess: (response: IUploadResponse) => {
         if (response?.statusCode === 200 || response?.statusCode === 201) {
           const imageUrl = response?.data?.url;
-          
+
           if (imageUrl) {
             setFormData(prev => ({ ...prev, avatar: imageUrl }));
             toast.success(`Upload image "${file.name}" successfully!`);
@@ -166,7 +167,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -183,7 +184,6 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
       active: formData.active,
     };
 
-    // Only include password if it's provided
     if (formData.password?.trim()) {
       updateData.password = formData.password;
     }
@@ -216,7 +216,6 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
   const handleCancelEdit = () => {
     setIsEditing(false);
     setErrors({});
-    // Reset form data to original values
     if (userData?.data) {
       const user = userData.data;
       setFormData({
@@ -237,42 +236,18 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
   const getRoleBadge = (role: string) => {
     switch (role.toLowerCase()) {
       case 'admin':
-        return (
-          <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100 text-nowrap">
-            Admin
-          </Badge>
-        );
+        return <Badge variant="cyan">Admin</Badge>;
       case 'student':
-        return (
-          <Badge className="bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100 text-nowrap">
-            Student
-          </Badge>
-        );
+        return <Badge variant="indigo">Student</Badge>;
       case 'coordinator':
-        return (
-          <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100 text-nowrap">
-            Coordinator
-          </Badge>
-        );
+        return <Badge variant="blue">Coordinator</Badge>;
       default:
-        return (
-          <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100 text-nowrap">
-            {role}
-          </Badge>
-        );
+        return <Badge variant="outline">{role}</Badge>;
     }
   };
 
   const getStatusBadge = (active: boolean) => {
-    return active ? (
-      <Badge className="bg-green-500 hover:bg-green-600 text-white text-nowrap">
-        Active
-      </Badge>
-    ) : (
-      <Badge variant="destructive" className="text-nowrap">
-        Inactive
-      </Badge>
-    );
+    return active ? <Badge variant="green">Active</Badge> : <Badge variant="red">Inactive</Badge>;
   };
 
   return (
@@ -295,7 +270,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                 <Skeleton className="h-4 w-28" />
               </div>
             </div>
-            
+
             {/* Form skeletons */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[...Array(6)].map((_, index) => (
@@ -311,27 +286,31 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
             {!isEditing && userData?.data && (
               <Card className="border border-lightBorderV1">
                 <CardHeader>
-                Basic Information
+                  Basic Information
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* User Header */}
                   <div className="flex items-center gap-4">
-                    <div className="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
+                    <div className="w-20 h-20 border border-slate-300 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
                       {userData.data.avatar ? (
-                        <img 
-                          src={userData.data.avatar} 
+                        <img
+                          src={userData.data.avatar}
                           alt={userData.data.fullName || userData.data.name}
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <IconUserCircle className="w-12 h-12 text-slate-400" />
+                        <img
+                          src={`/images/${userData.data.gender ? userData.data.gender : "male"}-${userData.data.role}.webp`}
+                          alt={"default-avatar"}
+                          className="w-full h-full object-cover flex-shrink-0"
+                        />
                       )}
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold text-mainTextV1">
-                        {userData.data.fullName || userData.data.name}
+                        Fullname: {userData.data.fullName || userData.data.name}
                       </h3>
-                      <p className="text-secondaryTextV1">{userData.data.name}</p>
+                      <p className="text-secondaryTextV1">Username: {userData.data.name}</p>
                       <div className="flex items-center gap-2 mt-2">
                         {getRoleBadge(userData.data.role)}
                         {getStatusBadge(userData.data.active)}
@@ -339,7 +318,6 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                     </div>
                   </div>
 
-                  {/* User Details Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
                     <div className="space-y-4">
                       <div className="flex items-center gap-3">
@@ -363,9 +341,9 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                       {userData.data.studentId && (
                         <div className="flex items-center gap-3">
                           <IconId className="w-5 h-5 text-mainTextV1" />
-                          <div className="flex items-center gap-2">
+                          <div>
                             <p className="text-sm text-secondaryTextV1">Student ID</p>
-                            <Badge className="bg-blue-100 text-blue-800 border border-blue-200 text-sm">
+                            <Badge variant="slate">
                               {userData.data.studentId}
                             </Badge>
                           </div>
@@ -377,11 +355,14 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                       {userData.data.department && (
                         <div className="flex items-center gap-3">
                           <IconBuildingBank className="w-5 h-5 text-mainTextV1" />
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm text-secondaryTextV1">Department: {userData.data.department.name}</p>
-                            <Badge className="bg-purple-100 text-purple-800 border border-purple-200">
-                              {userData.data.department.code}
-                            </Badge>
+                          <div>
+                            <p className="text-sm text-secondaryTextV1 text-nowrap">Department</p>
+                            <div className="flex items-center gap-1">
+                              <p className="font-medium text-mainTextV1 text-sm">{userData.data.department.name}</p>
+                              <Badge variant="slate">
+                                {userData.data.department.code}
+                              </Badge>
+                            </div>
                           </div>
                         </div>
                       )}
@@ -412,7 +393,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
             {isEditing && (
               <Card className="border border-lightBorderV1">
                 <CardHeader>
-                Edit information
+                  Edit information
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -421,7 +402,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                       <div className="flex items-center justify-between">
                         <Label className="text-secondaryTextV1">Avatar</Label>
                         {isUploadingAvatar && (
-                          <div className="flex items-center gap-2 text-sm text-blue-600">
+                          <div className="flex items-center gap-2 text-sm text-orange-600">
                             <IconLoader2 className="h-4 w-4 animate-spin" />
                             <span>Uploading avatar...</span>
                           </div>
@@ -438,12 +419,12 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                             disabled={isUploadingAvatar}
                           />
                           <Label htmlFor="avatar-upload" className={`cursor-pointer ${isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                            <div className="flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-blue-50/50 transition-all duration-200 group">
-                              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 group-hover:bg-blue-200 transition-colors duration-200">
+                            <div className="flex items-center justify-center gap-3 px-6 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
+                              <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors duration-200">
                                 {isUploadingAvatar ? (
-                                  <IconLoader2 className="h-5 w-5 text-blue-600 animate-spin" />
+                                  <IconLoader2 className="h-5 w-5 text-orange-600 animate-spin" />
                                 ) : (
-                                  <IconUpload className="h-5 w-5 text-blue-600" />
+                                  <IconUpload className="h-5 w-5 text-orange-600" />
                                 )}
                               </div>
                               <div className="text-center">
@@ -563,8 +544,8 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                           id="studentId"
                           name="studentId"
                           value={formData.studentId}
-                            onChange={handleChange}
-                            placeholder="Enter student ID"
+                          onChange={handleChange}
+                          placeholder="Enter student ID"
                           className="border-lightBorderV1 focus:border-mainTextHoverV1"
                         />
                       </div>
@@ -606,8 +587,8 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                         <Label htmlFor="department" className="text-mainTextV1">
                           Department
                         </Label>
-                        <Select 
-                          value={formData.department || undefined} 
+                        <Select
+                          value={formData.department || undefined}
                           onValueChange={(value) => handleSelectChange('department', value || "")}
                           disabled={isLoadingDepartments}
                         >

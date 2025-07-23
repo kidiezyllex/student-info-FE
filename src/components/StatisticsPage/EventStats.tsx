@@ -33,8 +33,8 @@ export default function EventStats() {
     {
       name: "Upcoming",
       value: mockEventData.upcomingEvents,
-      color: "#1B61FF",
-      fill: "#1B61FF"
+      color: "#F56C14",
+      fill: "#F56C14"
     }
   ];
 
@@ -45,7 +45,7 @@ export default function EventStats() {
     },
     "Upcoming": {
       label: "Upcoming",
-      color: "#1B61FF",
+      color: "#F56C14",
     }
   };
 
@@ -131,7 +131,7 @@ export default function EventStats() {
           </div>
           <div>
             <span className="text-secondaryTextV1">Upcoming percentage: </span>
-            <span className="font-semibold text-blue-600">{mockEventData.upcomingPercentage}%</span>
+            <span className="font-semibold text-orange-600">{mockEventData.upcomingPercentage}%</span>
           </div>
         </div>
       </div>

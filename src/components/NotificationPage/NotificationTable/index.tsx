@@ -16,23 +16,22 @@ interface NotificationTableProps {
 }
 
 const getTypeBadge = (type: string) => {
-  const typeColors: Record<string, string> = {
-    'announcement': 'bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100',
-    'academic': 'bg-green-500 hover:bg-green-600 text-white border-2 border-green-100',
-    'scholarship': 'bg-purple-500 hover:bg-purple-600 text-white border-2 border-purple-100',
-    'event': 'bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-100',
-    'system': 'bg-red-500 hover:bg-red-600 text-white border-2 border-red-100',
-    'urgent': 'bg-red-600 hover:bg-red-700 text-white border-2 border-red-100',
-    'default': 'bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100'
-  };
-
-  const colorClass = typeColors[type.toLowerCase()] || typeColors.default;
-
-  return (
-    <Badge className={`text-nowrap flex items-center gap-1 ${colorClass}`}>
-      {type.charAt(0).toUpperCase() + type.slice(1)}
-    </Badge>
-  );
+  switch (type.toLowerCase()) {
+    case 'announcement':
+      return <Badge variant="orange">Announcement</Badge>;
+    case 'academic':
+      return <Badge variant="green">Academic</Badge>;
+    case 'scholarship':
+      return <Badge variant="purple">Scholarship</Badge>;
+    case 'event':
+      return <Badge variant="orange">Event</Badge>;
+    case 'system':
+      return <Badge variant="red">System</Badge>;
+    case 'urgent':
+      return <Badge variant="red">Urgent</Badge>;
+    default:
+      return <Badge variant="outline">{type.charAt(0).toUpperCase() + type.slice(1)}</Badge>;
+  }
 };
 
 const getStatusBadge = (startDate: string, endDate: string) => {
@@ -42,19 +41,19 @@ const getStatusBadge = (startDate: string, endDate: string) => {
   
   if (currentDate < start) {
     return (
-      <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white border-2 border-yellow-100 text-nowrap flex items-center gap-1">
+      <Badge variant="yellow" className="flex items-center gap-1">
         Scheduled
       </Badge>
     );
   } else if (currentDate >= start && currentDate <= end) {
     return (
-      <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100 text-nowrap flex items-center gap-1">
+      <Badge variant="green" className="flex items-center gap-1">
         Active
       </Badge>
     );
   } else {
     return (
-      <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100 text-nowrap flex items-center gap-1">
+      <Badge variant="red" className="flex items-center gap-1">
         Expired
       </Badge>
     );
@@ -68,7 +67,7 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
     <div className="w-full overflow-auto">
       <Table>
         <TableHeader>
-          <TableRow className="bg-[#1B61FF20] hover:bg-gray-50">
+          <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Title</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Type</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Department</TableHead>
@@ -94,7 +93,7 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                 onMouseLeave={() => setHoveredRow(null)}
               >
                 <TableCell className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
                     <IconBell className="w-6 h-6 text-slate-400" />
                   </div>
                   <div className="max-w-xs">
@@ -133,12 +132,12 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                 <TableCell>
                   <div className="flex items-center">
                     {notification.isImportant ? (
-                      <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100 text-nowrap flex items-center gap-1">
+                      <Badge variant="red">
                         <IconStar className="w-3 h-3" />
                         Important
                       </Badge>
                     ) : (
-                      <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100 text-nowrap flex items-center gap-1">
+                      <Badge variant="gray">
                         Normal
                       </Badge>
                     )}

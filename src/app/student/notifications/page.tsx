@@ -72,25 +72,25 @@ export default function StudentNotificationsPage() {
     switch (type.toLowerCase()) {
       case 'announcement':
         return (
-          <Badge className="bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100">
+          <Badge variant="orange">
             Announcement
           </Badge>
         );
       case 'reminder':
         return (
-          <Badge className="bg-purple-500 hover:bg-purple-600 text-white border-2 border-purple-100">
+          <Badge variant="purple">
             Reminder
           </Badge>
         );
       case 'alert':
         return (
-          <Badge className="bg-yellow-500 hover:bg-yellow-600 text-white border-2 border-yellow-100">
+          <Badge variant="yellow">
             Alert
           </Badge>
         );
       default:
         return (
-          <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100">
+          <Badge variant="gray">
             {type}
           </Badge>
         );
@@ -216,7 +216,7 @@ export default function StudentNotificationsPage() {
                           <div className="flex items-center gap-2 mb-2">
                             {getTypeBadge(notification.type)}
                             {notification.isImportant && (
-                              <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100">
+                              <Badge variant="red">
                                 Important
                               </Badge>
                             )}
@@ -287,12 +287,12 @@ export default function StudentNotificationsPage() {
               <div className="flex items-center gap-4">
                 {getTypeBadge(selectedNotification.type)}
                 {selectedNotification.isImportant && (
-                  <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100">
+                  <Badge variant="red">
                     Important
                   </Badge>
                 )}
                 {selectedNotification.department && (
-                  <Badge className="bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100">
+                  <Badge variant="gray">
                     {selectedNotification.department.name}
                   </Badge>
                 )}

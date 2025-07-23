@@ -249,7 +249,7 @@ export default function StudentChatPage() {
                           key={session._id}
                           className={`p-3 rounded-lg border cursor-pointer transition-colors ${
                             currentSessionId === session._id
-                              ? "bg-blue-50 border-blue-200"
+                              ? "bg-orange-50 border-blue-200"
                               : "bg-white hover:bg-gray-50 border-gray-200"
                           }`}
                         >
@@ -303,11 +303,11 @@ export default function StudentChatPage() {
 
         <div className="flex flex-col h-full max-h-[calc(100vh-180px)]">
           {/* Chat Header */}
-          <Card className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-b-none border-b-0">
+          <Card className="bg-gradient-to-r from-purple-50 to-orange-50 rounded-b-none border-b-0">
             <CardHeader className="p-3 w-full flex justify-between items-center">
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center shadow-md">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-orange-500 rounded-full flex items-center justify-center shadow-md">
                     <IconRobot className="w-7 h-7 text-white" />
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
@@ -357,7 +357,7 @@ export default function StudentChatPage() {
                         className={`flex gap-3 ${message.isUser ? 'justify-end' : 'justify-start'}`}
                       >
                         {!message.isUser && (
-                          <div className="w-10 h-10 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
                           </div>
                         )}
@@ -410,7 +410,7 @@ export default function StudentChatPage() {
                         </div>
 
                         {message.isUser && (
-                          <div className="w-10 h-10 overflow-hidden bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <Image src="/images/student.webp" alt="Student Avatar" width={50} height={50} className="w-full h-full object-cover" />
                           </div>
                         )}
@@ -425,7 +425,7 @@ export default function StudentChatPage() {
                       animate={{ opacity: 1, y: 0 }}
                       className="flex gap-3"
                     >
-                      <div className="w-10 h-10 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
                       </div>
                       <div className="bg-gray-100 p-3 rounded-lg">
@@ -444,7 +444,7 @@ export default function StudentChatPage() {
           </Card>
 
           {/* Message Input */}
-          <Card className="rounded-t-none border-t-0 bg-blue-50">
+          <Card className="rounded-t-none border-t-0 bg-orange-50">
             <CardContent className="p-4">
               <div className="flex gap-2">
                 <Input

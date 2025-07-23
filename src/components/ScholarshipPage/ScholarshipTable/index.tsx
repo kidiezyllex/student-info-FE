@@ -22,14 +22,14 @@ const getStatusBadge = (applicationDeadline: string) => {
 
   if (isActive) {
     return (
-      <Badge className="bg-green-500 hover:bg-green-600 text-white border-2 border-green-100 text-nowrap flex items-center gap-1">
+      <Badge variant="green">
         <IconCalendar className="w-3 h-3" />
         Active
       </Badge>
     );
   } else {
     return (
-      <Badge className="bg-red-500 hover:bg-red-600 text-white border-2 border-red-100 text-nowrap flex items-center gap-1">
+      <Badge variant="red">
         <IconCalendar className="w-3 h-3" />
         Expired
       </Badge>
@@ -44,7 +44,7 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
     <div className="w-full overflow-auto">
       <Table>
         <TableHeader>
-          <TableRow className="bg-[#1B61FF20] hover:bg-gray-50">
+          <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Title</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Provider</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Value</TableHead>
@@ -70,7 +70,7 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
                 onMouseLeave={() => setHoveredRow(null)}
               >
                 <TableCell className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
                     <IconAward className="w-6 h-6 text-slate-400" />
                   </div>
                   <div>

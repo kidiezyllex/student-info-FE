@@ -46,11 +46,11 @@ export default function DashboardHeader() {
 				<div className="flex items-center w-[244px] justify-between">
 					<Link href="/">
 						<Image 
-						height={300}
-						width={300}
+						height={500}
+						width={500}
 						draggable={false}
 						quality={100}
-						src="/images/logo.svg" alt="logo" className="w-auto h-8" />
+						src="/images/vgu-logo2.avif" alt="vgu-logo" className="w-auto h-24 object-contain" />
 					</Link>
 					<Button
 						variant="ghost"

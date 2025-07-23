@@ -94,7 +94,7 @@ export default function StatCards() {
       title: "Students",
       value: mockData.studentsCount,
       icon: Users,
-      color: "#1B61FF",
+      color: "#F56C14",
     },
     {
       title: "Departments",

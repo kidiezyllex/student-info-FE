@@ -16,17 +16,17 @@ interface DatasetTableProps {
 }
 
 const getCategoryBadge = (category: string) => {
-  const categoryColors: Record<string, string> = {
-    'event': 'bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-100',
-    'scholarship': 'bg-green-500 hover:bg-green-600 text-white border-2 border-green-100',
-    'notification': 'bg-purple-500 hover:bg-purple-600 text-white border-2 border-purple-100',
-    'default': 'bg-gray-500 hover:bg-gray-600 text-white border-2 border-gray-100'
+  const categoryColors: Record<string, any> = {
+    'event': 'orange',
+    'scholarship': 'green',
+    'notification': 'purple',
+    'default': 'gray'
   };
 
   const colorClass = categoryColors[category.toLowerCase()] || categoryColors.default;
 
   return (
-    <Badge className={`text-nowrap flex items-center gap-1 ${colorClass}`}>
+    <Badge variant={colorClass}>
       <IconTag className="w-3 h-3" />
       {category}
     </Badge>
@@ -40,7 +40,7 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
     <div className="w-full overflow-auto">
       <Table>
         <TableHeader>
-          <TableRow className="bg-[#1B61FF20] hover:bg-gray-50">
+          <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Key</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Value</TableHead>
             <TableHead className="font-medium text-mainTextV1 text-nowrap">Category</TableHead>
@@ -65,7 +65,7 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
                 onMouseLeave={() => setHoveredRow(null)}
               >
                 <TableCell className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
                     <IconKey className="w-6 h-6 text-slate-400" />
                   </div>
                   <div>

@@ -64,7 +64,7 @@ export default function ScholarshipStats() {
     },
     academic: {
       label: "Academic Scholarship",
-      color: "#1B61FF",
+      color: "#F56C14",
     },
     need: {
       label: "Need-based Scholarship",

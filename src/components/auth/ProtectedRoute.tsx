@@ -12,7 +12,6 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isLoading, isAuth, checkAndRedirect, profileData, isPublicRoute } = useAuth();
   const router = useRouter();
-  console.log(profileData)
   useEffect(() => {
     if (isPublicRoute) return; // Do not apply protection to public routes
 

@@ -94,11 +94,11 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
     const end = new Date(endDate);
 
     if (now < start) {
-      return { status: "upcoming", label: "Upcoming", color: "bg-blue-100 text-blue-800 border-blue-200" };
+      return { status: "upcoming", label: "Upcoming", color: "orange" };
     } else if (now >= start && now <= end) {
-      return { status: "ongoing", label: "Ongoing", color: "bg-green-100 text-green-800 border-green-200" };
+      return { status: "ongoing", label: "Ongoing", color: "green" };
     } else {
-      return { status: "ended", label: "Ended", color: "bg-gray-100 text-gray-800 border-gray-200" };
+      return { status: "ended", label: "Ended", color: "gray" };
     }
   };
 
@@ -293,7 +293,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg text-mainTextV1">{event.title}</CardTitle>
-                    <Badge className={eventStatus.color}>
+                    <Badge variant={eventStatus.color as any}>
                       {eventStatus.label}
                     </Badge>
                   </div>
