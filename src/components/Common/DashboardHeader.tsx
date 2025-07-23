@@ -91,11 +91,11 @@ export default function DashboardHeader() {
 				<div className="flex items-center gap-2">
 					<DropdownMenu modal={false}>
 						<DropdownMenuTrigger asChild>
-							<div className="h-11 w-11 border-2 border-primary rounded-full overflow-hidden cursor-pointer bg-mainBackgroundV1">
+							<div className="h-11 w-11 flex-shrink-0 border border-slate-300 rounded-full overflow-hidden cursor-pointer bg-slate-100">
 								<Image 
 								draggable={false}
 								quality={100}
-								src={"/images/admin.webp"} alt={username} className="object-cover h-full w-full" width={100} height={100}/>
+								src={`/images/${userProfile?.data?.gender ? userProfile?.data?.gender : "male"}-${userProfile?.data?.role}.webp`} alt={username} className="object-cover h-full w-full" width={100} height={100}/>
 							</div>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="w-56 mt-4">

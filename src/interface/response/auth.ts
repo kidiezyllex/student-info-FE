@@ -39,6 +39,7 @@ export interface IProfileData {
   name: string;
   email: string;
   role: string;
+  gender: string;
   active: boolean;
   savedNotifications: any[];
   createdAt: string;

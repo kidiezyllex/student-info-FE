@@ -10,5 +10,6 @@ export interface IUploadResult {
 export interface IUploadResponse {
   statusCode: number;
   message: string;
+  status: boolean;
   data: IUploadResult;
 } 
