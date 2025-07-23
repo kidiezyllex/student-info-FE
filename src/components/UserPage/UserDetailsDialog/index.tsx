@@ -456,6 +456,22 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                       </div>
                     </div>
 
+                    <div className="space-y-2">
+                      <Label htmlFor="role" className="text-mainTextV1">
+                        Role
+                      </Label>
+                      <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="student">Student</SelectItem>
+                          <SelectItem value="coordinator">Coordinator</SelectItem>
+                          <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
                     {/* Form Fields */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -528,74 +544,64 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                         )}
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="studentId" className="text-mainTextV1">
-                          Student ID
-                        </Label>
-                        <Input
-                          id="studentId"
-                          name="studentId"
-                          value={formData.studentId}
-                          onChange={handleChange}
-                          placeholder="Enter student ID"
-                          className="border-lightBorderV1 focus:border-mainTextHoverV1"
-                        />
-                      </div>
+                      {formData.role === "student" && (
+                        <div className="space-y-2">
+                          <Label htmlFor="studentId" className="text-mainTextV1">
+                            Student ID
+                          </Label>
+                          <Input
+                            id="studentId"
+                            name="studentId"
+                            value={formData.studentId}
+                            onChange={handleChange}
+                            placeholder="Enter student ID"
+                            className="border-lightBorderV1 focus:border-mainTextHoverV1"
+                          />
+                        </div>
+                      )}
 
-                      <div className="space-y-2">
-                        <Label htmlFor="phoneNumber" className="text-mainTextV1">
-                          Phone Number
-                        </Label>
-                        <Input
-                          id="phoneNumber"
-                          name="phoneNumber"
-                          value={formData.phoneNumber}
-                          onChange={handleChange}
-                          placeholder="Enter phone number"
-                          className={`${errors.phoneNumber ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
-                        />
-                        {errors.phoneNumber && (
-                          <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
-                        )}
-                      </div>
+                      {(formData.role === "student" || formData.role === "coordinator") && (
+                        <div className="space-y-2">
+                          <Label htmlFor="phoneNumber" className="text-mainTextV1">
+                            Phone Number
+                          </Label>
+                          <Input
+                            id="phoneNumber"
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            placeholder="Enter phone number"
+                            className={`${errors.phoneNumber ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+                          />
+                          {errors.phoneNumber && (
+                            <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
+                          )}
+                        </div>
+                      )}
 
-                      <div className="space-y-2">
-                        <Label htmlFor="role" className="text-mainTextV1">
-                          Role
-                        </Label>
-                        <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
-                          <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
-                            <SelectValue placeholder="Select role" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="student">Student</SelectItem>
-                            <SelectItem value="coordinator">Coordinator</SelectItem>
-                            <SelectItem value="admin">Admin</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="department" className="text-mainTextV1">
-                          Department
-                        </Label>
-                        <Select
-                          value={formData.department || undefined}
-                          onValueChange={(value) => handleSelectChange('department', value || "")}
-                          disabled={isLoadingDepartments}
-                        >
-                          <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
-                            <SelectValue placeholder={isLoadingDepartments ? "Đang tải..." : "Chọn khoa"} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {departments.map((department) => (
-                              <SelectItem key={department._id} value={department._id}>
-                                {department.name} ({department.code})
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
+                      {(formData.role === "student" || formData.role === "coordinator") && (
+                        <div className="space-y-2">
+                          <Label htmlFor="department" className="text-mainTextV1">
+                            Department
+                          </Label>
+                          <Select
+                            value={formData.department || undefined}
+                            onValueChange={(value) => handleSelectChange('department', value || "")}
+                            disabled={isLoadingDepartments}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder={isLoadingDepartments ? "Đang tải..." : "Chọn khoa"} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {departments.map((department) => (
+                                <SelectItem key={department._id} value={department._id}>
+                                  {department.name} ({department.code})
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center justify-between space-x-2">

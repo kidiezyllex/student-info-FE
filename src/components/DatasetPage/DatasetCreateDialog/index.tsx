@@ -167,7 +167,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
               Category <span className="text-red-500">*</span>
             </Label>
             <Select value={formData.category} onValueChange={(value) => handleSelectChange("category", value)}>
-              <SelectTrigger className={`${errors.category ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}>
+              <SelectTrigger>
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
@@ -188,7 +188,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
               Department (Optional)
             </Label>
             <Select value={formData.department} onValueChange={(value) => handleSelectChange("department", value)}>
-              <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
+              <SelectTrigger>
                 <SelectValue placeholder="Select department (optional)" />
               </SelectTrigger>
               <SelectContent>

@@ -16,6 +16,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useGetUsersByRole } from "@/hooks/useUser";
 
 interface DepartmentDetailsDialogProps {
   isOpen: boolean;
@@ -36,6 +44,7 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
 
   const { data: departmentData, isLoading: isLoadingDepartment } = useGetDepartmentById(departmentId);
   const { mutate: updateDepartmentMutation, isPending: isUpdating } = useUpdateDepartment();
+  const { data: coordinatorsData, isLoading: isLoadingCoordinators } = useGetUsersByRole('coordinator');
 
   useEffect(() => {
     if (departmentData?.data) {
@@ -58,6 +67,13 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
     }
   };
 
+  const handleCoordinatorChange = (value: string) => {
+    setFormData({ ...formData, coordinatorId: value });
+    if (errors.coordinatorId) {
+      setErrors({ ...errors, coordinatorId: "" });
+    }
+  };
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
@@ -71,6 +87,10 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
 
     if (!formData.description?.trim()) {
       newErrors.description = "Description is required";
+    }
+
+    if (isEditing && !formData.coordinatorId?.trim()) {
+      newErrors.coordinatorId = "Coordinator is required";
     }
 
     setErrors(newErrors);
@@ -129,7 +149,7 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-mainTextV1">
-            {isEditing ? "Edit department" + " " + departmentData?.data?.name : "Department details" + " " + departmentData?.data?.name}
+            {isEditing ? "Edit department: " + " " + departmentData?.data?.name : "Department details: " + " " + departmentData?.data?.name}
           </DialogTitle>
         </DialogHeader>
 
@@ -212,22 +232,53 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
             {/* Coordinator Information */}
             <div className="space-y-2">
               <Label className="text-mainTextV1">
-                Coordinator
+                Coordinator {isEditing && <span className="text-red-500">*</span>}
               </Label>
-              <div className="p-3 bg-gray-50 rounded-md border">
-                {departmentData?.data?.coordinator ? (
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium text-mainTextV1">
-                      {departmentData.data.coordinator.name}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {departmentData.data.coordinator.email}
-                    </p>
-                  </div>
+              {isEditing ? (
+                isLoadingCoordinators ? (
+                  <Skeleton className="h-10 w-full" />
                 ) : (
-                  <p className="text-sm text-gray-500">No coordinator</p>
-                )}
-              </div>
+                  <Select
+                    value={formData.coordinatorId || ""}
+                    onValueChange={handleCoordinatorChange}
+                    disabled={isUpdating || isLoadingCoordinators}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a coordinator" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {coordinatorsData?.data?.length === 0 && (
+                        <SelectItem value="" disabled>
+                          No coordinators found
+                        </SelectItem>
+                      )}
+                      {coordinatorsData?.data?.map((user) => (
+                        <SelectItem key={user._id} value={user._id}>
+                          {user.name} ({user.email})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )
+              ) : (
+                <div className="p-3 bg-gray-50 rounded-md border">
+                  {departmentData?.data?.coordinator ? (
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-mainTextV1">
+                        {departmentData.data.coordinator.name}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {departmentData.data.coordinator.email}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No coordinator</p>
+                  )}
+                </div>
+              )}
+              {errors.coordinatorId && (
+                <p className="text-red-500 text-sm">{errors.coordinatorId}</p>
+              )}
             </div>
 
             <div className="flex gap-2 pt-4 justify-end w-full">

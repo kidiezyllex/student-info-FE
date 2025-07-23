@@ -242,7 +242,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
               Department <span className="text-red-500">*</span>
             </Label>
             <Select value={formData.department} onValueChange={(value) => handleSelectChange("department", value)}>
-              <SelectTrigger className={`${errors.department ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}>
+              <SelectTrigger>
                 <SelectValue placeholder="Select department" />
               </SelectTrigger>
               <SelectContent>

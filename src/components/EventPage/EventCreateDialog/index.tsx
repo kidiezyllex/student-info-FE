@@ -272,7 +272,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
                 onValueChange={(value) => handleSelectChange('department', value)}
                 disabled={isLoadingDepartments}
               >
-                <SelectTrigger className={`mt-1 ${errors.department ? 'border-red-500' : ''}`}>
+                <SelectTrigger>
                   <SelectValue placeholder="Select department" />
                 </SelectTrigger>
                 <SelectContent>

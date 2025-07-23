@@ -30,21 +30,17 @@ const item = {
 export default function StatisticsPage() {
 	return (
 		<div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
-			<Breadcrumb className="mb-6">
+			<Breadcrumb>
 				<BreadcrumbList>
 					<BreadcrumbItem>
-						<BreadcrumbLink href="/">
-							<Home size={16} className="mr-1" />
-							Home
-						</BreadcrumbLink>
+						<BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
-						<BreadcrumbPage>Dashboard</BreadcrumbPage>
+						<BreadcrumbPage>Statistics</BreadcrumbPage>
 					</BreadcrumbItem>
 				</BreadcrumbList>
 			</Breadcrumb>
-
 			<motion.div
 				className="space-y-8"
 				variants={container}

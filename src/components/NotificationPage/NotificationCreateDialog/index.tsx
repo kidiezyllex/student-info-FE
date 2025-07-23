@@ -197,7 +197,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
                 Type <span className="text-red-500">*</span>
               </Label>
               <Select value={formData.type} onValueChange={(value) => handleSelectChange("type", value)}>
-                <SelectTrigger className={`${errors.type ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}>
+                <SelectTrigger>
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -218,7 +218,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
                 Department (Optional)
               </Label>
               <Select value={formData.department} onValueChange={(value) => handleSelectChange("department", value)}>
-                <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
+                <SelectTrigger>
                   <SelectValue placeholder="Select department (optional)" />
                 </SelectTrigger>
                 <SelectContent>

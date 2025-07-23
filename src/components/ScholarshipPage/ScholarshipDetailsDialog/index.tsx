@@ -295,7 +295,7 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
               </Label>
               {isEditing ? (
                 <Select value={formData.department || undefined} onValueChange={(value) => handleSelectChange("department", value || "")}>
-                  <SelectTrigger className={`${errors.department ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}>
+                  <SelectTrigger>
                     <SelectValue placeholder="Select department" />
                   </SelectTrigger>
                   <SelectContent>
