@@ -11,7 +11,7 @@ import { useGetNotificationById, useUpdateNotification } from "@/hooks/useNotifi
 import { useGetAllDepartments } from "@/hooks/useDepartment";
 import { IUpdateNotificationBody } from "@/interface/request/notification";
 import { toast } from "react-toastify";
-import { IconLoader2, IconBell, IconEdit } from "@tabler/icons-react";
+import { IconLoader2, IconBell, IconEdit, IconCheck } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -382,8 +382,8 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
                       </>
                     ) : (
                       <>
-                        <IconEdit className="h-4 w-4" />
-                        Update notification
+                       <IconCheck className="h-4 w-4" />
+                       Save changes
                       </>
                     )}
                   </Button>

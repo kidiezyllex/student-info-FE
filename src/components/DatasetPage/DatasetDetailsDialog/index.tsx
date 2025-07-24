@@ -10,7 +10,7 @@ import { useGetDatasetItemById, useUpdateDatasetItem } from "@/hooks/useDataset"
 import { useGetAllDepartments } from "@/hooks/useDepartment";
 import { IUpdateDatasetItemBody } from "@/interface/request/dataset";
 import { toast } from "react-toastify";
-import { IconLoader2, IconDatabase, IconEdit } from "@tabler/icons-react";
+import { IconLoader2, IconDatabase, IconEdit, IconCheck } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -306,8 +306,8 @@ export const DatasetDetailsDialog = ({ isOpen, onClose, datasetItemId, onSuccess
                       </>
                     ) : (
                       <>
-                        <IconEdit className="h-4 w-4" />
-                        Update dataset item
+                       <IconCheck className="h-4 w-4" />
+                       Save changes
                       </>
                     )}
                   </Button>

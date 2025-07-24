@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { IScholarship } from "@/interface/response/scholarship";
 import { motion } from "framer-motion";
 import { IconEdit, IconTrash, IconAward, IconCalendar } from "@tabler/icons-react";
-import { Activity, MonitorCheck } from "lucide-react";
+import { Activity, AlarmClockOff, MonitorCheck } from "lucide-react";
+import { formatDate } from "@/utils/dateFormat";
 
 interface ScholarshipTableProps {
   scholarships: IScholarship[];
@@ -89,8 +90,7 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
                   <div className="flex items-center">
                     {scholarship.department ? (
                       <div className="space-y-1">
-                        <p className="text-sm font-semibold text-mainTextV1">{scholarship.department.name}</p>
-                        <p className="text-xs text-secondaryTextV1">ID: {scholarship.department._id}</p>
+                        <p className="text-sm font-semibold text-mainTextV1 text-nowrap">{scholarship.department.name}</p>
                       </div>
                     ) : (
                       <span className="text-secondaryTextV1">No department</span>
@@ -98,14 +98,14 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-secondaryTextV1">
-                    {new Date(scholarship.applicationDeadline).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
-                  </span>
+                  <div className="flex items-center gap-1">
+                    <AlarmClockOff className="w-4 h-4 text-mainTextV1" />
+                    <p className="text-secondaryTextV1 text-nowrap text-sm">
+                      {formatDate(scholarship.applicationDeadline)}
+                    </p>
+                  </div>
                 </TableCell>
+
                 <TableCell>
                   <div className="flex items-center">
                     {getStatusBadge(scholarship.applicationDeadline)}

@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
-import { IconSearch, IconCalendar, IconMapPin, IconUser, IconFilter, IconExternalLink, IconClock } from "@tabler/icons-react";
+import { IconSearch, IconCalendar, IconMapPin, IconUser, IconFilter, IconExternalLink, IconClock, IconCircleOff } from "@tabler/icons-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IEvent } from "@/interface/response/event";
 import { Activity } from "lucide-react";
@@ -77,9 +77,19 @@ export default function StudentEventsPage() {
     if (now < startDate) {
       const daysLeft = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 3600 * 24));
       if (daysLeft <= 7) {
-        return <Badge variant="orange">Starting Soon</Badge>;
+        return (
+          <Badge variant="orange">
+            <IconClock className="h-3 w-3" />
+            Starting Soon
+          </Badge>
+        );
       }
-      return <Badge variant="blue">Upcoming</Badge>;
+      return (
+        <Badge variant="blue">
+          <IconCalendar className="h-3 w-3" />
+          Upcoming
+        </Badge>
+      );
     }
 
     if (now >= startDate && now <= endDate) {
@@ -89,7 +99,12 @@ export default function StudentEventsPage() {
       </Badge>;
     }
 
-    return <Badge variant="red">Ended</Badge>;
+    return (
+      <Badge variant="red">
+        <IconCircleOff className="h-3 w-3" />
+        Ended
+      </Badge>
+    );
   };
 
   const formatDate = (dateString: string) => {

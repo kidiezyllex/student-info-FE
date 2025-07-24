@@ -14,7 +14,7 @@ import { useUploadFile } from "@/hooks/useUpload";
 import { IUpdateUserBody } from "@/interface/request/user";
 import { IUploadResponse } from "@/interface/response/upload";
 import { toast } from "react-toastify";
-import { IconLoader2, IconEdit, IconX, IconUpload, IconUserCircle, IconMail, IconPhone, IconId, IconBuildingBank, IconCalendar } from "@tabler/icons-react";
+import { IconLoader2, IconEdit, IconX, IconUpload, IconUserCircle, IconMail, IconPhone, IconId, IconBuildingBank, IconCalendar, IconCheck } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/utils/dateFormat";
 import {
@@ -351,7 +351,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                           <div>
                             <p className="text-sm text-secondaryTextV1 text-nowrap">Department</p>
                             <div className="flex items-center gap-1">
-                            <Badge variant="slate">
+                              <Badge variant="slate">
                                 {userData.data.department.code}
                               </Badge>
                               <p className="font-semibold text-mainTextV1 text-sm">{userData.data.department.name}</p>
@@ -658,9 +658,12 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                         <IconLoader2 className="h-4 w-4 animate-spin" />
                         Updating...
                       </>
-                    ) : (
-                      "Update"
-                    )}
+                    ) :
+                      <>
+                        <IconCheck className="h-4 w-4" />
+                        Save changes
+                      </>
+                    }
                   </Button>
                 </>
               )}

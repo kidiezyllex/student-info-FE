@@ -9,7 +9,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'; 
+} from '@/components/ui/breadcrumb';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -48,18 +48,18 @@ export default function NotificationPage() {
   useEffect(() => {
     if (notificationsData?.data) {
       let filtered = notificationsData.data;
-      
+
       // Apply type filter
       if (typeFilter) {
         filtered = filtered.filter(notification => notification.type === typeFilter);
       }
-      
+
       // Apply importance filter
       if (importanceFilter) {
         const isImportant = importanceFilter === "important";
         filtered = filtered.filter(notification => notification.isImportant === isImportant);
       }
-      
+
       // Apply search filter
       if (searchQuery.trim()) {
         filtered = filtered.filter(notification =>
@@ -69,7 +69,7 @@ export default function NotificationPage() {
           (notification.department && notification.department.name.toLowerCase().includes(searchQuery.toLowerCase()))
         );
       }
-      
+
       setFilteredNotifications(filtered);
     } else {
       setFilteredNotifications([]);
@@ -124,7 +124,7 @@ export default function NotificationPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      
+
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -142,38 +142,31 @@ export default function NotificationPage() {
                 />
                 <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
               </div>
-              
-              <div className="flex items-center gap-2">
-                <IconFilter className="w-5 h-5 text-mainTextV1" />
-                <Select value={typeFilter || "all"} onValueChange={handleTypeFilterChange}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All types</SelectItem>
-                    {notificationTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Select value={importanceFilter || "all"} onValueChange={handleImportanceFilterChange}>
-                  <SelectTrigger className="w-40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All priority</SelectItem>
-                    <SelectItem value="important">Important</SelectItem>
-                    <SelectItem value="normal">Normal</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select value={typeFilter || "all"} onValueChange={handleTypeFilterChange}>
+                <SelectTrigger className="w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All types</SelectItem>
+                  {notificationTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={importanceFilter || "all"} onValueChange={handleImportanceFilterChange}>
+                <SelectTrigger className="w-40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All priority</SelectItem>
+                  <SelectItem value="important">Important</SelectItem>
+                  <SelectItem value="normal">Normal</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            
+
             <Button
               onClick={() => setIsCreateDialogOpen(true)}
               className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
@@ -209,7 +202,7 @@ export default function NotificationPage() {
           </Card>
         </div>
       </motion.div>
-      
+
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
@@ -222,13 +215,13 @@ export default function NotificationPage() {
         errorMessage="Failed to delete notification."
         warningMessage="This will permanently remove the notification and all associated data."
       />
-      
+
       <NotificationCreateDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSuccess={() => refetch()}
       />
-      
+
       {selectedNotificationId && (
         <NotificationDetailsDialog
           isOpen={isDetailsDialogOpen}

@@ -36,7 +36,6 @@ export default function StudentNotificationsPage() {
     if (notificationsData?.data) {
       let filtered = notificationsData.data;
       
-      // Apply search filter
       if (searchQuery.trim()) {
         filtered = filtered.filter(notification =>
           notification.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -44,7 +43,6 @@ export default function StudentNotificationsPage() {
         );
       }
       
-      // Apply status filter
       if (notificationFilter === "important") {
         filtered = filtered.filter(notification => notification.isImportant);
       }

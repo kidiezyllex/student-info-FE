@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useGetDepartmentById, useUpdateDepartment } from "@/hooks/useDepartment";
 import { IUpdateDepartmentBody } from "@/interface/request/department";
 import { toast } from "react-toastify";
-import { IconLoader2, IconBuilding, IconEdit } from "@tabler/icons-react";
+import { IconLoader2, IconBuilding, IconEdit, IconCheck } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -329,8 +329,8 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
                       </>
                     ) : (
                       <>
-                        <IconEdit className="h-4 w-4 mr-2" />
-                        Update
+                        <IconCheck className="h-4 w-4" />
+                        Save changes
                       </>
                     )}
                   </Button>

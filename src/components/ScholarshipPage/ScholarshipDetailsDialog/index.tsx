@@ -10,7 +10,7 @@ import { useGetScholarshipById, useUpdateScholarship } from "@/hooks/useScholars
 import { useGetAllDepartments } from "@/hooks/useDepartment";
 import { IUpdateScholarshipBody } from "@/interface/request/scholarship";
 import { toast } from "react-toastify";
-import { IconLoader2, IconAward, IconEdit } from "@tabler/icons-react";
+import { IconLoader2, IconAward, IconEdit, IconCheck } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -179,7 +179,7 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-mainTextV1">
-            {isEditing ? "Edit scholarship " + scholarshipData?.data?.title : "Scholarship details " + scholarshipData?.data?.title}
+            {isEditing ? "Edit scholarship: " + scholarshipData?.data?.title : "Scholarship details: " + scholarshipData?.data?.title}
           </DialogTitle>
         </DialogHeader>
 
@@ -395,8 +395,8 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
                       </>
                     ) : (
                       <>
-                        <IconEdit className="h-4 w-4" />
-                        Update scholarship
+                        <IconCheck className="h-4 w-4" />
+                        Save changes
                       </>
                     )}
                   </Button>

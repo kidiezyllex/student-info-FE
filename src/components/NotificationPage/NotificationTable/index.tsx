@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { INotification } from "@/interface/response/notification";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconBell, IconStar } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconBell, IconStar, IconClock, IconX } from "@tabler/icons-react";
+import { Activity } from "lucide-react";
 
 interface NotificationTableProps {
   notifications: INotification[];
@@ -17,18 +18,12 @@ interface NotificationTableProps {
 
 const getTypeBadge = (type: string) => {
   switch (type.toLowerCase()) {
-    case 'announcement':
-      return <Badge variant="orange">Announcement</Badge>;
-    case 'academic':
-      return <Badge variant="green">Academic</Badge>;
     case 'scholarship':
-      return <Badge variant="purple">Scholarship</Badge>;
+      return <Badge variant="indigo">Scholarship</Badge>;
     case 'event':
-      return <Badge variant="orange">Event</Badge>;
-    case 'system':
-      return <Badge variant="red">System</Badge>;
-    case 'urgent':
-      return <Badge variant="red">Urgent</Badge>;
+      return <Badge variant="sky">Event</Badge>;
+    case 'notification':
+      return <Badge variant="blue">Notification</Badge>;
     default:
       return <Badge variant="outline">{type.charAt(0).toUpperCase() + type.slice(1)}</Badge>;
   }
@@ -41,19 +36,22 @@ const getStatusBadge = (startDate: string, endDate: string) => {
   
   if (currentDate < start) {
     return (
-      <Badge variant="yellow" className="flex items-center gap-1">
+      <Badge variant="yellow">
+        <IconClock className="h-3 w-3" />
         Scheduled
       </Badge>
     );
   } else if (currentDate >= start && currentDate <= end) {
     return (
-      <Badge variant="green" className="flex items-center gap-1">
+      <Badge variant="green">
+        <Activity className="h-3 w-3" />
         Active
       </Badge>
     );
   } else {
     return (
-      <Badge variant="red" className="flex items-center gap-1">
+      <Badge variant="red">
+        <IconX className="h-3 w-3" />
         Expired
       </Badge>
     );
@@ -93,11 +91,11 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                 onMouseLeave={() => setHoveredRow(null)}
               >
                 <TableCell className="flex items-center gap-2">
-                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
-                    <IconBell className="w-6 h-6 text-slate-400" />
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 flex items-center justify-center">
+                    <IconBell className="w-6 h-6 text-orange-400" />
                   </div>
                   <div className="max-w-xs">
-                    <p className="font-semibold text-mainTextV1">{notification.title}</p>
+                    <p className="font-semibold text-mainTextV1 line-clamp-1">{notification.title}</p>
                     <p className="text-sm text-secondaryTextV1 line-clamp-2">{notification.content}</p>
                   </div>
                 </TableCell>
@@ -109,12 +107,9 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                 <TableCell>
                   <div className="flex items-center">
                     {notification.department ? (
-                      <div className="space-y-1">
-                        <p className="text-sm font-semibold text-mainTextV1">{notification.department.name}</p>
-                        <p className="text-xs text-secondaryTextV1">ID: {notification.department._id}</p>
-                      </div>
+                       <p className="text-sm font-semibold text-mainTextV1 text-nowrap">{notification.department.name}</p>
                     ) : (
-                      <span className="text-secondaryTextV1">All departments</span>
+                      <span className="text-secondaryTextV1 text-nowrap">All departments</span>
                     )}
                   </div>
                 </TableCell>
@@ -132,12 +127,13 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                 <TableCell>
                   <div className="flex items-center">
                     {notification.isImportant ? (
-                      <Badge variant="red">
-                        <IconStar className="w-3 h-3" />
+                      <Badge variant="orange">
+                        <IconStar className="h-3 w-3" />
                         Important
                       </Badge>
                     ) : (
                       <Badge variant="gray">
+                        <IconBell className="h-3 w-3" />
                         Normal
                       </Badge>
                     )}

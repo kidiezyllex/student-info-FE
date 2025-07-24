@@ -27,12 +27,9 @@ interface NotificationCreateDialogProps {
 }
 
 const notificationTypes = [
-  "announcement",
-  "academic",
   "scholarship",
   "event",
-  "system",
-  "urgent"
+  "notification"
 ];
 
 export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: NotificationCreateDialogProps) => {
@@ -40,7 +37,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
     title: "",
     content: "",
     type: "",
-    department: "",
+    department: null, // Changed from empty string to null
     startDate: "",
     endDate: "",
     isImportant: false,
@@ -49,7 +46,6 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
 
   const { mutate: createNotificationMutation, isPending } = useCreateNotification();
   const { data: departmentsData } = useGetAllDepartments();
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -60,7 +56,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value === "all-departments" ? null : value }); // Handle "all-departments" for All departments
 
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
@@ -86,11 +82,11 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
       newErrors.type = "Type is required";
     }
 
-    if (!formData.startDate.trim()) {
+    if (!formData.startDate?.trim()) {
       newErrors.startDate = "Start date is required";
     }
 
-    if (!formData.endDate.trim()) {
+    if (!formData.endDate?.trim()) {
       newErrors.endDate = "End date is required";
     }
 
@@ -114,7 +110,6 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
       return;
     }
 
-    // Clean up form data - remove empty department
     const submitData = {
       ...formData,
       department: formData.department || undefined,
@@ -137,7 +132,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
       title: "",
       content: "",
       type: "",
-      department: "",
+      department: null, // Reset to null
       startDate: "",
       endDate: "",
       isImportant: false,
@@ -216,12 +211,12 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
               <Label htmlFor="department" className="text-mainTextV1">
                 Department (Optional)
               </Label>
-              <Select value={formData.department} onValueChange={(value) => handleSelectChange("department", value)}>
+              <Select value={formData.department || "all-departments"} onValueChange={(value) => handleSelectChange("department", value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select department (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All departments</SelectItem>
+                  <SelectItem value="all-departments">All departments</SelectItem>
                   {departmentsData?.data?.map((department) => (
                     <SelectItem key={department._id} value={department._id}>
                       {department.name} ({department.code})
