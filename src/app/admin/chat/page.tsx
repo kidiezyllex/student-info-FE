@@ -39,7 +39,7 @@ const formatMessageContent = (content: string) => {
   });
 };
 
-export default function StudentChatPage() {
+export default function ChatPage() {
   const { profile } = useUser();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");

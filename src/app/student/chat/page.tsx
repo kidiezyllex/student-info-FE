@@ -29,6 +29,16 @@ interface Message extends IChatMessage {
   messageIndex?: number;
 }
 
+const formatMessageContent = (content: string) => {
+  const parts = content.split(/(\*{2}[^\*]+\*{2})/g);
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <span key={index} className="font-semibold">{part.slice(2, -2)}</span>;
+    }
+    return part;
+  });
+};
+
 export default function StudentChatPage() {
   const { profile } = useUser();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -357,7 +367,7 @@ export default function StudentChatPage() {
                         className={`flex gap-2 ${message.isUser ? 'justify-end' : 'justify-start'}`}
                       >
                         {!message.isUser && (
-                          <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
                           </div>
                         )}
@@ -369,7 +379,7 @@ export default function StudentChatPage() {
                                 : 'bg-gray-100 text-mainTextV1'
                               }`}
                           >
-                            <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                            <p className="text-sm whitespace-pre-wrap">{formatMessageContent(message.content)}</p>
                           </div>
                           
                           <div className="flex items-center justify-between mt-1 px-1">
@@ -410,7 +420,7 @@ export default function StudentChatPage() {
                         </div>
 
                         {message.isUser && (
-                          <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <Image src="/images/student.webp" alt="Student Avatar" width={50} height={50} className="w-full h-full object-cover" />
                           </div>
                         )}
@@ -425,7 +435,7 @@ export default function StudentChatPage() {
                       animate={{ opacity: 1, y: 0 }}
                       className="flex gap-2"
                     >
-                      <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
                       </div>
                       <div className="bg-gray-100 p-3 rounded-lg">
