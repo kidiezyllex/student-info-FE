@@ -60,30 +60,16 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		icon: mdiMessageText,
 	},
 	{
-		id: "ai-management",
-		name: "AI Management",
-		path: "/admin/ai",
-		icon: mdiRobot,
-		subMenu: [
-			{
-				id: "ai-training",
-				name: "AI Training",
-				path: "/admin/ai/training",
-				icon: mdiRobot,
-			},
-			{
-				id: "training-history",
-				name: "Training History",
-				path: "/admin/ai/training-history",
-				icon: mdiChartLine,
-			},
-		],
-	},
-	{
 		id: "dataset-management", 
 		name: "Dataset Management",
 		path: "/admin/dataset",
 		icon: mdiDatabase,
+	},
+	{
+		id: "ai-chat",
+		name: "AI Chat",
+		path: "/admin/chat",
+		icon: mdiRobot,
 	},
 ]; 
 
@@ -95,7 +81,7 @@ export const getStudentMenuItems = (): MenuItem[] => [
 		icon: mdiViewDashboard,
 	},
 	{
-		id: "student-chat",
+		id: "ai-chat",
 		name: "AI Chat",
 		path: "/student/chat",
 		icon: mdiRobot,

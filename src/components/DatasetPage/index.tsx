@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useGetAllDatasetItems, useDeleteDatasetItem } from "@/hooks/useDataset";
+import { useTrainAI, useGetTrainingHistory } from "@/hooks/useAI";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +10,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'; 
+} from '@/components/ui/breadcrumb';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -20,9 +21,10 @@ import { DatasetDetailsDialog } from "@/components/DatasetPage/DatasetDetailsDia
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import { IconSearch, IconPlus, IconFilter } from "@tabler/icons-react";
+import { IconSearch, IconPlus, IconFilter, IconBrain, IconHistory } from "@tabler/icons-react";
 import { IDatasetItem } from "@/interface/response/dataset";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
+import { formatDate } from "@/utils/format";
 
 export default function DatasetPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,24 +34,21 @@ export default function DatasetPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedDatasetItemId, setSelectedDatasetItemId] = useState<string | null>(null);
   const [filteredDatasetItems, setFilteredDatasetItems] = useState<IDatasetItem[]>([]);
-
+  const [isTraining, setIsTraining] = useState(false);
+  const [showTrainingHistory, setShowTrainingHistory] = useState(false);
   const { data: datasetData, isLoading, refetch } = useGetAllDatasetItems();
   const { mutateAsync: deleteDatasetItemMutation, isPending: isDeleting } = useDeleteDatasetItem();
-
-  // Get unique categories for filter
+  const { mutateAsync: trainAIMutation, isPending: isTrainingAI } = useTrainAI();
+  const { data: trainingHistoryData, isLoading: isLoadingTrainingHistory, refetch: refetchTrainingHistory } = useGetTrainingHistory();
   const categories = Array.from(new Set(datasetData?.data?.map(item => item.category) || []));
-
-  // Filter dataset items based on search query and category
   useEffect(() => {
     if (datasetData?.data) {
       let filtered = datasetData.data;
-      
-      // Apply category filter
+
       if (categoryFilter) {
         filtered = filtered.filter(item => item.category === categoryFilter);
       }
-      
-      // Apply search filter
+
       if (searchQuery.trim()) {
         filtered = filtered.filter(item =>
           item.key.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -58,12 +57,26 @@ export default function DatasetPage() {
           (item.department && item.department.name.toLowerCase().includes(searchQuery.toLowerCase()))
         );
       }
-      
+
       setFilteredDatasetItems(filtered);
     } else {
       setFilteredDatasetItems([]);
     }
   }, [datasetData?.data, searchQuery, categoryFilter]);
+
+  const handleTrainAI = async () => {
+    setIsTraining(true);
+    try {
+      await trainAIMutation({});
+      toast.success("AI training initiated successfully!");
+      refetchTrainingHistory();
+    } catch (error) {
+      toast.error("Failed to initiate AI training.");
+      console.error("AI training error:", error);
+    } finally {
+      setIsTraining(false);
+    }
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -109,7 +122,7 @@ export default function DatasetPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      
+
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -127,10 +140,7 @@ export default function DatasetPage() {
                 />
                 <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
               </div>
-              
-              <div className="flex items-center gap-2">
-                <IconFilter className="w-5 h-5 text-mainTextV1" />
-                <Select value={categoryFilter || "all"} onValueChange={handleCategoryFilterChange}>
+              <Select value={categoryFilter || "all"} onValueChange={handleCategoryFilterChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
                   </SelectTrigger>
@@ -143,9 +153,23 @@ export default function DatasetPage() {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
             </div>
-            
+            <Button
+              onClick={handleTrainAI}
+              disabled={isTrainingAI || isTraining}
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              <IconBrain className="h-4 w-4" />
+              {isTrainingAI || isTraining ? "Training AI..." : "Train AI"}
+            </Button>
+
+            <Button
+              onClick={() => setShowTrainingHistory(!showTrainingHistory)}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <IconHistory className="h-4 w-4" />
+              {showTrainingHistory ? "Hide History" : "Show History"}
+            </Button>
             <Button
               onClick={() => setIsCreateDialogOpen(true)}
               className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
@@ -155,7 +179,49 @@ export default function DatasetPage() {
             </Button>
           </div>
 
-          <Card className="p-0 overflow-hidden border border-lightBorderV1">
+          {showTrainingHistory && (
+            isLoadingTrainingHistory ? (
+              <div className="p-6">
+                <div className="flex flex-col gap-4">
+                  {[...Array(3)].map((_, index) => (
+                    <div key={index} className="flex items-center gap-4">
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Card className="p-4 mt-4 w-full border border-lightBorderV1">
+                <h3 className="text-lg font-semibold text-mainTextV1 mb-2">Training History</h3>
+                {trainingHistoryData?.data && trainingHistoryData.data.length > 0 ? (
+                  <ul className="space-y-4 max-h-52 overflow-y-auto pr-2">
+                    {trainingHistoryData.data.map((item, index) => (
+                      <li key={index} className="text-secondaryTextV1 bg-[#F9F9FC] p-3 border rounded-md border-lightBorderV1 bg-backgroundV1 flex flex-col gap-1">
+                        <div className="flex justify-between items-center">
+                          <p className="font-semibold text-mainTextV1">Status: <span className={`font-normal ${item.status === "completed" ? "text-green-500" : item.status === "failed" ? "text-red-500" : "text-yellow-500"}`}>{item.status}</span></p>
+                          <p className="text-sm text-tertiaryTextV1">Started At: {formatDate(item.startedAt)}</p>
+                        </div>
+                        <p>Dataset Count: {item.datasetCount}</p>
+                        {item.categories && item.categories.length > 0 && (
+                          <p>Categories: {item.categories.join(", ")}</p>
+                        )}
+                        {item.department && (
+                          <p>Department: {item.department.name}</p>
+                        )}
+                        {item.completedAt && <p className="text-sm text-tertiaryTextV1">Completed At: {formatDate(item.completedAt)}</p>}
+                        {item.error && <p className="text-red-500">Error: {item.error}</p>}
+                        {item.createdBy && <p className="text-sm text-tertiaryTextV1">Created By: {item.createdBy.name}</p>}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-secondaryTextV1">No training history found.</p>
+                )}
+              </Card>
+            )
+          )}
+
+          <Card className="p-0 overflow-hidden border border-lightBorderV1 max-h-96 overflow-y-auto">
             {isLoading ? (
               <div className="p-6">
                 <div className="flex flex-col gap-4">
@@ -181,7 +247,7 @@ export default function DatasetPage() {
           </Card>
         </div>
       </motion.div>
-      
+
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
@@ -194,13 +260,13 @@ export default function DatasetPage() {
         errorMessage="Failed to delete dataset item."
         warningMessage="This will permanently remove the dataset item and its associated data."
       />
-      
+
       <DatasetCreateDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSuccess={() => refetch()}
       />
-      
+
       {selectedDatasetItemId && (
         <DatasetDetailsDialog
           isOpen={isDetailsDialogOpen}

@@ -190,7 +190,7 @@ export default function MessagePage() {
                     onClick={() => handleSelectConversation(conversation.userId)}
                     className={`p-3 rounded-lg cursor-pointer transition-colors ${
                       selectedConversation === conversation.userId
-                        ? "bg-orange-50 border-blue-200 border"
+                        ? "bg-orange-50 border-orange-200 border"
                         : "hover:bg-gray-50"
                     }`}
                   >

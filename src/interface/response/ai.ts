@@ -11,9 +11,13 @@ export interface ITrainingHistoryDepartment {
 export interface ITrainingHistoryItem {
   _id: string;
   status: string;
-  createdAt: string;
+  datasetCount?: number;
+  categories?: string[];
+  startedAt: string;
+  completedAt?: string;
+  error?: string;
   createdBy: ITrainingHistoryUser;
-  department: ITrainingHistoryDepartment;
+  department?: ITrainingHistoryDepartment;
 }
 
 export interface ITrainAIResponse {
