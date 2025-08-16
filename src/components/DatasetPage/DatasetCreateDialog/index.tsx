@@ -36,7 +36,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
     key: "",
     value: "",
     category: "",
-    department: "",
+    department: "none",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -88,10 +88,10 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
       return;
     }
 
-    // Clean up form data - remove empty department
+    // Clean up form data - handle "none" value for department
     const submitData = {
       ...formData,
-      department: formData.department || undefined,
+      department: formData.department === "none" ? undefined : formData.department,
     };
 
     createDatasetItemMutation(submitData, {
@@ -111,7 +111,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
       key: "",
       value: "",
       category: "",
-      department: "",
+      department: "none",
     });
     setErrors({});
     onClose();
@@ -191,7 +191,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
                 <SelectValue placeholder="Select department (optional)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">No department</SelectItem>
+                <SelectItem value="none">No department</SelectItem>
                 {departmentsData?.data?.map((department) => (
                   <SelectItem key={department._id} value={department._id}>
                     {department.name} ({department.code})

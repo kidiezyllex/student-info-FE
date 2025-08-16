@@ -54,12 +54,6 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		icon: mdiBell,
 	},
 	{
-		id: "message-management",
-		name: "Message Management",
-		path: "/admin/messages",
-		icon: mdiMessageText,
-	},
-	{
 		id: "dataset-management", 
 		name: "Dataset Management",
 		path: "/admin/dataset",
