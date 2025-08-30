@@ -7,7 +7,8 @@ import { IProfileResponse } from "@/interface/response/auth"
 import { QueryClient } from "@tanstack/react-query"
 import { useRouter, usePathname } from "next/navigation"
 import cookies from "js-cookie"
-import { useGetUserProfile } from "@/hooks/useUser"
+import { useClerkUserProfile } from "@/hooks/useClerkUserProfile"
+import { useAuth } from "@clerk/nextjs"
 
 const queryClient = new QueryClient()
 
@@ -38,8 +39,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
   const token = cookies.get("accessToken")
-  const isPublicRoute = pathname === "/login" || pathname === "/register"
-  const { data: profileData, refetch: refetchProfile, isLoading: isProfileLoading } = useGetUserProfile({ enabled: !!token && !isPublicRoute })
+  const isPublicRoute = pathname === "/login" || pathname?.startsWith("/login/") || pathname === "/register"
+  
+  // 使用Clerk认证和用户信息
+  const { isLoaded: isClerkLoaded, isSignedIn } = useAuth()
+  const { profile: clerkProfile, isAdmin, isCoordinator, isStudent, getUserRole } = useClerkUserProfile()
+  
   const [user, setUser] = useState<null | Record<string, any>>(() => {
     if (typeof window !== "undefined") {
       const storedUser = localStorage.getItem("user")
@@ -86,7 +91,52 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const fetchUserProfile = async () => {
     try {
       setIsLoadingProfile(true)
-      await refetchProfile()
+      // 使用Clerk用户信息创建profile
+      if (clerkProfile) {
+        const clerkProfileData: IProfileResponse = {
+          status: true,
+          message: "Profile retrieved successfully from Clerk",
+          data: {
+            _id: clerkProfile.id,
+            name: clerkProfile.name,
+            email: clerkProfile.email,
+            role: clerkProfile.role,
+            gender: "unknown",
+            active: true,
+            savedNotifications: [],
+            createdAt: clerkProfile.createdAt?.toISOString() || new Date().toISOString(),
+            updatedAt: clerkProfile.updatedAt?.toISOString() || new Date().toISOString(),
+            lastLogin: new Date().toISOString(),
+            lastProfileUpdate: new Date().toISOString(),
+            __v: 0,
+            studentInfo: {
+              achievements: [],
+              scholarships: [],
+              status: "active"
+            },
+            coordinatorInfo: {
+              experience: [],
+              publications: [],
+              qualifications: [],
+              researchInterests: [],
+              specialization: []
+            },
+            profileSettings: {
+              isPublic: true,
+              showEmail: true,
+              showPhone: false,
+              allowMessages: true,
+              emailNotifications: true
+            }
+          },
+          errors: {},
+          timestamp: new Date().toISOString()
+        }
+        setProfile(clerkProfileData)
+        if (typeof window !== "undefined") {
+          localStorage.setItem("userProfile", JSON.stringify(clerkProfileData))
+        }
+      }
     } catch (error) {
       console.error(error)
     } finally {
@@ -103,14 +153,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  // 当Clerk用户信息可用时，自动更新profile
   useEffect(() => {
-    if (profileData) {
-      setProfile(profileData)
-      if (typeof window !== "undefined") {
-        localStorage.setItem("userProfile", JSON.stringify(profileData))
-      }
+    if (clerkProfile && isClerkLoaded) {
+      fetchUserProfile()
     }
-  }, [profileData])
+  }, [clerkProfile, isClerkLoaded])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -145,8 +193,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         loginUser,
         logoutUser,
         fetchUserProfile,
-        isLoadingProfile: isProfileLoading || isLoadingProfile,
-        isAuthenticated: !!user || !!profile,
+        isLoadingProfile: isLoadingProfile || !isClerkLoaded || false,
+        isAuthenticated: !!user || !!profile || isSignedIn,
         updateUserProfile
       }}
     >

@@ -3,7 +3,6 @@ export interface IUpdateUserProfileBody {
   age?: number;
 }
 
-// New interface for admin user update (basic info)
 export interface IUpdateUserBody {
   name?: string;
   email?: string;
@@ -17,7 +16,6 @@ export interface IUpdateUserBody {
   active?: boolean;
 }
 
-// New interface for creating user
 export interface ICreateUserBody {
   name: string;
   email: string;
@@ -31,7 +29,6 @@ export interface ICreateUserBody {
   active?: boolean;
 }
 
-// Comprehensive profile update interface
 export interface IUpdateUserProfileDetailedBody {
   fullName?: string;
   dateOfBirth?: string;

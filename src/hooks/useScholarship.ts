@@ -1,4 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useUser as useClerkUser } from '@clerk/nextjs';
+import { useClerkAPI } from './useClerkAPI';
 import {
   getActiveScholarships,
   getAllScholarships,
@@ -70,5 +72,41 @@ export const useDeleteScholarship = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['scholarships'] });
     },
+  });
+}; 
+
+export const useGetClerkActiveScholarships = (params?: IScholarshipQueryParams) => {
+  const { user: clerkUser } = useClerkUser();
+  const { callAPIWithClerkToken } = useClerkAPI();
+
+  return useQuery({
+    queryKey: ['clerk-scholarships', 'active', params],
+    queryFn: async () => {
+      if (!clerkUser) {
+        throw new Error('Clerk user not available');
+      }
+      
+      const queryString = params ? `?${new URLSearchParams(params as any).toString()}` : '';
+      return callAPIWithClerkToken(`/scholarships/active${queryString}`, clerkUser);
+    },
+    enabled: !!clerkUser,
+  });
+};
+
+export const useGetClerkAllScholarships = (params?: IScholarshipQueryParams) => {
+  const { user: clerkUser } = useClerkUser();
+  const { callAPIWithClerkToken } = useClerkAPI();
+
+  return useQuery({
+    queryKey: ['clerk-scholarships', 'all', params],
+    queryFn: async () => {
+      if (!clerkUser) {
+        throw new Error('Clerk user not available');
+      }
+      
+      const queryString = params ? `?${new URLSearchParams(params as any).toString()}` : '';
+      return callAPIWithClerkToken(`/scholarships${queryString}`, clerkUser);
+    },
+    enabled: !!clerkUser,
   });
 }; 

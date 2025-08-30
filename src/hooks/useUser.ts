@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useUser as useClerkUser } from '@clerk/nextjs';
 import { 
   getProfile as getAuthProfile, 
   updateUserProfile as updateUserProfileLegacy,
@@ -31,6 +32,8 @@ import {
   ICreateUserBody,
   IUpdateUserProfileDetailedBody 
 } from '@/interface/request/user';
+import { useClerkAPI } from './useClerkAPI';
+import { useClerkUserProfile } from './useClerkUserProfile';
 
 export const useGetUserProfile = (options?: { enabled?: boolean }) => {
   return useQuery<IProfileResponse, Error>({
@@ -100,7 +103,6 @@ export const useCreateUser = () => {
   });
 };
 
-// New hooks for additional API endpoints
 export const useGetUsersByRole = (role: string) => {
   return useQuery<IGetUsersByRoleResponse, Error>({
     queryKey: ['users', 'role', role],
@@ -126,5 +128,23 @@ export const useUpdateUserProfileDetailed = () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       queryClient.invalidateQueries({ queryKey: ['users', variables.id] });
     },
+  });
+}; 
+
+export const useGetClerkUserProfile = (options?: { enabled?: boolean }) => {
+  const { user: clerkUser } = useClerkUser();
+  const { profile } = useClerkUserProfile();
+
+  return useQuery({
+    queryKey: ['clerk-user', 'profile'],
+    queryFn: async () => {
+      if (!clerkUser) {
+        throw new Error('Clerk user not available');
+      }
+      return profile;
+    },
+    enabled: !!clerkUser && (options?.enabled !== false),
+    retry: false, // 不需要重试，因为数据来自本地
+    ...options,
   });
 }; 

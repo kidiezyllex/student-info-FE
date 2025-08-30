@@ -8,9 +8,7 @@ import { Icon } from "@mdi/react";
 import { IconChevronsLeft, IconChevronsRight } from "@tabler/icons-react";
 import Link from "next/link";
 import type React from "react";
-import { useRef, useState } from "react";
-import { ActionIcon } from "@/components/ui/action-icon";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRef, useState, useEffect } from "react";
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
@@ -21,6 +19,7 @@ import {
 import { useGetUserProfile } from "@/hooks/useUser";
 import { Bell, Settings, User, LogOut } from "lucide-react";
 import { useUser } from "@/context/useUserContext";
+import { useUser as useClerkUser } from "@clerk/nextjs";
 import Image from "next/image";
 
 export default function DashboardHeader() {
@@ -29,9 +28,12 @@ export default function DashboardHeader() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const inputRef = useRef<HTMLInputElement>(null);
 	const { data: userProfile } = useGetUserProfile();
-	const username = userProfile?.data?.name || "User";
 	const isLoading = false;
 	const { logoutUser } = useUser();
+	
+	const { user: clerkUser, isLoaded: isClerkLoaded, isSignedIn } = useClerkUser();
+	const username = userProfile?.data?.name || clerkUser?.emailAddresses?.[0]?.emailAddress || "User";
+
 	const handleSearchSubmit = () => {
 	};
 	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,12 +58,12 @@ export default function DashboardHeader() {
 						variant="ghost"
 						size="icon"
 						onClick={toggle}
-						className="bg-[#29323A] hover:bg-[#29323A]/80 !text-white/70 h-9 w-9"
+						className="bg-[#29323A] hover:bg-[#29323A]/80 !text-white/70 !h-8 !w-8"
 					>
 						{isOpen ? (
-							<IconChevronsLeft size={24} className="text-mainActiveV1 !h-7 !w-7" />
+							<IconChevronsLeft size={24} className="text-mainActiveV1 !h-5 !w-5" />
 						) : (
-							<IconChevronsRight size={24} className="text-mainActiveV1 !h-7 !w-7" />
+							<IconChevronsRight size={24} className="text-mainActiveV1 !h-5 !w-5" />
 						)}
 					</Button>
 				</div>
@@ -95,11 +97,11 @@ export default function DashboardHeader() {
 								<Image 
 								draggable={false}
 								quality={100}
-								src={`/images/${userProfile?.data?.gender ? userProfile?.data?.gender : "male"}-${userProfile?.data?.role}.webp`} alt={username} className="object-cover h-full w-full" width={100} height={100}/>
+								src={`/images/${userProfile?.data?.gender ? userProfile?.data?.gender : "male"}-${userProfile?.data?.role ? userProfile?.data?.role : "student"}.webp` || "/images/student.webp"} alt={"default-avatar"} className="object-cover h-full w-full" width={100} height={100}/>
 							</div>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="w-56 mt-4">
-							<div className="px-3 py-2 text-sm text-mainTextV1 font-semibold select-none">
+							<div className="px-3 py-2 text-[13px] text-mainTextV1 font-semibold select-none">
 								Hello, {username}
 							</div>
 							<DropdownMenuSeparator />

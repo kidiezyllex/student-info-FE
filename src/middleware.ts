@@ -1,13 +1,22 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import type { NextRequest, NextFetchEvent } from 'next/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
-export function middleware(request: NextRequest) {
+const clerkHandler = clerkMiddleware();
+
+export function middleware(request: NextRequest, event: NextFetchEvent) {
+  const clerkResponse = clerkHandler(request, event);
+  if (clerkResponse) {
+    return clerkResponse;
+  }
+
   const url = request.nextUrl.clone();
   const path = url.pathname;
   const hasAccessToken = request.cookies.has('accessToken') &&
     request.cookies.get('accessToken')?.value;
-  const isPublicRoute = path === '/login' || path === '/register';
+  const isPublicRoute = path === '/login' || path.startsWith('/login/') || path === '/register';
   const isApiRoute = path.startsWith('/api/');
+  
   if (isApiRoute) {
     if (request.method === 'OPTIONS') {
       return new NextResponse(null, {
@@ -46,12 +55,9 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)',
-  ]
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 };

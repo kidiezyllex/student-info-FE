@@ -1,50 +1,78 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { LoadingSpinnerWithText } from "@/components/ui/LoadingSpinner";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import LoadingSpinner from "../ui/LoadingSpinner"
+import { useGetClerkUserProfile } from "@/hooks/useUser"
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children: React.ReactNode
+  allowedRoles?: string[]
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isLoading, isAuth, checkAndRedirect, profileData, isPublicRoute } = useAuth();
-  const router = useRouter();
-  useEffect(() => {
-    if (isPublicRoute) return; // Do not apply protection to public routes
+export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
+  const { isLoaded, isSignedIn } = useAuth()
+  const router = useRouter()
+  const [isCheckingRole, setIsCheckingRole] = useState(false)
+  
+  const { data: userProfile, isLoading: isLoadingProfile } = useGetClerkUserProfile({
+    enabled: isLoaded && isSignedIn
+  })
 
-    if (!isLoading && !isAuth) {
-      checkAndRedirect();
-    } else if (!isLoading && isAuth && profileData) {
-      if (profileData?.data.role === "admin") {
-        router.replace("/admin");
-      } else if (profileData?.data.role === "student") {
-        router.replace("/student");
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push("/login")
+    }
+  }, [isLoaded, isSignedIn, router])
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn && userProfile && !isLoadingProfile) {
+      checkUserRole()
+    }
+  }, [isLoaded, isSignedIn, userProfile, isLoadingProfile])
+
+  const checkUserRole = () => {
+    if (!allowedRoles || allowedRoles.length === 0) {
+      return
+    }
+
+    setIsCheckingRole(true)
+    
+    const userRole = userProfile?.data?.role || "student"
+    
+    if (!allowedRoles.includes(userRole)) {
+      if (userRole === "admin") {
+        router.push("/admin")
+      } else if (userRole === "coordinator") {
+        router.push("/coordinator")
+      } else {
+        router.push("/student")
       }
     }
-  }, [isLoading, isAuth, checkAndRedirect, profileData, router, isPublicRoute]);
-
-  if (isPublicRoute) {
-    return <>{children}</>; // Render children directly for public routes
+    
+    setIsCheckingRole(false)
   }
 
-  if (isLoading) {
+  if (!isLoaded || isLoadingProfile || isCheckingRole) {
     return (
-      <div className="min-h-screen">
-        <LoadingSpinnerWithText
-          text="Loading..."
-          size="lg"
-          className="min-h-screen"
-        />
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
       </div>
-    );
+    )
   }
 
-  if (!isAuth) {
-    return null;
+  if (!isSignedIn) {
+    return null
   }
 
-  return <>{children}</>;
+  if (!userProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+
+  return <>{children}</>
 } 

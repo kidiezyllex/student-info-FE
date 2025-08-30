@@ -25,7 +25,7 @@ export default function DashboardLayout({
 	const pathname = usePathname();
 	const { isOpen } = useMenuSidebar();
 	const { profile } = useUser();
-	
+
 	// Get menu items based on user role
 	const isStudent = profile?.data?.role === 'student';
 	const dashboardMenuItems = isStudent ? getStudentMenuItems() : getDashboardMenuItems();
@@ -174,9 +174,9 @@ export default function DashboardLayout({
 																		<div
 																			className={cn(
 																				"flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-colors",
-																			pathname === sub.path
-																				? "bg-[#29323A] text-white"
-																				: "text-white/70 hover:bg-[#29323A]",
+																				pathname === sub.path
+																					? "bg-[#29323A] text-white"
+																					: "text-white/70 hover:bg-[#29323A]",
 																			)}
 																		>
 																			<Icon
@@ -224,21 +224,11 @@ export default function DashboardLayout({
 			{/* Main content */}
 			<div className="flex-1 flex flex-col">
 				<DashboardHeader />
-				{
-					isStudent ? (
-						<main
-							className={`flex-1 overflow-auto bg-mainDarkBackgroundV1 ${isOpen ? "pl-[140px]" : "pl-[38px]"} mt-[32px] min-h-screen transition-all duration-300 p-4 pr-2`}
-						>
-							{children}
-						</main>
-					) : (
-						<main
-							className={`flex-1 overflow-auto bg-mainDarkBackgroundV1 ${isOpen ? "pl-[276px]" : "pl-[68px]"} mt-[78px] min-h-screen transition-all duration-300 p-4`}
-						>
-							{children}
-						</main>
-					)
-				}
+				<main
+					className={`flex-1 overflow-auto bg-mainDarkBackgroundV1 ${isOpen ? "pl-[276px]" : "pl-[68px]"} mt-[78px] min-h-screen transition-all duration-300 p-4`}
+				>
+					{children}
+				</main>
 			</div>
 		</div>
 	);

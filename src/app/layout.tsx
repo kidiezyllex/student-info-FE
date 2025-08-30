@@ -1,58 +1,51 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import "./font.css";
-import { ReactQueryClientProvider } from "@/provider/ReactQueryClientProvider";
-import { ToastProvider } from "@/provider/ToastProvider";
-import NextTopLoader from "nextjs-toploader";
-import "flag-icons/css/flag-icons.min.css";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import DashboardLayout from "@/components/layout/DashboardLayout";
-import { CustomScrollArea } from "@/components/ui/custom-scroll-area";
-import { Open_Sans } from "next/font/google";
-import { UserProvider } from "@/context/useUserContext";
-import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import AppLayoutWrapper from "@/components/layout/AppLayoutWrapper";
+import { type Metadata } from 'next'
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
+import { Open_Sans } from 'next/font/google'
+import './globals.css'
+import './font.css'
+import { ToastProvider } from '@/provider/ToastProvider'
+import { ReactQueryClientProvider } from '@/provider/ReactQueryClientProvider'
+import { UserProvider } from '@/context/useUserContext'
 
 const openSans = Open_Sans({
-	subsets: ["latin", "vietnamese"],
-	display: "swap",
-	variable: "--font-opensans",
-});
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  variable: '--font-opensans',
+})
+
+// Clerk configuration
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_ZGFybGluZy10cm9sbC05LmNsZXJrLmFjY291bnRzLmRldiQ"
+const CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY || "sk_test_mXL441JEPmSTFYRCsoGc98kKMHjfjKjtVnl3VSBxC9"
 
 export const metadata: Metadata = {
-	title: "StudentInfo",
-	icons: {
-		icon: "/images/faviconV2.png",
-	},
-};
+  title: 'Student Info System',
+  description: 'Student Information Management System',
+}
 
 export default function RootLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-	return (
-		<html lang="vi" suppressHydrationWarning className={openSans.className}>
-			<body className="bg-mainBackgroundV1 min-h-screen">
-				<ReactQueryClientProvider>
-					<UserProvider>
-						<NextTopLoader
-							color="#F56C14"
-							initialPosition={0.08}
-							crawlSpeed={200}
-							height={3}
-							crawl={true}
-							easing="ease"
-							speed={200}
-							showSpinner={false}
-						/>
-						<ToastProvider />
-						<AppLayoutWrapper>
-							<ProtectedRoute>{children}</ProtectedRoute>
-						</AppLayoutWrapper>
-					</UserProvider>
-				</ReactQueryClientProvider>
-			</body>
-		</html>
-	);
+  return (
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+      <html lang="vi" suppressHydrationWarning className={openSans.className}>
+        <body className="bg-mainBackgroundV1 min-h-screen">
+          <ReactQueryClientProvider>
+            <UserProvider>
+              <ToastProvider />
+              {children}
+            </UserProvider>
+          </ReactQueryClientProvider>
+        </body>
+      </html>
+    </ClerkProvider>
+  )
 }

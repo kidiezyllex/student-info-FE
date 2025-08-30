@@ -1,4 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useUser as useClerkUser } from '@clerk/nextjs';
+import { useClerkAPI } from './useClerkAPI';
 import {
   getUpcomingEvents,
   getAllEvents,
@@ -70,5 +72,41 @@ export const useDeleteEvent = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
     },
+  });
+}; 
+
+export const useGetClerkUpcomingEvents = (params?: IEventQueryParams) => {
+  const { user: clerkUser } = useClerkUser();
+  const { callAPIWithClerkToken } = useClerkAPI();
+
+  return useQuery({
+    queryKey: ['clerk-events', 'upcoming', params],
+    queryFn: async () => {
+      if (!clerkUser) {
+        throw new Error('Clerk user not available');
+      }
+      
+      const queryString = params ? `?${new URLSearchParams(params as any).toString()}` : '';
+      return callAPIWithClerkToken(`/events/upcoming${queryString}`, clerkUser);
+    },
+    enabled: !!clerkUser,
+  });
+};
+
+export const useGetClerkAllEvents = (params?: IEventQueryParams) => {
+  const { user: clerkUser } = useClerkUser();
+  const { callAPIWithClerkToken } = useClerkAPI();
+
+  return useQuery({
+    queryKey: ['clerk-events', 'all', params],
+    queryFn: async () => {
+      if (!clerkUser) {
+        throw new Error('Clerk user not available');
+      }
+      
+      const queryString = params ? `?${new URLSearchParams(params as any).toString()}` : '';
+      return callAPIWithClerkToken(`/events${queryString}`, clerkUser);
+    },
+    enabled: !!clerkUser,
   });
 }; 

@@ -1,5 +1,5 @@
 import { sendPost, sendGet } from "./axios";
-import { ILoginBody, IRegisterBody } from "@/interface/request/auth";
+import { ILoginBody, IRegisterBody, ICompleteRegistrationBody } from "@/interface/request/auth";
 import { ILoginResponse, IRegisterResponse, IProfileResponse } from "@/interface/response/auth";
 
 export const login = async (body: ILoginBody): Promise<ILoginResponse> => {
@@ -14,5 +14,10 @@ export const register = async (body: IRegisterBody): Promise<IRegisterResponse> 
 
 export const getProfile = async (): Promise<IProfileResponse> => {
   const res = await sendGet(`/auth/profile`);
+  return res;
+};
+
+export const completeRegistration = async (body: ICompleteRegistrationBody): Promise<IRegisterResponse> => {
+  const res = await sendPost(`/auth/complete-registration`, body);
   return res;
 }; 

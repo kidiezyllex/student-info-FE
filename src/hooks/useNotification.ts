@@ -1,4 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useUser as useClerkUser } from '@clerk/nextjs';
+import { useClerkAPI } from './useClerkAPI';
 import {
   getNotifications,
   getNotificationById,
@@ -96,5 +98,40 @@ export const useUnsaveNotification = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications', 'saved'] });
     },
+  });
+}; 
+
+export const useGetClerkNotifications = (params?: INotificationQueryParams) => {
+  const { user: clerkUser } = useClerkUser();
+  const { callAPIWithClerkToken } = useClerkAPI();
+
+  return useQuery({
+    queryKey: ['clerk-notifications', params],
+    queryFn: async () => {
+      if (!clerkUser) {
+        throw new Error('Clerk user not available');
+      }
+      
+      const queryString = params ? `?${new URLSearchParams(params as any).toString()}` : '';
+      return callAPIWithClerkToken(`/notifications${queryString}`, clerkUser);
+    },
+    enabled: !!clerkUser,
+  });
+};
+
+export const useGetClerkSavedNotifications = () => {
+  const { user: clerkUser } = useClerkUser();
+  const { callAPIWithClerkToken } = useClerkAPI();
+
+  return useQuery({
+    queryKey: ['clerk-notifications', 'saved'],
+    queryFn: async () => {
+      if (!clerkUser) {
+        throw new Error('Clerk user not available');
+      }
+      
+      return callAPIWithClerkToken('/notifications/saved', clerkUser);
+    },
+    enabled: !!clerkUser,
   });
 }; 

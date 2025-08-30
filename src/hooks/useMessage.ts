@@ -36,9 +36,7 @@ export const useSendMessage = () => {
   return useMutation<ISendMessageResponse, Error, ISendMessageBody>({
     mutationFn: sendMessage,
     onSuccess: (data) => {
-      // Invalidate conversations list
       queryClient.invalidateQueries({ queryKey: ['messages', 'conversations'] });
-      // Invalidate specific conversation history
       queryClient.invalidateQueries({ queryKey: ['messages', 'conversation', data.data.receiverId] });
     },
   });
@@ -50,7 +48,6 @@ export const useMarkMessageAsRead = () => {
   return useMutation<IMarkMessageAsReadResponse, Error, string>({
     mutationFn: markMessageAsRead,
     onSuccess: () => {
-      // Invalidate all message-related queries
       queryClient.invalidateQueries({ queryKey: ['messages'] });
     },
   });
@@ -62,9 +59,7 @@ export const useMarkAllMessagesAsRead = () => {
   return useMutation<IMarkAllMessagesAsReadResponse, Error, string>({
     mutationFn: markAllMessagesAsRead,
     onSuccess: (data, userId) => {
-      // Invalidate conversations list
       queryClient.invalidateQueries({ queryKey: ['messages', 'conversations'] });
-      // Invalidate specific conversation history
       queryClient.invalidateQueries({ queryKey: ['messages', 'conversation', userId] });
     },
   });
