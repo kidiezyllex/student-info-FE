@@ -8,10 +8,21 @@ export interface SendVerificationCodeResponse {
 }
 
 export interface VerifyCodeResponse {
+  status: boolean;
+  message: string;
+  data?: {
+    email: string;
+    verified: boolean;
+  };
+  errors: Record<string, any>;
+  timestamp: string;
+}
+
+export interface SendPasswordResetCodeResponse {
   success: boolean;
   message: string;
   data?: {
-    verificationToken: string;
     email: string;
+    expiresAt: string;
   };
 }

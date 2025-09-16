@@ -6,17 +6,36 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 }
 
 function getLocalAccessToken() {
-	const accessToken = cookies.get("accessToken");
+	// First try to get token from cookies
+	let accessToken = cookies.get("accessToken");
 
+	// If no cookie token, try localStorage
 	if (!accessToken && typeof window !== "undefined") {
 		try {
+			// Try different localStorage keys
 			const tokenFromStorage = localStorage.getItem("token");
+			const directAccessToken = localStorage.getItem("accessToken");
+			
+			// Parse token if it's stored as JSON
+			let parsedToken = null;
 			if (tokenFromStorage) {
-				cookies.set("accessToken", tokenFromStorage);
-				return tokenFromStorage;
+				try {
+					const tokenObj = JSON.parse(tokenFromStorage);
+					parsedToken = tokenObj.token || tokenFromStorage;
+				} catch {
+					parsedToken = tokenFromStorage;
+				}
+			}
+			
+			// Use the first available token
+			const finalToken = parsedToken || directAccessToken;
+			
+			if (finalToken) {
+				cookies.set("accessToken", finalToken);
+				return finalToken;
 			}
 		} catch (error) {
-			console.error(error);
+			console.error("Error getting token from localStorage:", error);
 		}
 	}
 
@@ -25,8 +44,8 @@ function getLocalAccessToken() {
 
 const instance = axios.create({
 	timeout: 3 * 60 * 1000,
-	// baseURL: `http://localhost:5000/api`,
-	baseURL: `https://student-info-be.onrender.com/api`,
+	baseURL: `http://localhost:5000/api`,
+	// baseURL: `https://student-info-be.onrender.com/api`,
 	headers: {
 		"Content-Type": "application/json",
 		Accept: "application/json",
@@ -45,13 +64,36 @@ instance.interceptors.request.use(
 		return Promise.reject(error);
 	},
 );
+
+// Response interceptor to handle authentication errors
+instance.interceptors.response.use(
+	(response) => response,
+	async (error) => {
+		const originalRequest = error.config;
+		
+		if (error.response?.status === 401) {
+			if (typeof window !== "undefined") {
+				localStorage.removeItem("accessToken");
+				localStorage.removeItem("token");
+				cookies.remove("accessToken");
+				// TEMPORARILY DISABLED FOR DEBUGGING
+				// window.location.href = "/auth/login";
+				console.log("DEBUG: 401 error, would redirect to /auth/login");
+			}
+		}
+		
+		return Promise.reject(error);
+	}
+);
 export function logout() {
 	cookies.remove("accessToken");
 	localStorage?.clear();
 
-	if (location.pathname !== "/auth") {
-		window.location.replace("/auth");
-	}
+	// TEMPORARILY DISABLED FOR DEBUGGING
+	// if (location.pathname !== "/auth/login") {
+	//   window.location.replace("/auth/login");
+	// }
+	console.log("DEBUG: logout called, would redirect to /auth/login");
 }
 
 export const sendGet = async (url: string, params?: any): Promise<any> => {
@@ -71,11 +113,9 @@ export const sendPost = (url: string, params?: any, queryParams?: any) => {
 	return instance.post(url, params, config)
 		.then((res) => res?.data)
 		.catch((error) => {
-			// If the error has a response, throw the response data
 			if (error.response?.data) {
 				throw error.response.data;
 			}
-			// Otherwise throw the original error
 			throw error;
 		});
 };

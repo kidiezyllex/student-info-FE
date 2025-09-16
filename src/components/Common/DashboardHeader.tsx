@@ -19,7 +19,6 @@ import {
 import { useGetUserProfile } from "@/hooks/useUser";
 import { Bell, Settings, User, LogOut } from "lucide-react";
 import { useUser } from "@/context/useUserContext";
-import { useUser as useClerkUser } from "@clerk/nextjs";
 import Image from "next/image";
 
 export default function DashboardHeader() {
@@ -31,8 +30,7 @@ export default function DashboardHeader() {
 	const isLoading = false;
 	const { logoutUser } = useUser();
 	
-	const { user: clerkUser, isLoaded: isClerkLoaded, isSignedIn } = useClerkUser();
-	const username = userProfile?.data?.name || clerkUser?.emailAddresses?.[0]?.emailAddress || "User";
+	const username = userProfile?.data?.name || "User";
 
 	const handleSearchSubmit = () => {
 	};

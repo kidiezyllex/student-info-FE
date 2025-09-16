@@ -339,20 +339,4 @@ button[type="button"].absolute:focus {
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Hide Clerk internal elements */
-.cl-internal-1dauvpw {
-  display: none !important;
-}
 
-.cl-internal-ht35d7 {
-  gap: 0 !important;
-}
-
-.cl-form,
-.cl-internal-ji79b9 {
-  gap: 0 !important;
-}
-
-.cl-formResendCodeLink{
-  margin-bottom: 10px !important;
-}

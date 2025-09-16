@@ -20,4 +20,4 @@ export const getProfile = async (): Promise<IProfileResponse> => {
 export const completeRegistration = async (body: ICompleteRegistrationBody): Promise<IRegisterResponse> => {
   const res = await sendPost(`/auth/complete-registration`, body);
   return res;
-}; 
+};

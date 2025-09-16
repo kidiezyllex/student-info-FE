@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useGetClerkUserProfile } from "@/hooks/useUser";
-import { useUser as useClerkUser } from "@clerk/nextjs";
+import { useGetUserProfile } from "@/hooks/useUser";
+import { useUser } from "@/context/useUserContext";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -13,10 +13,10 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { IconRobot, IconGift, IconCalendar, IconBell, IconArrowRight, IconTrendingUp, IconUsers } from "@tabler/icons-react";
+import { IconGift, IconCalendar, IconBell} from "@tabler/icons-react";
+import Image from "next/image";
 
 const container = {
     hidden: { opacity: 0 },
@@ -33,9 +33,9 @@ const item = {
     show: { opacity: 1, y: 0 }
 };
 
-const QuickActionCard = ({ href, icon: Icon, title, description, color, delay = 0 }: {
+const QuickActionCard = ({ href, icon, title, description, color, delay = 0 }: {
     href: string;
-    icon: React.ElementType;
+    icon: string;
     title: string;
     description: string;
     color: string;
@@ -68,17 +68,13 @@ const QuickActionCard = ({ href, icon: Icon, title, description, color, delay = 
                     <CardHeader className="flex flex-col items-center justify-center gap-4 pb-4">
                         {/* Clean icon container */}
                         <div
-                            className="mx-auto w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-105 relative"
+                            className="mx-auto w-20 h-20 p-2 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-105 relative"
                             style={{
                                 background: `linear-gradient(135deg, ${color}08 0%, ${color}15 100%)`,
                                 border: `1px solid ${color}20`
                             }}
                         >
-                            <Icon 
-                                size={32} 
-                                style={{ color }} 
-                                className="transition-all duration-300 group-hover:scale-110" 
-                            />
+                            <Image src={icon} alt={title} width={200} height={200} className="object-contain" />
                         </div>
 
                         <CardTitle className="text-base font-semibold text-mainTextV1 group-hover:text-opacity-80 transition-all duration-300 text-center">
@@ -86,13 +82,14 @@ const QuickActionCard = ({ href, icon: Icon, title, description, color, delay = 
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className="pt-0">
-                        <p className="text-secondaryTextV1 text-sm text-center leading-relaxed group-hover:text-opacity-70 transition-all duration-300">
+                    <CardContent 
+                    style={{ backgroundColor: color, opacity: 0.9 }}
+                    className="pt-4">
+                        <p className="text-white text-sm text-center leading-relaxed group-hover:text-opacity-70 transition-all duration-300">
                             {description}
                         </p>
                     </CardContent>
 
-                    {/* Subtle bottom accent */}
                     <div
                         className="absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-500 ease-out"
                         style={{ backgroundColor: color }}
@@ -145,36 +142,9 @@ const StatCard = ({ icon: Icon, title, count, color }: {
 };
 
 export default function StudentPage() {
-  const { user: clerkUser, isLoaded: isClerkLoaded, isSignedIn } = useClerkUser();
+  const { profile, isAuthenticated, isLoadingProfile } = useUser();
   
-  const { data: userProfile, isLoading: isProfileLoading, error: profileError } = useGetClerkUserProfile({
-    enabled: isClerkLoaded && isSignedIn && !!clerkUser
-  });
-
-  if (!isClerkLoaded) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading Clerk...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // 如果用户未登录，显示提示
-  if (!isSignedIn) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600">Please sign in to access the student dashboard.</p>
-        </div>
-      </div>
-    );
-  }
-
-  // 如果正在加载用户资料，显示加载状态
-  if (isProfileLoading) {
+  if (isLoadingProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -185,13 +155,11 @@ export default function StudentPage() {
     );
   }
 
-  // 如果有错误，显示错误信息
-  if (profileError) {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Error loading profile: {profileError.message}</p>
-          <Button onClick={() => window.location.reload()}>Retry</Button>
+          <p className="text-gray-600">Please sign in to access the student dashboard.</p>
         </div>
       </div>
     );
@@ -200,28 +168,28 @@ export default function StudentPage() {
   const quickActions = [
     {
         href: "/student/chat",
-        icon: IconRobot,
+        icon: "/images/student/ai-chat.png",
         title: "AI Chat",
         description: "Get instant help and answers from our AI assistant",
         color: "#8B5CF6"
     },
     {
         href: "/student/scholarships",
-        icon: IconGift,
+        icon: "/images/student/scholarships.png",
         title: "Scholarships",
         description: "Browse available scholarships and opportunities",
         color: "#10B981"
     },
     {
         href: "/student/events",
-        icon: IconCalendar,
+        icon: "/images/student/events.png",
         title: "Events",
         description: "Discover upcoming events and activities",
         color: "#3B82F6"
     },
     {
         href: "/student/notifications",
-        icon: IconBell,
+        icon: "/images/student/notifications.png",
         title: "Notifications",
         description: "View your latest notifications and updates",
         color: "#F59E0B"

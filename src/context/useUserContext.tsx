@@ -7,8 +7,6 @@ import { IProfileResponse } from "@/interface/response/auth"
 import { QueryClient } from "@tanstack/react-query"
 import { useRouter, usePathname } from "next/navigation"
 import cookies from "js-cookie"
-import { useClerkUserProfile } from "@/hooks/useClerkUserProfile"
-import { useAuth } from "@clerk/nextjs"
 
 const queryClient = new QueryClient()
 
@@ -39,11 +37,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
   const token = cookies.get("accessToken")
-  const isPublicRoute = pathname === "/login" || pathname?.startsWith("/login/") || pathname === "/register"
-  
-  // 使用Clerk认证和用户信息
-  const { isLoaded: isClerkLoaded, isSignedIn } = useAuth()
-  const { profile: clerkProfile, isAdmin, isCoordinator, isStudent, getUserRole } = useClerkUserProfile()
+  const isPublicRoute = pathname === "/auth/login" || pathname?.startsWith("/auth/login/") || pathname === "/auth/register"
   
   const [user, setUser] = useState<null | Record<string, any>>(() => {
     if (typeof window !== "undefined") {
@@ -59,7 +53,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     setUser(userInfo)
     if (typeof window !== "undefined") {
       localStorage.setItem("accessToken", token)
-      localStorage.setItem("token", token) 
+      localStorage.setItem("token", JSON.stringify({ token }))
     }
     cookies.set("accessToken", token, { expires: 7 })
     setCookie("accessToken", token, 7)
@@ -91,50 +85,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const fetchUserProfile = async () => {
     try {
       setIsLoadingProfile(true)
-      // 使用Clerk用户信息创建profile
-      if (clerkProfile) {
-        const clerkProfileData: IProfileResponse = {
-          status: true,
-          message: "Profile retrieved successfully from Clerk",
-          data: {
-            _id: clerkProfile.id,
-            name: clerkProfile.name,
-            email: clerkProfile.email,
-            role: clerkProfile.role,
-            gender: "unknown",
-            active: true,
-            savedNotifications: [],
-            createdAt: clerkProfile.createdAt?.toISOString() || new Date().toISOString(),
-            updatedAt: clerkProfile.updatedAt?.toISOString() || new Date().toISOString(),
-            lastLogin: new Date().toISOString(),
-            lastProfileUpdate: new Date().toISOString(),
-            __v: 0,
-            studentInfo: {
-              achievements: [],
-              scholarships: [],
-              status: "active"
-            },
-            coordinatorInfo: {
-              experience: [],
-              publications: [],
-              qualifications: [],
-              researchInterests: [],
-              specialization: []
-            },
-            profileSettings: {
-              isPublic: true,
-              showEmail: true,
-              showPhone: false,
-              allowMessages: true,
-              emailNotifications: true
-            }
-          },
-          errors: {},
-          timestamp: new Date().toISOString()
-        }
-        setProfile(clerkProfileData)
-        if (typeof window !== "undefined") {
-          localStorage.setItem("userProfile", JSON.stringify(clerkProfileData))
+      if (typeof window !== "undefined") {
+        const storedProfile = localStorage.getItem("userProfile")
+        if (storedProfile) {
+          setProfile(JSON.parse(storedProfile))
         }
       }
     } catch (error) {
@@ -153,12 +107,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  // 当Clerk用户信息可用时，自动更新profile
   useEffect(() => {
-    if (clerkProfile && isClerkLoaded) {
+    if (token) {
       fetchUserProfile()
     }
-  }, [clerkProfile, isClerkLoaded])
+  }, [token])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -181,7 +134,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
     cookies.remove("accessToken")
     deleteCookie("accessToken")
-    router.push("/sign-in")
+    // TEMPORARILY DISABLED FOR DEBUGGING
+    // router.push("/auth/login")
+    console.log("DEBUG: logoutUser called, would redirect to /auth/login")
     queryClient.clear()
   }
 
@@ -193,8 +148,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         loginUser,
         logoutUser,
         fetchUserProfile,
-        isLoadingProfile: isLoadingProfile || !isClerkLoaded || false,
-        isAuthenticated: !!user || !!profile || isSignedIn,
+        isLoadingProfile: isLoadingProfile,
+        isAuthenticated: !!user || !!profile || !!token,
         updateUserProfile
       }}
     >

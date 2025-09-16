@@ -1,20 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest, NextFetchEvent } from 'next/server';
-import { clerkMiddleware } from '@clerk/nextjs/server';
-
-const clerkHandler = clerkMiddleware();
 
 export function middleware(request: NextRequest, event: NextFetchEvent) {
-  const clerkResponse = clerkHandler(request, event);
-  if (clerkResponse) {
-    return clerkResponse;
-  }
-
   const url = request.nextUrl.clone();
   const path = url.pathname;
   const hasAccessToken = request.cookies.has('accessToken') &&
     request.cookies.get('accessToken')?.value;
-  const isPublicRoute = path === '/login' || path.startsWith('/login/') || path === '/register';
+  const isPublicRoute = path === '/auth/login' || path.startsWith('/auth/login/') || path === '/auth/register';
   const isApiRoute = path.startsWith('/api/');
   
   if (isApiRoute) {
@@ -41,8 +33,9 @@ export function middleware(request: NextRequest, event: NextFetchEvent) {
   }
 
   if (!hasAccessToken && !isPublicRoute) {
-    url.pathname = '/login';
-    return NextResponse.redirect(url);
+    // TEMPORARILY DISABLED FOR DEBUGGING
+    // url.pathname = '/auth/login';
+    // return NextResponse.redirect(url);
   }
 
   if (hasAccessToken && isPublicRoute) {

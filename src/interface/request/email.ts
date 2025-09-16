@@ -14,3 +14,7 @@ export interface CompleteRegistrationRequest {
   password: string;
   verificationToken: string;
 }
+
+export interface SendPasswordResetCodeRequest {
+  email: string;
+}

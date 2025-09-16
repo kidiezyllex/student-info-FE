@@ -10,6 +10,11 @@ export const API_ENDPOINTS = {
     SEND_VERIFICATION: '/email/send-verification',
     VERIFY_CODE: '/email/verify-code',
   },
+  VERIFICATION: {
+    SEND_CODE: '/verification/send-code',
+    VERIFY_CODE: '/verification/verify-code',
+    SEND_PASSWORD_RESET: '/verification/send-password-reset',
+  },
   USER: {
     GET_ALL: '/user',
     CREATE: '/user',

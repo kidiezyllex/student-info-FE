@@ -20,6 +20,8 @@ import { useUser } from "@/context/useUserContext";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { IChatMessage, IChatHistoryItem } from "@/interface/response/chat";
+import { getTokenFromLocalStorage } from "@/utils/tokenStorage";
+import cookies from "js-cookie";
 
 interface Message extends IChatMessage {
   id: string;

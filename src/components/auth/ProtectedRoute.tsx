@@ -1,10 +1,9 @@
 "use client"
 
-import { useAuth } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import LoadingSpinner from "../ui/LoadingSpinner"
-import { useGetClerkUserProfile } from "@/hooks/useUser"
+import { useUser } from "@/context/useUserContext"
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -12,25 +11,23 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { isLoaded, isSignedIn } = useAuth()
+  const { isAuthenticated, isLoadingProfile, profile } = useUser()
   const router = useRouter()
   const [isCheckingRole, setIsCheckingRole] = useState(false)
-  
-  const { data: userProfile, isLoading: isLoadingProfile } = useGetClerkUserProfile({
-    enabled: isLoaded && isSignedIn
-  })
 
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/login")
+    if (!isLoadingProfile && !isAuthenticated) {
+      // TEMPORARILY DISABLED FOR DEBUGGING
+      // router.push("/auth/login")
+      console.log("DEBUG: ProtectedRoute - not authenticated, would redirect to /auth/login")
     }
-  }, [isLoaded, isSignedIn, router])
+  }, [isLoadingProfile, isAuthenticated, router])
 
   useEffect(() => {
-    if (isLoaded && isSignedIn && userProfile && !isLoadingProfile) {
+    if (isAuthenticated && profile && !isLoadingProfile) {
       checkUserRole()
     }
-  }, [isLoaded, isSignedIn, userProfile, isLoadingProfile])
+  }, [isAuthenticated, profile, isLoadingProfile])
 
   const checkUserRole = () => {
     if (!allowedRoles || allowedRoles.length === 0) {
@@ -39,7 +36,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
 
     setIsCheckingRole(true)
     
-    const userRole = userProfile?.data?.role || "student"
+    const userRole = profile?.data?.role || "student"
     
     if (!allowedRoles.includes(userRole)) {
       if (userRole === "admin") {
@@ -54,7 +51,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     setIsCheckingRole(false)
   }
 
-  if (!isLoaded || isLoadingProfile || isCheckingRole) {
+  if (isLoadingProfile || isCheckingRole) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner />
@@ -62,11 +59,11 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     )
   }
 
-  if (!isSignedIn) {
+  if (!isAuthenticated) {
     return null
   }
 
-  if (!userProfile) {
+  if (!profile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner />

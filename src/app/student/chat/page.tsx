@@ -20,6 +20,9 @@ import { useUser } from "@/context/useUserContext";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { IChatMessage, IChatHistoryItem } from "@/interface/response/chat";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { getTokenFromLocalStorage } from "@/utils/tokenStorage";
+import cookies from "js-cookie";
 
 interface Message extends IChatMessage {
   id: string;
@@ -63,7 +66,6 @@ export default function StudentChatPage() {
     scrollToBottom();
   }, [messages]);
 
-  // Load session messages when currentSession changes
   useEffect(() => {
     if (currentSession?.data?.messages) {
       const sessionMessages: Message[] = currentSession.data.messages.map((msg, index) => ({
@@ -252,7 +254,7 @@ export default function StudentChatPage() {
                 <ScrollArea className="h-[calc(100vh-280px)] max-w-[320px] w-[320px]">
                   <div className="px-4 space-y-2 max-w-[320px] w-[320px]">
                     {historyLoading ? (
-                      <div className="text-sm text-secondaryTextV1">Loading history...</div>
+                      <LoadingSpinner size="sm" className="py-6" />
                     ) : (
                       chatHistory?.data?.map((session: IChatHistoryItem) => (
                         <div
