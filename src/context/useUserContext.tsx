@@ -36,28 +36,24 @@ const deleteCookie = (name: string) => {
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
-  const token = cookies.get("accessToken")
-  const isPublicRoute = pathname === "/auth/login" || pathname?.startsWith("/auth/login/") || pathname === "/auth/register"
-  
-  const [user, setUser] = useState<null | Record<string, any>>(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = localStorage.getItem("user")
-      return storedUser ? JSON.parse(storedUser) : null
-    }
-    return null
-  })
+  const [isClient, setIsClient] = useState(false)
+  const [user, setUser] = useState<null | Record<string, any>>(null)
   const [profile, setProfile] = useState<IProfileResponse | null>(null)
   const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false)
+  
+  // Get token only on client side
+  const token = isClient ? cookies.get("accessToken") : null
+  const isPublicRoute = pathname === "/auth/login" || pathname?.startsWith("/auth/login/") || pathname === "/auth/register"
 
   const loginUser = (userInfo: any, token: string) => {
     setUser(userInfo)
-    if (typeof window !== "undefined") {
+    if (isClient) {
       localStorage.setItem("accessToken", token)
       localStorage.setItem("token", JSON.stringify({ token }))
+      cookies.set("accessToken", token, { expires: 7 })
+      setCookie("accessToken", token, 7)
+      setTokenToLocalStorage(token)
     }
-    cookies.set("accessToken", token, { expires: 7 })
-    setCookie("accessToken", token, 7)
-    setTokenToLocalStorage(token)
     fetchUserProfile()
   }
 
@@ -70,7 +66,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           ...data
         }
       })
-      if (typeof window !== "undefined") {
+      if (isClient) {
         localStorage.setItem("userProfile", JSON.stringify({
           ...profile,
           data: {
@@ -85,7 +81,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const fetchUserProfile = async () => {
     try {
       setIsLoadingProfile(true)
-      if (typeof window !== "undefined") {
+      if (isClient) {
         const storedProfile = localStorage.getItem("userProfile")
         if (storedProfile) {
           setProfile(JSON.parse(storedProfile))
@@ -98,45 +94,54 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  // Set client flag on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    setIsClient(true)
+  }, [])
+
+  // Initialize user and profile from localStorage on client side
+  useEffect(() => {
+    if (isClient) {
+      const storedUser = localStorage.getItem("user")
       const storedProfile = localStorage.getItem("userProfile")
+      
+      if (storedUser) {
+        setUser(JSON.parse(storedUser))
+      }
       if (storedProfile) {
         setProfile(JSON.parse(storedProfile))
       }
     }
-  }, [])
+  }, [isClient])
 
   useEffect(() => {
-    if (token) {
+    if (isClient && token) {
       fetchUserProfile()
     }
-  }, [token])
+  }, [token, isClient])
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (isClient) {
       if (user) {
         localStorage.setItem("user", JSON.stringify(user))
       } else {
         localStorage.removeItem("user")
       }
     }
-  }, [user])
+  }, [user, isClient])
 
   const logoutUser = () => {
     clearToken()
     setUser(null)
     setProfile(null)
-    if (typeof window !== "undefined") {
+    if (isClient) {
       localStorage.removeItem("userProfile")
       localStorage.removeItem("accessToken")
       localStorage.removeItem("token")
+      cookies.remove("accessToken")
+      deleteCookie("accessToken")
     }
-    cookies.remove("accessToken")
-    deleteCookie("accessToken")
-    // TEMPORARILY DISABLED FOR DEBUGGING
-    // router.push("/auth/login")
-    console.log("DEBUG: logoutUser called, would redirect to /auth/login")
+    router.push("/auth/login")
     queryClient.clear()
   }
 
@@ -149,7 +154,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         logoutUser,
         fetchUserProfile,
         isLoadingProfile: isLoadingProfile,
-        isAuthenticated: !!user || !!profile || !!token,
+        isAuthenticated: isClient ? (!!user || !!profile || !!token) : false,
         updateUserProfile
       }}
     >

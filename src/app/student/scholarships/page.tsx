@@ -19,6 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { IconSearch, IconGift, IconCalendar, IconCurrencyDollar, IconFilter, IconExternalLink } from "@tabler/icons-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { IScholarship } from "@/interface/response/scholarship";
 import Image from "next/image";
 import { Activity } from "lucide-react";
@@ -42,7 +43,6 @@ export default function StudentScholarshipsPage() {
     if (scholarshipsData?.data) {
       let filtered = scholarshipsData.data;
 
-      // Apply search filter
       if (searchQuery.trim()) {
         filtered = filtered.filter(scholarship =>
           scholarship.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -178,7 +178,7 @@ export default function StudentScholarshipsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <Card className="border border-lightBorderV1 hover:border-mainTextHoverV1 transition-colors h-full flex flex-col">
+                  <Card className="border-2 border-lightBorderV1 hover:border-mainTextHoverV1 transition-colors h-full flex flex-col">
                     <CardHeader
                       className="relative bg-black h-32"
                     >
@@ -262,10 +262,10 @@ export default function StudentScholarshipsPage() {
 
       {/* Scholarship Details Dialog */}
       <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent size="medium" className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
           <DialogHeader>
-            <DialogTitle className="text-xl text-mainTextV1">
-              {selectedScholarship?.title}
+            <DialogTitle className="text-xl text-mainTextV1 flex items-center gap-2">
+            {selectedScholarship && getStatusBadge(selectedScholarship)} {selectedScholarship?.title}
             </DialogTitle>
             <DialogDescription className="text-secondaryTextV1">
               Provided by {selectedScholarship?.provider}
@@ -274,55 +274,67 @@ export default function StudentScholarshipsPage() {
 
           {selectedScholarship && (
             <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                {getStatusBadge(selectedScholarship)}
-                <span className="text-2xl font-semibold text-green-600">
-                  {selectedScholarship.value}
-                </span>
+              <div className="w-full overflow-auto">
+                <Table className="border border-lightBorderV1">
+                  <TableHeader>
+                    <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
+                      <TableHead className="font-semibold text-mainTextV1 text-nowrap w-1/3">Field</TableHead>
+                      <TableHead className="font-semibold text-mainTextV1 text-nowrap">Value</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow className="hover:bg-gray-50 transition-colors">
+                      <TableCell className="font-semibold text-mainTextV1 bg-gray-50">Scholarship Value</TableCell>
+                      <TableCell className="text-secondaryTextV1">
+                        <span className="text-xl font-semibold text-green-600">
+                          {selectedScholarship.value}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                    
+                    <TableRow className="hover:bg-gray-50 transition-colors">
+                      <TableCell className="font-semibold text-mainTextV1 bg-gray-50">Application Deadline</TableCell>
+                      <TableCell className="text-secondaryTextV1">
+                        {formatDate(selectedScholarship.applicationDeadline)}
+                      </TableCell>
+                    </TableRow>
+
+                    {selectedScholarship.department && (
+                      <TableRow className="hover:bg-gray-50 transition-colors">
+                        <TableCell className="font-semibold text-mainTextV1 bg-gray-50">Department</TableCell>
+                        <TableCell className="text-secondaryTextV1">
+                          {selectedScholarship.department.name}
+                        </TableCell>
+                      </TableRow>
+                    )}
+
+                    <TableRow className="hover:bg-gray-50 transition-colors">
+                      <TableCell className="font-semibold text-mainTextV1 bg-gray-50 align-top">Description</TableCell>
+                      <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+                        {selectedScholarship.description}
+                      </TableCell>
+                    </TableRow>
+
+                    {selectedScholarship.requirements && (
+                      <TableRow className="hover:bg-gray-50 transition-colors">
+                        <TableCell className="font-semibold text-mainTextV1 bg-gray-50 align-top">Requirements</TableCell>
+                        <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+                          {selectedScholarship.requirements}
+                        </TableCell>
+                      </TableRow>
+                    )}
+
+                    {selectedScholarship.applicationProcess && (
+                      <TableRow className="hover:bg-gray-50 transition-colors">
+                        <TableCell className="font-semibold text-mainTextV1 bg-gray-50 align-top">Application Process</TableCell>
+                        <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+                          {selectedScholarship.applicationProcess}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
               </div>
-
-              <div>
-                <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Description</h4>
-                <p className="text-secondaryTextV1 whitespace-pre-wrap">
-                  {selectedScholarship.description}
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h4 className="text-md font-semibold text-mainTextV1 mb-2">Application Deadline</h4>
-                  <p className="text-secondaryTextV1">
-                    {formatDate(selectedScholarship.applicationDeadline)}
-                  </p>
-                </div>
-
-                {selectedScholarship.department && (
-                  <div>
-                    <h4 className="text-md font-semibold text-mainTextV1 mb-2">Department</h4>
-                    <p className="text-secondaryTextV1">
-                      {selectedScholarship.department.name}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {selectedScholarship.requirements && (
-                <div>
-                  <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Requirements</h4>
-                  <p className="text-secondaryTextV1 whitespace-pre-wrap">
-                    {selectedScholarship.requirements}
-                  </p>
-                </div>
-              )}
-
-              {selectedScholarship.applicationProcess && (
-                <div>
-                  <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Application Process</h4>
-                  <p className="text-secondaryTextV1 whitespace-pre-wrap">
-                    {selectedScholarship.applicationProcess}
-                  </p>
-                </div>
-              )}
             </div>
           )}
         </DialogContent>

@@ -51,6 +51,7 @@ export default function LoginPage() {
 
   const validateForm = () => {
     const newErrors: typeof errors = {}
+    const isAdminEmail = formData.email.toLowerCase().includes('admin')
     
     if (!formData.email) {
       newErrors.email = "Email is required"
@@ -58,15 +59,16 @@ export default function LoginPage() {
       newErrors.email = "Invalid email format"
     }
     
-    if (!showCodeInput && !formData.password) {
+    // 对于admin邮箱或非验证码模式，密码是必需的
+    if ((!showCodeInput || isAdminEmail) && !formData.password) {
       newErrors.password = "Password is required"
-    } else if (!showCodeInput && formData.password && formData.password.length < 6) {
+    } else if ((!showCodeInput || isAdminEmail) && formData.password && formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters"
     }
     
-    if (showCodeInput && !formData.verificationCode) {
+    if (showCodeInput && !isAdminEmail && !formData.verificationCode) {
       newErrors.verificationCode = "Verification code is required"
-    } else if (showCodeInput && formData.verificationCode && formData.verificationCode.length !== 6) {
+    } else if (showCodeInput && !isAdminEmail && formData.verificationCode && formData.verificationCode.length !== 6) {
       newErrors.verificationCode = "Verification code must be 6 digits"
     }
     
@@ -74,6 +76,45 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0
   }
 
+
+  const handleDirectLogin = async () => {
+    if (!formData.password) {
+      setErrors({ password: "Password is required" })
+      return
+    }
+
+    try {
+      const loginResponse = await loginUser({
+        email: formData.email,
+        password: formData.password
+      })
+      
+      if (loginResponse?.data?.token) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', loginResponse.data.token)
+          localStorage.setItem('accessToken', loginResponse.data.token)
+        }
+        
+        toast.success("Login successful!")
+        
+        const role = loginResponse.data.role
+        if (role === 'admin') {
+          router.push('/admin')
+        } else if (role === 'coordinator') {
+          router.push('/coordinator')
+        } else {
+          router.push('/student')
+        }
+      } else {
+        console.error("Login failed - No token received. Full response:", loginResponse)
+        toast.error("Login failed: No token received")
+      }
+    } catch (error: any) {
+      console.error("Direct login error:", error)
+      const errorMessage = error?.response?.data?.message || error?.message || "Login failed"
+      toast.error(errorMessage)
+    }
+  }
 
   const handleContinue = async () => {
     if (!formData.email) {
@@ -85,6 +126,10 @@ export default function LoginPage() {
       setErrors({ email: "Invalid email format" })
       return
     }
+    if (formData.email.toLowerCase().includes('admin')) {
+      await handleDirectLogin()
+      return
+    }
 
     try {
       const response = await sendVerificationCode({ email: formData.email })
@@ -92,7 +137,8 @@ export default function LoginPage() {
       setFormData(prev => ({ ...prev, verificationCode: "" }))
       toast.success(response?.message || "Verification code has been sent to your email")
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Failed to send verification code")
+      const errorMessage = error?.response?.data?.message || error?.message || "Failed to send verification code"
+      toast.error(errorMessage)
     }
   }
 
@@ -146,7 +192,8 @@ export default function LoginPage() {
       console.error("Error response data:", error?.response?.data)
       console.error("Error message:", error?.message)
       console.error("Error stack:", error?.stack)
-      toast.error(error?.response?.data?.message || "Invalid verification code")
+      const errorMessage = error?.response?.data?.message || error?.message || "Invalid verification code"
+      toast.error(errorMessage)
     }
   }
 
@@ -167,7 +214,8 @@ export default function LoginPage() {
       setShowPasswordReset(false)
       toast.success("Password reset code has been sent to your email")
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Failed to send password reset code")
+      const errorMessage = error?.response?.data?.message || error?.message || "Failed to send password reset code"
+      toast.error(errorMessage)
     }
   }
 
@@ -233,7 +281,7 @@ export default function LoginPage() {
                 </div>
 
 
-                {!showCodeInput && (
+                {(!showCodeInput || formData.email.toLowerCase().includes('admin')) && (
                   <div>
                     <Label htmlFor="password" className="text-sm font-semibold text-gray-700 mb-2 block">
                       Password
@@ -268,7 +316,7 @@ export default function LoginPage() {
                   </div>
                 )}
 
-                {showCodeInput && (
+                {showCodeInput && !formData.email.toLowerCase().includes('admin') && (
                   <div>
                     <Label htmlFor="verificationCode" className="text-sm font-semibold text-gray-700 mb-2 block">
                       Verification Code (6 digits)
@@ -291,7 +339,7 @@ export default function LoginPage() {
                 )}
               </div>
 
-              {!showCodeInput ? (
+              {!showCodeInput || formData.email.toLowerCase().includes('admin') ? (
                 <Button
                   type="submit"
                   disabled={isPending || isSendingCode}
@@ -302,6 +350,8 @@ export default function LoginPage() {
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Sending...
                     </div>
+                  ) : formData.email.toLowerCase().includes('admin') ? (
+                    "Login"
                   ) : (
                     "Continue"
                   )}

@@ -41,7 +41,7 @@ export default function DashboardHeader() {
 		<>
 			<div
 				className="w-full fixed top-0 left-0 right-0 z-50
-      p-4 px-6 bg-mainDarkBackgroundV1 border-b border-b-darkBorderV1 flex justify-between items-center h-[78px]"
+      p-4 px-4 bg-mainDarkBackgroundV1 border-b border-b-darkBorderV1 flex justify-between items-center h-[78px]"
 			>
 				<div className="flex items-center w-[244px] justify-between">
 					<Link href="/">

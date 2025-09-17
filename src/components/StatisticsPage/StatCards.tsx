@@ -2,9 +2,9 @@
 
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Users, School, Gift, CalendarEvent } from "tabler-icons-react";
 
-// Mock data for student information system
 const mockData = {
   studentsCount: 2847,
   departmentsCount: 12,
@@ -15,13 +15,13 @@ const mockData = {
 const StatCard = ({
   title,
   value,
-  icon: Icon,
+  icon,
   color,
   delay = 0,
 }: {
   title: string;
-  value: number;
-  icon: React.ElementType;
+  value: number;  
+  icon: string;
   color: string;
   delay?: number;
 }) => {
@@ -32,7 +32,7 @@ const StatCard = ({
       transition={{ duration: 0.5, delay }}
       className="w-full"
     >
-      <Card className="group relative overflow-hidden p-6 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 border-0 shadow-md hover:shadow-sm transition-all duration-300 hover:-translate-y-1">
+      <Card className="group relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 border-0 shadow-md hover:shadow-sm transition-all duration-300 hover:-translate-y-1">
         {/* Background decoration */}
         <div 
           className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -mr-8 -mt-8"
@@ -47,13 +47,13 @@ const StatCard = ({
             </h3>
           </div>
           <div 
-            className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300"
+            className="mx-auto w-20 h-20 p-2 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-105 relative"
             style={{ 
               background: `linear-gradient(135deg, ${color}20 0%, ${color}30 100%)`,
               border: `1px solid ${color}30`
             }}
           >
-            <Icon size={28} style={{ color }} className="drop-shadow-md" />
+            <Image src={icon} alt={title} width={200} height={200} className="object-contain"/>
           </div>
         </div>
         
@@ -93,25 +93,25 @@ export default function StatCards() {
     {
       title: "Students",
       value: mockData.studentsCount,
-      icon: Users,
+      icon: "/images/student/students.png",
       color: "#F56C14",
     },
     {
       title: "Departments",
       value: mockData.departmentsCount,
-      icon: School,
+      icon: "/images/student/departments.png",
       color: "#5CC184",
     },
     {
       title: "Events",
       value: mockData.eventsCount,
-      icon: CalendarEvent,
+      icon: "/images/student/events.png",
       color: "#F0934E",
     },
     {
       title: "Scholarships",
       value: mockData.scholarshipsCount,
-      icon: Gift,
+      icon: "/images/student/scholarships.png",
       color: "#E91E63",
     },
   ];

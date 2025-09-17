@@ -207,7 +207,7 @@ export default function StudentEventsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <Card className="border border-lightBorderV1 hover:border-mainTextHoverV1 transition-colors h-full flex flex-col">
+                  <Card className="border-2 border-lightBorderV1 hover:border-mainTextHoverV1 transition-colors h-full flex flex-col">
                     <CardHeader>
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 flex flex-col">
@@ -292,7 +292,7 @@ export default function StudentEventsPage() {
 
       {/* Event Details Dialog */}
       <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent size="medium" className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-xl text-mainTextV1">
               {selectedEvent?.title}

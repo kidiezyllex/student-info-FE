@@ -412,7 +412,7 @@ export const UserDetailsDialog = ({ isOpen, onClose, userId, onSuccess }: UserDe
                             disabled={isUploadingAvatar}
                           />
                           <Label htmlFor="avatar-upload" className={`cursor-pointer ${isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                            <div className="flex items-center justify-center gap-2 px-6 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
+                            <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
                               <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors duration-200">
                                 {isUploadingAvatar ? (
                                   <IconLoader2 className="h-5 w-5 text-orange-600 animate-spin" />

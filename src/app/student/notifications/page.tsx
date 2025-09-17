@@ -270,7 +270,7 @@ export default function StudentNotificationsPage() {
 
       {/* Notification Details Dialog */}
       <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent size="medium" className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-xl text-mainTextV1">
               {selectedNotification?.title}

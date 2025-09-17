@@ -14,20 +14,23 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
   const { isAuthenticated, isLoadingProfile, profile } = useUser()
   const router = useRouter()
   const [isCheckingRole, setIsCheckingRole] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    if (!isLoadingProfile && !isAuthenticated) {
-      // TEMPORARILY DISABLED FOR DEBUGGING
-      // router.push("/auth/login")
-      console.log("DEBUG: ProtectedRoute - not authenticated, would redirect to /auth/login")
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (isClient && !isLoadingProfile && !isAuthenticated) {
+      router.push("/auth/login")
     }
-  }, [isLoadingProfile, isAuthenticated, router])
+  }, [isClient, isLoadingProfile, isAuthenticated, router])
 
   useEffect(() => {
-    if (isAuthenticated && profile && !isLoadingProfile) {
+    if (isClient && isAuthenticated && profile && !isLoadingProfile) {
       checkUserRole()
     }
-  }, [isAuthenticated, profile, isLoadingProfile])
+  }, [isClient, isAuthenticated, profile, isLoadingProfile])
 
   const checkUserRole = () => {
     if (!allowedRoles || allowedRoles.length === 0) {
@@ -51,7 +54,8 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     setIsCheckingRole(false)
   }
 
-  if (isLoadingProfile || isCheckingRole) {
+  // Show loading on server side or when checking
+  if (!isClient || isLoadingProfile || isCheckingRole) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner />
