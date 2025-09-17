@@ -55,7 +55,6 @@ export const checkAuthAndRedirect = (
     clearAuthData();
     // TEMPORARILY DISABLED FOR DEBUGGING
     // redirectFn("/auth/login");
-    console.log("DEBUG: Invalid profile response, would redirect to /auth/login");
     return false;
   }
   
@@ -63,7 +62,6 @@ export const checkAuthAndRedirect = (
   if (!isAuth) {
     // TEMPORARILY DISABLED FOR DEBUGGING
     // redirectFn("/auth/login");
-    console.log("DEBUG: Not authenticated, would redirect to /auth/login");
     return false;
   }
   

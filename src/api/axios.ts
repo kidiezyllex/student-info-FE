@@ -78,7 +78,6 @@ instance.interceptors.response.use(
 				cookies.remove("accessToken");
 				// TEMPORARILY DISABLED FOR DEBUGGING
 				// window.location.href = "/auth/login";
-				console.log("DEBUG: 401 error, would redirect to /auth/login");
 			}
 		}
 		
@@ -88,12 +87,6 @@ instance.interceptors.response.use(
 export function logout() {
 	cookies.remove("accessToken");
 	localStorage?.clear();
-
-	// TEMPORARILY DISABLED FOR DEBUGGING
-	// if (location.pathname !== "/auth/login") {
-	//   window.location.replace("/auth/login");
-	// }
-	console.log("DEBUG: logout called, would redirect to /auth/login");
 }
 
 export const sendGet = async (url: string, params?: any): Promise<any> => {

@@ -89,28 +89,21 @@ export default function LoginPage() {
         password: formData.password
       })
       
-      if (loginResponse?.data?.token) {
+      if (loginResponse?.status === true && loginResponse?.data?.token) {
         if (typeof window !== 'undefined') {
           localStorage.setItem('token', loginResponse.data.token)
           localStorage.setItem('accessToken', loginResponse.data.token)
+          localStorage.setItem('userProfile', JSON.stringify(loginResponse))
         }
         
         toast.success("Login successful!")
         
         const role = loginResponse.data.role
-        if (role === 'admin') {
-          router.push('/admin')
-        } else if (role === 'coordinator') {
-          router.push('/coordinator')
-        } else {
-          router.push('/student')
-        }
+        router.push(`/${role}`)
       } else {
-        console.error("Login failed - No token received. Full response:", loginResponse)
         toast.error("Login failed: No token received")
       }
     } catch (error: any) {
-      console.error("Direct login error:", error)
       const errorMessage = error?.response?.data?.message || error?.message || "Login failed"
       toast.error(errorMessage)
     }
@@ -160,10 +153,12 @@ export default function LoginPage() {
           email: formData.email,
           password: formData.password
         })
-        if (loginResponse?.data?.token) {
+        if (loginResponse?.status === true && loginResponse?.data?.token) {
+          
           if (typeof window !== 'undefined') {
             localStorage.setItem('token', loginResponse.data.token)
             localStorage.setItem('accessToken', loginResponse.data.token)
+            localStorage.setItem('userProfile', JSON.stringify(loginResponse))
           }
           
           toast.success("Login successful!")
@@ -172,26 +167,14 @@ export default function LoginPage() {
           setFormData(prev => ({ ...prev, verificationCode: "" }))
           
           const role = loginResponse.data.role
-          if (role === 'admin') {
-            router.push('/admin')
-          } else if (role === 'coordinator') {
-            router.push('/coordinator')
-          } else {
-            router.push('/student')
-          }
+          router.push(`/${role}`)
         } else {
-          console.error("Login failed - No token received. Full response:", loginResponse)
           toast.error("Login failed: No token received")
         }
       } else {
         toast.error(response.message || "Verification failed")
       }
     } catch (error: any) {
-      console.error("Verification or login error:", error)
-      console.error("Error response:", error?.response)
-      console.error("Error response data:", error?.response?.data)
-      console.error("Error message:", error?.message)
-      console.error("Error stack:", error?.stack)
       const errorMessage = error?.response?.data?.message || error?.message || "Invalid verification code"
       toast.error(errorMessage)
     }

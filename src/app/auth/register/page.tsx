@@ -156,14 +156,12 @@ export default function RegisterPage() {
             router.push('/student')
           }
         } else {
-          console.error("Registration failed - No token received. Full response:", registerResponse)
           toast.error("Registration failed: No token received")
         }
       } else {
         toast.error(response.message || "Verification failed")
       }
     } catch (error: any) {
-      console.error("Verification or registration error:", error)
       toast.error(error?.response?.data?.message || "Invalid verification code")
     }
   }

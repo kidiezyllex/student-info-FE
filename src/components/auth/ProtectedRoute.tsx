@@ -16,6 +16,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
   const [isCheckingRole, setIsCheckingRole] = useState(false)
   const [isClient, setIsClient] = useState(false)
 
+
   useEffect(() => {
     setIsClient(true)
   }, [])

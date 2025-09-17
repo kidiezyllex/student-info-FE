@@ -8,6 +8,7 @@ export function middleware(request: NextRequest, event: NextFetchEvent) {
     request.cookies.get('accessToken')?.value;
   const isPublicRoute = path === '/auth/login' || path.startsWith('/auth/login/') || path === '/auth/register';
   const isApiRoute = path.startsWith('/api/');
+ 
   
   if (isApiRoute) {
     if (request.method === 'OPTIONS') {
@@ -33,9 +34,8 @@ export function middleware(request: NextRequest, event: NextFetchEvent) {
   }
 
   if (!hasAccessToken && !isPublicRoute) {
-    // TEMPORARILY DISABLED FOR DEBUGGING
-    // url.pathname = '/auth/login';
-    // return NextResponse.redirect(url);
+    url.pathname = '/auth/login';
+    return NextResponse.redirect(url);
   }
 
   if (hasAccessToken && isPublicRoute) {

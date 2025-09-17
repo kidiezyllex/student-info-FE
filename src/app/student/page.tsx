@@ -143,7 +143,6 @@ const StatCard = ({ icon: Icon, title, count, color }: {
 
 export default function StudentPage() {
   const { profile, isAuthenticated, isLoadingProfile } = useUser();
-  
   if (isLoadingProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center">

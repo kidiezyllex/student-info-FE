@@ -41,7 +41,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<IProfileResponse | null>(null)
   const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false)
   
-  // Get token only on client side
   const token = isClient ? cookies.get("accessToken") : null
   const isPublicRoute = pathname === "/auth/login" || pathname?.startsWith("/auth/login/") || pathname === "/auth/register"
 
@@ -84,11 +83,14 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       if (isClient) {
         const storedProfile = localStorage.getItem("userProfile")
         if (storedProfile) {
-          setProfile(JSON.parse(storedProfile))
+          const parsedProfile = JSON.parse(storedProfile)
+          setProfile(parsedProfile)
+        } else {
+          console.log("👤 No stored profile found")
         }
       }
     } catch (error) {
-      console.error(error)
+      console.error( error)
     } finally {
       setIsLoadingProfile(false)
     }
@@ -145,6 +147,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     queryClient.clear()
   }
 
+  const isAuthenticatedValue = isClient ? (!!user || !!profile || !!token) : false
+
   return (
     <UserContext.Provider
       value={{
@@ -154,7 +158,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         logoutUser,
         fetchUserProfile,
         isLoadingProfile: isLoadingProfile,
-        isAuthenticated: isClient ? (!!user || !!profile || !!token) : false,
+        isAuthenticated: isAuthenticatedValue,
         updateUserProfile
       }}
     >
