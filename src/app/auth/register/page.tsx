@@ -188,7 +188,7 @@ export default function RegisterPage() {
             width={300}
             draggable={false}
             quality={100}
-            src="/images/vgu-logo.avif"
+            src="/images/vgu-logo.webp"
             alt="vgu-logo"
             className="w-auto h-20"
           />

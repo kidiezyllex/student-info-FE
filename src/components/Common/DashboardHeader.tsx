@@ -50,7 +50,7 @@ export default function DashboardHeader() {
 						width={500}
 						draggable={false}
 						quality={100}
-						src="/images/vgu-logo2.avif" alt="vgu-logo" className="w-auto h-24 object-contain" />
+						src="/images/vgu-logo2.webp" alt="vgu-logo" className="w-auto h-24 object-contain" />
 					</Link>
 					<Button
 						variant="ghost"
