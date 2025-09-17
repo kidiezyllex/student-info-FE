@@ -181,7 +181,7 @@ export default function StudentEventsPage() {
 
           {/* Events Grid */}
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[...Array(6)].map((_, index) => (
                 <Card key={index} className="border border-lightBorderV1">
                   <CardHeader>
@@ -199,7 +199,7 @@ export default function StudentEventsPage() {
               ))}
             </div>
           ) : filteredEvents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredEvents.map((event, index) => (
                 <motion.div
                   key={event._id}
@@ -303,7 +303,7 @@ export default function StudentEventsPage() {
           </DialogHeader>
 
           {selectedEvent && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="flex items-center gap-4">
                 {getStatusBadge(selectedEvent)}
                 {selectedEvent.department && (

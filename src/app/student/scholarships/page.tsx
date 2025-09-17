@@ -152,7 +152,7 @@ export default function StudentScholarshipsPage() {
 
           {/* Scholarships Grid */}
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[...Array(6)].map((_, index) => (
                 <Card key={index} className="border border-lightBorderV1">
                   <CardHeader>
@@ -170,7 +170,7 @@ export default function StudentScholarshipsPage() {
               ))}
             </div>
           ) : filteredScholarships.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredScholarships.map((scholarship, index) => (
                 <motion.div
                   key={scholarship._id}
@@ -273,7 +273,7 @@ export default function StudentScholarshipsPage() {
           </DialogHeader>
 
           {selectedScholarship && (
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="w-full overflow-auto">
                 <Table className="border border-lightBorderV1">
                   <TableHeader>
@@ -314,6 +314,15 @@ export default function StudentScholarshipsPage() {
                         {selectedScholarship.description}
                       </TableCell>
                     </TableRow>
+
+                    {selectedScholarship.eligibility && (
+                      <TableRow className="hover:bg-gray-50 transition-colors">
+                        <TableCell className="font-semibold text-mainTextV1 bg-gray-50 align-top">Eligibility</TableCell>
+                        <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+                          {selectedScholarship.eligibility}
+                        </TableCell>
+                      </TableRow>
+                    )}
 
                     {selectedScholarship.requirements && (
                       <TableRow className="hover:bg-gray-50 transition-colors">

@@ -289,7 +289,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
           </DialogHeader>
 
           {!isEditing ? (
-            <div className="space-y-6">
+            <div className="space-y-4">
               <Card className="border border-lightBorderV1">
                 <CardHeader>
                   <div className="flex items-center justify-between w-full">
@@ -349,7 +349,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
               </Card>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <Card className="border border-lightBorderV1">
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

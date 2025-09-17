@@ -198,7 +198,7 @@ export default function RegisterPage() {
 
         <div className="bg-white/20 w-full backdrop-blur-lg shadow-lg border-0 rounded-none overflow-hidden">
           <div className="bg-transparent shadow-none p-4 rounded-none border-none pb-10">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="text-center mb-6">
                 <h1 className="text-xl font-bold text-gray-800 mb-2">Create your account</h1>
               </div>

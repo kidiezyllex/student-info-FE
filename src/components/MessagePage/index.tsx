@@ -226,7 +226,7 @@ export default function MessagePage() {
       </Card>
 
       {/* Main Chat Interface */}
-      <div className="flex-1 space-y-6 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
+      <div className="flex-1 space-y-4 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
         <div className="flex items-center justify-between">
           <Breadcrumb>
             <BreadcrumbList>
