@@ -234,7 +234,7 @@ export default function DatasetPage() {
             )
           )}
 
-          <Card className="p-0 overflow-hidden border border-lightBorderV1 max-h-96 overflow-y-auto">
+          <Card className="p-0 overflow-hidden border border-lightBorderV1">
             {isLoading ? (
               <div className="p-6">
                 <div className="flex flex-col gap-4">

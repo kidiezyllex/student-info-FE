@@ -18,6 +18,7 @@ import { NotificationTable } from "@/components/NotificationPage/NotificationTab
 import { NotificationCreateDialog } from "@/components/NotificationPage/NotificationCreateDialog";
 import { NotificationDetailsDialog } from "@/components/NotificationPage/NotificationDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { IconSearch, IconPlus, IconFilter, IconX } from "@tabler/icons-react";
 import { INotification } from "@/interface/response/notification";
@@ -41,6 +42,8 @@ export default function NotificationPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedNotificationId, setSelectedNotificationId] = useState<string | null>(null);
   const [filteredNotifications, setFilteredNotifications] = useState<INotification[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(5);
 
   const { data: notificationsData, isLoading, refetch } = useGetNotifications();
   const { mutateAsync: deleteNotificationMutation, isPending: isDeleting } = useDeleteNotification();
@@ -71,8 +74,11 @@ export default function NotificationPage() {
       }
 
       setFilteredNotifications(filtered);
+      // Reset to first page when data changes
+      setCurrentPage(1);
     } else {
       setFilteredNotifications([]);
+      setCurrentPage(1);
     }
   }, [notificationsData?.data, searchQuery, typeFilter, importanceFilter]);
 
@@ -114,6 +120,14 @@ export default function NotificationPage() {
       throw error;
     }
   };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedNotifications = filteredNotifications.slice(startIndex, endIndex);
 
   return (
     <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
@@ -206,13 +220,21 @@ export default function NotificationPage() {
               </div>
             ) : (
               <NotificationTable
-                notifications={filteredNotifications}
+                notifications={paginatedNotifications}
                 isSearching={!!searchQuery || !!typeFilter || !!importanceFilter}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             )}
           </Card>
+          {filteredNotifications.length > pageSize && (
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              total={filteredNotifications.length}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </motion.div>
 

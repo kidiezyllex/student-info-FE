@@ -41,7 +41,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
             <TableHead className="font-semibold text-mainTextV1 text-nowrap">User Information</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Email</TableHead>
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap w-[180px]">Email</TableHead>
             <TableHead className="font-semibold text-mainTextV1 text-nowrap">Student ID</TableHead>
             <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
             <TableHead className="font-semibold text-mainTextV1 text-nowrap">Role</TableHead>
@@ -86,9 +86,9 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                     )}
                   </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="w-[180px]">
                   <div className="flex items-center">
-                    <span className="text-secondaryTextV1">{user.email}</span>
+                    <span className="text-secondaryTextV1 text-wrap">{user.email}</span>
                   </div>
                 </TableCell>
                 <TableCell>

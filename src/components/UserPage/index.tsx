@@ -17,6 +17,7 @@ import { UserTable } from "@/components/UserPage/UserTable";
 import { UserCreateDialog } from "@/components/UserPage/UserCreateDialog";
 import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { IconSearch, IconPlus, IconX } from "@tabler/icons-react";
@@ -30,6 +31,8 @@ export default function UserPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(5);
 
   const { data: usersData, isLoading, refetch } = useGetAllUsers();
   const { mutateAsync: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
@@ -52,6 +55,11 @@ export default function UserPage() {
       } else {
         setFilteredUsers(usersData.data);
       }
+      // Reset to first page when data changes
+      setCurrentPage(1);
+    } else {
+      setFilteredUsers([]);
+      setCurrentPage(1);
     }
   }, [usersData?.data, searchQuery]);
 
@@ -85,6 +93,14 @@ export default function UserPage() {
       throw error;
     }
   };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
   return (
     <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
@@ -150,13 +166,21 @@ export default function UserPage() {
               </div>
             ) : (
               <UserTable
-                users={filteredUsers}
+                users={paginatedUsers}
                 isSearching={!!searchQuery}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             )}
           </Card>
+          {filteredUsers.length > pageSize && (
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              total={filteredUsers.length}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </motion.div>
       <DeleteDialog

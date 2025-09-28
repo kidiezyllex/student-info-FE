@@ -17,6 +17,7 @@ import { DepartmentTable } from "@/components/DepartmentPage/DepartmentTable";
 import { DepartmentCreateDialog } from "@/components/DepartmentPage/DepartmentCreateDialog";
 import { DepartmentDetailsDialog } from "@/components/DepartmentPage/DepartmentDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { IconSearch, IconPlus, IconX } from "@tabler/icons-react";
@@ -30,6 +31,8 @@ export default function DepartmentPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(null);
   const [filteredDepartments, setFilteredDepartments] = useState<IDepartment[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(5);
   const { data: departmentsData, isLoading, refetch } = useGetAllDepartments();
   const { mutateAsync: deleteDepartmentMutation, isPending: isDeleting } = useDeleteDepartment();
   useEffect(() => {
@@ -44,6 +47,11 @@ export default function DepartmentPage() {
       } else {
         setFilteredDepartments(departmentsData.data);
       }
+      // Reset to first page when data changes
+      setCurrentPage(1);
+    } else {
+      setFilteredDepartments([]);
+      setCurrentPage(1);
     }
   }, [departmentsData?.data, searchQuery]);
 
@@ -76,6 +84,14 @@ export default function DepartmentPage() {
       throw error;
     }
   };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedDepartments = filteredDepartments.slice(startIndex, endIndex);
 
   return (
     <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
@@ -141,13 +157,21 @@ export default function DepartmentPage() {
               </div>
             ) : (
               <DepartmentTable
-                departments={filteredDepartments}
+                departments={paginatedDepartments}
                 isSearching={!!searchQuery}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             )}
           </Card>
+          {filteredDepartments.length > pageSize && (
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              total={filteredDepartments.length}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </motion.div>
       <DeleteDialog

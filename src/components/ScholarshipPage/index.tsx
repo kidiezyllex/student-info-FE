@@ -18,6 +18,7 @@ import { ScholarshipTable } from "@/components/ScholarshipPage/ScholarshipTable"
 import { ScholarshipCreateDialog } from "@/components/ScholarshipPage/ScholarshipCreateDialog";
 import { ScholarshipDetailsDialog } from "@/components/ScholarshipPage/ScholarshipDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { IconSearch, IconPlus, IconFilter, IconX } from "@tabler/icons-react";
 import { IScholarship } from "@/interface/response/scholarship";
@@ -33,6 +34,8 @@ export default function ScholarshipPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedScholarshipId, setSelectedScholarshipId] = useState<string | null>(null);
   const [filteredScholarships, setFilteredScholarships] = useState<IScholarship[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(5);
 
   const { data: allScholarshipsData, isLoading: isLoadingAll, refetch: refetchAll } = useGetAllScholarships();
   const { data: activeScholarshipsData, isLoading: isLoadingActive, refetch: refetchActive } = useGetActiveScholarships();
@@ -57,8 +60,11 @@ export default function ScholarshipPage() {
       }
       
       setFilteredScholarships(filtered);
+      // Reset to first page when data changes
+      setCurrentPage(1);
     } else {
       setFilteredScholarships([]);
+      setCurrentPage(1);
     }
   }, [scholarshipsData, searchQuery]);
 
@@ -101,6 +107,14 @@ export default function ScholarshipPage() {
     refetchAll();
     refetchActive();
   };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedScholarships = filteredScholarships.slice(startIndex, endIndex);
 
   return (
     <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
@@ -179,13 +193,21 @@ export default function ScholarshipPage() {
               </div>
             ) : (
               <ScholarshipTable
-                scholarships={filteredScholarships}
+                scholarships={paginatedScholarships}
                 isSearching={!!searchQuery}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             )}
           </Card>
+          {filteredScholarships.length > pageSize && (
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              total={filteredScholarships.length}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </motion.div>
       
