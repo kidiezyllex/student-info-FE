@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { IScholarship } from "@/interface/response/scholarship";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconAward, IconCalendar } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconAward, IconCalendar, IconMenu3 } from "@tabler/icons-react";
 import { Activity, AlarmClockOff, MonitorCheck } from "lucide-react";
 import { formatDate } from "@/utils/dateFormat";
 
@@ -123,7 +123,7 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
                         onClick={() => onEdit(scholarship._id)}
                         className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
-                        <IconEdit className="h-4 w-4" />
+                        <IconMenu3 className="h-4 w-4" />
                       </Button>
                     </motion.div>
                     <motion.div

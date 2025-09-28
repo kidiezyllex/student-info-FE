@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { IDepartment } from "@/interface/response/department";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconBuilding, IconCode, IconUser } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconBuilding, IconCode, IconUser, IconMenu3 } from "@tabler/icons-react";
 
 interface DepartmentTableProps {
   departments: IDepartment[];
@@ -88,7 +88,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                         onClick={() => onEdit(department._id)}
                         className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
-                        <IconEdit className="h-4 w-4" />
+                        <IconMenu3 className="h-4 w-4" />
                       </Button>
                     </motion.div>
                     <motion.div

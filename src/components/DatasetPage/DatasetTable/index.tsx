@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { IDatasetItem } from "@/interface/response/dataset";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconKey, IconTag } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconKey, IconTag, IconMenu3 } from "@tabler/icons-react";
 
 interface DatasetTableProps {
   datasetItems: IDatasetItem[];
@@ -118,7 +118,7 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
                         onClick={() => onEdit(item._id)}
                         className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
-                        <IconEdit className="h-4 w-4" />
+                        <IconMenu3 className="h-4 w-4" />
                       </Button>
                     </motion.div>
                     <motion.div

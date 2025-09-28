@@ -188,7 +188,7 @@ export default function DatasetPage() {
               className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
             >
               <IconPlus className="h-4 w-4" />
-              Add dataset item
+              Add New Dataset
             </Button>
           </div>
 

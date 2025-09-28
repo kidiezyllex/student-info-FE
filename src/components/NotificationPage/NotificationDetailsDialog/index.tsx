@@ -9,9 +9,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useGetNotificationById, useUpdateNotification } from "@/hooks/useNotification";
 import { useGetAllDepartments } from "@/hooks/useDepartment";
+import { useCreateDatasetItem } from "@/hooks/useDataset";
 import { IUpdateNotificationBody } from "@/interface/request/notification";
+import { ICreateDatasetItemBody } from "@/interface/request/dataset";
 import { toast } from "react-toastify";
-import { IconLoader2, IconBell, IconEdit, IconCheck } from "@tabler/icons-react";
+import { IconLoader2, IconBell, IconEdit, IconCheck, IconTablePlus } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -52,6 +54,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
   const { data: notificationData, isLoading: isLoadingNotification } = useGetNotificationById(notificationId);
   const { data: departmentsData } = useGetAllDepartments();
   const { mutate: updateNotificationMutation, isPending: isUpdating } = useUpdateNotification();
+  const { mutate: createDatasetItemMutation, isPending: isCreatingDataset } = useCreateDatasetItem();
 
   useEffect(() => {
     if (notificationData?.data) {
@@ -175,6 +178,39 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
     }
   };
 
+  const handleAddToDataset = () => {
+    if (!notificationData?.data) {
+      toast.error("Notification data not available");
+      return;
+    }
+
+    const notification = notificationData.data;
+    
+    // Generate automatic key based on notification title and current timestamp
+    const timestamp = new Date().getTime();
+    const key = `notification_${notification.title.toLowerCase().replace(/\s+/g, '_')}_${timestamp}`;
+    
+    // Create value from notification title and content
+    const value = `${notification.title} - ${notification.content}`;
+    
+    const datasetPayload: ICreateDatasetItemBody = {
+      key,
+      value,
+      category: "notification",
+      department: notification.department?._id || undefined,
+    };
+
+    createDatasetItemMutation(datasetPayload, {
+      onSuccess: (response) => {
+        toast.success("Notification added to dataset successfully!");
+        onSuccess?.();
+      },
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.message || "An error occurred while adding notification to dataset!");
+      },
+    });
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
@@ -253,7 +289,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
                   </Select>
                 ) : (
                   <Input
-                    value={formData.type?.charAt(0).toUpperCase() + formData.type?.slice(1)}
+                    value={formData.type ? `${formData.type.charAt(0).toUpperCase()}${formData.type.slice(1)}` : ""}
                     disabled={true}
                     className="bg-gray-50 border-lightBorderV1"
                   />
@@ -367,6 +403,23 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
                   <Button onClick={handleEdit}>
                     <IconEdit className="h-4 w-4" />
                     Edit notification
+                  </Button>
+                  <Button 
+                    onClick={handleAddToDataset}
+                    disabled={isCreatingDataset}
+                    className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+                  >
+                    {isCreatingDataset ? (
+                      <>
+                        <IconLoader2 className="h-4 w-4 animate-spin" />
+                        Adding...
+                      </>
+                    ) : (
+                      <>
+                        <IconTablePlus className="h-4 w-4" />
+                        Add to Dataset
+                      </>
+                    )}
                   </Button>
                 </>
               ) : (

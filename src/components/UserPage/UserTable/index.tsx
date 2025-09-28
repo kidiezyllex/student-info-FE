@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { IUser } from "@/interface/response/user";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconMail, IconUserCircle, IconShield, IconUser, IconId, IconBuildingBank } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconMail, IconUserCircle, IconShield, IconUser, IconId, IconBuildingBank, IconMenu3 } from "@tabler/icons-react";
 import { Activity } from "lucide-react";
 interface UserTableProps {
   users: IUser[];
@@ -128,7 +128,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                         onClick={() => onEdit(user._id)}
                         className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
-                        <IconEdit className="h-4 w-4" />
+                        <IconMenu3 className="h-4 w-4" />
                       </Button>
                     </motion.div>
                     <motion.div

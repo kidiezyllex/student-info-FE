@@ -266,14 +266,31 @@ export const UserForm = ({
             <Label htmlFor="studentId" className="text-mainTextV1">
               Student ID
             </Label>
-            <Input
-              id="studentId"
-              name="studentId"
-              value={formData.studentId}
-              onChange={handleChange}
-              placeholder="Enter student ID"
-              className="border-lightBorderV1 focus:border-mainTextHoverV1"
-            />
+            <div className="flex items-center gap-2">
+              <Input
+                id="studentId"
+                name="studentId"
+                value={formData.studentId}
+                onChange={handleChange}
+                placeholder="Enter student ID"
+                className="border-lightBorderV1 focus:border-mainTextHoverV1"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                onClick={() => {
+                  // Generate 5 random digits
+                  const randomDigits = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
+                  const generatedId = `200${randomDigits}`;
+                  const newFormData = { ...formData, studentId: generatedId };
+                  onFormDataChange(newFormData);
+                }}
+                className="whitespace-nowrap"
+              >
+                Generate ID
+              </Button>
+            </div>
           </div>
         )}
 

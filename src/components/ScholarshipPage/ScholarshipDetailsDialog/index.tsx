@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGetScholarshipById, useUpdateScholarship } from "@/hooks/useScholarship";
+import { useCreateDatasetItem } from "@/hooks/useDataset";
 import { IUpdateScholarshipBody } from "@/interface/request/scholarship";
+import { ICreateDatasetItemBody } from "@/interface/request/dataset";
 import { toast } from "react-toastify";
-import { IconEdit } from "@tabler/icons-react";
+import { IconEdit, IconTablePlus, IconLoader2 } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -40,6 +42,7 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
 
   const { data: scholarshipData, isLoading: isLoadingScholarship } = useGetScholarshipById(scholarshipId);
   const { mutate: updateScholarshipMutation, isPending: isUpdating } = useUpdateScholarship();
+  const { mutate: createDatasetItemMutation, isPending: isCreatingDataset } = useCreateDatasetItem();
 
   useEffect(() => {
     if (scholarshipData?.data) {
@@ -159,6 +162,39 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
     }
   };
 
+  const handleAddToDataset = () => {
+    if (!scholarshipData?.data) {
+      toast.error("Scholarship data not available");
+      return;
+    }
+
+    const scholarship = scholarshipData.data;
+    
+    // Generate automatic key based on scholarship title and current timestamp
+    const timestamp = new Date().getTime();
+    const key = `scholarship_${scholarship.title.toLowerCase().replace(/\s+/g, '_')}_${timestamp}`;
+    
+    // Create value from scholarship title and description
+    const value = `${scholarship.title} - ${scholarship.description}`;
+    
+    const datasetPayload: ICreateDatasetItemBody = {
+      key,
+      value,
+      category: "scholarship",
+      department: scholarship.department?._id || undefined,
+    };
+
+    createDatasetItemMutation(datasetPayload, {
+      onSuccess: (response) => {
+        toast.success("Scholarship added to dataset successfully!");
+        onSuccess?.();
+      },
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.message || "An error occurred while adding scholarship to dataset!");
+      },
+    });
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
@@ -201,6 +237,23 @@ export const ScholarshipDetailsDialog = ({ isOpen, onClose, scholarshipId, onSuc
                   <Button onClick={handleEdit}>
                     <IconEdit className="h-4 w-4" />
                     Edit scholarship
+                  </Button>
+                  <Button 
+                    onClick={handleAddToDataset}
+                    disabled={isCreatingDataset}
+                    className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+                  >
+                    {isCreatingDataset ? (
+                      <>
+                        <IconLoader2 className="h-4 w-4 animate-spin" />
+                        Adding...
+                      </>
+                    ) : (
+                      <>
+                        <IconTablePlus className="h-4 w-4" />
+                        Add to Dataset
+                      </>
+                    )}
                   </Button>
                 </div>
               </>

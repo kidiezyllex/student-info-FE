@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { INotification } from "@/interface/response/notification";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconBell, IconStar, IconClock, IconX } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconBell, IconStar, IconClock, IconX, IconMenu3 } from "@tabler/icons-react";
 import { Activity } from "lucide-react";
 
 interface NotificationTableProps {
@@ -151,7 +151,7 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                         onClick={() => onEdit(notification._id)}
                         className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
-                        <IconEdit className="h-4 w-4" />
+                        <IconMenu3 className="h-4 w-4" />
                       </Button>
                     </motion.div>
                     <motion.div

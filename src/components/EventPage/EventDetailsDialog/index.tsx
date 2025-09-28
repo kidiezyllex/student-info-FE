@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useGetEventById, useUpdateEvent } from "@/hooks/useEvent";
+import { useCreateDatasetItem } from "@/hooks/useDataset";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { IUpdateEventBody } from "@/interface/request/event";
+import { ICreateDatasetItemBody } from "@/interface/request/dataset";
 import { toast } from "react-toastify";
-import { IconEdit } from "@tabler/icons-react";
+import { IconEdit, IconTablePlus, IconLoader2 } from "@tabler/icons-react";
 import {
   Dialog,
   DialogContent,
@@ -38,6 +40,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
 
   const { data: eventData, isLoading, error, refetch } = useGetEventById(eventId);
   const { mutate: updateEventMutation, isPending: isUpdating } = useUpdateEvent();
+  const { mutate: createDatasetItemMutation, isPending: isCreatingDataset } = useCreateDatasetItem();
 
   const handleFormDataChange = (newFormData: IUpdateEventBody) => {
     setFormData(newFormData);
@@ -85,7 +88,7 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
     if (formData.startDate && formData.endDate) {
       const startDate = new Date(formData.startDate);
       const endDate = new Date(formData.endDate);
-      
+
       if (endDate <= startDate) {
         newErrors.endDate = "End time must be after start time";
       }
@@ -143,6 +146,39 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
       onError: (error: any) => {
         const errorMessage = error.response?.data?.message || error.message || "There was an error updating the event";
         toast.error(errorMessage);
+      },
+    });
+  };
+
+  const handleAddToDataset = () => {
+    if (!eventData?.data) {
+      toast.error("Event data not available");
+      return;
+    }
+
+    const event = eventData.data;
+    
+    // Generate automatic key based on event title and current timestamp
+    const timestamp = new Date().getTime();
+    const key = `event_${event.title.toLowerCase().replace(/\s+/g, '_')}_${timestamp}`;
+    
+    // Create value from event title and description
+    const value = `${event.title} - ${event.description}`;
+    
+    const datasetPayload: ICreateDatasetItemBody = {
+      key,
+      value,
+      category: "event",
+      department: event.department?._id || undefined,
+    };
+
+    createDatasetItemMutation(datasetPayload, {
+      onSuccess: (response) => {
+        toast.success("Event added to dataset successfully!");
+        onSuccess?.();
+      },
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.message || "An error occurred while adding event to dataset!");
       },
     });
   };
@@ -221,6 +257,23 @@ export const EventDetailsDialog = ({ isOpen, onClose, eventId, onSuccess }: Even
                 <Button onClick={handleEdit} className="bg-mainTextHoverV1 hover:bg-primary/90 text-white">
                   <IconEdit className="h-4 w-4" />
                   Edit event
+                </Button>
+                <Button 
+                  onClick={handleAddToDataset}
+                  disabled={isCreatingDataset}
+                  className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+                >
+                  {isCreatingDataset ? (
+                    <>
+                      <IconLoader2 className="h-4 w-4 animate-spin" />
+                      Adding...
+                    </>
+                  ) : (
+                    <>
+                      <IconTablePlus className="h-4 w-4" />
+                      Add to Dataset
+                    </>
+                  )}
                 </Button>
               </div>
             </>

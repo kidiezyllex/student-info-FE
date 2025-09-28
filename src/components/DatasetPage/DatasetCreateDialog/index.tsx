@@ -27,7 +27,7 @@ interface DatasetCreateDialogProps {
 
 const commonCategories = [
   "event",
-  "scholarship", 
+  "scholarship",
   "notification",
 ];
 
@@ -47,7 +47,6 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -88,7 +87,6 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
       return;
     }
 
-    // Clean up form data - handle "none" value for department
     const submitData = {
       ...formData,
       department: formData.department === "none" ? undefined : formData.department,
@@ -123,7 +121,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
         size="medium"
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Add new dataset item</DialogTitle>
+          <DialogTitle className="text-mainTextV1">Add New Dataset Item</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1 h-full">
@@ -222,7 +220,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
               ) : (
                 <>
                   <IconPlus className="h-4 w-4" />
-                  Create dataset item
+                  Create Dataset Item
                 </>
               )}
             </Button>
