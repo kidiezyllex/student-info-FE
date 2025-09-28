@@ -9,7 +9,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'; 
+} from '@/components/ui/breadcrumb';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -18,8 +18,8 @@ import { EventTable } from "@/components/EventPage/EventTable";
 import { EventCreateDialog } from "@/components/EventPage/EventCreateDialog";
 import { EventDetailsDialog } from "@/components/EventPage/EventDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify";
 import { IconSearch, IconPlus, IconCalendar, IconFilter, IconX } from "@tabler/icons-react";
 import { IEvent } from "@/interface/response/event";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
@@ -34,6 +34,8 @@ export default function EventPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [filteredEvents, setFilteredEvents] = useState<IEvent[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(5);
 
   const { data: allEventsData, isLoading: isLoadingAll, refetch: refetchAll } = useGetAllEvents();
   const { data: upcomingEventsData, isLoading: isLoadingUpcoming, refetch: refetchUpcoming } = useGetUpcomingEvents();
@@ -46,7 +48,7 @@ export default function EventPage() {
   useEffect(() => {
     if (eventsData?.data) {
       let filtered = eventsData.data;
-      
+
       // Apply search filter
       if (searchQuery.trim()) {
         filtered = filtered.filter(event =>
@@ -57,10 +59,13 @@ export default function EventPage() {
           (event.department && event.department.name.toLowerCase().includes(searchQuery.toLowerCase()))
         );
       }
-      
+
       setFilteredEvents(filtered);
+      // Reset to first page when data changes
+      setCurrentPage(1);
     } else {
       setFilteredEvents([]);
+      setCurrentPage(1);
     }
   }, [eventsData, searchQuery]);
 
@@ -104,6 +109,14 @@ export default function EventPage() {
     refetchUpcoming();
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedEvents = filteredEvents.slice(startIndex, endIndex);
+
   return (
     <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
@@ -117,7 +130,7 @@ export default function EventPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      
+
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -145,16 +158,16 @@ export default function EventPage() {
                 )}
               </div>
               <Select value={eventFilter} onValueChange={handleFilterChange}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All events</SelectItem>
-                    <SelectItem value="upcoming">Upcoming events</SelectItem>
-                  </SelectContent>
-                </Select>
+                <SelectTrigger className="w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All events</SelectItem>
+                  <SelectItem value="upcoming">Upcoming events</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            
+
             <Button
               onClick={() => setIsCreateDialogOpen(true)}
               className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
@@ -181,16 +194,24 @@ export default function EventPage() {
               </div>
             ) : (
               <EventTable
-                events={filteredEvents}
+                events={paginatedEvents}
                 isSearching={!!searchQuery}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             )}
           </Card>
+          {filteredEvents.length > pageSize && (
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              total={filteredEvents.length}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </motion.div>
-      
+
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
@@ -203,13 +224,13 @@ export default function EventPage() {
         errorMessage="Failed to delete event."
         warningMessage="This will permanently remove the event and all associated data."
       />
-      
+
       <EventCreateDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSuccess={handleSuccess}
       />
-      
+
       {selectedEventId && (
         <EventDetailsDialog
           isOpen={isDetailsDialogOpen}

@@ -56,7 +56,7 @@ export default function DashboardLayout({
 			<div
 				className={cn(
 					"bg-mainDarkBackgroundV1 fixed top-0 left-0 right-0 z-50 mt-[78px]   min-h-screen transition-all duration-300",
-					isOpen ? "w-[260px]" : "w-0 md:w-16 overflow-hidden flex justify-center",
+					isOpen ? "w-[250px]" : "w-0 md:w-16 overflow-hidden flex justify-center",
 				)}
 			>
 				<div className="flex flex-col h-full bg-mainDarkBackgroundV1">
