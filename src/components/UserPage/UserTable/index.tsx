@@ -94,7 +94,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                 <TableCell>
                   <div className="flex items-center">
                     {user.studentId ? (
-                      <Badge variant="slate">
+                      <Badge variant="orange">
                         {user.studentId}
                       </Badge>
                     ) : ""}

@@ -15,7 +15,6 @@ export const useTrainAI = () => {
   return useMutation<ITrainAIResponse, Error, ITrainAIBody>({
     mutationFn: trainAI,
     onSuccess: () => {
-      // Invalidate training history to include new training session
       queryClient.invalidateQueries({ queryKey: ['ai', 'training-history'] });
     },
   });

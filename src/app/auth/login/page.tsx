@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -34,6 +34,13 @@ export default function LoginPage() {
   const [passwordResetSent, setPasswordResetSent] = useState(false)
   const [showCodeInput, setShowCodeInput] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+
+  // Prefetch common routes for faster navigation
+  useEffect(() => {
+    router.prefetch('/admin')
+    router.prefetch('/student') 
+    router.prefetch('/coordinator')
+  }, [router])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -90,16 +97,23 @@ export default function LoginPage() {
       })
       
       if (loginResponse?.status === true && loginResponse?.data?.token) {
+        // Batch localStorage operations for better performance
         if (typeof window !== 'undefined') {
-          localStorage.setItem('token', loginResponse.data.token)
-          localStorage.setItem('accessToken', loginResponse.data.token)
-          localStorage.setItem('userProfile', JSON.stringify(loginResponse))
+          const token = loginResponse.data.token
+          const userProfile = JSON.stringify(loginResponse)
+          
+          // Batch all storage operations
+          localStorage.setItem('token', token)
+          localStorage.setItem('accessToken', token)
+          localStorage.setItem('userProfile', userProfile)
+          document.cookie = `accessToken=${token}; path=/; max-age=${7 * 24 * 60 * 60}`
         }
         
         toast.success("Login successful!")
-        
         const role = loginResponse.data.role
-        router.push(`/${role}`)
+        
+        // Use router.replace for faster navigation and cleaner history
+        router.replace(`/${role}`)
       } else {
         toast.error("Login failed: No token received")
       }
@@ -154,21 +168,22 @@ export default function LoginPage() {
           password: formData.password
         })
         if (loginResponse?.status === true && loginResponse?.data?.token) {
-          
           if (typeof window !== 'undefined') {
-            localStorage.setItem('token', loginResponse.data.token)
-            localStorage.setItem('accessToken', loginResponse.data.token)
-            localStorage.setItem('userProfile', JSON.stringify(loginResponse))
-            document.cookie = `accessToken=${loginResponse.data.token}; path=/; max-age=${7 * 24 * 60 * 60}`
+            const token = loginResponse.data.token
+            const userProfile = JSON.stringify(loginResponse)
+            
+            localStorage.setItem('token', token)
+            localStorage.setItem('accessToken', token)
+            localStorage.setItem('userProfile', userProfile)
+            document.cookie = `accessToken=${token}; path=/; max-age=${7 * 24 * 60 * 60}`
           }
           
           toast.success("Login successful!")
+          const role = loginResponse.data.role
           
+          router.replace(`/${role}`)
           setShowCodeInput(false)
           setFormData(prev => ({ ...prev, verificationCode: "" }))
-          
-          const role = loginResponse.data.role
-          router.replace(`/${role}`)
         } else {
           toast.error("Login failed: No token received")
         }
@@ -329,7 +344,12 @@ export default function LoginPage() {
                   disabled={isPending || isSendingCode}
                   className="w-full h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {isSendingCode ? (
+                  {isPending && formData.email.toLowerCase().includes('admin') ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Loading...
+                    </div>
+                  ) : isSendingCode ? (
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Sending...

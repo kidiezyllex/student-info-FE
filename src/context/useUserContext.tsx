@@ -84,9 +84,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         if (storedProfile) {
           const parsedProfile = JSON.parse(storedProfile)
           setProfile(parsedProfile)
-        } else {
-          console.log("👤 No stored profile found")
-        }
+        } 
       }
     } catch (error) {
       console.error( error)

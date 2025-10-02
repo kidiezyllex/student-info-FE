@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Pagination } from "@/components/ui/pagination";
 import { DatasetTable } from "@/components/DatasetPage/DatasetTable";
 import { DatasetCreateDialog } from "@/components/DatasetPage/DatasetCreateDialog";
 import { DatasetDetailsDialog } from "@/components/DatasetPage/DatasetDetailsDialog";
@@ -34,6 +36,8 @@ export default function DatasetPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedDatasetItemId, setSelectedDatasetItemId] = useState<string | null>(null);
   const [filteredDatasetItems, setFilteredDatasetItems] = useState<IDatasetItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(5);
   const [isTraining, setIsTraining] = useState(false);
   const [showTrainingHistory, setShowTrainingHistory] = useState(false);
   const { data: datasetData, isLoading, refetch } = useGetAllDatasetItems();
@@ -62,6 +66,8 @@ export default function DatasetPage() {
     } else {
       setFilteredDatasetItems([]);
     }
+    // Reset to first page when data changes
+    setCurrentPage(1);
   }, [datasetData?.data, searchQuery, categoryFilter]);
 
   const handleTrainAI = async () => {
@@ -113,6 +119,14 @@ export default function DatasetPage() {
     }
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedDatasetItems = filteredDatasetItems.slice(startIndex, endIndex);
+
   return (
     <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
@@ -135,54 +149,37 @@ export default function DatasetPage() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-4 w-full">
             <div className="flex items-center gap-4 flex-1">
-              <div className="relative w-full md:w-96">
-                <Input
-                  placeholder="Search dataset..."
-                  value={searchQuery}
-                  onChange={handleSearch}
-                  className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-secondaryTextV1"
-                />
-                <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
-                {searchQuery && (
-                  <button
-                    onClick={handleClearSearch}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 hover:text-red-500 transition-colors"
-                    type="button"
-                  >
-                    <IconX className="w-5 h-5" />
-                  </button>
-                )}
-              </div>
               <Select value={categoryFilter || "all"} onValueChange={handleCategoryFilterChange}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All categories</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SelectTrigger className="w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All categories</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <Button
+              variant="outline"
+              onClick={() => setShowTrainingHistory(!showTrainingHistory)}
+            >
+              <IconHistory className="h-4 w-4" />
+              {showTrainingHistory ? "Hide History" : "Show History"}
+            </Button>
+            <Button
+              className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
               onClick={handleTrainAI}
               disabled={isTrainingAI || isTraining}
-              className="bg-green-600 hover:bg-green-700 text-white"
             >
               <IconBrain className="h-4 w-4" />
               {isTrainingAI || isTraining ? "Training AI..." : "Train AI"}
             </Button>
 
-            <Button
-              onClick={() => setShowTrainingHistory(!showTrainingHistory)}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <IconHistory className="h-4 w-4" />
-              {showTrainingHistory ? "Hide History" : "Show History"}
-            </Button>
+
             <Button
               onClick={() => setIsCreateDialogOpen(true)}
               className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
@@ -205,28 +202,48 @@ export default function DatasetPage() {
               </div>
             ) : (
               <Card className="p-4 mt-4 w-full border border-lightBorderV1">
-                <h3 className="text-lg font-semibold text-mainTextV1 mb-2">Training History</h3>
+                <h3 className="text-lg font-semibold text-mainTextV1 mb-4">Training History</h3>
                 {trainingHistoryData?.data && trainingHistoryData.data.length > 0 ? (
-                  <ul className="space-y-4 max-h-52 overflow-y-auto pr-2">
-                    {trainingHistoryData.data.map((item, index) => (
-                      <li key={index} className="text-secondaryTextV1 bg-[#F9F9FC] p-3 border rounded-md border-lightBorderV1 bg-backgroundV1 flex flex-col gap-1">
-                        <div className="flex justify-between items-center">
-                          <p className="font-semibold text-mainTextV1">Status: <span className={`font-normal ${item.status === "completed" ? "text-green-500" : item.status === "failed" ? "text-red-500" : "text-yellow-500"}`}>{item.status}</span></p>
-                          <p className="text-sm text-tertiaryTextV1">Started At: {formatDate(item.startedAt)}</p>
-                        </div>
-                        <p>Dataset Count: {item.datasetCount}</p>
-                        {item.categories && item.categories.length > 0 && (
-                          <p>Categories: {item.categories.join(", ")}</p>
-                        )}
-                        {item.department && (
-                          <p>Department: {item.department.name}</p>
-                        )}
-                        {item.completedAt && <p className="text-sm text-tertiaryTextV1">Completed At: {formatDate(item.completedAt)}</p>}
-                        {item.error && <p className="text-red-500">Error: {item.error}</p>}
-                        {item.createdBy && <p className="text-sm text-tertiaryTextV1">Created By: {item.createdBy.name}</p>}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="w-full overflow-auto max-h-[300px]">
+                    <Table className="border border-lightBorderV1">
+                      <TableHeader>
+                        <TableRow className="bg-[#F56C1420] hover">
+                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Status</TableHead>
+                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Dataset Count</TableHead>
+                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Categories</TableHead>
+                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
+                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Completed At</TableHead>
+                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Created By</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {trainingHistoryData.data.map((item, index) => (
+                          <TableRow key={index} className="transition-colors">
+                            <TableCell className="text-secondaryTextV1">
+                              <span className={`font-semibold capitalize ${item.status === "completed" ? "text-green-600" : item.status === "failed" ? "text-red-600" : "text-yellow-600"}`}>
+                                {item.status}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-secondaryTextV1">
+                              {item.datasetCount}
+                            </TableCell>
+                            <TableCell className="text-secondaryTextV1">
+                              {item.categories && item.categories.length > 0 ? item.categories.join(", ") : "-"}
+                            </TableCell>
+                            <TableCell className="text-secondaryTextV1">
+                              {item.department ? item.department.name : "-"}
+                            </TableCell>
+                            <TableCell className="text-secondaryTextV1">
+                              {item.completedAt ? formatDate(item.completedAt) : "-"}
+                            </TableCell>
+                            <TableCell className="text-secondaryTextV1">
+                              {item.createdBy ? item.createdBy.name : "-"}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 ) : (
                   <p className="text-secondaryTextV1">No training history found.</p>
                 )}
@@ -251,13 +268,21 @@ export default function DatasetPage() {
               </div>
             ) : (
               <DatasetTable
-                datasetItems={filteredDatasetItems}
+                datasetItems={paginatedDatasetItems}
                 isSearching={!!searchQuery || !!categoryFilter}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             )}
           </Card>
+          {filteredDatasetItems.length > pageSize && (
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              total={filteredDatasetItems.length}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </motion.div>
 

@@ -1,13 +1,18 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { useDragScroll } from "@/hooks/useDragScroll";
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
-	({ className, ...props }, ref) => (
-		<div className="w-full overflow-auto">
-			<table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
-		</div>
-	),
+	({ className, ...props }, ref) => {
+		const dragScrollRef = useDragScroll();
+		
+		return (
+			<div ref={dragScrollRef} className="w-full overflow-auto">
+				<table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
+			</div>
+		);
+	},
 );
 Table.displayName = "Table";
 

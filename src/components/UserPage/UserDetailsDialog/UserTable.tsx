@@ -78,7 +78,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                 <TableCell className="font-semibold text-mainTextV1">Student ID</TableCell>
                 <TableCell className="text-secondaryTextV1">
                   {user.studentId ? (
-                    <Badge variant="slate">{user.studentId}</Badge>
+                    <Badge variant="orange">{user.studentId}</Badge>
                   ) : (
                     <span className="text-gray-400">Not provided</span>
                   )}
@@ -90,7 +90,7 @@ export const UserTable = ({ user }: UserTableProps) => {
                 <TableCell className="text-secondaryTextV1">
                   {user.department ? (
                     <div className="flex items-center gap-1">
-                      <Badge variant="slate">{user.department.code}</Badge>
+                      <Badge variant="orange">{user.department.code}</Badge>
                       <span>{user.department.name}</span>
                     </div>
                   ) : (

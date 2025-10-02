@@ -48,7 +48,7 @@ const config: Config = {
 				},
 				bgBackground: "#F9F9FC",
 				mainBackgroundV1: "#F9F9FC",
-				mainTextV1: "#5D7186",
+				mainTextV1: "#4A5F73",
 				secondaryTextV1: "#687D92",
 				mainTextHoverV1: "#F56C14",
 				mainDarkBackgroundV1: "#1C252E",

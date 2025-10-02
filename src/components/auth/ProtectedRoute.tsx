@@ -16,7 +16,6 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
   const [isCheckingRole, setIsCheckingRole] = useState(false)
   const [isClient, setIsClient] = useState(false)
 
-
   useEffect(() => {
     setIsClient(true)
   }, [])
@@ -55,8 +54,27 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     setIsCheckingRole(false)
   }
 
-  // Show loading on server side or when checking
-  if (!isClient || isLoadingProfile || isCheckingRole) {
+  // Optimized loading states - reduced loading time by checking localStorage first
+  if (!isClient) {
+    // Check localStorage immediately for faster initial render
+    if (typeof window !== 'undefined') {
+      const storedProfile = localStorage.getItem('userProfile')
+      const hasToken = localStorage.getItem('accessToken')
+      
+      if (storedProfile && hasToken) {
+        // Return children immediately if we have stored auth data
+        return <>{children}</>
+      }
+    }
+    
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+
+  if (isLoadingProfile || isCheckingRole) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner />

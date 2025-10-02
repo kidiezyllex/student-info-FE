@@ -149,11 +149,11 @@ export default function RegisterPage() {
           
           const role = registerResponse.data.role
           if (role === 'admin') {
-            router.push('/admin')
+            window.location.href = '/admin'
           } else if (role === 'coordinator') {
-            router.push('/coordinator')
+            window.location.href = '/coordinator'
           } else {
-            router.push('/student')
+            window.location.href = '/student'
           }
         } else {
           toast.error("Registration failed: No token received")

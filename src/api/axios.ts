@@ -35,7 +35,7 @@ function getLocalAccessToken() {
 				return finalToken;
 			}
 		} catch (error) {
-			console.error("Error getting token from localStorage:", error);
+			console.error( error);
 		}
 	}
 

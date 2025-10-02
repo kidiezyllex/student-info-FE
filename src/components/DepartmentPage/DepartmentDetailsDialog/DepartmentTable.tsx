@@ -30,7 +30,7 @@ export const DepartmentTable = ({ department }: DepartmentTableProps) => {
           <TableRow className="transition-colors">
             <TableCell className="font-semibold text-mainTextV1">Department Code</TableCell>
             <TableCell className="text-secondaryTextV1">
-              <Badge variant="slate">{department.code}</Badge>
+              <Badge variant="orange">{department.code}</Badge>
             </TableCell>
           </TableRow>
 

@@ -71,7 +71,7 @@ export const DeleteDialog = ({
             variant="outline"
             onClick={onClose}
             disabled={isDeleting}
-            className="flex-1"
+            className="flex-1 !bg-transparent"
           >
             Cancel
           </Button>

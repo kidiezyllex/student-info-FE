@@ -273,7 +273,6 @@ export default function StudentScholarshipsPage() {
         </div>
       </motion.div>
 
-      {/* Scholarship Details Dialog */}
       <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
         <DialogContent size="medium" className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
           <DialogHeader>

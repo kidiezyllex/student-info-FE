@@ -24,7 +24,7 @@ export default function RoleBasedRedirect() {
           }
           return;
         } catch (error) {
-          console.error('Error parsing stored profile:', error);
+          console.error( error);
         }
       }
     }

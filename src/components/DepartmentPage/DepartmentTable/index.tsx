@@ -56,7 +56,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
-                    <Badge variant="slate">
+                    <Badge variant="orange">
                       {department.code}
                     </Badge>
                   </div>
