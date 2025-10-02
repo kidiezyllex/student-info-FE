@@ -128,7 +128,7 @@ export default function DatasetPage() {
   const paginatedDatasetItems = filteredDatasetItems.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
+    <div className="space-y-8 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -191,7 +191,7 @@ export default function DatasetPage() {
 
           {showTrainingHistory && (
             isLoadingTrainingHistory ? (
-              <div className="p-6">
+              <div className="p-4">
                 <div className="flex flex-col gap-4">
                   {[...Array(3)].map((_, index) => (
                     <div key={index} className="flex items-center gap-4">
@@ -253,7 +253,7 @@ export default function DatasetPage() {
 
           <Card className="p-0 overflow-hidden border border-lightBorderV1">
             {isLoading ? (
-              <div className="p-6">
+              <div className="p-4">
                 <div className="flex flex-col gap-4">
                   {[...Array(5)].map((_, index) => (
                     <div key={index} className="flex items-center gap-4">

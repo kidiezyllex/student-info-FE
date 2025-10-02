@@ -104,8 +104,8 @@ export default function StudentEventsPage() {
     }
 
     return (
-      <Badge variant="red">
-        <IconCircleOff className="h-3 w-3" />
+      <Badge variant="slate">
+        <IconCalendar className="w-3 h-3" />
         Ended
       </Badge>
     );
@@ -137,7 +137,7 @@ export default function StudentEventsPage() {
   };
 
   return (
-    <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
+    <div className="space-y-8 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

@@ -97,7 +97,7 @@ export default function ScholarshipStats() {
   const totalScholarships = mockScholarshipData.totalScholarships;
 
   return (
-    <Card className="p-6">
+    <Card className="p-4 !shadow-md !bg-orange-50/50">
       <div className="mb-4">
         <h3 className="text-xl font-semibold text-mainTextV1">Scholarship Statistics</h3>
         <p className="text-secondaryTextV1">
@@ -109,10 +109,10 @@ export default function ScholarshipStats() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col gap-4"
+        className="flex flex-col lg:flex-row gap-4"
       >
         {/* Scholarship Types Chart */}
-        <Card className="flex flex-col">
+        <Card className="flex flex-col flex-1">
           <CardHeader className="flex items-center justify-between">
             Scholarship Type
             <p className="text-secondaryTextV1 text-xs">Distribution by type</p>
@@ -136,7 +136,7 @@ export default function ScholarshipStats() {
         </Card>
 
         {/* Scholarship Status Chart */}
-        <Card className="flex flex-col">
+        <Card className="flex flex-col flex-1">
           <CardHeader className="flex items-center justify-between">
             Scholarship Status
             <p className="text-secondaryTextV1 text-xs">Distribution by status</p>

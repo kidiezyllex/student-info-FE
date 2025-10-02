@@ -52,7 +52,7 @@ export default function EventStats() {
   const totalEvents = mockEventData.totalEvents;
 
   return (
-    <Card className="p-6">
+    <Card className="p-4 !shadow-md !bg-orange-50/50">
       <div className="mb-4">
         <h3 className="text-xl font-semibold text-mainTextV1">Event Statistics</h3>
         <p className="text-secondaryTextV1">

@@ -13,6 +13,13 @@ import {
 } from "recharts";
 import { useState } from "react";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const mockDepartmentData = {
   2024: [
@@ -67,14 +74,14 @@ export default function DepartmentComparisonChart() {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setYear(Number(e.target.value));
+  const handleYearChange = (value: string) => {
+    setYear(Number(value));
   };
 
   const chartData = mockDepartmentData[year as keyof typeof mockDepartmentData] || mockDepartmentData[2024];
 
   return (
-    <Card className="p-6">
+    <Card className="p-4 !shadow-md !bg-orange-50/50 h-full flex flex-col">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
           <h3 className="text-xl font-semibold text-mainTextV1">Compare students by department</h3>
@@ -82,24 +89,25 @@ export default function DepartmentComparisonChart() {
             Statistics by month {year}
           </p>
         </div>
-        <select
-          className="border border-lightBorderV1 rounded-md px-4 py-2 bg-white text-mainTextV1"
-          value={year}
-          onChange={handleYearChange}
-        >
-          {Array.from({ length: 5 }, (_, i) => currentYear - i).map((y) => (
-            <option key={y} value={y}>
-              {y}
-            </option>
-          ))}
-        </select>
+        <Select value={year.toString()} onValueChange={handleYearChange}>
+          <SelectTrigger className="w-[120px] border-lightBorderV1 text-mainTextV1">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {Array.from({ length: 5 }, (_, i) => currentYear - i).map((y) => (
+              <SelectItem key={y} value={y.toString()}>
+                {y}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="h-[300px] w-full mt-8"
+        className="flex-1 w-full mt-8"
       >
         <ChartContainer config={chartConfig} className="h-full w-full">
           <ResponsiveContainer width="100%" height="100%">

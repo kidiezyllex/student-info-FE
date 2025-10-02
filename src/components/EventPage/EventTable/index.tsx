@@ -37,7 +37,8 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
       );
     } else {
       return (
-        <Badge variant="gray">
+        <Badge variant="slate">
+          <IconCalendar className="w-3 h-3" />
           Ended
         </Badge>
       );
@@ -85,13 +86,13 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col gap-2">
-                      <div className="flex items-center gap-1"> 
+                      <div className="flex items-center gap-1">
                         <AlarmClock className="w-4 h-4 text-mainTextV1" />
                         <p className="text-mainTextV1 text-nowrap text-sm">
                           {formatDate(event.startDate)}
                         </p>
                       </div>
-                      <div className="flex items-center gap-1"> 
+                      <div className="flex items-center gap-1">
                         <AlarmClockOff className="w-4 h-4 text-mainTextV1" />
                         <p className="text-secondaryTextV1 text-nowrap text-sm">
                           {formatDate(event.endDate)}

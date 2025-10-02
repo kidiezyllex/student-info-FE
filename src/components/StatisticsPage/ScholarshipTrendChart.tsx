@@ -12,6 +12,13 @@ import {
 } from "recharts";
 import { useState } from "react";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock data for scholarship applications trend
 const mockScholarshipTrendData = {
@@ -56,14 +63,14 @@ export default function ScholarshipTrendChart() {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState<number>(currentYear);
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setYear(Number(e.target.value));
+  const handleYearChange = (value: string) => {
+    setYear(Number(value));
   };
 
   const chartData = mockScholarshipTrendData[year as keyof typeof mockScholarshipTrendData] || mockScholarshipTrendData[2024];
 
   return (
-    <Card className="p-6">
+    <Card className="p-4 !shadow-md !bg-orange-50/50">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
           <h3 className="text-xl font-semibold text-mainTextV1">Scholarship Application Trend</h3>
@@ -71,17 +78,18 @@ export default function ScholarshipTrendChart() {
             Line chart showing the trend of scholarship applications in {year}
           </p>
         </div>
-        <select
-          className="border border-lightBorderV1 rounded-md px-4 py-2 bg-white text-mainTextV1"
-          value={year}
-          onChange={handleYearChange}
-        >
-          {Array.from({ length: 5 }, (_, i) => currentYear - i).map((y) => (
-            <option key={y} value={y}>
-              {y}
-            </option>
-          ))}
-        </select>
+        <Select value={year.toString()} onValueChange={handleYearChange}>
+          <SelectTrigger className="w-[120px] border-lightBorderV1 text-mainTextV1">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {Array.from({ length: 5 }, (_, i) => currentYear - i).map((y) => (
+              <SelectItem key={y} value={y.toString()}>
+                {y}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <motion.div

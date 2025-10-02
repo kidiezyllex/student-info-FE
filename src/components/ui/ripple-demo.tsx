@@ -32,7 +32,7 @@ export const RippleDemo: React.FC = () => {
           <RippleEffect
             rippleColor="rgba(59, 130, 246, 0.3)"
             duration={600}
-            className="p-6 bg-orange-100 rounded-lg cursor-pointer hover:bg-orange-200 transition-colors"
+            className="p-4 bg-orange-100 rounded-lg cursor-pointer hover:bg-orange-200 transition-colors"
           >
             <div className="text-center">
               <div className="text-2xl mb-2">🔵</div>
@@ -44,7 +44,7 @@ export const RippleDemo: React.FC = () => {
           <RippleEffect
             rippleColor="rgba(34, 197, 94, 0.3)"
             duration={500}
-            className="p-6 bg-green-100 rounded-lg cursor-pointer hover:bg-green-200 transition-colors"
+            className="p-4 bg-green-100 rounded-lg cursor-pointer hover:bg-green-200 transition-colors"
           >
             <div className="text-center">
               <div className="text-2xl mb-2">🟢</div>
@@ -56,7 +56,7 @@ export const RippleDemo: React.FC = () => {
           <RippleEffect
             rippleColor="rgba(239, 68, 68, 0.3)"
             duration={700}
-            className="p-6 bg-red-100 rounded-lg cursor-pointer hover:bg-red-200 transition-colors"
+            className="p-4 bg-red-100 rounded-lg cursor-pointer hover:bg-red-200 transition-colors"
           >
             <div className="text-center">
               <div className="text-2xl mb-2">🔴</div>

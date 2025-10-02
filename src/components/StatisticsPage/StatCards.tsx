@@ -34,7 +34,7 @@ const StatCard = ({
       className="w-full"
     >
       <Link href={link}>
-        <Card className="group cursor-pointer relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 border-0 shadow-md hover:shadow-sm transition-all duration-300 hover:-translate-y-1">
+        <Card className="group cursor-pointer relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 border shadow-md hover:shadow-sm transition-all duration-300 hover:-translate-y-1">
           {/* Background decoration */}
           <div
             className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -mr-8 -mt-8"
@@ -71,7 +71,7 @@ const StatCard = ({
             </p>
             <div className="flex items-center space-x-2">
               <div
-                className="h-1 w-12 rounded-full"
+                className="h-[6px] w-12 rounded-full"
                 style={{ backgroundColor: color }}
               />
               <span className="text-xs text-gray-500 font-semibold">
@@ -82,7 +82,7 @@ const StatCard = ({
 
           {/* Hover effect overlay */}
           <div
-            className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-5 transition-opacity duration-300"
+            className="absolute inset-0 bg-gradient-to-br opacity-25 transition-opacity duration-300"
             style={{ backgroundImage: `linear-gradient(135deg, ${color} 0%, transparent 100%)` }}
           />
         </Card></Link>

@@ -185,14 +185,14 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
     }
 
     const notification = notificationData.data;
-    
+
     // Generate automatic key based on notification title and current timestamp
     const timestamp = new Date().getTime();
     const key = `notification_${notification.title.toLowerCase().replace(/\s+/g, '_')}_${timestamp}`;
-    
+
     // Create value from notification title and content
     const value = `${notification.title} - ${notification.content}`;
-    
+
     const datasetPayload: ICreateDatasetItemBody = {
       key,
       value,
@@ -271,64 +271,6 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="type" className="text-mainTextV1">
-                  Type {isEditing && <span className="text-red-500">*</span>}
-                </Label>
-                {isEditing ? (
-                  <Select value={formData.type} onValueChange={(value) => handleSelectChange("type", value)}>
-                    <SelectTrigger >
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {notificationTypes.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type.charAt(0).toUpperCase() + type.slice(1)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <Input
-                    value={formData.type ? `${formData.type.charAt(0).toUpperCase()}${formData.type.slice(1)}` : ""}
-                    disabled={true}
-                    className="bg-gray-50 border-lightBorderV1"
-                  />
-                )}
-                {errors.type && (
-                  <p className="text-red-500 text-sm">{errors.type}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="department" className="text-mainTextV1">
-                  Department (Optional)
-                </Label>
-                {isEditing ? (
-                  <Select value={formData.department || undefined} onValueChange={(value) => handleSelectChange("department", value || "")}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select department (optional)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="">All departments</SelectItem>
-                      {departmentsData?.data?.map((department) => (
-                        <SelectItem key={department._id} value={department._id}>
-                          {department.name} ({department.code})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <Input
-                    value={notificationData?.data?.department?.name || "All departments"}
-                    disabled={true}
-                    className="bg-gray-50 border-lightBorderV1"
-                  />
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
                 <Label htmlFor="startDate" className="text-mainTextV1">
                   Start Date {isEditing && <span className="text-red-500">*</span>}
                 </Label>
@@ -367,6 +309,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
 
             <div className="flex items-center space-x-2">
               <Checkbox
+                className="h-6 w-6"
                 id="isImportant"
                 checked={formData.isImportant}
                 onCheckedChange={handleCheckboxChange}
@@ -404,7 +347,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
                     <IconEdit className="h-4 w-4" />
                     Edit notification
                   </Button>
-                  <Button 
+                  <Button
                     onClick={handleAddToDataset}
                     disabled={isCreatingDataset}
                     className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
@@ -435,8 +378,8 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
                       </>
                     ) : (
                       <>
-                       <IconCheck className="h-4 w-4" />
-                       Save changes
+                        <IconCheck className="h-4 w-4" />
+                        Save changes
                       </>
                     )}
                   </Button>

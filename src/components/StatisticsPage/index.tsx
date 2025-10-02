@@ -29,7 +29,7 @@ const item = {
 
 export default function StatisticsPage() {
 	return (
-		<div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
+		<div className="space-y-8 bg-white p-4 rounded-lg border border-lightBorderV1">
 			<Breadcrumb>
 				<BreadcrumbList>
 					<BreadcrumbItem>
@@ -51,20 +51,19 @@ export default function StatisticsPage() {
 					<StatCards />
 				</motion.div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-					<motion.div variants={item}>
-						<ScholarshipStats />
-					</motion.div>
-					<motion.div variants={item}>
-						<EventStats />
-					</motion.div>
-				</div>
+				<motion.div variants={item}>
+					<ScholarshipStats />
+				</motion.div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-					<motion.div variants={item}>
+				<motion.div variants={item}>
+					<EventStats />
+				</motion.div>
+
+				<div className="flex flex-col lg:flex-row gap-8 items-stretch">
+					<motion.div variants={item} className="flex-1 flex flex-col w-[48%]">
 						<StudentRegistrationChart />
 					</motion.div>
-					<motion.div variants={item}>
+					<motion.div variants={item} className="flex-1 flex flex-col w-[48%]">
 						<DepartmentComparisonChart />
 					</motion.div>
 				</div>

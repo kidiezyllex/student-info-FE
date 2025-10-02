@@ -5,10 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useCreateNotification } from "@/hooks/useNotification";
-import { useGetAllDepartments } from "@/hooks/useDepartment";
 import { ICreateNotificationBody } from "@/interface/request/notification";
 import { toast } from "react-toastify";
 import { IconLoader2, IconBell, IconPlus } from "@tabler/icons-react";
@@ -26,18 +24,12 @@ interface NotificationCreateDialogProps {
   onSuccess?: () => void;
 }
 
-const notificationTypes = [
-  "scholarship",
-  "event",
-  "notification"
-];
 
 export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: NotificationCreateDialogProps) => {
   const [formData, setFormData] = useState<ICreateNotificationBody>({
     title: "",
     content: "",
-    type: "",
-    department: null, // Changed from empty string to null
+    type: "notification", // Default to "notification"
     startDate: "",
     endDate: "",
     isImportant: false,
@@ -45,7 +37,6 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { mutate: createNotificationMutation, isPending } = useCreateNotification();
-  const { data: departmentsData } = useGetAllDepartments();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -63,6 +54,28 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
     }
   };
 
+  const handleDateTimeChange = (name: string, value: string) => {
+    // Convert datetime-local value to ISO string for backend
+    const isoValue = value ? new Date(value).toISOString() : "";
+    setFormData({ ...formData, [name]: isoValue });
+
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
+  };
+
+  const convertFromISOString = (isoString: string | undefined) => {
+    if (!isoString) return "";
+    // Convert ISO string to datetime-local format (YYYY-MM-DDTHH:MM)
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
   const handleCheckboxChange = (checked: boolean) => {
     setFormData({ ...formData, isImportant: checked });
   };
@@ -78,9 +91,6 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
       newErrors.content = "Content is required";
     }
 
-    if (!formData.type.trim()) {
-      newErrors.type = "Type is required";
-    }
 
     if (!formData.startDate?.trim()) {
       newErrors.startDate = "Start date is required";
@@ -112,7 +122,6 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
 
     const submitData = {
       ...formData,
-      department: formData.department || undefined,
     };
 
     createNotificationMutation(submitData, {
@@ -131,8 +140,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
     setFormData({
       title: "",
       content: "",
-      type: "",
-      department: null, // Reset to null
+      type: "notification", // Reset to default "notification"
       startDate: "",
       endDate: "",
       isImportant: false,
@@ -185,47 +193,6 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="type" className="text-mainTextV1">
-                Type <span className="text-red-500">*</span>
-              </Label>
-              <Select value={formData.type} onValueChange={(value) => handleSelectChange("type", value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {notificationTypes.map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type.charAt(0).toUpperCase() + type.slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {errors.type && (
-                <p className="text-red-500 text-sm">{errors.type}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="department" className="text-mainTextV1">
-                Department (Optional)
-              </Label>
-              <Select value={formData.department || "all-departments"} onValueChange={(value) => handleSelectChange("department", value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select department (optional)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all-departments">All departments</SelectItem>
-                  {departmentsData?.data?.map((department) => (
-                    <SelectItem key={department._id} value={department._id}>
-                      {department.name} ({department.code})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -235,10 +202,10 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
               <Input
                 id="startDate"
                 name="startDate"
-                type="date"
-                value={formData.startDate}
-                onChange={handleChange}
-                className={`${errors.startDate ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+                type="datetime-local"
+                value={convertFromISOString(formData.startDate)}
+                onChange={(e) => handleDateTimeChange('startDate', e.target.value)}
+                className={`mt-1 ${errors.startDate ? 'border-red-500' : ''}`}
               />
               {errors.startDate && (
                 <p className="text-red-500 text-sm">{errors.startDate}</p>
@@ -252,10 +219,10 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
               <Input
                 id="endDate"
                 name="endDate"
-                type="date"
-                value={formData.endDate}
-                onChange={handleChange}
-                className={`${errors.endDate ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+                type="datetime-local"
+                value={convertFromISOString(formData.endDate)}
+                onChange={(e) => handleDateTimeChange('endDate', e.target.value)}
+                className={`mt-1 ${errors.endDate ? 'border-red-500' : ''}`}
               />
               {errors.endDate && (
                 <p className="text-red-500 text-sm">{errors.endDate}</p>
@@ -265,6 +232,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
 
           <div className="flex items-center space-x-2">
             <Checkbox
+             className="h-6 w-6"
               id="isImportant"
               checked={formData.isImportant}
               onCheckedChange={handleCheckboxChange}

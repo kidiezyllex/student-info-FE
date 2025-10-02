@@ -20,18 +20,9 @@ import { NotificationDetailsDialog } from "@/components/NotificationPage/Notific
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconSearch, IconPlus, IconFilter, IconX } from "@tabler/icons-react";
+import { IconSearch, IconPlus, IconX } from "@tabler/icons-react";
 import { INotification } from "@/interface/response/notification";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
-
-const notificationTypes = [
-  "announcement",
-  "academic",
-  "scholarship",
-  "event",
-  "system",
-  "urgent"
-];
 
 export default function NotificationPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -52,18 +43,15 @@ export default function NotificationPage() {
     if (notificationsData?.data) {
       let filtered = notificationsData.data;
 
-      // Apply type filter
       if (typeFilter) {
         filtered = filtered.filter(notification => notification.type === typeFilter);
       }
 
-      // Apply importance filter
       if (importanceFilter) {
         const isImportant = importanceFilter === "important";
         filtered = filtered.filter(notification => notification.isImportant === isImportant);
       }
 
-      // Apply search filter
       if (searchQuery.trim()) {
         filtered = filtered.filter(notification =>
           notification.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -74,7 +62,6 @@ export default function NotificationPage() {
       }
 
       setFilteredNotifications(filtered);
-      // Reset to first page when data changes
       setCurrentPage(1);
     } else {
       setFilteredNotifications([]);
@@ -90,9 +77,6 @@ export default function NotificationPage() {
     setSearchQuery("");
   };
 
-  const handleTypeFilterChange = (value: string) => {
-    setTypeFilter(value === "all" ? "" : value);
-  };
 
   const handleImportanceFilterChange = (value: string) => {
     setImportanceFilter(value === "all" ? "" : value);
@@ -130,7 +114,7 @@ export default function NotificationPage() {
   const paginatedNotifications = filteredNotifications.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-8 bg-mainBackgroundV1 p-6 rounded-lg border border-lightBorderV1">
+    <div className="space-y-8 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -169,19 +153,6 @@ export default function NotificationPage() {
                   </button>
                 )}
               </div>
-              <Select value={typeFilter || "all"} onValueChange={handleTypeFilterChange}>
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All types</SelectItem>
-                  {notificationTypes.map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type.charAt(0).toUpperCase() + type.slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
               <Select value={importanceFilter || "all"} onValueChange={handleImportanceFilterChange}>
                 <SelectTrigger className="w-40">
                   <SelectValue />
@@ -205,7 +176,7 @@ export default function NotificationPage() {
 
           <Card className="p-0 overflow-hidden border border-lightBorderV1">
             {isLoading ? (
-              <div className="p-6">
+              <div className="p-4">
                 <div className="flex flex-col gap-4">
                   {[...Array(5)].map((_, index) => (
                     <div key={index} className="flex items-center gap-4">
