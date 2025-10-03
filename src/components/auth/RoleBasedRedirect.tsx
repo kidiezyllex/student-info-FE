@@ -18,9 +18,9 @@ export default function RoleBasedRedirect() {
           const userRole = parsedProfile?.data?.role;
           
           if (userRole === 'student') {
-            router.replace('/student');
+            router.push('/student');
           } else if (userRole === 'admin' || userRole === 'coordinator') {
-            router.replace('/admin');
+            router.push('/admin');
           }
           return;
         } catch (error) {
@@ -29,14 +29,13 @@ export default function RoleBasedRedirect() {
       }
     }
     
-    // Fallback to context profile
     if (!isLoadingProfile && profile?.data) {
       const userRole = profile.data.role;
       
       if (userRole === 'student') {
-        router.replace('/student');
+        router.push('/student');
       } else {
-        router.replace('/admin');
+        router.push('/admin');
       }
     }
   }, [profile, isLoadingProfile, router]);

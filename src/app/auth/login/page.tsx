@@ -114,17 +114,14 @@ export default function LoginPage() {
         toast.success("Login successful!")
         const role = loginResponse.data.role
         
-        // Use router.replace for faster navigation and cleaner history
         const responseData = loginResponse.data as any
         if (role === 'coordinator' && responseData.department) {
-          // Handle department as object or string
           const departmentName = typeof responseData.department === 'string' 
             ? responseData.department 
             : responseData.department?.name || responseData.department?.code || 'unknown'
-          console.log('Navigating to department:', departmentName)
-          router.replace(`/coordinator/${departmentName}`)
+          router.push(`/coordinator/${departmentName}`)
         } else {
-          router.replace(`/${role}`)
+          router.push(`/${role}`)
         }
       } else {
         toast.error("Login failed: No token received")
@@ -206,9 +203,9 @@ export default function LoginPage() {
               ? responseData.department 
               : responseData.department?.name || responseData.department?.code || 'unknown'
             console.log('Navigating to department (Verification):', departmentName)
-            router.replace(`/coordinator/${departmentName}`)
+            router.push(`/coordinator/${departmentName}`)
           } else {
-            router.replace(`/${role}`)
+            router.push(`/${role}`)
           }
           setShowCodeInput(false)
           setFormData(prev => ({ ...prev, verificationCode: "" }))
