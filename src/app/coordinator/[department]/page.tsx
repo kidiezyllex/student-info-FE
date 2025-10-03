@@ -12,11 +12,11 @@ import {
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { IconCalendar, IconGift, IconBell, IconUsers } from "@tabler/icons-react";
 import Image from "next/image";
+import DashboardHeader from "@/components/Common/DashboardHeader";
 
 const container = {
     hidden: { opacity: 0 },
@@ -148,7 +148,6 @@ export default function CoordinatorDashboard() {
 
   useEffect(() => {
     if (params.department) {
-      // Decode the department name from URL
       const decodedDepartment = decodeURIComponent(params.department as string);
       setDepartmentName(decodedDepartment);
     }
@@ -214,32 +213,11 @@ export default function CoordinatorDashboard() {
       </Breadcrumb>
 
       {/* Department Header */}
-      <motion.div 
-        variants={item}
-        initial="hidden"
-        animate="show"
-        className="relative bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-lg p-4 overflow-hidden"
-      >
-        {/* Background Image */}
-        <Image
-          src="/images/circle-scatter-haikei.svg"
-          alt="Background pattern"
-          fill
-          className="absolute inset-0 object-cover opacity-20 z-0"
-        />
-        
-        {/* Content */}
-        <div className="relative z-10 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Coordinator Dashboard
-            </h1>
-            <p className="text-gray-600">
-              Welcome to <span className="font-semibold text-orange-600">{departmentName}</span> Department Management
-            </p>
-          </div>
-        </div>
-      </motion.div>
+      <DashboardHeader 
+        title="Coordinator Dashboard"
+        description={`Welcome to ${departmentName} Department Management`}
+        username={profile?.data?.name}
+      />
 
       <motion.div
         className="space-y-8"

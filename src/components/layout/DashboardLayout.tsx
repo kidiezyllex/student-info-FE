@@ -9,11 +9,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
-import DashboardHeader from "../Common/DashboardHeader";
 import { getDashboardMenuItems, getStudentMenuItems, getCoordinatorMenuItems } from "./dashboardMenuItems";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { RippleEffect } from "@/components/ui/ripple-effect";
 import { useUser } from "@/context/useUserContext";
+import CommonHeader from "../Common/CommonHeader";
 
 export default function DashboardLayout({
 	children,
@@ -66,7 +66,7 @@ export default function DashboardLayout({
 	return (
 		<div className="min-h-screen bg-mainDarkBackgroundV1">
 			{/* Header - Fixed at top */}
-			<DashboardHeader />
+			<CommonHeader />
 			
 			{/* Content area below header */}
 			<div className="flex mt-[78px] min-h-[calc(100vh-78px)]">

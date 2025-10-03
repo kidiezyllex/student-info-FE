@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { IconGift, IconCalendar, IconBell} from "@tabler/icons-react";
 import Image from "next/image";
+import DashboardHeader from "@/components/Common/DashboardHeader";
 
 const container = {
     hidden: { opacity: 0 },
@@ -208,6 +209,13 @@ export default function StudentDashboard() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
+      {/* Student Dashboard Header */}
+      <DashboardHeader 
+        title="Student Dashboard"
+        description="Welcome to your student portal - Access your academic resources and services"
+        username={profile?.data?.name}
+      />
 
       <motion.div
         className="space-y-8"
