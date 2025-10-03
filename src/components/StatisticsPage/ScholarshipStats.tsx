@@ -99,8 +99,8 @@ export default function ScholarshipStats() {
   return (
     <Card className="p-4 !shadow-md !bg-orange-50/50">
       <div className="mb-4">
-        <h3 className="text-xl font-semibold text-mainTextV1">Scholarship Statistics</h3>
-        <p className="text-secondaryTextV1">
+        <h3 className="text-lg font-semibold text-mainTextV1">Scholarship Statistics</h3>
+        <p className="text-secondaryTextV1 text-sm">
           Total: <span className="font-semibold text-primary">{totalScholarships}</span> scholarships
         </p>
       </div>

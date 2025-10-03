@@ -269,7 +269,7 @@ export default function StudentNotificationsPage() {
                 <h3 className="text-lg font-semibold text-mainTextV1 mb-2">
                   No notifications found
                 </h3>
-                <p className="text-secondaryTextV1">
+                <p className="text-secondaryTextV1 text-sm">
                   {searchQuery || notificationFilter !== "all" ? 
                     "Try adjusting your search terms or filters." : 
                     "You don't have any notifications yet."

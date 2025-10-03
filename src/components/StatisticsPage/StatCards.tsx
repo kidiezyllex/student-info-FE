@@ -34,7 +34,11 @@ const StatCard = ({
       className="w-full"
     >
       <Link href={link}>
-        <Card className="group cursor-pointer relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 border shadow-md hover:shadow-sm transition-all duration-300 hover:-translate-y-1">
+        <Card 
+        style={{
+          border: `1px solid ${color}80`
+        }}
+        className="group cursor-pointer relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 transition-all duration-300 hover:-translate-y-1">
           {/* Background decoration */}
           <div
             className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -mr-8 -mt-8"

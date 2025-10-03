@@ -371,7 +371,7 @@ export default function MessagePage() {
             <div className="text-center">
               <IconUsers className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-mainTextV1 mb-2">Select a conversation</h3>
-              <p className="text-secondaryTextV1">Choose a conversation from the sidebar to start messaging</p>
+              <p className="text-secondaryTextV1 text-sm">Choose a conversation from the sidebar to start messaging</p>
             </div>
           </div>
         )}

@@ -53,15 +53,11 @@ export const checkAuthAndRedirect = (
 ): boolean => {
   if (profileData && !isValidProfileResponse(profileData)) {
     clearAuthData();
-    // TEMPORARILY DISABLED FOR DEBUGGING
-    // redirectFn("/auth/login");
     return false;
   }
   
   const isAuth = isAuthenticated();
   if (!isAuth) {
-    // TEMPORARILY DISABLED FOR DEBUGGING
-    // redirectFn("/auth/login");
     return false;
   }
   

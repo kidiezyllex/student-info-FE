@@ -291,7 +291,7 @@ export default function StudentEventsPage() {
                 <h3 className="text-lg font-semibold text-mainTextV1 mb-2">
                   No events found
                 </h3>
-                <p className="text-secondaryTextV1">
+                <p className="text-secondaryTextV1 text-sm">
                   {searchQuery ?
                     "Try adjusting your search terms or filters." :
                     "There are no events available at the moment."
@@ -335,28 +335,28 @@ export default function StudentEventsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">Start Date & Time</h4>
-                  <p className="text-secondaryTextV1">
+                  <p className="text-secondaryTextV1 text-sm">
                     {formatDateTime(selectedEvent.startDate)}
                   </p>
                 </div>
 
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">End Date & Time</h4>
-                  <p className="text-secondaryTextV1">
+                  <p className="text-secondaryTextV1 text-sm">
                     {formatDateTime(selectedEvent.endDate)}
                   </p>
                 </div>
 
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">Location</h4>
-                  <p className="text-secondaryTextV1">
+                  <p className="text-secondaryTextV1 text-sm">
                     {selectedEvent.location}
                   </p>
                 </div>
 
                 <div>
                   <h4 className="text-md font-semibold text-mainTextV1 mb-2">Organizer</h4>
-                  <p className="text-secondaryTextV1">
+                  <p className="text-secondaryTextV1 text-sm">
                     {selectedEvent.organizer}
                   </p>
                 </div>

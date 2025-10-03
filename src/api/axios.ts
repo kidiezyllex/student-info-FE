@@ -6,17 +6,12 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 }
 
 function getLocalAccessToken() {
-	// First try to get token from cookies
 	let accessToken = cookies.get("accessToken");
-
-	// If no cookie token, try localStorage
 	if (!accessToken && typeof window !== "undefined") {
 		try {
-			// Try different localStorage keys
 			const tokenFromStorage = localStorage.getItem("token");
 			const directAccessToken = localStorage.getItem("accessToken");
 			
-			// Parse token if it's stored as JSON
 			let parsedToken = null;
 			if (tokenFromStorage) {
 				try {
@@ -27,7 +22,6 @@ function getLocalAccessToken() {
 				}
 			}
 			
-			// Use the first available token
 			const finalToken = parsedToken || directAccessToken;
 			
 			if (finalToken) {
@@ -65,7 +59,6 @@ instance.interceptors.request.use(
 	},
 );
 
-// Response interceptor to handle authentication errors
 instance.interceptors.response.use(
 	(response) => response,
 	async (error) => {
@@ -76,8 +69,6 @@ instance.interceptors.response.use(
 				localStorage.removeItem("accessToken");
 				localStorage.removeItem("token");
 				cookies.remove("accessToken");
-				// TEMPORARILY DISABLED FOR DEBUGGING
-				// window.location.href = "/auth/login";
 			}
 		}
 		

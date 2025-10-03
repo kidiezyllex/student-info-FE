@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
 import DashboardHeader from "../Common/DashboardHeader";
-import { getDashboardMenuItems, getStudentMenuItems } from "./dashboardMenuItems";
+import { getDashboardMenuItems, getStudentMenuItems, getCoordinatorMenuItems } from "./dashboardMenuItems";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { RippleEffect } from "@/components/ui/ripple-effect";
 import { useUser } from "@/context/useUserContext";
@@ -28,7 +28,19 @@ export default function DashboardLayout({
 
 	// Get menu items based on user role
 	const isStudent = profile?.data?.role === 'student';
-	const dashboardMenuItems = isStudent ? getStudentMenuItems() : getDashboardMenuItems();
+	const isCoordinator = profile?.data?.role === 'coordinator';
+	
+	let dashboardMenuItems: MenuItem[];
+	if (isStudent) {
+		dashboardMenuItems = getStudentMenuItems();
+	} else if (isCoordinator) {
+		// Extract department name from profile data
+		const profileData = profile?.data as any;
+		const departmentName = profileData?.department?.name || profileData?.department?.code || 'unknown';
+		dashboardMenuItems = getCoordinatorMenuItems(departmentName);
+	} else {
+		dashboardMenuItems = getDashboardMenuItems();
+	}
 
 	const isMenuActive = (menu: MenuItem) => {
 		if (menu.path && pathname === menu.path) return true;

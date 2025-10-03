@@ -73,8 +73,8 @@ export default function ScholarshipTrendChart() {
     <Card className="p-4 !shadow-md !bg-orange-50/50">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
-          <h3 className="text-xl font-semibold text-mainTextV1">Scholarship Application Trend</h3>
-          <p className="text-secondaryTextV1">
+          <h3 className="text-lg font-semibold text-mainTextV1">Scholarship Application Trend</h3>
+          <p className="text-secondaryTextV1 text-sm">
             Line chart showing the trend of scholarship applications in {year}
           </p>
         </div>

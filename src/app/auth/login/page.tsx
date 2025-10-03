@@ -35,7 +35,6 @@ export default function LoginPage() {
   const [showCodeInput, setShowCodeInput] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  // Prefetch common routes for faster navigation
   useEffect(() => {
     router.prefetch('/admin')
     router.prefetch('/student') 
@@ -59,6 +58,7 @@ export default function LoginPage() {
   const validateForm = () => {
     const newErrors: typeof errors = {}
     const isAdminEmail = formData.email.toLowerCase().includes('admin')
+    const isCoordinatorEmail = formData.email.toLowerCase().includes('coordinator')
     
     if (!formData.email) {
       newErrors.email = "Email is required"
@@ -66,16 +66,15 @@ export default function LoginPage() {
       newErrors.email = "Invalid email format"
     }
     
-    // 对于admin邮箱或非验证码模式，密码是必需的
-    if ((!showCodeInput || isAdminEmail) && !formData.password) {
+    if ((!showCodeInput || isAdminEmail || isCoordinatorEmail) && !formData.password) {
       newErrors.password = "Password is required"
-    } else if ((!showCodeInput || isAdminEmail) && formData.password && formData.password.length < 6) {
+    } else if ((!showCodeInput || isAdminEmail || isCoordinatorEmail) && formData.password && formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters"
     }
     
-    if (showCodeInput && !isAdminEmail && !formData.verificationCode) {
+    if (showCodeInput && !isAdminEmail && !isCoordinatorEmail && !formData.verificationCode) {
       newErrors.verificationCode = "Verification code is required"
-    } else if (showCodeInput && !isAdminEmail && formData.verificationCode && formData.verificationCode.length !== 6) {
+    } else if (showCodeInput && !isAdminEmail && !isCoordinatorEmail && formData.verificationCode && formData.verificationCode.length !== 6) {
       newErrors.verificationCode = "Verification code must be 6 digits"
     }
     
@@ -96,13 +95,16 @@ export default function LoginPage() {
         password: formData.password
       })
       
+      console.log('Login API Response:', loginResponse)
+      console.log('Response Data:', loginResponse?.data)
+      console.log('Department Field:', loginResponse?.data?.department)
+      console.log('Department Type:', typeof loginResponse?.data?.department)
+      
       if (loginResponse?.status === true && loginResponse?.data?.token) {
-        // Batch localStorage operations for better performance
         if (typeof window !== 'undefined') {
           const token = loginResponse.data.token
           const userProfile = JSON.stringify(loginResponse)
           
-          // Batch all storage operations
           localStorage.setItem('token', token)
           localStorage.setItem('accessToken', token)
           localStorage.setItem('userProfile', userProfile)
@@ -113,7 +115,17 @@ export default function LoginPage() {
         const role = loginResponse.data.role
         
         // Use router.replace for faster navigation and cleaner history
-        router.replace(`/${role}`)
+        const responseData = loginResponse.data as any
+        if (role === 'coordinator' && responseData.department) {
+          // Handle department as object or string
+          const departmentName = typeof responseData.department === 'string' 
+            ? responseData.department 
+            : responseData.department?.name || responseData.department?.code || 'unknown'
+          console.log('Navigating to department:', departmentName)
+          router.replace(`/coordinator/${departmentName}`)
+        } else {
+          router.replace(`/${role}`)
+        }
       } else {
         toast.error("Login failed: No token received")
       }
@@ -133,7 +145,7 @@ export default function LoginPage() {
       setErrors({ email: "Invalid email format" })
       return
     }
-    if (formData.email.toLowerCase().includes('admin')) {
+    if (formData.email.toLowerCase().includes('admin') || formData.email.toLowerCase().includes('coordinator')) {
       await handleDirectLogin()
       return
     }
@@ -167,6 +179,12 @@ export default function LoginPage() {
           email: formData.email,
           password: formData.password
         })
+        
+        console.log('Login API Response (Verification Flow):', loginResponse)
+        console.log('Response Data (Verification):', loginResponse?.data)
+        console.log('Department Field (Verification):', loginResponse?.data?.department)
+        console.log('Department Type (Verification):', typeof loginResponse?.data?.department)
+        
         if (loginResponse?.status === true && loginResponse?.data?.token) {
           if (typeof window !== 'undefined') {
             const token = loginResponse.data.token
@@ -181,7 +199,17 @@ export default function LoginPage() {
           toast.success("Login successful!")
           const role = loginResponse.data.role
           
-          router.replace(`/${role}`)
+          const responseData = loginResponse.data as any
+          if (role === 'coordinator' && responseData.department) {
+            // Handle department as object or string
+            const departmentName = typeof responseData.department === 'string' 
+              ? responseData.department 
+              : responseData.department?.name || responseData.department?.code || 'unknown'
+            console.log('Navigating to department (Verification):', departmentName)
+            router.replace(`/coordinator/${departmentName}`)
+          } else {
+            router.replace(`/${role}`)
+          }
           setShowCodeInput(false)
           setFormData(prev => ({ ...prev, verificationCode: "" }))
         } else {
@@ -280,7 +308,7 @@ export default function LoginPage() {
                 </div>
 
 
-                {(!showCodeInput || formData.email.toLowerCase().includes('admin')) && (
+                {(!showCodeInput || formData.email.toLowerCase().includes('admin') || formData.email.toLowerCase().includes('coordinator')) && (
                   <div>
                     <Label htmlFor="password" className="text-sm font-semibold text-gray-700 mb-2 block">
                       Password
@@ -315,7 +343,7 @@ export default function LoginPage() {
                   </div>
                 )}
 
-                {showCodeInput && !formData.email.toLowerCase().includes('admin') && (
+                {showCodeInput && !formData.email.toLowerCase().includes('admin') && !formData.email.toLowerCase().includes('coordinator') && (
                   <div>
                     <Label htmlFor="verificationCode" className="text-sm font-semibold text-gray-700 mb-2 block">
                       Verification Code (6 digits)
@@ -338,13 +366,13 @@ export default function LoginPage() {
                 )}
               </div>
 
-              {!showCodeInput || formData.email.toLowerCase().includes('admin') ? (
+              {!showCodeInput || formData.email.toLowerCase().includes('admin') || formData.email.toLowerCase().includes('coordinator') ? (
                 <Button
                   type="submit"
                   disabled={isPending || isSendingCode}
                   className="w-full h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {isPending && formData.email.toLowerCase().includes('admin') ? (
+                  {isPending && (formData.email.toLowerCase().includes('admin') || formData.email.toLowerCase().includes('coordinator')) ? (
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Loading...
@@ -354,7 +382,7 @@ export default function LoginPage() {
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Sending...
                     </div>
-                  ) : formData.email.toLowerCase().includes('admin') ? (
+                  ) : (formData.email.toLowerCase().includes('admin') || formData.email.toLowerCase().includes('coordinator')) ? (
                     "Login"
                   ) : (
                     "Continue"

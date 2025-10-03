@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useGetUserProfile } from "@/hooks/useUser";
+import { useParams } from "next/navigation";
 import { useUser } from "@/context/useUserContext";
+import { useEffect, useState } from "react";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -15,7 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { IconGift, IconCalendar, IconBell} from "@tabler/icons-react";
+import { IconCalendar, IconGift, IconBell, IconUsers } from "@tabler/icons-react";
 import Image from "next/image";
 
 const container = {
@@ -141,14 +141,25 @@ const StatCard = ({ icon: Icon, title, count, color }: {
     );
 };
 
-export default function StudentDashboard() {
+export default function CoordinatorDashboard() {
+  const params = useParams();
   const { profile, isAuthenticated, isLoadingProfile } = useUser();
+  const [departmentName, setDepartmentName] = useState<string>("");
+
+  useEffect(() => {
+    if (params.department) {
+      // Decode the department name from URL
+      const decodedDepartment = decodeURIComponent(params.department as string);
+      setDepartmentName(decodedDepartment);
+    }
+  }, [params.department]);
+
   if (isLoadingProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading user profile...</p>
+          <p className="text-gray-600">Loading coordinator profile...</p>
         </div>
       </div>
     );
@@ -158,7 +169,7 @@ export default function StudentDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600">Please sign in to access the student dashboard.</p>
+          <p className="text-gray-600">Please sign in to access the coordinator dashboard.</p>
         </div>
       </div>
     );
@@ -166,31 +177,24 @@ export default function StudentDashboard() {
 
   const quickActions = [
     {
-        href: "/student/chat",
-        icon: "/images/student/ai-chat.png",
-        title: "AI Chat",
-        description: "Get instant help and answers from our AI assistant",
-        color: "#8B5CF6"
-    },
-    {
-        href: "/student/scholarships",
-        icon: "/images/student/scholarships.png",
-        title: "Scholarships",
-        description: "Browse available scholarships and opportunities",
-        color: "#10B981"
-    },
-    {
-        href: "/student/events",
+        href: `/coordinator/${encodeURIComponent(departmentName)}/events`,
         icon: "/images/student/events.png",
-        title: "Events",
-        description: "Discover upcoming events and activities",
+        title: "Event Management",
+        description: "Create and manage department events",
         color: "#3B82F6"
     },
     {
-        href: "/student/notifications",
+        href: `/coordinator/${encodeURIComponent(departmentName)}/scholarships`,
+        icon: "/images/student/scholarships.png",
+        title: "Scholarship Management",
+        description: "Manage scholarships and applications",
+        color: "#10B981"
+    },
+    {
+        href: `/coordinator/${encodeURIComponent(departmentName)}/notifications`,
         icon: "/images/student/notifications.png",
-        title: "Notifications",
-        description: "View your latest notifications and updates",
+        title: "Notification Management",
+        description: "Send notifications to students",
         color: "#F59E0B"
     }
   ];
@@ -200,14 +204,42 @@ export default function StudentDashboard() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/student">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href={`/coordinator/${encodeURIComponent(departmentName)}`}>Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Overview</BreadcrumbPage>
+            <BreadcrumbPage>{departmentName} Department</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
+      {/* Department Header */}
+      <motion.div 
+        variants={item}
+        initial="hidden"
+        animate="show"
+        className="relative bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-lg p-4 overflow-hidden"
+      >
+        {/* Background Image */}
+        <Image
+          src="/images/circle-scatter-haikei.svg"
+          alt="Background pattern"
+          fill
+          className="absolute inset-0 object-cover opacity-20 z-0"
+        />
+        
+        {/* Content */}
+        <div className="relative z-10 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Coordinator Dashboard
+            </h1>
+            <p className="text-gray-600">
+              Welcome to <span className="font-semibold text-orange-600">{departmentName}</span> Department Management
+            </p>
+          </div>
+        </div>
+      </motion.div>
 
       <motion.div
         className="space-y-8"
@@ -217,8 +249,8 @@ export default function StudentDashboard() {
       >
         {/* Quick Actions */}
         <motion.div variants={item}>
-          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Management Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {quickActions.map((action, index) => (
               <QuickActionCard
                 key={action.title}
@@ -233,31 +265,67 @@ export default function StudentDashboard() {
           </div>
         </motion.div>
 
-        {/* 简化的统计卡片 */}
+        {/* Statistics Overview */}
         <motion.div variants={item}>
-          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Quick Overview</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <StatCard
-              icon={IconBell}
-              title="Notifications"
-              count={0}
-              color="#F59E0B"
-            />
+          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Department Overview</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <StatCard
               icon={IconCalendar}
-              title="Upcoming Events"
-              count={0}
+              title="Total Events"
+              count={12}
               color="#3B82F6"
             />
             <StatCard
               icon={IconGift}
               title="Active Scholarships"
-              count={0}
+              count={8}
               color="#10B981"
             />
+            <StatCard
+              icon={IconBell}
+              title="Notifications Sent"
+              count={24}
+              color="#F59E0B"
+            />
+            <StatCard
+              icon={IconUsers}
+              title="Students"
+              count={156}
+              color="#8B5CF6"
+            />
+          </div>
+        </motion.div>
+
+        {/* Recent Activity */}
+        <motion.div variants={item}>
+          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Recent Activity</h2>
+          <div className="bg-white border border-lightBorderV1 rounded-lg p-4">
+            <div className="space-y-4">
+              <div className="flex items-center space-x-4 p-4 bg-blue-50/50 rounded-lg border border-blue-100">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">New event created: AI Workshop 2024</p>
+                  <p className="text-xs text-gray-500">2 hours ago</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4 p-4 bg-green-50/50 rounded-lg border border-green-100">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Scholarship application approved</p>
+                  <p className="text-xs text-gray-500">4 hours ago</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4 p-4 bg-yellow-50/50 rounded-lg border border-yellow-100">
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Notification sent to 156 students</p>
+                  <p className="text-xs text-gray-500">6 hours ago</p>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
       </motion.div>
     </div>
   );
-} 
+}

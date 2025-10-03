@@ -33,10 +33,6 @@ export const useAuth = () => {
     if (!hasAccessToken) {
       setIsAuth(false);
       setIsLoading(false);
-      // TEMPORARILY DISABLED FOR DEBUGGING
-      // if (!isPublicRoute) {
-      //   router.replace("/login");
-      // }
       return;
     }
 
@@ -48,10 +44,6 @@ export const useAuth = () => {
       }
       setIsAuth(false);
       setIsLoading(false);
-      // TEMPORARILY DISABLED FOR DEBUGGING
-      // if (!isPublicRoute) {
-      //   router.replace("/login");
-      // }
       return;
     }
     
@@ -64,10 +56,6 @@ export const useAuth = () => {
   }, [profileData, userContextAuth, isError, profileError, hasAccessToken, isPublicRoute, router]);
 
   const checkAndRedirect = useCallback(() => {
-    // TEMPORARILY DISABLED FOR DEBUGGING
-    // if (!isAuth && !isLoading && !isPublicRoute) {
-    //   router.replace("/login");
-    // }
   }, [isAuth, isLoading, router, isPublicRoute]);
 
   return {

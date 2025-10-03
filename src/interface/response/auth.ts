@@ -18,6 +18,7 @@ export interface ILoginResponse {
     role: string;
     isAdmin: boolean;
     token: string;
+    department?: string;
   };
   errors: {};
   timestamp: string;
@@ -50,6 +51,12 @@ export interface IProfileData {
   studentInfo: IStudentInfo;
   coordinatorInfo: ICoordinatorInfo;
   profileSettings: IProfileSettings;
+  department?: {
+    _id: string;
+    name: string;
+    code: string;
+    description?: string;
+  };
 }
 
 export interface IProfileResponse {

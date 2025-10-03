@@ -53,10 +53,10 @@ export const UserTable = ({ user }: UserTableProps) => {
             )}
           </div>
           <div className="flex-1">
-            <h3 className="text-xl font-semibold text-mainTextV1">
+            <h3 className="text-lg font-semibold text-mainTextV1">
               Fullname: {user.fullName || user.name}
             </h3>
-            <p className="text-secondaryTextV1">Username: {user.name}</p>
+            <p className="text-secondaryTextV1 text-sm">Username: {user.name}</p>
             <div className="flex items-center gap-2 mt-2">
               {getRoleBadge(user.role)}
               {getStatusBadge(user.active)}

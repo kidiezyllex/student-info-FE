@@ -245,7 +245,7 @@ export default function DatasetPage() {
                     </Table>
                   </div>
                 ) : (
-                  <p className="text-secondaryTextV1">No training history found.</p>
+                  <p className="text-secondaryTextV1 text-sm">No training history found.</p>
                 )}
               </Card>
             )

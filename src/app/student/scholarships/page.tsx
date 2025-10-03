@@ -261,7 +261,7 @@ export default function StudentScholarshipsPage() {
                 <h3 className="text-lg font-semibold text-mainTextV1 mb-2">
                   No scholarships found
                 </h3>
-                <p className="text-secondaryTextV1">
+                <p className="text-secondaryTextV1 text-sm">
                   {searchQuery ?
                     "Try adjusting your search terms or filters." :
                     "There are no scholarships available at the moment."

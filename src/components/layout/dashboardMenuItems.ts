@@ -98,4 +98,31 @@ export const getStudentMenuItems = (): MenuItem[] => [
 		path: "/student/notifications",
 		icon: mdiBell,
 	},
+];
+
+export const getCoordinatorMenuItems = (department: string): MenuItem[] => [
+	{
+		id: "coordinator-dashboard",
+		name: "Dashboard",
+		path: `/coordinator/${department}`,
+		icon: mdiViewDashboard,
+	},
+	{
+		id: "coordinator-event-management",
+		name: "Event Management",
+		path: `/coordinator/${department}/events`,
+		icon: mdiCalendarMonth,
+	},
+	{
+		id: "coordinator-scholarship-management",
+		name: "Scholarship Management",
+		path: `/coordinator/${department}/scholarships`,
+		icon: mdiGift,
+	},
+	{
+		id: "coordinator-notification-management",
+		name: "Notification Management",
+		path: `/coordinator/${department}/notifications`,
+		icon: mdiBell,
+	},
 ]; 
