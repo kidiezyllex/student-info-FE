@@ -112,6 +112,7 @@ export default function LoginPage() {
         }
         
         toast.success("Login successful!")
+        window.location.reload()
         const role = loginResponse.data.role
         
         const responseData = loginResponse.data as any
@@ -194,6 +195,7 @@ export default function LoginPage() {
           }
           
           toast.success("Login successful!")
+          window.location.reload()
           const role = loginResponse.data.role
           
           const responseData = loginResponse.data as any
