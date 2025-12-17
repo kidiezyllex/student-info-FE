@@ -6,40 +6,49 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 }
 
 function getLocalAccessToken() {
+	if (typeof window === "undefined") {
+		return null;
+	}
+	
+	// Try getting from cookie first
 	let accessToken = cookies.get("accessToken");
-	if (!accessToken && typeof window !== "undefined") {
+	
+	// If not in cookie, try localStorage
+	if (!accessToken) {
 		try {
-			const tokenFromStorage = localStorage.getItem("token");
+			// Try direct accessToken first
 			const directAccessToken = localStorage.getItem("accessToken");
-			
-			let parsedToken = null;
-			if (tokenFromStorage) {
-				try {
-					const tokenObj = JSON.parse(tokenFromStorage);
-					parsedToken = tokenObj.token || tokenFromStorage;
-				} catch {
-					parsedToken = tokenFromStorage;
+			if (directAccessToken) {
+				accessToken = directAccessToken;
+			} else {
+				// Try token (might be JSON or raw string)
+				const tokenFromStorage = localStorage.getItem("token");
+				if (tokenFromStorage) {
+					try {
+						const tokenObj = JSON.parse(tokenFromStorage);
+						accessToken = tokenObj.token || tokenFromStorage;
+					} catch {
+						accessToken = tokenFromStorage;
+					}
 				}
 			}
 			
-			const finalToken = parsedToken || directAccessToken;
-			
-			if (finalToken) {
-				cookies.set("accessToken", finalToken);
-				return finalToken;
+			// Sync back to cookie if found in localStorage
+			if (accessToken) {
+				cookies.set("accessToken", accessToken, { expires: 7 });
 			}
 		} catch (error) {
-			console.error( error);
+			console.error("Error getting token:", error);
 		}
 	}
 
-	return accessToken;
+	return accessToken || null;
 }
 
 const instance = axios.create({
 	timeout: 3 * 60 * 1000,
-	// baseURL: `http://localhost:5000/api`,
-	baseURL: `https://student-info-be.onrender.com/api`,
+	baseURL: `http://localhost:5000/api`,
+	// baseURL: `https://student-info-be.onrender.com/api`,
 	headers: {
 		"Content-Type": "application/json",
 		Accept: "application/json",

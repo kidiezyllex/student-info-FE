@@ -20,6 +20,40 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     setIsClient(true)
   }, [])
 
+  // Tự động xử lý trường hợp có token nhưng không có profile -> tránh loading vô hạn
+  useEffect(() => {
+    if (!isClient) return
+
+    // Chỉ xử lý khi đã load xong profile nhưng vẫn không có profile
+    if (!isLoadingProfile && !profile) {
+      if (typeof window !== "undefined") {
+        const hasAccessTokenLS =
+          !!localStorage.getItem("accessToken") || !!localStorage.getItem("token")
+        const hasAccessTokenCookie =
+          typeof document !== "undefined" &&
+          document.cookie.split(";").some((c) => c.trim().startsWith("accessToken="))
+
+        // Nếu vẫn còn token/cookie mà không có profile -> clear hết và đưa về trang login
+        if (hasAccessTokenLS || hasAccessTokenCookie) {
+          try {
+            localStorage.removeItem("accessToken")
+            localStorage.removeItem("token")
+            localStorage.removeItem("userProfile")
+          } catch (e) {
+            console.error("Failed to clear auth storage", e)
+          }
+
+          if (typeof document !== "undefined") {
+            document.cookie =
+              "accessToken=; Max-Age=0; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+          }
+
+          router.push("/auth/login")
+        }
+      }
+    }
+  }, [isClient, isLoadingProfile, profile, router])
+
   useEffect(() => {
     if (isClient && !isLoadingProfile && !isAuthenticated) {
       router.push("/auth/login")

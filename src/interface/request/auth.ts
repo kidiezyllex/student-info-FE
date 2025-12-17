@@ -1,19 +1,19 @@
 export interface ILoginBody {
   email: string;
-  password: string;
+  password?: string;
 }
 
 export interface IRegisterBody {
   name: string;
   email: string;
-  password: string;
-  role?: string; // Optional: "student" (default), "admin", "coordinator"
+  password?: string;
+  role?: string;
 }
 
 export interface ICompleteRegistrationBody {
   name: string;
   email: string;
-  password: string;
+  password?: string;
   verificationToken: string;
   role?: string;
 } 

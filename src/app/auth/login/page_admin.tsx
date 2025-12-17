@@ -11,7 +11,6 @@ import { useLogin } from "@/hooks/useAuth"
 import { useSendVerificationCodeToEmail, useVerifyCodeFromEmail, useSendPasswordResetCode } from "@/hooks/useEmail"
 import { toast } from "react-toastify"
 import { Eye, EyeOff } from "lucide-react"
-import cookies from "js-cookie"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -106,20 +105,14 @@ export default function LoginPage() {
           const token = loginResponse.data.token
           const userProfile = JSON.stringify(loginResponse)
           
-          // Save token to localStorage and cookie
           localStorage.setItem('token', token)
           localStorage.setItem('accessToken', token)
           localStorage.setItem('userProfile', userProfile)
-          cookies.set('accessToken', token, { expires: 7 })
-          
-          // Log saved user and role
-          console.log('=== LOGIN SUCCESS ===')
-          console.log('Saved User:', loginResponse.data)
-          console.log('User Role:', loginResponse.data.role)
-          console.log('Token saved:', token)
+          document.cookie = `accessToken=${token}; path=/; max-age=${7 * 24 * 60 * 60}`
         }
         
         toast.success("Login successful!")
+        window.location.reload()
         const role = loginResponse.data.role
         
         const responseData = loginResponse.data as any
@@ -182,34 +175,36 @@ export default function LoginPage() {
         
         const loginResponse = await loginUser({
           email: formData.email,
+          password: formData.password
         })
+        
+        console.log('Login API Response (Verification Flow):', loginResponse)
+        console.log('Response Data (Verification):', loginResponse?.data)
+        console.log('Department Field (Verification):', loginResponse?.data?.department)
+        console.log('Department Type (Verification):', typeof loginResponse?.data?.department)
         
         if (loginResponse?.status === true && loginResponse?.data?.token) {
           if (typeof window !== 'undefined') {
             const token = loginResponse.data.token
             const userProfile = JSON.stringify(loginResponse)
             
-            // Save token to localStorage and cookie
             localStorage.setItem('token', token)
             localStorage.setItem('accessToken', token)
             localStorage.setItem('userProfile', userProfile)
-            cookies.set('accessToken', token, { expires: 7 })
-            
-            // Log saved user and role
-            console.log('=== LOGIN SUCCESS (OTP) ===')
-            console.log('Saved User:', loginResponse.data)
-            console.log('User Role:', loginResponse.data.role)
-            console.log('Token saved:', token)
+            document.cookie = `accessToken=${token}; path=/; max-age=${7 * 24 * 60 * 60}`
           }
           
           toast.success("Login successful!")
+          window.location.reload()
           const role = loginResponse.data.role
           
           const responseData = loginResponse.data as any
           if (role === 'coordinator' && responseData.department) {
+            // Handle department as object or string
             const departmentName = typeof responseData.department === 'string' 
               ? responseData.department 
               : responseData.department?.name || responseData.department?.code || 'unknown'
+            console.log('Navigating to department (Verification):', departmentName)
             router.push(`/coordinator/${departmentName}`)
           } else {
             router.push(`/${role}`)
@@ -310,6 +305,43 @@ export default function LoginPage() {
                     <p className="text-red-500 text-xs mt-1">{errors.email}</p>
                   )}
                 </div>
+
+
+                {(!showCodeInput || formData.email.toLowerCase().includes('admin') || formData.email.toLowerCase().includes('coordinator')) && (
+                  <div>
+                    <Label htmlFor="password" className="text-sm font-semibold text-gray-700 mb-2 block">
+                      Password
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pr-12"
+                        placeholder="Enter your password"
+                        disabled={isPending}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                        disabled={isPending}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                    )}
+                  </div>
+                )}
+
                 {showCodeInput && !formData.email.toLowerCase().includes('admin') && !formData.email.toLowerCase().includes('coordinator') && (
                   <div>
                     <Label htmlFor="verificationCode" className="text-sm font-semibold text-gray-700 mb-2 block">
