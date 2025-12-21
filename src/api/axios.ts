@@ -10,39 +10,28 @@ function getLocalAccessToken() {
 		return null;
 	}
 	
-	// Try getting from cookie first
-	let accessToken = cookies.get("accessToken");
-	
-	// If not in cookie, try localStorage
-	if (!accessToken) {
-		try {
-			// Try direct accessToken first
-			const directAccessToken = localStorage.getItem("accessToken");
-			if (directAccessToken) {
-				accessToken = directAccessToken;
-			} else {
-				// Try token (might be JSON or raw string)
-				const tokenFromStorage = localStorage.getItem("token");
-				if (tokenFromStorage) {
-					try {
-						const tokenObj = JSON.parse(tokenFromStorage);
-						accessToken = tokenObj.token || tokenFromStorage;
-					} catch {
-						accessToken = tokenFromStorage;
-					}
-				}
-			}
-			
-			// Sync back to cookie if found in localStorage
-			if (accessToken) {
-				cookies.set("accessToken", accessToken, { expires: 7 });
-			}
-		} catch (error) {
-			console.error("Error getting token:", error);
+	try {
+		// Get token from localStorage only
+		const directAccessToken = localStorage.getItem("accessToken");
+		if (directAccessToken) {
+			return directAccessToken;
 		}
+		
+		// Try token (might be JSON or raw string)
+		const tokenFromStorage = localStorage.getItem("token");
+		if (tokenFromStorage) {
+			try {
+				const tokenObj = JSON.parse(tokenFromStorage);
+				return tokenObj.token || tokenFromStorage;
+			} catch {
+				return tokenFromStorage;
+			}
+		}
+	} catch (error) {
+		console.error("Error getting token:", error);
 	}
 
-	return accessToken || null;
+	return null;
 }
 
 const instance = axios.create({
@@ -58,8 +47,16 @@ const instance = axios.create({
 instance.interceptors.request.use(
 	(config) => {
 		const token = getLocalAccessToken();
+		console.log('[Axios Interceptor] Token from getLocalAccessToken:', token ? 'Token exists' : 'No token');
+		console.log('[Axios Interceptor] Cookie accessToken:', cookies.get("accessToken"));
+		console.log('[Axios Interceptor] localStorage accessToken:', typeof window !== "undefined" ? localStorage.getItem("accessToken") : "N/A");
+		console.log('[Axios Interceptor] Request URL:', config.url);
+		
 		if (token) {
 			config.headers["Authorization"] = `Bearer ${token}`;
+			console.log('[Axios Interceptor] Authorization header set:', `Bearer ${token.substring(0, 20)}...`);
+		} else {
+			console.warn('[Axios Interceptor] No token found, request will be sent without Authorization header');
 		}
 		return config;
 	},
@@ -74,10 +71,20 @@ instance.interceptors.response.use(
 		const originalRequest = error.config;
 		
 		if (error.response?.status === 401) {
-			if (typeof window !== "undefined") {
-				localStorage.removeItem("accessToken");
-				localStorage.removeItem("token");
-				cookies.remove("accessToken");
+			const errorMessage = error.response?.data?.message || "";
+			if (errorMessage.includes("No token") || errorMessage.includes("token") || errorMessage.includes("unauthorized")) {
+				if (typeof window !== "undefined") {
+					const token = getLocalAccessToken();
+					if (!token) {
+						localStorage.removeItem("accessToken");
+						localStorage.removeItem("token");
+						localStorage.removeItem("userProfile");
+						cookies.remove("accessToken");
+						if (window.location.pathname !== '/auth/login' && !window.location.pathname.includes('/admin/auth/login')) {
+							window.location.href = '/auth/login';
+						}
+					}
+				}
 			}
 		}
 		

@@ -209,7 +209,7 @@ export default function RegisterPage() {
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="name" className="text-sm font-semibold text-gray-700 mb-2 block">
+                  <Label htmlFor="name" className="text-sm font-semibold text-gray-800 mb-2 block">
                     Full Name
                   </Label>
                   <Input
@@ -228,7 +228,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="email" className="text-sm font-semibold text-gray-700 mb-2 block">
+                  <Label htmlFor="email" className="text-sm font-semibold text-gray-800 mb-2 block">
                     Email
                   </Label>
                   <Input
@@ -248,7 +248,7 @@ export default function RegisterPage() {
 
                 {!showCodeInput && (
                   <div>
-                    <Label htmlFor="password" className="text-sm font-semibold text-gray-700 mb-2 block">
+                    <Label htmlFor="password" className="text-sm font-semibold text-gray-800 mb-2 block">
                       Password
                     </Label>
                     <div className="relative">
@@ -265,7 +265,7 @@ export default function RegisterPage() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-800 transition-colors"
                         disabled={isPending}
                       >
                         {showPassword ? (
@@ -283,7 +283,7 @@ export default function RegisterPage() {
 
                 {showCodeInput && (
                   <div>
-                    <Label htmlFor="verificationCode" className="text-sm font-semibold text-gray-700 mb-2 block">
+                    <Label htmlFor="verificationCode" className="text-sm font-semibold text-gray-800 mb-2 block">
                       Verification Code (6 digits)
                     </Label>
                     <Input
@@ -355,7 +355,7 @@ export default function RegisterPage() {
               )}
 
               <div className="text-center">
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-800">
                   Already have an account?{" "}
                   <Link
                     href="/auth/login"

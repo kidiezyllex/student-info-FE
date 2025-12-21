@@ -7,7 +7,7 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export default function AppLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isLoginPage = pathname?.includes("/auth/login") || pathname?.includes("/auth/register");
+  const isLoginPage = pathname?.includes("/auth/login") || pathname?.includes("/admin/auth/login") || pathname?.includes("/auth/register");
 
   return isLoginPage ? (
     <CustomScrollArea className="h-full">{children}</CustomScrollArea>

@@ -11,7 +11,7 @@ export const RippleDemo: React.FC = () => {
       
       {/* Button with Ripple */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-700">Buttons with Ripple Effect</h3>
+        <h3 className="text-lg font-semibold text-gray-800">Buttons with Ripple Effect</h3>
         <div className="flex gap-4 flex-wrap">
           <Button ripple>
             Primary Button
@@ -27,7 +27,7 @@ export const RippleDemo: React.FC = () => {
 
       {/* Custom Ripple Cards */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-700">Custom Ripple Cards</h3>
+        <h3 className="text-lg font-semibold text-gray-800">Custom Ripple Cards</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <RippleEffect
             rippleColor="rgba(59, 130, 246, 0.3)"
@@ -69,7 +69,7 @@ export const RippleDemo: React.FC = () => {
 
       {/* Navigation-like Items */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-700">Navigation Items</h3>
+        <h3 className="text-lg font-semibold text-gray-800">Navigation Items</h3>
         <div className="bg-gray-800 rounded-lg p-4 space-y-2">
           {['Dashboard', 'Users', 'Settings', 'Reports'].map((item) => (
             <RippleEffect

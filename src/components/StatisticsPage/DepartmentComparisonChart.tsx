@@ -81,7 +81,7 @@ export default function DepartmentComparisonChart() {
   const chartData = mockDepartmentData[year as keyof typeof mockDepartmentData] || mockDepartmentData[2024];
 
   return (
-    <Card className="p-4 !shadow-md !bg-orange-50/50 h-full flex flex-col">
+    <Card className="p-4 !shadow-md   h-full flex flex-col">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
           <h3 className="text-lg font-semibold text-mainTextV1">Compare students by department</h3>

@@ -28,7 +28,6 @@ export const updateUserProfile = async (body: IUpdateUserProfileBody): Promise<I
   return res;
 };
 
-// New API functions for user management
 export const getAllUsers = async (): Promise<IGetAllUsersResponse> => {
   const res = await sendGet(`/users`);
   return res;

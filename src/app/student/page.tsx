@@ -149,7 +149,7 @@ export default function StudentDashboard() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading user profile...</p>
+          <p className="text-gray-800">Loading user profile...</p>
         </div>
       </div>
     );
@@ -159,7 +159,7 @@ export default function StudentDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600">Please sign in to access the student dashboard.</p>
+          <p className="text-gray-800">Please sign in to access the student dashboard.</p>
         </div>
       </div>
     );
@@ -197,7 +197,7 @@ export default function StudentDashboard() {
   ];
 
   return (
-    <div className="space-y-8 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

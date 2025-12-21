@@ -1,12 +1,11 @@
 "use client"
 import type React from "react"
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState, useMemo } from "react"
 
 import { clearToken, setTokenToLocalStorage } from "@/utils/tokenStorage"
 import { IProfileResponse } from "@/interface/response/auth"
 import { QueryClient } from "@tanstack/react-query"
 import { useRouter, usePathname } from "next/navigation"
-import cookies from "js-cookie"
 
 const queryClient = new QueryClient()
 
@@ -23,16 +22,6 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | null>(null)
 
-const setCookie = (name: string, value: string, days = 30) => {
-  const expires = new Date()
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`
-}
-
-const deleteCookie = (name: string) => {
-  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
-}
-
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
@@ -41,17 +30,25 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<IProfileResponse | null>(null)
   const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false)
   
-  const token = isClient ? cookies.get("accessToken") : null
-  const isPublicRoute = pathname === "/auth/login" || pathname?.startsWith("/auth/login/") || pathname === "/auth/register"
+  const [hasToken, setHasToken] = useState(false)
+  const isPublicRoute = pathname === "/auth/login" || pathname?.startsWith("/auth/login/") || pathname === "/auth/register" || pathname === "/admin/auth/login"
 
   const loginUser = (userInfo: any, token: string) => {
     setUser(userInfo)
+    setHasToken(true)
     if (isClient) {
       localStorage.setItem("accessToken", token)
-      localStorage.setItem("token", JSON.stringify({ token }))
-      cookies.set("accessToken", token, { expires: 7 })
-      setCookie("accessToken", token, 7)
+      localStorage.setItem("token", token)
       setTokenToLocalStorage(token)
+      const storedProfile = localStorage.getItem("userProfile")
+      if (storedProfile) {
+        try {
+          const parsedProfile = JSON.parse(storedProfile)
+          setProfile(parsedProfile)
+        } catch (error) {
+          console.error("Error parsing stored profile:", error)
+        }
+      }
     }
   }
 
@@ -93,32 +90,42 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  // Set client flag on mount
+  // Set client flag and initialize from localStorage immediately
   useEffect(() => {
     setIsClient(true)
-  }, [])
-
-  // Initialize user and profile from localStorage on client side
-  useEffect(() => {
-    if (isClient) {
+    
+    if (typeof window !== "undefined") {
       const storedUser = localStorage.getItem("user")
       const storedProfile = localStorage.getItem("userProfile")
+      const storedToken = localStorage.getItem("accessToken") || localStorage.getItem("token")
+      
+      if (storedToken) {
+        setHasToken(true)
+      }
       
       if (storedUser) {
-        setUser(JSON.parse(storedUser))
+        try {
+          setUser(JSON.parse(storedUser))
+        } catch (error) {
+          console.error("Error parsing stored user:", error)
+        }
       }
+      
       if (storedProfile) {
-        setProfile(JSON.parse(storedProfile))
-        setIsLoadingProfile(false) // Set loading to false immediately when profile is loaded from localStorage
+        try {
+          const parsedProfile = JSON.parse(storedProfile)
+          setProfile(parsedProfile)
+          setIsLoadingProfile(false)
+        } catch (error) {
+          console.error("Error parsing stored profile:", error)
+        }
+      }
+      
+      if (storedToken) {
+        fetchUserProfile()
       }
     }
-  }, [isClient])
-
-  useEffect(() => {
-    if (isClient && token) {
-      fetchUserProfile()
-    }
-  }, [token, isClient])
+  }, [])
 
   useEffect(() => {
     if (isClient) {
@@ -134,18 +141,27 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     clearToken()
     setUser(null)
     setProfile(null)
+    setHasToken(false)
     if (isClient) {
       localStorage.removeItem("userProfile")
       localStorage.removeItem("accessToken")
       localStorage.removeItem("token")
-      cookies.remove("accessToken")
-      deleteCookie("accessToken")
     }
     router.push("/auth/login")
     queryClient.clear()
   }
 
-  const isAuthenticatedValue = isClient ? (!!user || !!profile || !!token) : false
+  const isAuthenticatedValue = useMemo(() => {
+    if (!isClient) {
+      if (typeof window !== "undefined") {
+        const storedToken = localStorage.getItem("accessToken") || localStorage.getItem("token")
+        const storedProfile = localStorage.getItem("userProfile")
+        return !!(storedToken || storedProfile)
+      }
+      return false
+    }
+    return !!(user || profile || hasToken)
+  }, [isClient, user, profile, hasToken])
 
   return (
     <UserContext.Provider

@@ -55,10 +55,20 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
   }, [isClient, isLoadingProfile, profile, router])
 
   useEffect(() => {
-    if (isClient && !isLoadingProfile && !isAuthenticated) {
-      router.push("/auth/login")
+    if (!isClient) return
+    
+    const checkAuth = () => {
+      const hasToken = localStorage.getItem("accessToken") || localStorage.getItem("token")
+      const hasProfile = localStorage.getItem("userProfile")
+      
+      if (!hasToken && !hasProfile && !isLoadingProfile) {
+        router.push("/auth/login")
+      }
     }
-  }, [isClient, isLoadingProfile, isAuthenticated, router])
+    
+    const timeoutId = setTimeout(checkAuth, 100)
+    return () => clearTimeout(timeoutId)
+  }, [isClient, isLoadingProfile, router])
 
   useEffect(() => {
     if (isClient && isAuthenticated && profile && !isLoadingProfile) {

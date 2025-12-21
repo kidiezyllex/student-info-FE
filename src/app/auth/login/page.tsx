@@ -293,7 +293,7 @@ export default function LoginPage() {
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="email" className="text-sm font-semibold text-gray-700 mb-2 block">
+                  <Label htmlFor="email" className="text-sm font-semibold text-gray-800 mb-2 block">
                     Email
                   </Label>
                   <Input
@@ -312,7 +312,7 @@ export default function LoginPage() {
                 </div>
                 {showCodeInput && !formData.email.toLowerCase().includes('admin') && !formData.email.toLowerCase().includes('coordinator') && (
                   <div>
-                    <Label htmlFor="verificationCode" className="text-sm font-semibold text-gray-700 mb-2 block">
+                    <Label htmlFor="verificationCode" className="text-sm font-semibold text-gray-800 mb-2 block">
                       Verification Code (6 digits)
                     </Label>
                     <Input

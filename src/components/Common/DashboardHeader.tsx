@@ -52,7 +52,7 @@ export default function DashboardHeader({ title, description, username: propUser
 					<h1 className="text-2xl font-bold text-gray-900 mb-2">
 						{title}
 					</h1>
-					<p className="text-gray-600">
+					<p className="text-gray-800">
 						Welcome, Admin <span className="font-semibold text-orange-600">{username}</span> - System Overview & Analytics
 					</p>
 				</div>

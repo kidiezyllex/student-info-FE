@@ -128,7 +128,7 @@ export default function DatasetPage() {
   const paginatedDatasetItems = filteredDatasetItems.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-8 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

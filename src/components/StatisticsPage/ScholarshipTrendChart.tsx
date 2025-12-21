@@ -70,7 +70,7 @@ export default function ScholarshipTrendChart() {
   const chartData = mockScholarshipTrendData[year as keyof typeof mockScholarshipTrendData] || mockScholarshipTrendData[2024];
 
   return (
-    <Card className="p-4 !shadow-md !bg-orange-50/50">
+    <Card className="p-4 !shadow-md  ">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
           <h3 className="text-lg font-semibold text-mainTextV1">Scholarship Application Trend</h3>

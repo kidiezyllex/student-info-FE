@@ -4,12 +4,9 @@ import type { NextRequest, NextFetchEvent } from 'next/server';
 export function middleware(request: NextRequest, event: NextFetchEvent) {
   const url = request.nextUrl.clone();
   const path = url.pathname;
-  const hasAccessToken = request.cookies.has('accessToken') &&
-    request.cookies.get('accessToken')?.value;
-  const isPublicRoute = path === '/auth/login' || path.startsWith('/auth/login/') || path === '/auth/register';
+  const isPublicRoute = path === '/auth/login' || path.startsWith('/auth/login/') || path === '/admin/auth/login' || path.startsWith('/admin/auth/login/') || path === '/auth/register';
   const isApiRoute = path.startsWith('/api/');
  
-  
   if (isApiRoute) {
     if (request.method === 'OPTIONS') {
       return new NextResponse(null, {
@@ -31,16 +28,6 @@ export function middleware(request: NextRequest, event: NextFetchEvent) {
     response.headers.set('Access-Control-Allow-Credentials', 'true');
     
     return response;
-  }
-
-  if (!hasAccessToken && !isPublicRoute) {
-    url.pathname = '/auth/login';
-    return NextResponse.redirect(url);
-  }
-
-  if (hasAccessToken && isPublicRoute) {
-    url.pathname = '/admin';
-    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();

@@ -48,7 +48,7 @@ const StatCard = ({
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex-1">
-              <h3 className="text-gray-600 text-sm font-semibold uppercase tracking-wider mb-1">
+              <h3 className="text-gray-800 text-sm font-semibold uppercase tracking-wider mb-1">
                 {title}
               </h3>
             </div>
