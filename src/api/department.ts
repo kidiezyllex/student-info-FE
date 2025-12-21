@@ -8,8 +8,12 @@ import {
 } from "@/interface/response/department";
 import { ICreateDepartmentBody, IUpdateDepartmentBody } from "@/interface/request/department";
 
-export const getAllDepartments = async (page: number = 1, limit: number = 10): Promise<IGetAllDepartmentsResponse> => {
-  const res = await sendGet(`/departments`, { page, limit });
+export const getAllDepartments = async (page: number = 1, limit: number = 10, hasCoordinator?: boolean): Promise<IGetAllDepartmentsResponse> => {
+  const params: { page: number; limit: number; hasCoordinator?: boolean } = { page, limit };
+  if (hasCoordinator !== undefined) {
+    params.hasCoordinator = hasCoordinator;
+  }
+  const res = await sendGet(`/departments`, params);
   return res;
 };
 

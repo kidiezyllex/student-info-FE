@@ -16,15 +16,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useGetUsersByRole } from "@/hooks/useUser";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface DepartmentCreateDialogProps {
   isOpen: boolean;
@@ -37,12 +28,10 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
     name: "",
     code: "",
     description: "",
-    coordinatorId: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { mutate: createDepartmentMutation, isPending } = useCreateDepartment();
-  const { data: coordinatorsData, isLoading: isLoadingCoordinators } = useGetUsersByRole('coordinator');
   useEffect(() => {
     if (formData.name) {
       const words = formData.name.split(" ");
@@ -78,10 +67,6 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
       newErrors.description = "Description is required";
     }
 
-    if (!formData.coordinatorId?.trim()) {
-      newErrors.coordinatorId = "Coordinator is required";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -110,7 +95,6 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
       name: "",
       code: "",
       description: "",
-      coordinatorId: "",
     });
     setErrors({});
     onClose();
@@ -175,45 +159,6 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
             />
             {errors.description && (
               <p className="text-red-500 text-sm">{errors.description}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="coordinatorId" className="text-gray-800">
-              Coordinator <span className="text-red-500">*</span>
-            </Label>
-            {isLoadingCoordinators ? (
-              <Skeleton className="h-10 w-full" />
-            ) : (
-              <Select
-                value={formData.coordinatorId || ""}
-                onValueChange={(value) => setFormData({ ...formData, coordinatorId: value })}
-                disabled={isPending || isLoadingCoordinators}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a coordinator" />
-                </SelectTrigger>
-                <SelectContent>
-                  {coordinatorsData?.data?.length === 0 && (
-                    <SelectItem value="" disabled>
-                      No coordinators found
-                    </SelectItem>
-                  )}
-                  {coordinatorsData?.data.map((user) => (
-                    <SelectItem key={user._id} value={user._id}>
-                      {user.name}
-                      {
-                        user.department?.name && (
-                          <span className="font-semibold ml-1">({user.department.name})</span>
-                        )
-                      }
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-            {errors.coordinatorId && (
-              <p className="text-red-500 text-sm">{errors.coordinatorId}</p>
             )}
           </div>
 

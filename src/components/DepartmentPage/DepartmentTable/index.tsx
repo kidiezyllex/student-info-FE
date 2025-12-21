@@ -13,9 +13,11 @@ interface DepartmentTableProps {
   isSearching: boolean;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
+  currentPage: number;
+  pageSize: number;
 }
 
-export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: DepartmentTableProps) => {
+export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete, currentPage, pageSize }: DepartmentTableProps) => {
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
 
   return (
@@ -23,8 +25,9 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
+            <TableHead className="font-semibold text-gray-800 text-nowrap w-[60px]">No.</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Department Name</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap">Department Code</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Code</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Description</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Coordinator</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Action</TableHead>
@@ -33,18 +36,21 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
         <TableBody>
           {departments.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={5} className="text-center py-8 text-gray-800">
+              <TableCell colSpan={6} className="text-center py-8 text-gray-800">
                 {isSearching ? "No department found" : "No department"}
               </TableCell>
             </TableRow>
           ) : (
-            departments.map((department) => (
+            departments.map((department, index) => (
               <TableRow
                 key={department._id}
                 className="hover:bg-gray-50 transition-colors"
                 onMouseEnter={() => setHoveredRow(department._id)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
+                <TableCell className="text-gray-800 font-medium">
+                  {(currentPage - 1) * pageSize + index + 1}
+                </TableCell>
                 <TableCell className="flex items-center gap-2">
                   <div className="w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 flex items-center justify-center">
                     <IconBuilding className="w-6 h-6 text-orange-400" />
@@ -69,7 +75,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                     {department.coordinator ? (
                       <div className="space-y-1">
                         <p className="text-sm font-semibold text-gray-800">{department.coordinator.name}</p>
-                        <p className="text-xs text-gray-800">{department.coordinator.email}</p>
+                        <p className="text-sm text-gray-800">{department.coordinator.email}</p>
                       </div>
                     ) : (
                       <span className="text-gray-800">No coordinator</span>

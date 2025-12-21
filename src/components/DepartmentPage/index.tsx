@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DepartmentTable } from "@/components/DepartmentPage/DepartmentTable";
 import { DepartmentCreateDialog } from "@/components/DepartmentPage/DepartmentCreateDialog";
 import { DepartmentDetailsDialog } from "@/components/DepartmentPage/DepartmentDetailsDialog";
@@ -26,34 +27,39 @@ import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function DepartmentPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [coordinatorFilter, setCoordinatorFilter] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(null);
-  const [filteredDepartments, setFilteredDepartments] = useState<IDepartment[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
-  const { data: departmentsData, isLoading, refetch } = useGetAllDepartments();
+  const [pageSize] = useState(10);
+
+  // Get hasCoordinator parameter for API call
+  // "all" -> undefined (no filter)
+  // "with" -> true (departments with coordinator)
+  // "without" -> false (departments without coordinator)
+  const hasCoordinatorParam = coordinatorFilter === "all" 
+    ? undefined 
+    : coordinatorFilter === "with" 
+    ? true 
+    : false;
+  
+  const { data: departmentsData, isLoading, refetch } = useGetAllDepartments(currentPage, pageSize, hasCoordinatorParam);
   const { mutateAsync: deleteDepartmentMutation, isPending: isDeleting } = useDeleteDepartment();
+
+  // Filter users based on search query (client-side filtering for search only)
+  const filteredDepartments = departmentsData?.data ? departmentsData.data.filter(department =>
+    searchQuery.trim() === "" ||
+    department.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    department.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (department.description && department.description.toLowerCase().includes(searchQuery.toLowerCase()))
+  ) : [];
+
+  // Reset to first page when search query or coordinator filter changes
   useEffect(() => {
-    if (departmentsData?.data) {
-      if (searchQuery.trim()) {
-        const filtered = departmentsData.data.filter(department =>
-          department.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          department.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          department.description.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredDepartments(filtered);
-      } else {
-        setFilteredDepartments(departmentsData.data);
-      }
-      // Reset to first page when data changes
-      setCurrentPage(1);
-    } else {
-      setFilteredDepartments([]);
-      setCurrentPage(1);
-    }
-  }, [departmentsData?.data, searchQuery]);
+    setCurrentPage(1);
+  }, [searchQuery, coordinatorFilter]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -61,6 +67,10 @@ export default function DepartmentPage() {
 
   const handleClearSearch = () => {
     setSearchQuery("");
+  };
+
+  const handleCoordinatorFilterChange = (value: string) => {
+    setCoordinatorFilter(value);
   };
 
   const handleEdit = (id: string) => {
@@ -89,16 +99,15 @@ export default function DepartmentPage() {
     setCurrentPage(page);
   };
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedDepartments = filteredDepartments.slice(startIndex, endIndex);
+  const hasSearchFilter = searchQuery.trim();
+  const displayDepartments = hasSearchFilter ? filteredDepartments : (departmentsData?.data || []);
 
   return (
     <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/" suppressHydrationWarning>Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -131,13 +140,25 @@ export default function DepartmentPage() {
                 </button>
               )}
             </div>
-          <Button
-            onClick={() => setIsCreateDialogOpen(true)}
-            className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
-          >
-            <IconPlus className="h-4 w-4" />
-            Add department
-          </Button>
+            <div className="flex items-center gap-3">
+              <Select value={coordinatorFilter} onValueChange={handleCoordinatorFilterChange}>
+                <SelectTrigger className="w-[200px] focus:border-mainTextHoverV1">
+                  <SelectValue placeholder="Filter by coordinator" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Departments</SelectItem>
+                  <SelectItem value="with">With Coordinator</SelectItem>
+                  <SelectItem value="without">Without Coordinator</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                onClick={() => setIsCreateDialogOpen(true)}
+                className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+              >
+                <IconPlus className="h-4 w-4" />
+                Add department
+              </Button>
+            </div>
           </div>
 
           <Card className="p-0 overflow-hidden border border-lightBorderV1">
@@ -157,19 +178,30 @@ export default function DepartmentPage() {
               </div>
             ) : (
               <DepartmentTable
-                departments={paginatedDepartments}
+                departments={displayDepartments}
                 isSearching={!!searchQuery}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                currentPage={currentPage}
+                pageSize={pageSize}
               />
             )}
           </Card>
-          {filteredDepartments.length > pageSize && (
+          {!hasSearchFilter && departmentsData?.totalPages && departmentsData.totalPages > 1 && (
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={departmentsData?.total || filteredDepartments.length}
-              totalPages={departmentsData?.totalPages || Math.ceil(filteredDepartments.length / pageSize)}
+              total={departmentsData.total || 0}
+              totalPages={departmentsData.totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+          {hasSearchFilter && filteredDepartments.length > pageSize && (
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              total={filteredDepartments.length}
+              totalPages={Math.ceil(filteredDepartments.length / pageSize)}
               onPageChange={handlePageChange}
             />
           )}

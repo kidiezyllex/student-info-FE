@@ -2,7 +2,7 @@ export interface ICreateDepartmentBody {
   name: string;
   code: string;
   description: string;
-  coordinatorId: string;
+  coordinatorId?: string;
 }
 
 export interface IUpdateDepartmentBody {
