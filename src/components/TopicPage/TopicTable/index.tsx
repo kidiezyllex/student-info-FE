@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ITopic } from "@/interface/response/topic";
 import { motion } from "framer-motion";
 import { IconEdit, IconTrash, IconMenu3 } from "@tabler/icons-react";
+import { getRoleBadge } from "@/lib/badge-helpers";
 
 interface TopicTableProps {
   topics: ITopic[];
@@ -40,7 +41,7 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
             <TableHead className="font-semibold text-gray-800 text-nowrap w-[60px]">No.</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Title</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Type</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap">Department</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap min-w-[200px]">Department</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Created By</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Created At</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Action</TableHead>
@@ -75,17 +76,19 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
                 </TableCell>
                 <TableCell>
                   {topic.department ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <Badge variant="orange">{topic.department.code}</Badge>
-                      <span className="text-gray-800">{topic.department.name}</span>
+                      <Badge variant="orange">{topic.department.name}</Badge>
                     </div>
                   ) : (
-                    <span className="text-gray-600">General</span>
+                    <Badge variant="gray">General</Badge>
                   )}
                 </TableCell>
                 <TableCell>
                   <div className="text-gray-800 font-semibold">{topic.createdBy.name}</div>
-                  <div className="text-sm text-gray-600 capitalize">{topic.createdBy.role}</div>
+                  <div className="mt-1">
+                    {getRoleBadge(topic.createdBy.role)}
+                  </div>
                 </TableCell>
                 <TableCell className="text-gray-800">
                   {new Intl.DateTimeFormat("vi-VN", {

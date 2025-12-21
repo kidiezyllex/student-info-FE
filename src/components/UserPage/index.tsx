@@ -21,9 +21,7 @@ import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify";
 import { IconSearch, IconPlus, IconX } from "@tabler/icons-react";
-import { IUser } from "@/interface/response/user";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function UserPage() {
@@ -37,20 +35,15 @@ export default function UserPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
 
-  // Get departments list for filter
   const { data: departmentsData } = useGetAllDepartments(1, 1000);
 
-  // Get role parameter for API call (only if not "all")
   const roleParam = roleFilter && roleFilter !== "all" ? roleFilter : undefined;
-  // Get department parameter for API call (only if department is not "all")
   const departmentParam = departmentFilter && departmentFilter !== "all" ? departmentFilter : undefined;
   
   const { data: usersData, isLoading, refetch } = useGetAllUsers(currentPage, pageSize, roleParam, departmentParam);
   const { mutateAsync: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
 
-  // Filter users based on search query (client-side filtering for search only)
   const filteredUsers = usersData?.data ? usersData.data.filter(user => {
-    // Search query filter
     if (searchQuery.trim()) {
       return (
         user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -67,7 +60,6 @@ export default function UserPage() {
     return true;
   }) : [];
 
-  // Reset to first page when search query, role filter, or department filter changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, roleFilter, departmentFilter]);
@@ -117,8 +109,6 @@ export default function UserPage() {
 
   const hasSearchFilter = searchQuery.trim();
   const displayUsers = hasSearchFilter ? filteredUsers : (usersData?.data || []);
-  const totalUsers = hasSearchFilter ? filteredUsers.length : (usersData?.total || 0);
-
   return (
     <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>

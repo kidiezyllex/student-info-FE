@@ -243,6 +243,17 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               {errors.applicationDeadline && <p className="text-red-500 text-sm">{errors.applicationDeadline}</p>}
             </div>
             <div className="space-y-2">
+              <Label htmlFor="value" className="text-gray-800">Value</Label>
+              <Input
+                id="value"
+                name="value"
+                value={formData.value || ""}
+                onChange={handleChange}
+                placeholder="Enter scholarship value"
+                className="border-lightBorderV1 focus:border-mainTextHoverV1"
+              />
+            </div>
+            <div className="space-y-2 col-span-2">
               <Label htmlFor="requirements" className="text-gray-800">Requirements</Label>
               <Textarea
                 id="requirements"
@@ -251,17 +262,6 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
                 onChange={handleChange}
                 placeholder="Enter requirements"
                 rows={3}
-                className="border-lightBorderV1 focus:border-mainTextHoverV1"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="value" className="text-gray-800">Value</Label>
-              <Input
-                id="value"
-                name="value"
-                value={formData.value || ""}
-                onChange={handleChange}
-                placeholder="Enter scholarship value"
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
@@ -276,7 +276,7 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 col-span-2">
               <Label htmlFor="eligibility" className="text-gray-800">Eligibility</Label>
               <Textarea
                 id="eligibility"
@@ -288,7 +288,7 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 col-span-2">
               <Label htmlFor="applicationProcess" className="text-gray-800">Application Process</Label>
               <Textarea
                 id="applicationProcess"
@@ -326,7 +326,7 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 col-span-2">
               <Checkbox
                 id="isImportant"
                 checked={formData.isImportant || false}
@@ -647,95 +647,98 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
-        size="large"
-        className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
+        size="medium"
+        className="max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle className="text-gray-800 flex items-center gap-2">
-            <IconFileText className="h-5 w-5" />
             Create New Topic
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1 h-full">
-          <div className="space-y-2">
-            <Label htmlFor="type" className="text-gray-800">
-              Topic Type <span className="text-red-500">*</span>
-            </Label>
-            <Select
-              value={formData.type}
-              onValueChange={(value) => handleSelectChange("type", value)}
-              disabled={isPending}
-            >
-              <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
-                <SelectValue placeholder="Select topic type" />
-              </SelectTrigger>
-              <SelectContent>
-                {topicTypes.map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="title" className="text-gray-800">
-              Title <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Enter topic title"
-              className={`${errors.title ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
-            />
-            {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description" className="text-gray-800">
-              Description <span className="text-red-500">*</span>
-            </Label>
-            <Textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Enter topic description"
-              rows={4}
-              className={`${errors.description ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
-            />
-            {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="department" className="text-gray-800">Department</Label>
-            {isLoadingDepartments ? (
-              <div className="h-10 w-full bg-gray-100 animate-pulse rounded" />
-            ) : (
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="type" className="text-gray-800">
+                Topic Type <span className="text-red-500">*</span>
+              </Label>
               <Select
-                value={formData.department || "all-departments"}
-                onValueChange={(value) => handleSelectChange("department", value)}
-                disabled={isPending || isLoadingDepartments}
+                value={formData.type}
+                onValueChange={(value) => handleSelectChange("type", value)}
+                disabled={isPending}
               >
                 <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
-                  <SelectValue placeholder="Select department" />
+                  <SelectValue placeholder="Select topic type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all-departments">All Departments (General)</SelectItem>
-                  {departments.map((dept) => (
-                    <SelectItem key={dept._id} value={dept._id}>
-                      {dept.name} ({dept.code})
+                  {topicTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-            )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="title" className="text-gray-800">
+                Title <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Enter topic title"
+                className={`${errors.title ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+              />
+              {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+            </div>
+
+            <div className="space-y-2 col-span-2">
+              <Label htmlFor="description" className="text-gray-800">
+                Description <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Enter topic description"
+                rows={4}
+                className={`${errors.description ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+              />
+              {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="department" className="text-gray-800">Department</Label>
+              {isLoadingDepartments ? (
+                <div className="h-10 w-full bg-gray-100 animate-pulse rounded" />
+              ) : (
+                <Select
+                  value={formData.department || "all-departments"}
+                  onValueChange={(value) => handleSelectChange("department", value)}
+                  disabled={isPending || isLoadingDepartments}
+                >
+                  <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
+                    <SelectValue placeholder="Select department" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all-departments">All Departments (General)</SelectItem>
+                    {departments.map((dept) => (
+                      <SelectItem key={dept._id} value={dept._id}>
+                        {dept.name} ({dept.code})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
           </div>
 
-          {renderTypeSpecificFields()}
+          <div className="grid grid-cols-2 gap-4">
+            {renderTypeSpecificFields()}
+          </div>
 
           <div className="flex flex-1 h-full gap-2 justify-end mt-4">
             <Button

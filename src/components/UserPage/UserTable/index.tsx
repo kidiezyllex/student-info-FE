@@ -8,6 +8,7 @@ import { IUser } from "@/interface/response/user";
 import { motion } from "framer-motion";
 import { IconEdit, IconTrash, IconMail, IconUserCircle, IconShield, IconUser, IconId, IconBuildingBank, IconMenu3 } from "@tabler/icons-react";
 import { Activity } from "lucide-react";
+import { getRoleBadge } from "@/lib/badge-helpers";
 interface UserTableProps {
   users: IUser[];
   isSearching: boolean;
@@ -19,19 +20,6 @@ interface UserTableProps {
 
 export const UserTable = ({ users, isSearching, onEdit, onDelete, currentPage = 1, pageSize = 10 }: UserTableProps) => {
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
-
-  const getRoleBadge = (role: string) => {
-    switch (role.toLowerCase()) {
-      case 'admin':
-        return <Badge variant="cyan">Admin</Badge>;
-      case 'student':
-        return <Badge variant="indigo">Student</Badge>;
-      case 'coordinator':
-        return <Badge variant="blue">Coordinator</Badge>;
-      default:
-        return <Badge variant="outline">{role}</Badge>;
-    }
-  };
 
   const getStatusBadge = (active: boolean) => {
     return active ? <Badge variant="green"><Activity className="h-3 w-3" />Active</Badge> : <Badge variant="red">Inactive</Badge>;

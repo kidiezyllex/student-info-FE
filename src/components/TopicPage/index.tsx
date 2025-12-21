@@ -106,7 +106,7 @@ export default function TopicPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/" suppressHydrationWarning>Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
