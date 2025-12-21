@@ -152,6 +152,10 @@ export interface IUserDetailed {
 export interface IGetAllUsersResponse {
   message: string;
   data: IUser[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetUserByIdResponse {

@@ -20,4 +20,6 @@ export interface IUpdateEventBody {
 
 export interface IEventQueryParams {
   department?: string;
+  page?: number;
+  limit?: number;
 } 

@@ -15,10 +15,10 @@ import {
 } from '@/interface/response/department';
 import { ICreateDepartmentBody, IUpdateDepartmentBody } from '@/interface/request/department';
 
-export const useGetAllDepartments = () => {
+export const useGetAllDepartments = (page: number = 1, limit: number = 10) => {
   return useQuery<IGetAllDepartmentsResponse, Error>({
-    queryKey: ['departments'],
-    queryFn: getAllDepartments,
+    queryKey: ['departments', page, limit],
+    queryFn: () => getAllDepartments(page, limit),
   });
 };
 

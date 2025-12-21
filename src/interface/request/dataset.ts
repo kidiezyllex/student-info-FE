@@ -15,4 +15,6 @@ export interface IUpdateDatasetItemBody {
 export interface IDatasetQueryParams {
   category?: string;
   department?: string;
+  page?: number;
+  limit?: number;
 } 

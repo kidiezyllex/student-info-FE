@@ -30,11 +30,19 @@ export interface IEventCreate {
 export interface IGetUpcomingEventsResponse {
   message: string;
   data: IEvent[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetAllEventsResponse {
   message: string;
   data: IEvent[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetEventByIdResponse {

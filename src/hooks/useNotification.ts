@@ -21,10 +21,10 @@ import {
 } from '@/interface/response/notification';
 import { ICreateNotificationBody, IUpdateNotificationBody, INotificationQueryParams } from '@/interface/request/notification';
 
-export const useGetNotifications = (params?: INotificationQueryParams) => {
+export const useGetNotifications = (page: number = 1, limit: number = 10, params?: Omit<INotificationQueryParams, 'page' | 'limit'>) => {
   return useQuery<IGetNotificationsResponse, Error>({
-    queryKey: ['notifications', params],
-    queryFn: () => getNotifications(params),
+    queryKey: ['notifications', page, limit, params],
+    queryFn: () => getNotifications(page, limit, params),
   });
 };
 
@@ -70,10 +70,10 @@ export const useDeleteNotification = () => {
   });
 };
 
-export const useGetSavedNotifications = () => {
+export const useGetSavedNotifications = (page: number = 1, limit: number = 10) => {
   return useQuery<IGetSavedNotificationsResponse, Error>({
-    queryKey: ['notifications', 'saved'],
-    queryFn: getSavedNotifications,
+    queryKey: ['notifications', 'saved', page, limit],
+    queryFn: () => getSavedNotifications(page, limit),
   });
 };
 

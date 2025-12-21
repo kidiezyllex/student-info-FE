@@ -8,8 +8,8 @@ import {
 } from "@/interface/response/dataset";
 import { ICreateDatasetItemBody, IUpdateDatasetItemBody, IDatasetQueryParams } from "@/interface/request/dataset";
 
-export const getAllDatasetItems = async (params?: IDatasetQueryParams): Promise<IGetAllDatasetItemsResponse> => {
-  const res = await sendGet(`/dataset`, params);
+export const getAllDatasetItems = async (page: number = 1, limit: number = 10, params?: Omit<IDatasetQueryParams, 'page' | 'limit'>): Promise<IGetAllDatasetItemsResponse> => {
+  const res = await sendGet(`/dataset`, { ...params, page, limit });
   return res;
 };
 

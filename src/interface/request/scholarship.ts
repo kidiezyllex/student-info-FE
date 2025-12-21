@@ -24,4 +24,6 @@ export interface IUpdateScholarshipBody {
 
 export interface IScholarshipQueryParams {
   department?: string;
+  page?: number;
+  limit?: number;
 } 

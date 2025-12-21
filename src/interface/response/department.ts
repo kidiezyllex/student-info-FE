@@ -19,6 +19,10 @@ export interface IDepartment {
 export interface IGetAllDepartmentsResponse {
   message: string;
   data: IDepartment[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetDepartmentByIdResponse {

@@ -30,6 +30,10 @@ export interface INotificationCreate {
 export interface IGetNotificationsResponse {
   message: string;
   data: INotification[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetNotificationByIdResponse {
@@ -54,6 +58,10 @@ export interface IDeleteNotificationResponse {
 export interface IGetSavedNotificationsResponse {
   message: string;
   data: INotification[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface ISaveNotificationResponse {

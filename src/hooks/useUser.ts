@@ -51,10 +51,10 @@ export const useUpdateUserProfile = () => {
   });
 };
 
-export const useGetAllUsers = () => {
+export const useGetAllUsers = (page: number = 1, limit: number = 10, role?: string) => {
   return useQuery<IGetAllUsersResponse, Error>({
-    queryKey: ['users'],
-    queryFn: getAllUsers,
+    queryKey: ['users', page, limit, role],
+    queryFn: () => getAllUsers(page, limit, role),
   });
 };
 

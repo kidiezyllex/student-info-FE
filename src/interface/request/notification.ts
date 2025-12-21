@@ -21,4 +21,6 @@ export interface IUpdateNotificationBody {
 export interface INotificationQueryParams {
   type?: string;
   department?: string;
+  page?: number;
+  limit?: number;
 } 

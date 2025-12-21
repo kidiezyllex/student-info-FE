@@ -17,17 +17,17 @@ import {
 } from '@/interface/response/scholarship';
 import { ICreateScholarshipBody, IUpdateScholarshipBody, IScholarshipQueryParams } from '@/interface/request/scholarship';
 
-export const useGetActiveScholarships = (params?: IScholarshipQueryParams) => {
+export const useGetActiveScholarships = (page: number = 1, limit: number = 10, params?: Omit<IScholarshipQueryParams, 'page' | 'limit'>) => {
   return useQuery<IGetActiveScholarshipsResponse, Error>({
-    queryKey: ['scholarships', 'active', params],
-    queryFn: () => getActiveScholarships(params),
+    queryKey: ['scholarships', 'active', page, limit, params],
+    queryFn: () => getActiveScholarships(page, limit, params),
   });
 };
 
-export const useGetAllScholarships = (params?: IScholarshipQueryParams) => {
+export const useGetAllScholarships = (page: number = 1, limit: number = 10, params?: Omit<IScholarshipQueryParams, 'page' | 'limit'>) => {
   return useQuery<IGetAllScholarshipsResponse, Error>({
-    queryKey: ['scholarships', 'all', params],
-    queryFn: () => getAllScholarships(params),
+    queryKey: ['scholarships', 'all', page, limit, params],
+    queryFn: () => getAllScholarships(page, limit, params),
   });
 };
 

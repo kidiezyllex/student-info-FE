@@ -32,11 +32,19 @@ export interface IScholarshipCreate {
 export interface IGetActiveScholarshipsResponse {
   message: string;
   data: IScholarship[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetAllScholarshipsResponse {
   message: string;
   data: IScholarship[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetScholarshipByIdResponse {

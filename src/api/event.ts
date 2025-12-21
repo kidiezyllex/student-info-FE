@@ -9,13 +9,13 @@ import {
 } from "@/interface/response/event";
 import { ICreateEventBody, IUpdateEventBody, IEventQueryParams } from "@/interface/request/event";
 
-export const getUpcomingEvents = async (params?: IEventQueryParams): Promise<IGetUpcomingEventsResponse> => {
-  const res = await sendGet(`/events`, params);
+export const getUpcomingEvents = async (page: number = 1, limit: number = 10, params?: Omit<IEventQueryParams, 'page' | 'limit'>): Promise<IGetUpcomingEventsResponse> => {
+  const res = await sendGet(`/events`, { ...params, page, limit });
   return res;
 };
 
-export const getAllEvents = async (params?: IEventQueryParams): Promise<IGetAllEventsResponse> => {
-  const res = await sendGet(`/events/all`, params);
+export const getAllEvents = async (page: number = 1, limit: number = 10, params?: Omit<IEventQueryParams, 'page' | 'limit'>): Promise<IGetAllEventsResponse> => {
+  const res = await sendGet(`/events/all`, { ...params, page, limit });
   return res;
 };
 

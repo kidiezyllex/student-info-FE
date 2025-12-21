@@ -223,7 +223,8 @@ export default function CoordinatorEvents() {
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={filteredEvents.length}
+              total={eventsData?.total || filteredEvents.length}
+              totalPages={eventsData?.totalPages || Math.ceil(filteredEvents.length / pageSize)}
               onPageChange={handlePageChange}
             />
           )}

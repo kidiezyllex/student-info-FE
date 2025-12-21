@@ -9,13 +9,13 @@ import {
 } from "@/interface/response/scholarship";
 import { ICreateScholarshipBody, IUpdateScholarshipBody, IScholarshipQueryParams } from "@/interface/request/scholarship";
 
-export const getActiveScholarships = async (params?: IScholarshipQueryParams): Promise<IGetActiveScholarshipsResponse> => {
-  const res = await sendGet(`/scholarships`, params);
+export const getActiveScholarships = async (page: number = 1, limit: number = 10, params?: Omit<IScholarshipQueryParams, 'page' | 'limit'>): Promise<IGetActiveScholarshipsResponse> => {
+  const res = await sendGet(`/scholarships`, { ...params, page, limit });
   return res;
 };
 
-export const getAllScholarships = async (params?: IScholarshipQueryParams): Promise<IGetAllScholarshipsResponse> => {
-  const res = await sendGet(`/scholarships/all`, params);
+export const getAllScholarships = async (page: number = 1, limit: number = 10, params?: Omit<IScholarshipQueryParams, 'page' | 'limit'>): Promise<IGetAllScholarshipsResponse> => {
+  const res = await sendGet(`/scholarships/all`, { ...params, page, limit });
   return res;
 };
 

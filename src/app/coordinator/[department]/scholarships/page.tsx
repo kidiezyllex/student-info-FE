@@ -223,7 +223,8 @@ export default function CoordinatorScholarships() {
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={filteredScholarships.length}
+              total={scholarshipsData?.total || filteredScholarships.length}
+              totalPages={scholarshipsData?.totalPages || Math.ceil(filteredScholarships.length / pageSize)}
               onPageChange={handlePageChange}
             />
           )}

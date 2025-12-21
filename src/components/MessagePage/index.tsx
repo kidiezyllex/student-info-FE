@@ -34,7 +34,7 @@ export default function MessagePage() {
 
   const { data: conversationsData, isLoading: isLoadingConversations, refetch: refetchConversations } = useGetConversations();
   const { data: conversationHistory, isLoading: isLoadingMessages, refetch: refetchMessages } = useGetConversationHistory(selectedConversation || "");
-  const { data: allUsersData } = useGetAllUsers();
+  const { data: allUsersData } = useGetAllUsers(1, 1000); // Fetch all users for message selection
   const { mutateAsync: sendMessage, isPending: isSending } = useSendMessage();
   const { mutateAsync: markAllAsRead } = useMarkAllMessagesAsRead();
 

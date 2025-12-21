@@ -18,6 +18,10 @@ export interface IMessage {
 export interface IGetConversationsResponse {
   message: string;
   data: IConversation[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetConversationHistoryResponse {

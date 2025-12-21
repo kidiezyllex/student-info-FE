@@ -8,8 +8,8 @@ import {
 } from "@/interface/response/message";
 import { ISendMessageBody } from "@/interface/request/message";
 
-export const getConversations = async (): Promise<IGetConversationsResponse> => {
-  const res = await sendGet(`/messages`);
+export const getConversations = async (page: number = 1, limit: number = 10): Promise<IGetConversationsResponse> => {
+  const res = await sendGet(`/messages`, { page, limit });
   return res;
 };
 

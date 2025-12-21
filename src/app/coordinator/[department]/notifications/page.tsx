@@ -220,7 +220,8 @@ export default function CoordinatorNotifications() {
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={filteredNotifications.length}
+              total={notificationsData?.total || filteredNotifications.length}
+              totalPages={notificationsData?.totalPages || Math.ceil(filteredNotifications.length / pageSize)}
               onPageChange={handlePageChange}
             />
           )}

@@ -11,8 +11,8 @@ import {
 } from "@/interface/response/notification";
 import { ICreateNotificationBody, IUpdateNotificationBody, INotificationQueryParams } from "@/interface/request/notification";
 
-export const getNotifications = async (params?: INotificationQueryParams): Promise<IGetNotificationsResponse> => {
-  const res = await sendGet(`/notifications`, params);
+export const getNotifications = async (page: number = 1, limit: number = 10, params?: Omit<INotificationQueryParams, 'page' | 'limit'>): Promise<IGetNotificationsResponse> => {
+  const res = await sendGet(`/notifications`, { ...params, page, limit });
   return res;
 };
 
@@ -36,8 +36,8 @@ export const deleteNotification = async (id: string): Promise<IDeleteNotificatio
   return res;
 };
 
-export const getSavedNotifications = async (): Promise<IGetSavedNotificationsResponse> => {
-  const res = await sendGet(`/notifications/saved`);
+export const getSavedNotifications = async (page: number = 1, limit: number = 10): Promise<IGetSavedNotificationsResponse> => {
+  const res = await sendGet(`/notifications/saved`, { page, limit });
   return res;
 };
 

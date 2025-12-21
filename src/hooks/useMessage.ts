@@ -15,10 +15,10 @@ import {
 } from '@/interface/response/message';
 import { ISendMessageBody } from '@/interface/request/message';
 
-export const useGetConversations = () => {
+export const useGetConversations = (page: number = 1, limit: number = 10) => {
   return useQuery<IGetConversationsResponse, Error>({
-    queryKey: ['messages', 'conversations'],
-    queryFn: getConversations,
+    queryKey: ['messages', 'conversations', page, limit],
+    queryFn: () => getConversations(page, limit),
   });
 };
 

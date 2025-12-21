@@ -279,7 +279,8 @@ export default function DatasetPage() {
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={filteredDatasetItems.length}
+              total={datasetData?.total || filteredDatasetItems.length}
+              totalPages={datasetData?.totalPages || Math.ceil(filteredDatasetItems.length / pageSize)}
               onPageChange={handlePageChange}
             />
           )}

@@ -15,10 +15,10 @@ import {
 } from '@/interface/response/dataset';
 import { ICreateDatasetItemBody, IUpdateDatasetItemBody, IDatasetQueryParams } from '@/interface/request/dataset';
 
-export const useGetAllDatasetItems = (params?: IDatasetQueryParams) => {
+export const useGetAllDatasetItems = (page: number = 1, limit: number = 10, params?: Omit<IDatasetQueryParams, 'page' | 'limit'>) => {
   return useQuery<IGetAllDatasetItemsResponse, Error>({
-    queryKey: ['dataset', params],
-    queryFn: () => getAllDatasetItems(params),
+    queryKey: ['dataset', page, limit, params],
+    queryFn: () => getAllDatasetItems(page, limit, params),
   });
 };
 

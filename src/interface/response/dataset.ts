@@ -24,6 +24,10 @@ export interface IDatasetItemCreate {
 export interface IGetAllDatasetItemsResponse {
   message: string;
   data: IDatasetItem[];
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface IGetDatasetItemByIdResponse {

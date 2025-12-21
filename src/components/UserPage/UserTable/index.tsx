@@ -13,9 +13,11 @@ interface UserTableProps {
   isSearching: boolean;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
+  currentPage?: number;
+  pageSize?: number;
 }
 
-export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTableProps) => {
+export const UserTable = ({ users, isSearching, onEdit, onDelete, currentPage = 1, pageSize = 10 }: UserTableProps) => {
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
 
   const getRoleBadge = (role: string) => {
@@ -40,6 +42,7 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
+            <TableHead className="font-semibold text-mainTextV1 text-nowrap w-[60px]">No.</TableHead>
             <TableHead className="font-semibold text-mainTextV1 text-nowrap">User Information</TableHead>
             <TableHead className="font-semibold text-mainTextV1 text-nowrap w-[180px]">Email</TableHead>
             <TableHead className="font-semibold text-mainTextV1 text-nowrap">Student ID</TableHead>
@@ -52,18 +55,23 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
         <TableBody>
           {users.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-secondaryTextV1">
+              <TableCell colSpan={8} className="text-center py-8 text-secondaryTextV1">
                 {isSearching ? "No user found" : "No user found"}
               </TableCell>
             </TableRow>
           ) : (
-            users.map((user) => (
+            users.map((user, index) => {
+              const rowNumber = (currentPage - 1) * pageSize + index + 1;
+              return (
               <TableRow
                 key={user._id}
                 className="hover:bg-gray-50 transition-colors"
                 onMouseEnter={() => setHoveredRow(user._id)}
                 onMouseLeave={() => setHoveredRow(null)}
               >
+                <TableCell className="text-center font-medium text-mainTextV1">
+                  {rowNumber}
+                </TableCell>
                 <TableCell className="flex items-center gap-2">
                   <div className="w-12 h-12 flex-shrink-0 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center overflow-hidden">
                     {user.avatar ? (
@@ -80,7 +88,6 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                   </div>
                   <div>
                     <p className="font-semibold text-mainTextV1">{user.fullName || user.name}</p>
-                    <p className="text-sm text-secondaryTextV1">{user.name}</p>
                     {user.phoneNumber && (
                       <p className="text-xs text-secondaryTextV1">{user.phoneNumber}</p>
                     )}
@@ -147,7 +154,8 @@ export const UserTable = ({ users, isSearching, onEdit, onDelete }: UserTablePro
                   </div>
                 </TableCell>
               </TableRow>
-            ))
+              );
+            })
           )}
         </TableBody>
       </Table>

@@ -9,10 +9,11 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'; 
+} from '@/components/ui/breadcrumb';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserTable } from "@/components/UserPage/UserTable";
 import { UserCreateDialog } from "@/components/UserPage/UserCreateDialog";
 import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
@@ -26,42 +27,43 @@ import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [roleFilter, setRoleFilter] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-  const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
+  const [pageSize] = useState(10);
 
-  const { data: usersData, isLoading, refetch } = useGetAllUsers();
+  // Get role parameter for API call (only if not "all")
+  const roleParam = roleFilter && roleFilter !== "all" ? roleFilter : undefined;
+  
+  const { data: usersData, isLoading, refetch } = useGetAllUsers(currentPage, pageSize, roleParam);
   const { mutateAsync: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
 
-  // Filter users based on search query
-  useEffect(() => {
-    if (usersData?.data) {
-      if (searchQuery.trim()) {
-        const filtered = usersData.data.filter(user =>
-          user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (user.fullName && user.fullName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.studentId && user.studentId.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.phoneNumber && user.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.department && user.department.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (user.department && user.department.code.toLowerCase().includes(searchQuery.toLowerCase()))
-        );
-        setFilteredUsers(filtered);
-      } else {
-        setFilteredUsers(usersData.data);
-      }
-      // Reset to first page when data changes
-      setCurrentPage(1);
-    } else {
-      setFilteredUsers([]);
-      setCurrentPage(1);
+  // Filter users based on search query (client-side filtering for search only)
+  const filteredUsers = usersData?.data ? usersData.data.filter(user => {
+    // Search query filter
+    if (searchQuery.trim()) {
+      return (
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (user.fullName && user.fullName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (user.studentId && user.studentId.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (user.phoneNumber && user.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (user.department && user.department.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (user.department && user.department.code.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
     }
-  }, [usersData?.data, searchQuery]);
+    
+    return true;
+  }) : [];
+
+  // Reset to first page when search query or role filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, roleFilter]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -69,6 +71,10 @@ export default function UserPage() {
 
   const handleClearSearch = () => {
     setSearchQuery("");
+  };
+
+  const handleRoleFilterChange = (value: string) => {
+    setRoleFilter(value);
   };
 
   const handleEdit = (id: string) => {
@@ -98,9 +104,11 @@ export default function UserPage() {
     setCurrentPage(page);
   };
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+  // Use server-side paginated data, or filtered data if searching
+  // Role filter is handled by API, only search is client-side
+  const hasSearchFilter = searchQuery.trim();
+  const displayUsers = hasSearchFilter ? filteredUsers : (usersData?.data || []);
+  const totalUsers = hasSearchFilter ? filteredUsers.length : (usersData?.total || 0);
 
   return (
     <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
@@ -140,13 +148,26 @@ export default function UserPage() {
                 </button>
               )}
             </div>
-          <Button
-            onClick={() => setIsCreateDialogOpen(true)}
-            className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
-          >
-            <IconPlus className="h-4 w-4" />
-            Add User
-          </Button>
+            <div className="flex items-center gap-3">
+              <Select value={roleFilter} onValueChange={handleRoleFilterChange}>
+                <SelectTrigger className="w-[180px] focus:border-mainTextHoverV1">
+                  <SelectValue placeholder="Filter by role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Roles</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="coordinator">Coordinator</SelectItem>
+                  <SelectItem value="student">Student</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                onClick={() => setIsCreateDialogOpen(true)}
+                className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
+              >
+                <IconPlus className="h-4 w-4" />
+                Add User
+              </Button>
+            </div>
           </div>
 
           <Card className="p-0 overflow-hidden border border-lightBorderV1">
@@ -166,18 +187,30 @@ export default function UserPage() {
               </div>
             ) : (
               <UserTable
-                users={paginatedUsers}
+                users={displayUsers}
                 isSearching={!!searchQuery}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                currentPage={currentPage}
+                pageSize={pageSize}
               />
             )}
           </Card>
-          {filteredUsers.length > pageSize && (
+          {!hasSearchFilter && usersData?.totalPages && usersData.totalPages > 1 && (
+            <Pagination
+              page={currentPage}
+              pageSize={pageSize}
+              total={usersData.total || 0}
+              totalPages={usersData.totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+          {hasSearchFilter && filteredUsers.length > pageSize && (
             <Pagination
               page={currentPage}
               pageSize={pageSize}
               total={filteredUsers.length}
+              totalPages={Math.ceil(filteredUsers.length / pageSize)}
               onPageChange={handlePageChange}
             />
           )}
@@ -195,13 +228,13 @@ export default function UserPage() {
         errorMessage="Failed to delete user."
         warningMessage="This will permanently remove the user and all associated data."
       />
-      
+
       <UserCreateDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSuccess={() => refetch()}
       />
-      
+
       {selectedUserId && (
         <UserDetailsDialog
           isOpen={isDetailsDialogOpen}

@@ -17,17 +17,17 @@ import {
 } from '@/interface/response/event';
 import { ICreateEventBody, IUpdateEventBody, IEventQueryParams } from '@/interface/request/event';
 
-export const useGetUpcomingEvents = (params?: IEventQueryParams) => {
+export const useGetUpcomingEvents = (page: number = 1, limit: number = 10, params?: Omit<IEventQueryParams, 'page' | 'limit'>) => {
   return useQuery<IGetUpcomingEventsResponse, Error>({
-    queryKey: ['events', 'upcoming', params],
-    queryFn: () => getUpcomingEvents(params),
+    queryKey: ['events', 'upcoming', page, limit, params],
+    queryFn: () => getUpcomingEvents(page, limit, params),
   });
 };
 
-export const useGetAllEvents = (params?: IEventQueryParams) => {
+export const useGetAllEvents = (page: number = 1, limit: number = 10, params?: Omit<IEventQueryParams, 'page' | 'limit'>) => {
   return useQuery<IGetAllEventsResponse, Error>({
-    queryKey: ['events', 'all', params],
-    queryFn: () => getAllEvents(params),
+    queryKey: ['events', 'all', page, limit, params],
+    queryFn: () => getAllEvents(page, limit, params),
   });
 };
 

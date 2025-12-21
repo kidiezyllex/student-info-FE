@@ -168,7 +168,8 @@ export default function DepartmentPage() {
             <Pagination
               page={currentPage}
               pageSize={pageSize}
-              total={filteredDepartments.length}
+              total={departmentsData?.total || filteredDepartments.length}
+              totalPages={departmentsData?.totalPages || Math.ceil(filteredDepartments.length / pageSize)}
               onPageChange={handlePageChange}
             />
           )}
