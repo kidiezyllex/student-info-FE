@@ -13,7 +13,7 @@ import {
 	mdiDatabase,
 	mdiCog,
 	mdiChartLine,
-	mdiFileDocument
+	mdiAlphaTCircle
 } from "@mdi/js";
 
 export const getDashboardMenuItems = (): MenuItem[] => [
@@ -36,22 +36,10 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		icon: mdiSchool,
 	},
 	{
-		id: "event-management",
-		name: "Event Management",
-		path: "/admin/events",
-		icon: mdiCalendarMonth,
-	},
-	{
-		id: "scholarship-management",
-		name: "Scholarship Management",
-		path: "/admin/scholarships",
-		icon: mdiGift,
-	},
-	{
-		id: "notification-management",
-		name: "Notification Management",
-		path: "/admin/notifications",
-		icon: mdiBell,
+		id: "topic-management",
+		name: "Topic Management",
+		path: "/admin/topics",
+		icon: mdiAlphaTCircle,
 	},
 	{
 		id: "dataset-management", 
