@@ -147,11 +147,11 @@ export default function MessagePage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 pr-10 py-2 border-lightBorderV1 focus:border-mainTextHoverV1"
             />
-            <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-4 h-4" />
+            <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 w-4 h-4" />
             {searchQuery && (
               <button
                 onClick={handleClearSearch}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 hover:text-red-500 transition-colors"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-800 hover:text-red-500 transition-colors"
                 type="button"
               >
                 <IconX className="w-4 h-4" />
@@ -168,7 +168,7 @@ export default function MessagePage() {
                 <h3 className="font-semibold text-sm mb-2">Start new conversation</h3>
                 <div className="space-y-2">
                   {availableUsers.length === 0 ? (
-                    <p className="text-sm text-secondaryTextV1">No available users found</p>
+                    <p className="text-sm text-gray-800">No available users found</p>
                   ) : (
                     availableUsers.map((user: IUser) => (
                       <div
@@ -180,8 +180,8 @@ export default function MessagePage() {
                           <IconUser className="w-4 h-4 text-orange-600" />
                         </div>
                         <div className="flex-1">
-                          <p className="font-semibold text-sm text-mainTextV1">{user.name}</p>
-                          <p className="text-xs text-secondaryTextV1">{user.email}</p>
+                          <p className="font-semibold text-sm text-gray-800">{user.name}</p>
+                          <p className="text-xs text-gray-800">{user.email}</p>
                         </div>
                       </div>
                     ))
@@ -193,9 +193,9 @@ export default function MessagePage() {
             {/* Existing Conversations */}
             <div className="p-2 space-y-1">
               {isLoadingConversations ? (
-                <div className="text-sm text-secondaryTextV1 p-4">Loading conversations...</div>
+                <div className="text-sm text-gray-800 p-4">Loading conversations...</div>
               ) : filteredConversations.length === 0 ? (
-                <div className="text-sm text-secondaryTextV1 p-4">No conversations found</div>
+                <div className="text-sm text-gray-800 p-4">No conversations found</div>
               ) : (
                 filteredConversations.map((conversation: IConversation) => (
                   <div
@@ -213,7 +213,7 @@ export default function MessagePage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <h4 className="font-semibold text-sm text-mainTextV1 truncate">
+                          <h4 className="font-semibold text-sm text-gray-800 truncate">
                             {conversation.name}
                           </h4>
                           {conversation.unreadCount > 0 && (
@@ -222,10 +222,10 @@ export default function MessagePage() {
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-secondaryTextV1 truncate mt-1">
+                        <p className="text-xs text-gray-800 truncate mt-1">
                           {conversation.lastMessage}
                         </p>
-                        <p className="text-xs text-secondaryTextV1 mt-1">
+                        <p className="text-xs text-gray-800 mt-1">
                           {formatDate(conversation.lastMessageDate)}
                         </p>
                       </div>
@@ -267,10 +267,10 @@ export default function MessagePage() {
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
                   <div>
-                    <CardTitle className="text-xl font-semibold text-mainTextV1">
+                    <CardTitle className="text-xl font-semibold text-gray-800">
                       {selectedUser?.name}
                     </CardTitle>
-                    <p className="text-sm text-secondaryTextV1">
+                    <p className="text-sm text-gray-800">
                       {selectedUser?.unreadCount && selectedUser.unreadCount > 0 ? `${selectedUser.unreadCount} unread messages` : "No unread messages"}
                     </p>
                   </div>
@@ -284,7 +284,7 @@ export default function MessagePage() {
                 <ScrollArea className="h-full p-4">
                   <div className="space-y-4">
                     {isLoadingMessages ? (
-                      <div className="text-center py-8 text-secondaryTextV1">Loading messages...</div>
+                      <div className="text-center py-8 text-gray-800">Loading messages...</div>
                     ) : (
                       <AnimatePresence>
                         {conversationHistory?.data?.map((message: IMessage, index: number) => (
@@ -308,14 +308,14 @@ export default function MessagePage() {
                                 className={`p-3 rounded-lg ${
                                   message.senderId === profile?.data?._id
                                     ? 'bg-mainTextHoverV1 text-white'
-                                    : 'bg-gray-100 text-mainTextV1'
+                                    : 'bg-gray-100 text-gray-800'
                                 }`}
                               >
                                 <p className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }}></p>
                               </div>
                               
                               <div className="flex items-center justify-between mt-1 px-1">
-                                <p className="text-xs text-secondaryTextV1">
+                                <p className="text-xs text-gray-800">
                                   {formatTime(message.createdAt)}
                                 </p>
                                 {message.senderId === profile?.data?._id && (
@@ -370,8 +370,8 @@ export default function MessagePage() {
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <IconUsers className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-mainTextV1 mb-2">Select a conversation</h3>
-              <p className="text-secondaryTextV1 text-sm">Choose a conversation from the sidebar to start messaging</p>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Select a conversation</h3>
+              <p className="text-gray-800 text-sm">Choose a conversation from the sidebar to start messaging</p>
             </div>
           </div>
         )}

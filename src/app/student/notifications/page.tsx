@@ -151,13 +151,13 @@ export default function StudentNotificationsPage() {
                   placeholder="Search notifications..."
                   value={searchQuery}
                   onChange={handleSearch}
-                  className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-secondaryTextV1"
+                  className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-gray-800"
                 />
-                <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
+                <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 w-5 h-5" />
                 {searchQuery && (
                   <button
                     onClick={handleClearSearch}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 hover:text-red-500 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-800 hover:text-red-500 transition-colors"
                     type="button"
                   >
                     <IconX className="w-5 h-5" />
@@ -166,7 +166,7 @@ export default function StudentNotificationsPage() {
               </div>
               
               <div className="flex items-center gap-2">
-                <IconFilter className="w-5 h-5 text-mainTextV1" />
+                <IconFilter className="w-5 h-5 text-gray-800" />
                 <Select value={notificationFilter} onValueChange={handleFilterChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
@@ -220,7 +220,7 @@ export default function StudentNotificationsPage() {
                             {notification.isImportant && (
                               <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                             )}
-                            <CardTitle className="text-lg text-mainTextV1 line-clamp-1">
+                            <CardTitle className="text-lg text-gray-800 line-clamp-1">
                               {notification.title}
                             </CardTitle>
                           </div>
@@ -232,7 +232,7 @@ export default function StudentNotificationsPage() {
                               </Badge>
                             )}
                           </div>
-                          <CardDescription className="text-secondaryTextV1">
+                          <CardDescription className="text-gray-800">
                             {getTimeAgo(notification.createdAt)} • {formatDate(notification.createdAt)}
                           </CardDescription>
                         </div>
@@ -242,7 +242,7 @@ export default function StudentNotificationsPage() {
                             variant="ghost"
                             size="sm"
                             onClick={() => handleViewDetails(notification)}
-                            className="text-secondaryTextV1 hover:text-mainTextV1"
+                            className="text-gray-800 hover:text-gray-800"
                           >
                             <IconEye className="w-4 h-4" />
                           </Button>
@@ -254,7 +254,7 @@ export default function StudentNotificationsPage() {
                       className="pt-0 cursor-pointer"
                       onClick={() => handleViewDetails(notification)}
                     >
-                      <p className="text-sm text-secondaryTextV1 line-clamp-3">
+                      <p className="text-sm text-gray-800 line-clamp-3">
                         {notification.content}
                       </p>
                     </CardContent>
@@ -265,11 +265,11 @@ export default function StudentNotificationsPage() {
           ) : (
             <Card className="border border-lightBorderV1">
               <CardContent className="p-8 text-center">
-                <IconBell className="w-12 h-12 text-secondaryTextV1 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-mainTextV1 mb-2">
+                <IconBell className="w-12 h-12 text-gray-800 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   No notifications found
                 </h3>
-                <p className="text-secondaryTextV1 text-sm">
+                <p className="text-gray-800 text-sm">
                   {searchQuery || notificationFilter !== "all" ? 
                     "Try adjusting your search terms or filters." : 
                     "You don't have any notifications yet."
@@ -284,10 +284,10 @@ export default function StudentNotificationsPage() {
       <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
         <DialogContent size="medium" className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
           <DialogHeader>
-            <DialogTitle className="text-xl text-mainTextV1">
+            <DialogTitle className="text-xl text-gray-800">
               {selectedNotification?.title}
             </DialogTitle>
-            <DialogDescription className="text-secondaryTextV1">
+            <DialogDescription className="text-gray-800">
               {selectedNotification && formatDate(selectedNotification.createdAt)}
             </DialogDescription>
           </DialogHeader>
@@ -309,31 +309,31 @@ export default function StudentNotificationsPage() {
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold text-mainTextV1 mb-3">Content</h4>
-                <p className="text-secondaryTextV1 whitespace-pre-wrap leading-relaxed">
+                <h4 className="text-lg font-semibold text-gray-800 mb-3">Content</h4>
+                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
                   {selectedNotification.content}
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h4 className="text-sm font-semibold text-mainTextV1 mb-1">Created</h4>
-                  <p className="text-sm text-secondaryTextV1">
+                  <h4 className="text-sm font-semibold text-gray-800 mb-1">Created</h4>
+                  <p className="text-sm text-gray-800">
                     {formatDate(selectedNotification.createdAt)}
                   </p>
                 </div>
                 
                 <div>
-                  <h4 className="text-sm font-semibold text-mainTextV1 mb-1">Type</h4>
-                  <p className="text-sm text-secondaryTextV1">
+                  <h4 className="text-sm font-semibold text-gray-800 mb-1">Type</h4>
+                  <p className="text-sm text-gray-800">
                     {selectedNotification.type}
                   </p>
                 </div>
 
                 {selectedNotification.startDate && (
                   <div>
-                    <h4 className="text-sm font-semibold text-mainTextV1 mb-1">Start Date</h4>
-                    <p className="text-sm text-secondaryTextV1">
+                    <h4 className="text-sm font-semibold text-gray-800 mb-1">Start Date</h4>
+                    <p className="text-sm text-gray-800">
                       {formatDate(selectedNotification.startDate)}
                     </p>
                   </div>
@@ -341,8 +341,8 @@ export default function StudentNotificationsPage() {
 
                 {selectedNotification.endDate && (
                   <div>
-                    <h4 className="text-sm font-semibold text-mainTextV1 mb-1">End Date</h4>
-                    <p className="text-sm text-secondaryTextV1">
+                    <h4 className="text-sm font-semibold text-gray-800 mb-1">End Date</h4>
+                    <p className="text-sm text-gray-800">
                       {formatDate(selectedNotification.endDate)}
                     </p>
                   </div>

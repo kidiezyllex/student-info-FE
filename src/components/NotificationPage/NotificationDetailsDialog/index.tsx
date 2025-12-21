@@ -217,7 +217,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
         size="medium"
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">
+          <DialogTitle className="text-gray-800">
             {isEditing ? "Edit notification " + notificationData?.data?.title : "Notification details " + notificationData?.data?.title}
           </DialogTitle>
         </DialogHeader>
@@ -234,7 +234,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
         ) : (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-mainTextV1">
+              <Label htmlFor="title" className="text-gray-800">
                 Title {isEditing && <span className="text-red-500">*</span>}
               </Label>
               <Input
@@ -252,7 +252,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="content" className="text-mainTextV1">
+              <Label htmlFor="content" className="text-gray-800">
                 Content {isEditing && <span className="text-red-500">*</span>}
               </Label>
               <Textarea
@@ -271,7 +271,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="startDate" className="text-mainTextV1">
+                <Label htmlFor="startDate" className="text-gray-800">
                   Start Date {isEditing && <span className="text-red-500">*</span>}
                 </Label>
                 <Input
@@ -289,7 +289,7 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="endDate" className="text-mainTextV1">
+                <Label htmlFor="endDate" className="text-gray-800">
                   End Date {isEditing && <span className="text-red-500">*</span>}
                 </Label>
                 <Input
@@ -315,14 +315,14 @@ export const NotificationDetailsDialog = ({ isOpen, onClose, notificationId, onS
                 onCheckedChange={handleCheckboxChange}
                 disabled={!isEditing}
               />
-              <Label htmlFor="isImportant" className="text-mainTextV1">
+              <Label htmlFor="isImportant" className="text-gray-800">
                 Mark as important
               </Label>
             </div>
 
             {!isLoadingNotification && (
               <div className="space-y-2">
-                <Label className="text-mainTextV1">Created At</Label>
+                <Label className="text-gray-800">Created At</Label>
                 <Input
                   value={new Date(notificationData?.data?.createdAt || "").toLocaleDateString('en-US', {
                     year: 'numeric',

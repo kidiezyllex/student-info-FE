@@ -44,13 +44,15 @@ export default function CommonHeader() {
       p-4 px-4 bg-mainDarkBackgroundV1 border-b border-b-darkBorderV1 flex justify-between items-center h-[78px]"
 			>
 				<div className="flex items-center w-[244px] justify-between">
-					<Link href="/">
-						<Image 
-						height={500}
-						width={500}
-						draggable={false}
-						quality={100}
-						src="/images/vgu-logo2.webp" alt="vgu-logo" className="w-auto h-24 object-contain" />
+					<Link href="/" className="block" suppressHydrationWarning>
+						<span className="block">
+							<Image 
+							height={500}
+							width={500}
+							draggable={false}
+							quality={100}
+							src="/images/vgu-logo2.webp" alt="vgu-logo" className="w-auto h-24 object-contain" />
+						</span>
 					</Link>
 					<Button
 						variant="ghost"
@@ -71,7 +73,7 @@ export default function CommonHeader() {
 							<Input
 								ref={inputRef}
 								placeholder="Search..."
-								className="w-[90%] text-maintext pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-mainTextV1"
+								className="w-[90%] text-maintext pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-gray-800"
 								value={searchTerm}
 								onChange={handleSearchChange}
 								disabled={isLoading}
@@ -99,11 +101,11 @@ export default function CommonHeader() {
 							</div>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="w-56 mt-4">
-							<div className="px-3 py-2 text-[13px] text-mainTextV1 font-semibold select-none">
+							<div className="px-3 py-2 text-[13px] text-gray-800 font-semibold select-none">
 								Hello, {username}
 							</div>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem className="gap-2 text-mainTextV1 font-semibold">
+							<DropdownMenuItem className="gap-2 text-gray-800 font-semibold">
 								<User className="w-4 h-4" />
 								Account
 							</DropdownMenuItem>

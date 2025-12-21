@@ -134,13 +134,13 @@ export default function StudentScholarshipsPage() {
                   placeholder="Search scholarships..."
                   value={searchQuery}
                   onChange={handleSearch}
-                  className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-secondaryTextV1"
+                  className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-gray-800"
                 />
-                <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
+                <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 w-5 h-5" />
                 {searchQuery && (
                   <button
                     onClick={handleClearSearch}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 hover:text-red-500 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-800 hover:text-red-500 transition-colors"
                     type="button"
                   >
                     <IconX className="w-5 h-5" />
@@ -149,7 +149,7 @@ export default function StudentScholarshipsPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <IconFilter className="w-5 h-5 text-mainTextV1" />
+                <IconFilter className="w-5 h-5 text-gray-800" />
                 <Select value={scholarshipFilter} onValueChange={handleFilterChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
@@ -213,21 +213,21 @@ export default function StudentScholarshipsPage() {
                     </CardHeader>
 
                     <CardContent className="flex-1 flex flex-col">
-                      <p className="text-sm text-secondaryTextV1 line-clamp-3 mb-4">
+                      <p className="text-sm text-gray-800 line-clamp-3 mb-4">
                         {scholarship.description}
                       </p>
 
                       <div className="space-y-2 mt-auto">
                         <div className="flex items-center gap-2 text-sm">
                           <IconCurrencyDollar className="w-4 h-4 text-green-600" />
-                          <span className="font-semibold text-mainTextV1">
+                          <span className="font-semibold text-gray-800">
                             {scholarship.value}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-2 text-sm">
                           <IconCalendar className="w-4 h-4 text-orange-600" />
-                          <span className="text-secondaryTextV1">
+                          <span className="text-gray-800">
                             Deadline: {formatDate(scholarship.applicationDeadline)}
                           </span>
                         </div>
@@ -235,7 +235,7 @@ export default function StudentScholarshipsPage() {
                         {scholarship.department && (
                           <div className="flex items-center gap-2 text-sm">
                             <IconGift className="w-4 h-4 text-purple-600" />
-                            <span className="text-secondaryTextV1">
+                            <span className="text-gray-800">
                               {scholarship.department.name}
                             </span>
                           </div>
@@ -257,11 +257,11 @@ export default function StudentScholarshipsPage() {
           ) : (
             <Card className="border border-lightBorderV1">
               <CardContent className="p-8 text-center">
-                <IconGift className="w-12 h-12 text-secondaryTextV1 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-mainTextV1 mb-2">
+                <IconGift className="w-12 h-12 text-gray-800 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   No scholarships found
                 </h3>
-                <p className="text-secondaryTextV1 text-sm">
+                <p className="text-gray-800 text-sm">
                   {searchQuery ?
                     "Try adjusting your search terms or filters." :
                     "There are no scholarships available at the moment."
@@ -276,10 +276,10 @@ export default function StudentScholarshipsPage() {
       <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
         <DialogContent size="medium" className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
           <DialogHeader>
-            <DialogTitle className="text-xl text-mainTextV1 flex items-center gap-2">
+            <DialogTitle className="text-xl text-gray-800 flex items-center gap-2">
             {selectedScholarship && getStatusBadge(selectedScholarship)} {selectedScholarship?.title}
             </DialogTitle>
-            <DialogDescription className="text-secondaryTextV1">
+            <DialogDescription className="text-gray-800">
               Provided by {selectedScholarship?.provider}
             </DialogDescription>
           </DialogHeader>
@@ -290,14 +290,14 @@ export default function StudentScholarshipsPage() {
                 <Table className="border border-lightBorderV1">
                   <TableHeader>
                     <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-                      <TableHead className="font-semibold text-mainTextV1 text-nowrap w-1/3">Field</TableHead>
-                      <TableHead className="font-semibold text-mainTextV1 text-nowrap">Value</TableHead>
+                      <TableHead className="font-semibold text-gray-800 text-nowrap w-1/3">Field</TableHead>
+                      <TableHead className="font-semibold text-gray-800 text-nowrap">Value</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     <TableRow className="hover:bg-gray-50 transition-colors">
-                      <TableCell className="font-semibold text-mainTextV1 bg-gray-50">Scholarship Value</TableCell>
-                      <TableCell className="text-secondaryTextV1">
+                      <TableCell className="font-semibold text-gray-800 bg-gray-50">Scholarship Value</TableCell>
+                      <TableCell className="text-gray-800">
                         <span className="text-xl font-semibold text-green-600">
                           {selectedScholarship.value}
                         </span>
@@ -305,32 +305,32 @@ export default function StudentScholarshipsPage() {
                     </TableRow>
                     
                     <TableRow className="hover:bg-gray-50 transition-colors">
-                      <TableCell className="font-semibold text-mainTextV1 bg-gray-50">Application Deadline</TableCell>
-                      <TableCell className="text-secondaryTextV1">
+                      <TableCell className="font-semibold text-gray-800 bg-gray-50">Application Deadline</TableCell>
+                      <TableCell className="text-gray-800">
                         {formatDate(selectedScholarship.applicationDeadline)}
                       </TableCell>
                     </TableRow>
 
                     {selectedScholarship.department && (
                       <TableRow className="hover:bg-gray-50 transition-colors">
-                        <TableCell className="font-semibold text-mainTextV1 bg-gray-50">Department</TableCell>
-                        <TableCell className="text-secondaryTextV1">
+                        <TableCell className="font-semibold text-gray-800 bg-gray-50">Department</TableCell>
+                        <TableCell className="text-gray-800">
                           {selectedScholarship.department.name}
                         </TableCell>
                       </TableRow>
                     )}
 
                     <TableRow className="hover:bg-gray-50 transition-colors">
-                      <TableCell className="font-semibold text-mainTextV1 bg-gray-50 align-top">Description</TableCell>
-                      <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+                      <TableCell className="font-semibold text-gray-800 bg-gray-50 align-top">Description</TableCell>
+                      <TableCell className="text-gray-800 whitespace-pre-wrap">
                         {selectedScholarship.description}
                       </TableCell>
                     </TableRow>
 
                     {selectedScholarship.eligibility && (
                       <TableRow className="hover:bg-gray-50 transition-colors">
-                        <TableCell className="font-semibold text-mainTextV1 bg-gray-50 align-top">Eligibility</TableCell>
-                        <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+                        <TableCell className="font-semibold text-gray-800 bg-gray-50 align-top">Eligibility</TableCell>
+                        <TableCell className="text-gray-800 whitespace-pre-wrap">
                           {selectedScholarship.eligibility}
                         </TableCell>
                       </TableRow>
@@ -338,8 +338,8 @@ export default function StudentScholarshipsPage() {
 
                     {selectedScholarship.requirements && (
                       <TableRow className="hover:bg-gray-50 transition-colors">
-                        <TableCell className="font-semibold text-mainTextV1 bg-gray-50 align-top">Requirements</TableCell>
-                        <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+                        <TableCell className="font-semibold text-gray-800 bg-gray-50 align-top">Requirements</TableCell>
+                        <TableCell className="text-gray-800 whitespace-pre-wrap">
                           {selectedScholarship.requirements}
                         </TableCell>
                       </TableRow>
@@ -347,8 +347,8 @@ export default function StudentScholarshipsPage() {
 
                     {selectedScholarship.applicationProcess && (
                       <TableRow className="hover:bg-gray-50 transition-colors">
-                        <TableCell className="font-semibold text-mainTextV1 bg-gray-50 align-top">Application Process</TableCell>
-                        <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+                        <TableCell className="font-semibold text-gray-800 bg-gray-50 align-top">Application Process</TableCell>
+                        <TableCell className="text-gray-800 whitespace-pre-wrap">
                           {selectedScholarship.applicationProcess}
                         </TableCell>
                       </TableRow>

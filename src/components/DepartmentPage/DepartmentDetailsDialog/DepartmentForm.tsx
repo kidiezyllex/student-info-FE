@@ -56,7 +56,7 @@ export const DepartmentForm = ({
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="name" className="text-mainTextV1">
+        <Label htmlFor="name" className="text-gray-800">
           Department name <span className="text-red-500">*</span>
         </Label>
         <Input
@@ -73,7 +73,7 @@ export const DepartmentForm = ({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="code" className="text-mainTextV1">
+        <Label htmlFor="code" className="text-gray-800">
           Department code <span className="text-red-500">*</span>
         </Label>
         <Input
@@ -90,7 +90,7 @@ export const DepartmentForm = ({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description" className="text-mainTextV1">
+        <Label htmlFor="description" className="text-gray-800">
           Description <span className="text-red-500">*</span>
         </Label>
         <Textarea
@@ -109,7 +109,7 @@ export const DepartmentForm = ({
 
       {/* Coordinator Information */}
       <div className="space-y-2">
-        <Label className="text-mainTextV1">
+        <Label className="text-gray-800">
           Coordinator <span className="text-red-500">*</span>
         </Label>
         {isLoadingCoordinators ? (

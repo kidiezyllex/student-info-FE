@@ -148,7 +148,7 @@ export const DatasetDetailsDialog = ({ isOpen, onClose, datasetItemId, onSuccess
         size="medium"
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">
+          <DialogTitle className="text-gray-800">
             {isEditing ? "Edit dataset item " + datasetItemData?.data?.key : "Dataset item details " + datasetItemData?.data?.key}
           </DialogTitle>
         </DialogHeader>
@@ -175,7 +175,7 @@ export const DatasetDetailsDialog = ({ isOpen, onClose, datasetItemId, onSuccess
         ) : (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="key" className="text-mainTextV1">
+              <Label htmlFor="key" className="text-gray-800">
                 Key {isEditing && <span className="text-red-500">*</span>}
               </Label>
               <Input
@@ -193,7 +193,7 @@ export const DatasetDetailsDialog = ({ isOpen, onClose, datasetItemId, onSuccess
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="value" className="text-mainTextV1">
+              <Label htmlFor="value" className="text-gray-800">
                 Value {isEditing && <span className="text-red-500">*</span>}
               </Label>
               <Textarea
@@ -211,7 +211,7 @@ export const DatasetDetailsDialog = ({ isOpen, onClose, datasetItemId, onSuccess
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="category" className="text-mainTextV1">
+              <Label htmlFor="category" className="text-gray-800">
                 Category {isEditing && <span className="text-red-500">*</span>}
               </Label>
               {isEditing ? (
@@ -240,7 +240,7 @@ export const DatasetDetailsDialog = ({ isOpen, onClose, datasetItemId, onSuccess
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="department" className="text-mainTextV1">
+              <Label htmlFor="department" className="text-gray-800">
                 Department (Optional)
               </Label>
               {isEditing ? (
@@ -267,7 +267,7 @@ export const DatasetDetailsDialog = ({ isOpen, onClose, datasetItemId, onSuccess
 
             {!isLoadingDatasetItem && (
               <div className="space-y-2">
-                <Label className="text-mainTextV1">Created At</Label>
+                <Label className="text-gray-800">Created At</Label>
                 <Input
                   value={new Date(datasetItemData?.data?.createdAt || "").toLocaleDateString('en-US', {
                     year: 'numeric',

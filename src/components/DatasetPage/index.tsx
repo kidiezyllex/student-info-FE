@@ -202,41 +202,41 @@ export default function DatasetPage() {
               </div>
             ) : (
               <Card className="p-4 mt-4 w-full border border-lightBorderV1">
-                <h3 className="text-lg font-semibold text-mainTextV1 mb-4">Training History</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Training History</h3>
                 {trainingHistoryData?.data && trainingHistoryData.data.length > 0 ? (
                   <div className="w-full overflow-auto max-h-[300px]">
                     <Table className="border border-lightBorderV1">
                       <TableHeader>
                         <TableRow className="bg-[#F56C1420] hover">
-                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Status</TableHead>
-                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Dataset Count</TableHead>
-                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Categories</TableHead>
-                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
-                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Completed At</TableHead>
-                          <TableHead className="font-semibold text-mainTextV1 text-nowrap">Created By</TableHead>
+                          <TableHead className="font-semibold text-gray-800 text-nowrap">Status</TableHead>
+                          <TableHead className="font-semibold text-gray-800 text-nowrap">Dataset Count</TableHead>
+                          <TableHead className="font-semibold text-gray-800 text-nowrap">Categories</TableHead>
+                          <TableHead className="font-semibold text-gray-800 text-nowrap">Department</TableHead>
+                          <TableHead className="font-semibold text-gray-800 text-nowrap">Completed At</TableHead>
+                          <TableHead className="font-semibold text-gray-800 text-nowrap">Created By</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {trainingHistoryData.data.map((item, index) => (
                           <TableRow key={index} className="transition-colors">
-                            <TableCell className="text-secondaryTextV1">
+                            <TableCell className="text-gray-800">
                               <span className={`font-semibold capitalize ${item.status === "completed" ? "text-green-600" : item.status === "failed" ? "text-red-600" : "text-yellow-600"}`}>
                                 {item.status}
                               </span>
                             </TableCell>
-                            <TableCell className="text-secondaryTextV1">
+                            <TableCell className="text-gray-800">
                               {item.datasetCount}
                             </TableCell>
-                            <TableCell className="text-secondaryTextV1">
+                            <TableCell className="text-gray-800">
                               {item.categories && item.categories.length > 0 ? item.categories.join(", ") : "-"}
                             </TableCell>
-                            <TableCell className="text-secondaryTextV1">
+                            <TableCell className="text-gray-800">
                               {item.department ? item.department.name : "-"}
                             </TableCell>
-                            <TableCell className="text-secondaryTextV1">
+                            <TableCell className="text-gray-800">
                               {item.completedAt ? formatDate(item.completedAt) : "-"}
                             </TableCell>
-                            <TableCell className="text-secondaryTextV1">
+                            <TableCell className="text-gray-800">
                               {item.createdBy ? item.createdBy.name : "-"}
                             </TableCell>
                           </TableRow>
@@ -245,7 +245,7 @@ export default function DatasetPage() {
                     </Table>
                   </div>
                 ) : (
-                  <p className="text-secondaryTextV1 text-sm">No training history found.</p>
+                  <p className="text-gray-800 text-sm">No training history found.</p>
                 )}
               </Card>
             )

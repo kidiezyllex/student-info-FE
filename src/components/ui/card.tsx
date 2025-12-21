@@ -11,7 +11,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 	({ className, ...props }, ref) => (
 		<div
 			ref={ref}
-			className={cn("flex flex-row bg-[#F9FAFB] overflow-hidden px-4 py-[10px] text-base font-semibold text-mainTextV1", className)}
+			className={cn("flex flex-row bg-[#F9FAFB] overflow-hidden px-4 py-[10px] text-base font-semibold text-gray-800", className)}
 			{...props}
 		/>
 	),

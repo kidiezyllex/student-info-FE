@@ -50,8 +50,8 @@ export const DeleteDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-mainTextV1">{title}</DialogTitle>
+        <DialogHeader className="!border-b-[#ccc] px-4">
+          <DialogTitle className="text-gray-800">{title}</DialogTitle>
         </DialogHeader>
 
         {warningMessage && (

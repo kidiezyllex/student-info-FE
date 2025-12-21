@@ -155,12 +155,12 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
         size="medium"
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Add new notification</DialogTitle>
+          <DialogTitle className="text-gray-800">Add new notification</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1 h-full">
           <div className="space-y-2">
-            <Label htmlFor="title" className="text-mainTextV1">
+            <Label htmlFor="title" className="text-gray-800">
               Title <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -177,7 +177,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="content" className="text-mainTextV1">
+            <Label htmlFor="content" className="text-gray-800">
               Content <span className="text-red-500">*</span>
             </Label>
             <Textarea
@@ -196,7 +196,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="startDate" className="text-mainTextV1">
+              <Label htmlFor="startDate" className="text-gray-800">
                 Start Date <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -213,7 +213,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="endDate" className="text-mainTextV1">
+              <Label htmlFor="endDate" className="text-gray-800">
                 End Date <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -237,7 +237,7 @@ export const NotificationCreateDialog = ({ isOpen, onClose, onSuccess }: Notific
               checked={formData.isImportant}
               onCheckedChange={handleCheckboxChange}
             />
-            <Label htmlFor="isImportant" className="text-mainTextV1">
+            <Label htmlFor="isImportant" className="text-gray-800">
               Mark as important
             </Label>
           </div>

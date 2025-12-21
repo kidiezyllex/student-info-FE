@@ -28,10 +28,13 @@ export const updateUserProfile = async (body: IUpdateUserProfileBody): Promise<I
   return res;
 };
 
-export const getAllUsers = async (page: number = 1, limit: number = 10, role?: string): Promise<IGetAllUsersResponse> => {
-  const params: { page: number; limit: number; role?: string } = { page, limit };
+export const getAllUsers = async (page: number = 1, limit: number = 10, role?: string, department?: string): Promise<IGetAllUsersResponse> => {
+  const params: { page: number; limit: number; role?: string; department?: string } = { page, limit };
   if (role && role !== "all") {
     params.role = role;
+  }
+  if (department && department !== "all") {
+    params.department = department;
   }
   const res = await sendGet(`/users`, params);
   return res;

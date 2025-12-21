@@ -40,28 +40,28 @@ export const ScholarshipTable = ({ scholarship }: ScholarshipTableProps) => {
       <Table className="border border-lightBorderV1">
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover">
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap w-1/3">Field</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Value</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap w-1/3">Field</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Value</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1">Status</TableCell>
-            <TableCell className="text-secondaryTextV1">
+            <TableCell className="font-semibold text-gray-800">Status</TableCell>
+            <TableCell className="text-gray-800">
               {getStatusBadge(scholarship)}
             </TableCell>
           </TableRow>
 
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1">Provider</TableCell>
-            <TableCell className="text-secondaryTextV1">
+            <TableCell className="font-semibold text-gray-800">Provider</TableCell>
+            <TableCell className="text-gray-800">
               {scholarship.provider}
             </TableCell>
           </TableRow>
 
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1">Scholarship Value</TableCell>
-            <TableCell className="text-secondaryTextV1">
+            <TableCell className="font-semibold text-gray-800">Scholarship Value</TableCell>
+            <TableCell className="text-gray-800">
               <span className="text-xl font-semibold text-green-600">
                 {scholarship.value}
               </span>
@@ -69,23 +69,23 @@ export const ScholarshipTable = ({ scholarship }: ScholarshipTableProps) => {
           </TableRow>
 
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1 align-top">Description</TableCell>
-            <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+            <TableCell className="font-semibold text-gray-800 align-top">Description</TableCell>
+            <TableCell className="text-gray-800 whitespace-pre-wrap">
               {scholarship.description}
             </TableCell>
           </TableRow>
           
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1">Application Deadline</TableCell>
-            <TableCell className="text-secondaryTextV1">
+            <TableCell className="font-semibold text-gray-800">Application Deadline</TableCell>
+            <TableCell className="text-gray-800">
               {formatDate(scholarship.applicationDeadline)}
             </TableCell>
           </TableRow>
 
           {scholarship.department && (
             <TableRow className="transition-colors">
-              <TableCell className="font-semibold text-mainTextV1">Department</TableCell>
-              <TableCell className="text-secondaryTextV1">
+              <TableCell className="font-semibold text-gray-800">Department</TableCell>
+              <TableCell className="text-gray-800">
                 {scholarship.department.name}
               </TableCell>
             </TableRow>
@@ -94,8 +94,8 @@ export const ScholarshipTable = ({ scholarship }: ScholarshipTableProps) => {
 
           {scholarship.eligibility && (
             <TableRow className="transition-colors">
-              <TableCell className="font-semibold text-mainTextV1 align-top">Eligibility</TableCell>
-              <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+              <TableCell className="font-semibold text-gray-800 align-top">Eligibility</TableCell>
+              <TableCell className="text-gray-800 whitespace-pre-wrap">
                 {scholarship.eligibility}
               </TableCell>
             </TableRow>
@@ -103,8 +103,8 @@ export const ScholarshipTable = ({ scholarship }: ScholarshipTableProps) => {
 
           {scholarship.requirements && (
             <TableRow className="transition-colors">
-              <TableCell className="font-semibold text-mainTextV1 align-top">Requirements</TableCell>
-              <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+              <TableCell className="font-semibold text-gray-800 align-top">Requirements</TableCell>
+              <TableCell className="text-gray-800 whitespace-pre-wrap">
                 {scholarship.requirements}
               </TableCell>
             </TableRow>
@@ -112,8 +112,8 @@ export const ScholarshipTable = ({ scholarship }: ScholarshipTableProps) => {
 
           {scholarship.applicationProcess && (
             <TableRow className="transition-colors">
-              <TableCell className="font-semibold text-mainTextV1 align-top">Application Process</TableCell>
-              <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+              <TableCell className="font-semibold text-gray-800 align-top">Application Process</TableCell>
+              <TableCell className="text-gray-800 whitespace-pre-wrap">
                 {scholarship.applicationProcess}
               </TableCell>
             </TableRow>

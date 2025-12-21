@@ -77,7 +77,7 @@ const QuickActionCard = ({ href, icon, title, description, color, delay = 0 }: {
                             <Image src={icon} alt={title} width={200} height={200} className="object-contain" />
                         </div>
 
-                        <CardTitle className="text-base font-semibold text-mainTextV1 group-hover:text-opacity-80 transition-all duration-300 text-center">
+                        <CardTitle className="text-base font-semibold text-gray-800 group-hover:text-opacity-80 transition-all duration-300 text-center">
                             {title}
                         </CardTitle>
                     </CardHeader>
@@ -115,7 +115,7 @@ const StatCard = ({ icon: Icon, title, count, color }: {
 
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-secondaryTextV1 text-sm font-semibold uppercase tracking-wider mb-1">
+                    <p className="text-gray-800 text-sm font-semibold uppercase tracking-wider mb-1">
                         {title}
                     </p>
                     <p
@@ -227,7 +227,7 @@ export default function CoordinatorDashboard() {
       >
         {/* Quick Actions */}
         <motion.div variants={item}>
-          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Management Tools</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Management Tools</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {quickActions.map((action, index) => (
               <QuickActionCard
@@ -245,7 +245,7 @@ export default function CoordinatorDashboard() {
 
         {/* Statistics Overview */}
         <motion.div variants={item}>
-          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Department Overview</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Department Overview</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <StatCard
               icon={IconCalendar}
@@ -276,7 +276,7 @@ export default function CoordinatorDashboard() {
 
         {/* Recent Activity */}
         <motion.div variants={item}>
-          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Recent Activity</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h2>
           <div className="bg-white border border-lightBorderV1 rounded-lg p-4">
             <div className="space-y-4">
               <div className="flex items-center space-x-4 p-4 bg-blue-50/50 rounded-lg border border-blue-100">

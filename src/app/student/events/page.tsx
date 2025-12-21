@@ -163,13 +163,13 @@ export default function StudentEventsPage() {
                   placeholder="Search events..."
                   value={searchQuery}
                   onChange={handleSearch}
-                  className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-secondaryTextV1"
+                  className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-gray-800"
                 />
-                <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
+                <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 w-5 h-5" />
                 {searchQuery && (
                   <button
                     onClick={handleClearSearch}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 hover:text-red-500 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-800 hover:text-red-500 transition-colors"
                     type="button"
                   >
                     <IconX className="w-5 h-5" />
@@ -178,7 +178,7 @@ export default function StudentEventsPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <IconFilter className="w-5 h-5 text-mainTextV1" />
+                <IconFilter className="w-5 h-5 text-gray-800" />
                 <Select value={eventFilter} onValueChange={handleFilterChange}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
@@ -224,10 +224,10 @@ export default function StudentEventsPage() {
                     <CardHeader>
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 flex flex-col">
-                          <CardTitle className="text-lg text-mainTextV1 line-clamp-2">
+                          <CardTitle className="text-lg text-gray-800 line-clamp-2">
                             {event.title}
                           </CardTitle>
-                          <CardDescription className="text-secondaryTextV1 mt-1">
+                          <CardDescription className="text-gray-800 mt-1">
                             Organized by {event.organizer}
                           </CardDescription>
                           {getStatusBadge(event)}
@@ -236,28 +236,28 @@ export default function StudentEventsPage() {
                     </CardHeader>
 
                     <CardContent className="flex-1 flex flex-col">
-                      <p className="text-sm text-secondaryTextV1 line-clamp-3 mb-4">
+                      <p className="text-sm text-gray-800 line-clamp-3 mb-4">
                         {event.description}
                       </p>
 
                       <div className="space-y-2 mt-auto">
                         <div className="flex items-center gap-2 text-sm">
                           <IconCalendar className="w-4 h-4 text-orange-600" />
-                          <span className="text-secondaryTextV1">
+                          <span className="text-gray-800">
                             {formatDate(event.startDate)}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-2 text-sm">
                           <IconClock className="w-4 h-4 text-purple-600" />
-                          <span className="text-secondaryTextV1">
+                          <span className="text-gray-800">
                             {formatTime(event.startDate)} - {formatTime(event.endDate)}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-2 text-sm">
                           <IconMapPin className="w-4 h-4 text-red-600" />
-                          <span className="text-secondaryTextV1 line-clamp-1">
+                          <span className="text-gray-800 line-clamp-1">
                             {event.location}
                           </span>
                         </div>
@@ -265,7 +265,7 @@ export default function StudentEventsPage() {
                         {event.department && (
                           <div className="flex items-center gap-2 text-sm">
                             <IconUser className="w-4 h-4 text-green-600" />
-                            <span className="text-secondaryTextV1">
+                            <span className="text-gray-800">
                               {event.department.name}
                             </span>
                           </div>
@@ -287,11 +287,11 @@ export default function StudentEventsPage() {
           ) : (
             <Card className="border border-lightBorderV1">
               <CardContent className="p-8 text-center">
-                <IconCalendar className="w-12 h-12 text-secondaryTextV1 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-mainTextV1 mb-2">
+                <IconCalendar className="w-12 h-12 text-gray-800 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   No events found
                 </h3>
-                <p className="text-secondaryTextV1 text-sm">
+                <p className="text-gray-800 text-sm">
                   {searchQuery ?
                     "Try adjusting your search terms or filters." :
                     "There are no events available at the moment."
@@ -306,10 +306,10 @@ export default function StudentEventsPage() {
       <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
         <DialogContent size="medium" className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
           <DialogHeader>
-            <DialogTitle className="text-xl text-mainTextV1">
+            <DialogTitle className="text-xl text-gray-800">
               {selectedEvent?.title}
             </DialogTitle>
-            <DialogDescription className="text-secondaryTextV1">
+            <DialogDescription className="text-gray-800">
               Organized by {selectedEvent?.organizer}
             </DialogDescription>
           </DialogHeader>
@@ -326,37 +326,37 @@ export default function StudentEventsPage() {
               </div>
 
               <div>
-                <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Description</h4>
-                <p className="text-secondaryTextV1 whitespace-pre-wrap">
+                <h4 className="text-lg font-semibold text-gray-800 mb-2">Description</h4>
+                <p className="text-gray-800 whitespace-pre-wrap">
                   {selectedEvent.description}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="text-md font-semibold text-mainTextV1 mb-2">Start Date & Time</h4>
-                  <p className="text-secondaryTextV1 text-sm">
+                  <h4 className="text-md font-semibold text-gray-800 mb-2">Start Date & Time</h4>
+                  <p className="text-gray-800 text-sm">
                     {formatDateTime(selectedEvent.startDate)}
                   </p>
                 </div>
 
                 <div>
-                  <h4 className="text-md font-semibold text-mainTextV1 mb-2">End Date & Time</h4>
-                  <p className="text-secondaryTextV1 text-sm">
+                  <h4 className="text-md font-semibold text-gray-800 mb-2">End Date & Time</h4>
+                  <p className="text-gray-800 text-sm">
                     {formatDateTime(selectedEvent.endDate)}
                   </p>
                 </div>
 
                 <div>
-                  <h4 className="text-md font-semibold text-mainTextV1 mb-2">Location</h4>
-                  <p className="text-secondaryTextV1 text-sm">
+                  <h4 className="text-md font-semibold text-gray-800 mb-2">Location</h4>
+                  <p className="text-gray-800 text-sm">
                     {selectedEvent.location}
                   </p>
                 </div>
 
                 <div>
-                  <h4 className="text-md font-semibold text-mainTextV1 mb-2">Organizer</h4>
-                  <p className="text-secondaryTextV1 text-sm">
+                  <h4 className="text-md font-semibold text-gray-800 mb-2">Organizer</h4>
+                  <p className="text-gray-800 text-sm">
                     {selectedEvent.organizer}
                   </p>
                 </div>
@@ -364,8 +364,8 @@ export default function StudentEventsPage() {
 
               {selectedEvent.requirements && (
                 <div>
-                  <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Requirements</h4>
-                  <p className="text-secondaryTextV1 whitespace-pre-wrap">
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">Requirements</h4>
+                  <p className="text-gray-800 whitespace-pre-wrap">
                     {selectedEvent.requirements}
                   </p>
                 </div>
@@ -373,8 +373,8 @@ export default function StudentEventsPage() {
 
               {selectedEvent.agenda && (
                 <div>
-                  <h4 className="text-lg font-semibold text-mainTextV1 mb-2">Agenda</h4>
-                  <p className="text-secondaryTextV1 whitespace-pre-wrap">
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">Agenda</h4>
+                  <p className="text-gray-800 whitespace-pre-wrap">
                     {selectedEvent.agenda}
                   </p>
                 </div>

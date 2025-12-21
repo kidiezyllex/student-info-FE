@@ -248,7 +248,7 @@ export default function ChatPage() {
                 <ScrollArea className="h-[calc(100vh-280px)] max-w-[320px] w-[320px]">
                   <div className="px-4 space-y-2 max-w-[320px] w-[320px]">
                     {historyLoading ? (
-                      <div className="text-sm text-secondaryTextV1">Loading history...</div>
+                      <div className="text-sm text-gray-800">Loading history...</div>
                     ) : (
                       chatHistory?.data?.map((session: IChatHistoryItem) => (
                         <div
@@ -263,10 +263,10 @@ export default function ChatPage() {
                             onClick={() => handleLoadSession(session._id)}
                             className="flex-1"
                           >
-                            <h4 className="font-semibold text-base text-mainTextV1 truncate">
+                            <h4 className="font-semibold text-base text-gray-800 truncate">
                               {session.title}
                             </h4>
-                            <p className="text-xs text-secondaryTextV1 mt-1">
+                            <p className="text-xs text-gray-800 mt-1">
                               {formatSessionDate(session.lastActive)}
                             </p>
                           </div>
@@ -319,9 +319,9 @@ export default function ChatPage() {
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
                 <div className="flex-1">
-                  <CardTitle className="text-xl font-semibold text-mainTextV1 mb-1">AI Assistant</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-gray-800 mb-1">AI Assistant</CardTitle>
                   <div className="flex items-center gap-2">
-                    <p className="text-sm text-secondaryTextV1 font-semibold">
+                    <p className="text-sm text-gray-800 font-semibold">
                       {currentSessionId ? "Continuing conversation" : "Ready to help with your questions"}
                     </p>
                   </div>
@@ -372,14 +372,14 @@ export default function ChatPage() {
                           <div
                             className={`p-3 rounded-lg ${message.isUser
                                 ? 'bg-mainTextHoverV1 text-white'
-                                : 'bg-gray-100 text-mainTextV1'
+                                : 'bg-gray-100 text-gray-800'
                               }`}
                           >
                             <p className="text-sm whitespace-pre-wrap">{formatMessageContent(message.content)}</p>
                           </div>
                           
                           <div className="flex items-center justify-between mt-1 px-1">
-                            <p className="text-xs text-secondaryTextV1">
+                            <p className="text-xs text-gray-800">
                               {formatTime(message.timestamp)}
                             </p>
                             

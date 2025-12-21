@@ -182,13 +182,13 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent size="medium" className="max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Add new event</DialogTitle>
+          <DialogTitle className="text-gray-800">Add new event</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <Label htmlFor="title" className="text-sm font-semibold text-mainTextV1">
+              <Label htmlFor="title" className="text-sm font-semibold text-gray-800">
                 Event name <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -203,7 +203,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="description" className="text-sm font-semibold text-mainTextV1">
+              <Label htmlFor="description" className="text-sm font-semibold text-gray-800">
                 Event description <span className="text-red-500">*</span>
               </Label>
               <Textarea
@@ -218,7 +218,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div>
-              <Label htmlFor="startDate" className="text-sm font-semibold text-mainTextV1">
+              <Label htmlFor="startDate" className="text-sm font-semibold text-gray-800">
                 Start time <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -233,7 +233,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div>
-              <Label htmlFor="endDate" className="text-sm font-semibold text-mainTextV1">
+              <Label htmlFor="endDate" className="text-sm font-semibold text-gray-800">
                 End time <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -248,7 +248,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div>
-              <Label htmlFor="location" className="text-sm font-semibold text-mainTextV1">
+              <Label htmlFor="location" className="text-sm font-semibold text-gray-800">
                 Location <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -263,7 +263,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="department" className="text-sm font-semibold text-mainTextV1">
+              <Label htmlFor="department" className="text-sm font-semibold text-gray-800">
                 Department <span className="text-red-500">*</span>
               </Label>
               <Select
@@ -286,7 +286,7 @@ export const EventCreateDialog = ({ isOpen, onClose, onSuccess }: EventCreateDia
             </div>
 
             <div className="md:col-span-2">
-              <Label htmlFor="organizer" className="text-sm font-semibold text-mainTextV1">
+              <Label htmlFor="organizer" className="text-sm font-semibold text-gray-800">
                 Organizer <span className="text-red-500">*</span>
               </Label>
               <Input

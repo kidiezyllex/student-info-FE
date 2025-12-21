@@ -50,19 +50,19 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-semibold text-mainTextV1">Event Name</TableHead>
-            <TableHead className="font-semibold text-mainTextV1">Time</TableHead>
-            <TableHead className="font-semibold text-mainTextV1">Location</TableHead>
-            <TableHead className="font-semibold text-mainTextV1">Department</TableHead>
-            <TableHead className="font-semibold text-mainTextV1">Organizer</TableHead>
-            <TableHead className="font-semibold text-mainTextV1">Status</TableHead>
-            <TableHead className="font-semibold text-mainTextV1">Action</TableHead>
+            <TableHead className="font-semibold text-gray-800">Event Name</TableHead>
+            <TableHead className="font-semibold text-gray-800">Time</TableHead>
+            <TableHead className="font-semibold text-gray-800">Location</TableHead>
+            <TableHead className="font-semibold text-gray-800">Department</TableHead>
+            <TableHead className="font-semibold text-gray-800">Organizer</TableHead>
+            <TableHead className="font-semibold text-gray-800">Status</TableHead>
+            <TableHead className="font-semibold text-gray-800">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {events.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-secondaryTextV1">
+              <TableCell colSpan={7} className="text-center py-8 text-gray-800">
                 {isSearching ? "No event found" : "No event"}
               </TableCell>
             </TableRow>
@@ -80,21 +80,21 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                       <IconCalendar className="w-6 h-6 text-orange-400" />
                     </div>
                     <div>
-                      <p className="text-mainTextV1 font-semibold">{event.title}</p>
-                      <p className="text-sm text-secondaryTextV1 line-clamp-2">Desc: {event.description}</p>
+                      <p className="text-gray-800 font-semibold">{event.title}</p>
+                      <p className="text-sm text-gray-800 line-clamp-2">Desc: {event.description}</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-1">
-                        <AlarmClock className="w-4 h-4 text-mainTextV1" />
-                        <p className="text-mainTextV1 text-nowrap text-sm">
+                        <AlarmClock className="w-4 h-4 text-gray-800" />
+                        <p className="text-gray-800 text-nowrap text-sm">
                           {formatDate(event.startDate)}
                         </p>
                       </div>
                       <div className="flex items-center gap-1">
-                        <AlarmClockOff className="w-4 h-4 text-mainTextV1" />
-                        <p className="text-secondaryTextV1 text-nowrap text-sm">
+                        <AlarmClockOff className="w-4 h-4 text-gray-800" />
+                        <p className="text-gray-800 text-nowrap text-sm">
                           {formatDate(event.endDate)}
                         </p>
                       </div>
@@ -102,13 +102,13 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <span className="text-secondaryTextV1 text-sm">{event.location}</span>
+                      <span className="text-gray-800 text-sm">{event.location}</span>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <div>
-                        <p className="text-mainTextV1 font-semibold text-sm">
+                        <p className="text-gray-800 font-semibold text-sm">
                           {event.department?.name || "Not updated"}
                         </p>
                       </div>
@@ -116,7 +116,7 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2 font-semibold">
-                      <span className="text-secondaryTextV1 text-sm">{event.organizer}</span>
+                      <span className="text-gray-800 text-sm">{event.organizer}</span>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -132,7 +132,7 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                           variant="outline"
                           size="icon"
                           onClick={() => onEdit(event._id)}
-                          className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
+                          className="text-gray-800 hover:text-mainTextHoverV1 hover:bg-transparent"
                         >
                           <IconMenu3 className="h-4 w-4" />
                         </Button>
@@ -145,7 +145,7 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                           variant="outline"
                           size="icon"
                           onClick={() => onDelete(event._id)}
-                          className="text-mainTextV1 hover:text-mainDangerV1 hover:bg-transparent"
+                          className="text-gray-800 hover:text-mainDangerV1 hover:bg-transparent"
                         >
                           <IconTrash className="h-4 w-4" />
                         </Button>

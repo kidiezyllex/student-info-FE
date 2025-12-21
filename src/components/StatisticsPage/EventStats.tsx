@@ -54,8 +54,8 @@ export default function EventStats() {
   return (
     <Card className="p-4 !shadow-md  ">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-mainTextV1">Event Statistics</h3>
-        <p className="text-secondaryTextV1 text-sm">
+        <h3 className="text-lg font-semibold text-gray-800">Event Statistics</h3>
+        <p className="text-gray-800 text-sm">
           Total: <span className="font-semibold text-primary">{totalEvents}</span> events
         </p>
       </div>
@@ -116,7 +116,7 @@ export default function EventStats() {
           <div key={item.name} className="flex items-center justify-between bg-white p-3 rounded-md border border-lightBorderV1">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-              <span className="text-sm font-semibold text-secondaryTextV1">{item.name}</span>
+              <span className="text-sm font-semibold text-gray-800">{item.name}</span>
             </div>
             <span className="font-semibold" style={{ color: item.color }}>{item.value}</span>
           </div>
@@ -126,11 +126,11 @@ export default function EventStats() {
       <div className="mt-4 p-3 bg-gray-50 rounded-md">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <span className="text-secondaryTextV1">Completed percentage: </span>
+            <span className="text-gray-800">Completed percentage: </span>
             <span className="font-semibold text-green-600">{mockEventData.completedPercentage}%</span>
           </div>
           <div>
-            <span className="text-secondaryTextV1">Upcoming percentage: </span>
+            <span className="text-gray-800">Upcoming percentage: </span>
             <span className="font-semibold text-orange-600">{mockEventData.upcomingPercentage}%</span>
           </div>
         </div>

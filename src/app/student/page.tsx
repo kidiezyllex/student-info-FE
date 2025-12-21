@@ -78,7 +78,7 @@ const QuickActionCard = ({ href, icon, title, description, color, delay = 0 }: {
                             <Image src={icon} alt={title} width={200} height={200} className="object-contain" />
                         </div>
 
-                        <CardTitle className="text-base font-semibold text-mainTextV1 group-hover:text-opacity-80 transition-all duration-300 text-center">
+                        <CardTitle className="text-base font-semibold text-gray-800 group-hover:text-opacity-80 transition-all duration-300 text-center">
                             {title}
                         </CardTitle>
                     </CardHeader>
@@ -116,7 +116,7 @@ const StatCard = ({ icon: Icon, title, count, color }: {
 
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-secondaryTextV1 text-sm font-semibold uppercase tracking-wider mb-1">
+                    <p className="text-gray-800 text-sm font-semibold uppercase tracking-wider mb-1">
                         {title}
                     </p>
                     <p
@@ -225,7 +225,7 @@ export default function StudentDashboard() {
       >
         {/* Quick Actions */}
         <motion.div variants={item}>
-          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Quick Actions</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {quickActions.map((action, index) => (
               <QuickActionCard
@@ -243,7 +243,7 @@ export default function StudentDashboard() {
 
         {/* 简化的统计卡片 */}
         <motion.div variants={item}>
-          <h2 className="text-xl font-semibold text-mainTextV1 mb-4">Quick Overview</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Overview</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <StatCard
               icon={IconBell}

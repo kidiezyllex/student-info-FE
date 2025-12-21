@@ -23,17 +23,17 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department Name</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department Code</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Description</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Coordinator</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Department Name</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Department Code</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Description</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Coordinator</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {departments.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={5} className="text-center py-8 text-secondaryTextV1">
+              <TableCell colSpan={5} className="text-center py-8 text-gray-800">
                 {isSearching ? "No department found" : "No department"}
               </TableCell>
             </TableRow>
@@ -50,8 +50,8 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                     <IconBuilding className="w-6 h-6 text-orange-400" />
                   </div>
                   <div>
-                    <p className="font-semibold text-mainTextV1">{department.name}</p>
-                    <p className="text-sm text-secondaryTextV1">ID: {department._id}</p>
+                    <p className="font-semibold text-gray-800">{department.name}</p>
+                    <p className="text-sm text-gray-800">ID: {department._id}</p>
                   </div>
                 </TableCell>
                 <TableCell>
@@ -62,17 +62,17 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-secondaryTextV1 line-clamp-2">{department.description}</span>
+                  <span className="text-gray-800 line-clamp-2">{department.description}</span>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
                     {department.coordinator ? (
                       <div className="space-y-1">
-                        <p className="text-sm font-semibold text-mainTextV1">{department.coordinator.name}</p>
-                        <p className="text-xs text-secondaryTextV1">{department.coordinator.email}</p>
+                        <p className="text-sm font-semibold text-gray-800">{department.coordinator.name}</p>
+                        <p className="text-xs text-gray-800">{department.coordinator.email}</p>
                       </div>
                     ) : (
-                      <span className="text-secondaryTextV1">No coordinator</span>
+                      <span className="text-gray-800">No coordinator</span>
                     )}
                   </div>
                 </TableCell>
@@ -86,7 +86,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                         variant="outline"
                         size="icon"
                         onClick={() => onEdit(department._id)}
-                        className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
+                        className="text-gray-800 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
                         <IconMenu3 className="h-4 w-4" />
                       </Button>
@@ -99,7 +99,7 @@ export const DepartmentTable = ({ departments, isSearching, onEdit, onDelete }: 
                         variant="outline"
                         size="icon"
                         onClick={() => onDelete(department._id)}
-                        className="text-mainTextV1 hover:text-mainDangerV1 hover:bg-transparent"
+                        className="text-gray-800 hover:text-mainDangerV1 hover:bg-transparent"
                       >
                         <IconTrash className="h-4 w-4" />
                       </Button>

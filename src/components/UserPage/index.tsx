@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useGetAllUsers, useDeleteUser } from "@/hooks/useUser";
+import { useGetAllDepartments } from "@/hooks/useDepartment";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -28,6 +29,7 @@ import { DeleteDialog } from "@/components/ui/delete-dialog";
 export default function UserPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
+  const [departmentFilter, setDepartmentFilter] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
@@ -35,10 +37,15 @@ export default function UserPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
 
+  // Get departments list for filter
+  const { data: departmentsData } = useGetAllDepartments(1, 1000);
+
   // Get role parameter for API call (only if not "all")
   const roleParam = roleFilter && roleFilter !== "all" ? roleFilter : undefined;
+  // Get department parameter for API call (only if department is not "all")
+  const departmentParam = departmentFilter && departmentFilter !== "all" ? departmentFilter : undefined;
   
-  const { data: usersData, isLoading, refetch } = useGetAllUsers(currentPage, pageSize, roleParam);
+  const { data: usersData, isLoading, refetch } = useGetAllUsers(currentPage, pageSize, roleParam, departmentParam);
   const { mutateAsync: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
 
   // Filter users based on search query (client-side filtering for search only)
@@ -60,10 +67,10 @@ export default function UserPage() {
     return true;
   }) : [];
 
-  // Reset to first page when search query or role filter changes
+  // Reset to first page when search query, role filter, or department filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, roleFilter]);
+  }, [searchQuery, roleFilter, departmentFilter]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -75,6 +82,10 @@ export default function UserPage() {
 
   const handleRoleFilterChange = (value: string) => {
     setRoleFilter(value);
+  };
+
+  const handleDepartmentFilterChange = (value: string) => {
+    setDepartmentFilter(value);
   };
 
   const handleEdit = (id: string) => {
@@ -104,8 +115,6 @@ export default function UserPage() {
     setCurrentPage(page);
   };
 
-  // Use server-side paginated data, or filtered data if searching
-  // Role filter is handled by API, only search is client-side
   const hasSearchFilter = searchQuery.trim();
   const displayUsers = hasSearchFilter ? filteredUsers : (usersData?.data || []);
   const totalUsers = hasSearchFilter ? filteredUsers.length : (usersData?.total || 0);
@@ -135,13 +144,13 @@ export default function UserPage() {
                 placeholder="Search by name, email, role, department..."
                 value={searchQuery}
                 onChange={handleSearch}
-                className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-secondaryTextV1"
+                className="pl-10 pr-10 py-2 w-full border-lightBorderV1 focus:border-mainTextHoverV1 text-gray-800"
               />
-              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 w-5 h-5" />
+              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 w-5 h-5" />
               {searchQuery && (
                 <button
                   onClick={handleClearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-mainTextV1 hover:text-red-500 transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-800 hover:text-red-500 transition-colors"
                   type="button"
                 >
                   <IconX className="w-5 h-5" />
@@ -158,6 +167,19 @@ export default function UserPage() {
                   <SelectItem value="admin">Admin</SelectItem>
                   <SelectItem value="coordinator">Coordinator</SelectItem>
                   <SelectItem value="student">Student</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={departmentFilter} onValueChange={handleDepartmentFilterChange}>
+                <SelectTrigger className="w-[200px] focus:border-mainTextHoverV1">
+                  <SelectValue placeholder="Filter by department" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Departments</SelectItem>
+                  {departmentsData?.data?.map((dept) => (
+                    <SelectItem key={dept._id} value={dept._id}>
+                      {dept.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Button

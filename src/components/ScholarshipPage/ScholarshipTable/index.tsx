@@ -47,19 +47,19 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Title</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Provider</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Value</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Deadline</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Status</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Title</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Provider</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Value</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Department</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Deadline</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Status</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {scholarships.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-secondaryTextV1">
+              <TableCell colSpan={7} className="text-center py-8 text-gray-800">
                 {isSearching ? "No matching scholarships found" : "No scholarships yet"}
               </TableCell>
             </TableRow>
@@ -76,31 +76,31 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
                     <IconAward className="w-6 h-6 text-orange-400" />
                   </div>
                   <div>
-                    <p className="font-semibold text-mainTextV1 line-clamp-1">{scholarship.title}</p>
-                    <p className="text-sm text-secondaryTextV1 line-clamp-2">{scholarship.description}</p>
+                    <p className="font-semibold text-gray-800 line-clamp-1">{scholarship.title}</p>
+                    <p className="text-sm text-gray-800 line-clamp-2">{scholarship.description}</p>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-secondaryTextV1">{scholarship.provider}</span>
+                  <span className="text-gray-800">{scholarship.provider}</span>
                 </TableCell>
                 <TableCell>
-                  <span className="font-semibold text-mainTextV1">{scholarship.value}</span>
+                  <span className="font-semibold text-gray-800">{scholarship.value}</span>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center">
                     {scholarship.department ? (
                       <div className="space-y-1">
-                        <p className="text-sm font-semibold text-mainTextV1 text-nowrap">{scholarship.department.name}</p>
+                        <p className="text-sm font-semibold text-gray-800 text-nowrap">{scholarship.department.name}</p>
                       </div>
                     ) : (
-                      <span className="text-secondaryTextV1">No department</span>
+                      <span className="text-gray-800">No department</span>
                     )}
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-1">
-                    <AlarmClockOff className="w-4 h-4 text-mainTextV1" />
-                    <p className="text-secondaryTextV1 text-nowrap text-sm">
+                    <AlarmClockOff className="w-4 h-4 text-gray-800" />
+                    <p className="text-gray-800 text-nowrap text-sm">
                       {formatDate(scholarship.applicationDeadline)}
                     </p>
                   </div>
@@ -121,7 +121,7 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
                         variant="outline"
                         size="icon"
                         onClick={() => onEdit(scholarship._id)}
-                        className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
+                        className="text-gray-800 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
                         <IconMenu3 className="h-4 w-4" />
                       </Button>
@@ -134,7 +134,7 @@ export const ScholarshipTable = ({ scholarships, isSearching, onEdit, onDelete }
                         variant="outline"
                         size="icon"
                         onClick={() => onDelete(scholarship._id)}
-                        className="text-mainTextV1 hover:text-mainDangerV1 hover:bg-transparent"
+                        className="text-gray-800 hover:text-mainDangerV1 hover:bg-transparent"
                       >
                         <IconTrash className="h-4 w-4" />
                       </Button>

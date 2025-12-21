@@ -121,12 +121,12 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
         size="medium"
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Add New Dataset Item</DialogTitle>
+          <DialogTitle className="text-gray-800">Add New Dataset Item</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1 h-full">
           <div className="space-y-2">
-            <Label htmlFor="key" className="text-mainTextV1">
+            <Label htmlFor="key" className="text-gray-800">
               Key <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -143,7 +143,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="value" className="text-mainTextV1">
+            <Label htmlFor="value" className="text-gray-800">
               Value <span className="text-red-500">*</span>
             </Label>
             <Textarea
@@ -160,7 +160,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-mainTextV1">
+            <Label htmlFor="category" className="text-gray-800">
               Category <span className="text-red-500">*</span>
             </Label>
             <Select value={formData.category} onValueChange={(value) => handleSelectChange("category", value)}>
@@ -181,7 +181,7 @@ export const DatasetCreateDialog = ({ isOpen, onClose, onSuccess }: DatasetCreat
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="department" className="text-mainTextV1">
+            <Label htmlFor="department" className="text-gray-800">
               Department (Optional)
             </Label>
             <Select value={formData.department} onValueChange={(value) => handleSelectChange("department", value)}>

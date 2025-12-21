@@ -73,13 +73,13 @@ export default function ScholarshipTrendChart() {
     <Card className="p-4 !shadow-md  ">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-mainTextV1">Scholarship Application Trend</h3>
-          <p className="text-secondaryTextV1 text-sm">
+          <h3 className="text-lg font-semibold text-gray-800">Scholarship Application Trend</h3>
+          <p className="text-gray-800 text-sm">
             Line chart showing the trend of scholarship applications in {year}
           </p>
         </div>
         <Select value={year.toString()} onValueChange={handleYearChange}>
-          <SelectTrigger className="w-[120px] border-lightBorderV1 text-mainTextV1">
+          <SelectTrigger className="w-[120px] border-lightBorderV1 text-gray-800">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

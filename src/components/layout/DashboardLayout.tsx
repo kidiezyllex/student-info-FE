@@ -89,7 +89,7 @@ export default function DashboardLayout({
 											onClick={() => handleMenuClick(menu)}
 										>
 											{(!menu.subMenu || menu.subMenu.length === 0) ? (
-												<Link href={menu.path}>
+												<Link href={menu.path} suppressHydrationWarning>
 													<RippleEffect
 														rippleColor="rgba(68, 215, 182, 0.3)"
 														duration={500}
@@ -184,7 +184,7 @@ export default function DashboardLayout({
 														>
 															{menu.subMenu.map((sub) => (
 																<li key={sub.id}>
-																	<Link href={sub.path} onClick={(e) => e.stopPropagation()}>
+																	<Link href={sub.path} onClick={(e) => e.stopPropagation()} suppressHydrationWarning>
 																		<RippleEffect
 																			rippleColor="rgba(68, 215, 182, 0.2)"
 																			duration={400}

@@ -99,8 +99,8 @@ export default function ScholarshipStats() {
   return (
     <Card className="p-4 !shadow-md  ">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-mainTextV1">Scholarship Statistics</h3>
-        <p className="text-secondaryTextV1 text-sm">
+        <h3 className="text-lg font-semibold text-gray-800">Scholarship Statistics</h3>
+        <p className="text-gray-800 text-sm">
           Total: <span className="font-semibold text-primary">{totalScholarships}</span> scholarships
         </p>
       </div>
@@ -115,7 +115,7 @@ export default function ScholarshipStats() {
         <Card className="flex flex-col flex-1">
           <CardHeader className="flex items-center justify-between">
             Scholarship Type
-            <p className="text-secondaryTextV1 text-xs">Distribution by type</p>
+            <p className="text-gray-800 text-xs">Distribution by type</p>
           </CardHeader>
           <CardContent className="flex-1 pb-0">
             <ChartContainer
@@ -139,7 +139,7 @@ export default function ScholarshipStats() {
         <Card className="flex flex-col flex-1">
           <CardHeader className="flex items-center justify-between">
             Scholarship Status
-            <p className="text-secondaryTextV1 text-xs">Distribution by status</p>
+            <p className="text-gray-800 text-xs">Distribution by status</p>
           </CardHeader>
           <CardContent className="flex-1 pb-0">
             <ChartContainer

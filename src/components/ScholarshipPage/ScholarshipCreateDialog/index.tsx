@@ -143,13 +143,13 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
         size="medium"
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Add new scholarship</DialogTitle>
+          <DialogTitle className="text-gray-800">Add new scholarship</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1 h-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-mainTextV1">
+              <Label htmlFor="title" className="text-gray-800">
                 Title <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -166,7 +166,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="provider" className="text-mainTextV1">
+              <Label htmlFor="provider" className="text-gray-800">
                 Provider <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -184,7 +184,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-mainTextV1">
+            <Label htmlFor="description" className="text-gray-800">
               Description <span className="text-red-500">*</span>
             </Label>
             <Textarea
@@ -202,7 +202,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="value" className="text-mainTextV1">
+              <Label htmlFor="value" className="text-gray-800">
                 Value <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -219,7 +219,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="applicationDeadline" className="text-mainTextV1">
+              <Label htmlFor="applicationDeadline" className="text-gray-800">
                 Application Deadline <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -237,7 +237,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="department" className="text-mainTextV1">
+            <Label htmlFor="department" className="text-gray-800">
               Department <span className="text-red-500">*</span>
             </Label>
             <Select value={formData.department} onValueChange={(value) => handleSelectChange("department", value)}>
@@ -258,7 +258,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="requirements" className="text-mainTextV1">
+            <Label htmlFor="requirements" className="text-gray-800">
               Requirements <span className="text-red-500">*</span>
             </Label>
             <Textarea
@@ -275,7 +275,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="eligibility" className="text-mainTextV1">
+            <Label htmlFor="eligibility" className="text-gray-800">
               Eligibility <span className="text-red-500">*</span>
             </Label>
             <Textarea
@@ -292,7 +292,7 @@ export const ScholarshipCreateDialog = ({ isOpen, onClose, onSuccess }: Scholars
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="applicationProcess" className="text-mainTextV1">
+            <Label htmlFor="applicationProcess" className="text-gray-800">
               Application Process <span className="text-red-500">*</span>
             </Label>
             <Textarea

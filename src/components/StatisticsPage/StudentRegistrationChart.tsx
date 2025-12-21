@@ -73,13 +73,13 @@ export default function StudentRegistrationChart() {
     <Card className="p-4 !shadow-md   h-full flex flex-col">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-mainTextV1">Student Registration by Month</h3>
-          <p className="text-secondaryTextV1 text-sm">
+          <h3 className="text-lg font-semibold text-gray-800">Student Registration by Month</h3>
+          <p className="text-gray-800 text-sm">
             Total students registered: <span className="font-semibold text-primary">{totalStudents}</span> students
           </p>
         </div>
         <Select value={year.toString()} onValueChange={handleYearChange}>
-          <SelectTrigger className="w-[120px] border-lightBorderV1 text-mainTextV1">
+          <SelectTrigger className="w-[120px] border-lightBorderV1 text-gray-800">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

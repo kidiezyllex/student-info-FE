@@ -128,7 +128,7 @@ export const DepartmentDetailsDialog = ({ isOpen, onClose, departmentId, onSucce
         size="medium"
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">
+          <DialogTitle className="text-gray-800">
             {isEditing ? "Edit Department" : "Department Details"}
           </DialogTitle>
         </DialogHeader>

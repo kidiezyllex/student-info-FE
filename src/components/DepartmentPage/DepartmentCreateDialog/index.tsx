@@ -122,12 +122,12 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
         size="medium"
         className="max-h-[90vh] h-[90vh] overflow-y-auto bg-white flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Add new department</DialogTitle>
+          <DialogTitle className="text-gray-800">Add new department</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1 h-full">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-mainTextV1">
+            <Label htmlFor="name" className="text-gray-800">
               Department name <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -144,7 +144,7 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="code" className="text-mainTextV1">
+            <Label htmlFor="code" className="text-gray-800">
               Department code <span className="text-red-500">*</span>
             </Label>
             <Input
@@ -162,7 +162,7 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-mainTextV1">
+            <Label htmlFor="description" className="text-gray-800">
               Description <span className="text-red-500">*</span>
             </Label>
             <Textarea
@@ -179,7 +179,7 @@ export const DepartmentCreateDialog = ({ isOpen, onClose, onSuccess }: Departmen
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="coordinatorId" className="text-mainTextV1">
+            <Label htmlFor="coordinatorId" className="text-gray-800">
               Coordinator <span className="text-red-500">*</span>
             </Label>
             {isLoadingCoordinators ? (

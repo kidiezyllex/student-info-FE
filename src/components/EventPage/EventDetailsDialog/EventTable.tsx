@@ -38,14 +38,14 @@ export const EventTable = ({ event }: EventTableProps) => {
       <Table className="border border-lightBorderV1">
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover">
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap w-1/3">Field</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Value</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap w-1/3">Field</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Value</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1">Event Title</TableCell>
-            <TableCell className="text-secondaryTextV1">
+            <TableCell className="font-semibold text-gray-800">Event Title</TableCell>
+            <TableCell className="text-gray-800">
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-lg">{event.title}</span>
                 <Badge variant={eventStatus.color as any}>
@@ -56,63 +56,63 @@ export const EventTable = ({ event }: EventTableProps) => {
           </TableRow>
 
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1">
+            <TableCell className="font-semibold text-gray-800">
               <div className="flex items-center gap-2">
                 <IconCalendar className="w-4 h-4" />
                 Time
               </div>
             </TableCell>
-            <TableCell className="text-secondaryTextV1">
+            <TableCell className="text-gray-800">
               {formatDate(event.startDate)} - {formatDate(event.endDate)}
             </TableCell>
           </TableRow>
 
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1">
+            <TableCell className="font-semibold text-gray-800">
               <div className="flex items-center gap-2">
                 <IconMapPin className="w-4 h-4" />
                 Location
               </div>
             </TableCell>
-            <TableCell className="text-secondaryTextV1">
+            <TableCell className="text-gray-800">
               {event.location}
             </TableCell>
           </TableRow>
 
           {event.department && (
             <TableRow className="transition-colors">
-              <TableCell className="font-semibold text-mainTextV1">
+              <TableCell className="font-semibold text-gray-800">
                 <div className="flex items-center gap-2">
                   <IconBuilding className="w-4 h-4" />
                   Department
                 </div>
               </TableCell>
-              <TableCell className="text-secondaryTextV1">
+              <TableCell className="text-gray-800">
                 {event.department.name}
               </TableCell>
             </TableRow>
           )}
 
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1">
+            <TableCell className="font-semibold text-gray-800">
               <div className="flex items-center gap-2">
                 <IconUser className="w-4 h-4" />
                 Organizer
               </div>
             </TableCell>
-            <TableCell className="text-secondaryTextV1">
+            <TableCell className="text-gray-800">
               {event.organizer}
             </TableCell>
           </TableRow>
 
           <TableRow className="transition-colors">
-            <TableCell className="font-semibold text-mainTextV1 align-top">
+            <TableCell className="font-semibold text-gray-800 align-top">
               <div className="flex items-center gap-2">
                 <IconFileDescription className="w-4 h-4" />
                 Description
               </div>
             </TableCell>
-            <TableCell className="text-secondaryTextV1 whitespace-pre-wrap">
+            <TableCell className="text-gray-800 whitespace-pre-wrap">
               {event.description}
             </TableCell>
           </TableRow>

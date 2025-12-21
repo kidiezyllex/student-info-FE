@@ -183,7 +183,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent size="medium" className="max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="text-mainTextV1">Add New User</DialogTitle>
+          <DialogTitle className="text-gray-800">Add New User</DialogTitle>
         </DialogHeader>
 
         <motion.div
@@ -195,7 +195,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
             {/* Avatar Upload */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="text-secondaryTextV1">Avatar</Label>
+                <Label className="text-gray-800">Avatar</Label>
                 {isUploadingAvatar && (
                   <div className="flex items-center gap-2 text-sm text-orange-600">
                     <IconLoader2 className="h-4 w-4 animate-spin" />
@@ -223,7 +223,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
                         )}
                       </div>
                       <div className="text-center">
-                        <div className="text-sm font-semibold text-mainTextV1 group-hover:text-mainTextHoverV1">
+                        <div className="text-sm font-semibold text-gray-800 group-hover:text-mainTextHoverV1">
                           {isUploadingAvatar ? "Uploading avatar..." : "Upload avatar"}
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
@@ -260,7 +260,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="role" className="text-mainTextV1">
+              <Label htmlFor="role" className="text-gray-800">
                 Role
               </Label>
               <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
@@ -277,7 +277,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-mainTextV1">
+                <Label htmlFor="name" className="text-gray-800">
                   Username <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -294,7 +294,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-mainTextV1">
+                <Label htmlFor="fullName" className="text-gray-800">
                   Full Name <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -311,7 +311,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-mainTextV1">
+                <Label htmlFor="email" className="text-gray-800">
                   Email <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -329,7 +329,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-mainTextV1">
+                <Label htmlFor="password" className="text-gray-800">
                   Password <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -348,7 +348,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
               {formData.role === "student" && (
                 <div className="space-y-2">
-                  <Label htmlFor="studentId" className="text-mainTextV1">
+                  <Label htmlFor="studentId" className="text-gray-800">
                     Student ID
                   </Label>
                   <div className="flex items-center gap-2">
@@ -380,7 +380,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
               {(formData.role === "student" || formData.role === "coordinator") && (
                 <div className="space-y-2">
-                  <Label htmlFor="phoneNumber" className="text-mainTextV1">
+                  <Label htmlFor="phoneNumber" className="text-gray-800">
                     Phone Number
                   </Label>
                   <Input
@@ -399,7 +399,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
 
               {(formData.role === "student" || formData.role === "coordinator") && (
                 <div className="space-y-2">
-                  <Label htmlFor="department" className="text-mainTextV1">
+                  <Label htmlFor="department" className="text-gray-800">
                     Department
                   </Label>
                   <Select
@@ -424,7 +424,7 @@ export const UserCreateDialog = ({ isOpen, onClose, onSuccess }: UserCreateDialo
             </div>
 
             <div className="flex items-center justify-between space-x-2">
-              <Label htmlFor="active" className="text-mainTextV1">
+              <Label htmlFor="active" className="text-gray-800">
                 Active
               </Label>
               <Switch

@@ -66,19 +66,19 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Title</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Type</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Period</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Status</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Priority</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Title</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Type</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Department</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Period</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Status</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Priority</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {notifications.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-secondaryTextV1">
+              <TableCell colSpan={7} className="text-center py-8 text-gray-800">
                 {isSearching ? "No matching notifications found" : "No notifications yet"}
               </TableCell>
             </TableRow>
@@ -95,8 +95,8 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                     <IconBell className="w-6 h-6 text-orange-400" />
                   </div>
                   <div className="max-w-xs">
-                    <p className="font-semibold text-mainTextV1 line-clamp-1">{notification.title}</p>
-                    <p className="text-sm text-secondaryTextV1 line-clamp-2">{notification.content}</p>
+                    <p className="font-semibold text-gray-800 line-clamp-1">{notification.title}</p>
+                    <p className="text-sm text-gray-800 line-clamp-2">{notification.content}</p>
                   </div>
                 </TableCell>
                 <TableCell>
@@ -107,14 +107,14 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                 <TableCell>
                   <div className="flex items-center">
                     {notification.department ? (
-                       <p className="text-sm font-semibold text-mainTextV1 text-nowrap">{notification.department.name}</p>
+                       <p className="text-sm font-semibold text-gray-800 text-nowrap">{notification.department.name}</p>
                     ) : (
-                      <span className="text-secondaryTextV1 text-nowrap">All departments</span>
+                      <span className="text-gray-800 text-nowrap">All departments</span>
                     )}
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="text-xs text-secondaryTextV1">
+                  <div className="text-xs text-gray-800">
                     <div>Start: {new Date(notification.startDate).toLocaleDateString()}</div>
                     <div>End: {new Date(notification.endDate).toLocaleDateString()}</div>
                   </div>
@@ -149,7 +149,7 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                         variant="outline"
                         size="icon"
                         onClick={() => onEdit(notification._id)}
-                        className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
+                        className="text-gray-800 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
                         <IconMenu3 className="h-4 w-4" />
                       </Button>
@@ -162,7 +162,7 @@ export const NotificationTable = ({ notifications, isSearching, onEdit, onDelete
                         variant="outline"
                         size="icon"
                         onClick={() => onDelete(notification._id)}
-                        className="text-mainTextV1 hover:text-mainDangerV1 hover:bg-transparent"
+                        className="text-gray-800 hover:text-mainDangerV1 hover:bg-transparent"
                       >
                         <IconTrash className="h-4 w-4" />
                       </Button>

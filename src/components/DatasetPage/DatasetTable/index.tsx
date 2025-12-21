@@ -41,18 +41,18 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Key</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Value</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Category</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Department</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Created At</TableHead>
-            <TableHead className="font-semibold text-mainTextV1 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Key</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Value</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Category</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Department</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Created At</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {datasetItems.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-8 text-secondaryTextV1">
+              <TableCell colSpan={6} className="text-center py-8 text-gray-800">
                 {isSearching ? "No matching dataset items found" : "No dataset items yet"}
               </TableCell>
             </TableRow>
@@ -69,13 +69,13 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
                     <IconKey className="w-6 h-6 text-slate-400" />
                   </div>
                   <div>
-                    <p className="font-semibold text-mainTextV1">{item.key}</p>
-                    <p className="text-sm text-secondaryTextV1">ID: {item._id}</p>
+                    <p className="font-semibold text-gray-800">{item.key}</p>
+                    <p className="text-sm text-gray-800">ID: {item._id}</p>
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="max-w-xs">
-                    <p className="text-secondaryTextV1 line-clamp-2 break-words">{item.value}</p>
+                    <p className="text-gray-800 line-clamp-2 break-words">{item.value}</p>
                   </div>
                 </TableCell>
                 <TableCell>
@@ -87,16 +87,16 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
                   <div className="flex items-center">
                     {item.department ? (
                       <div className="space-y-1">
-                        <p className="text-sm font-semibold text-mainTextV1">{item.department.name}</p>
-                        <p className="text-xs text-secondaryTextV1">ID: {item.department._id}</p>
+                        <p className="text-sm font-semibold text-gray-800">{item.department.name}</p>
+                        <p className="text-xs text-gray-800">ID: {item.department._id}</p>
                       </div>
                     ) : (
-                      <span className="text-secondaryTextV1">No department</span>
+                      <span className="text-gray-800">No department</span>
                     )}
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-secondaryTextV1">
+                  <span className="text-gray-800">
                     {new Date(item.createdAt).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'short',
@@ -116,7 +116,7 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
                         variant="outline"
                         size="icon"
                         onClick={() => onEdit(item._id)}
-                        className="text-mainTextV1 hover:text-mainTextHoverV1 hover:bg-transparent"
+                        className="text-gray-800 hover:text-mainTextHoverV1 hover:bg-transparent"
                       >
                         <IconMenu3 className="h-4 w-4" />
                       </Button>
@@ -129,7 +129,7 @@ export const DatasetTable = ({ datasetItems, isSearching, onEdit, onDelete }: Da
                         variant="outline"
                         size="icon"
                         onClick={() => onDelete(item._id)}
-                        className="text-mainTextV1 hover:text-mainDangerV1 hover:bg-transparent"
+                        className="text-gray-800 hover:text-mainDangerV1 hover:bg-transparent"
                       >
                         <IconTrash className="h-4 w-4" />
                       </Button>
