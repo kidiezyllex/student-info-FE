@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLogin } from "@/hooks/useAuth"
-import { useSendVerificationCodeToEmail, useVerifyCodeFromEmail, useSendPasswordResetCode } from "@/hooks/useEmail"
+import { useSendVerificationCodeToEmail, useVerifyCodeFromEmail } from "@/hooks/useEmail"
 import { useUser } from "@/context/useUserContext"
 import { toast } from "react-toastify"
 import { Eye, EyeOff } from "lucide-react"
@@ -19,20 +19,22 @@ export default function LoginPage() {
   const { loginUser: setUserContext, fetchUserProfile } = useUser()
   const { mutateAsync: sendVerificationCode, isPending: isSendingCode } = useSendVerificationCodeToEmail()
   const { mutateAsync: verifyCode, isPending: isVerifyingCode } = useVerifyCodeFromEmail()
-  const { mutateAsync: sendPasswordReset, isPending: isSendingReset } = useSendPasswordResetCode()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     verificationCode: ""
   })
+  const [passwordResetErrors, setPasswordResetErrors] = useState<{
+    resetCode?: string
+    newPassword?: string
+    confirmPassword?: string
+  }>({})
   const [errors, setErrors] = useState<{
     email?: string
     password?: string
     verificationCode?: string
     general?: string
   }>({})
-  const [showPasswordReset, setShowPasswordReset] = useState(false)
-  const [passwordResetSent, setPasswordResetSent] = useState(false)
   const [showCodeInput, setShowCodeInput] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
@@ -193,25 +195,6 @@ export default function LoginPage() {
     }
   }
 
-  const handleSendPasswordReset = async () => {
-    if (!formData.email) {
-      setErrors({ email: "Email is required" })
-      return
-    }
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setErrors({ email: "Invalid email format" })
-      return
-    }
-    try {
-      await sendPasswordReset({ email: formData.email })
-      setPasswordResetSent(true)
-      setShowPasswordReset(false)
-      toast.success("Password reset code has been sent to your email")
-    } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || error?.message || "Failed to send password reset code"
-      toast.error(errorMessage)
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -264,7 +247,7 @@ export default function LoginPage() {
                     onChange={handleInputChange}
                     className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                     placeholder="Enter your email"
-                    disabled={isPending || isSendingCode || isSendingReset}
+                    disabled={isPending || isSendingCode}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -382,40 +365,19 @@ export default function LoginPage() {
                   </Button>
                 </div>
               )}
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-center">
-                  <button
-                    type="button"
-                    onClick={() => setShowPasswordReset(!showPasswordReset)}
-                    className="text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                  >
-                    {showPasswordReset ? "Cancel password reset" : "Forgot password?"}
-                  </button>
-                  <Link
-                    href="/auth/register"
-                    className="text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                  >
-                    Sign up
-                  </Link>
-                </div>
-                {showPasswordReset && (
-                  <div className="space-y-2">
-                    <Button
-                      variant="outline"
-                      className="w-full !bg-white"
-                      type="button"
-                      onClick={handleSendPasswordReset}
-                      disabled={isSendingReset || !formData.email}
-                    >
-                      {isSendingReset ? "Sending..." : "Send password reset code"}
-                    </Button>
-                    {passwordResetSent && (
-                      <p className="text-sm text-green-600 text-center">
-                        Password reset code has been sent to your email
-                      </p>
-                    )}
-                  </div>
-                )}
+              <div className="flex justify-between items-center">
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                >
+                  Forgot password?
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                >
+                  Sign up
+                </Link>
               </div>
             </form>
           </div>
