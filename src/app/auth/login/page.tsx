@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -9,17 +9,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLogin } from "@/hooks/useAuth"
 import { useSendVerificationCodeToEmail, useVerifyCodeFromEmail, useSendPasswordResetCode } from "@/hooks/useEmail"
+import { useUser } from "@/context/useUserContext"
 import { toast } from "react-toastify"
 import { Eye, EyeOff } from "lucide-react"
-import cookies from "js-cookie"
 
 export default function LoginPage() {
   const router = useRouter()
   const { mutateAsync: loginUser, isPending } = useLogin()
+  const { loginUser: setUserContext, fetchUserProfile } = useUser()
   const { mutateAsync: sendVerificationCode, isPending: isSendingCode } = useSendVerificationCodeToEmail()
   const { mutateAsync: verifyCode, isPending: isVerifyingCode } = useVerifyCodeFromEmail()
   const { mutateAsync: sendPasswordReset, isPending: isSendingReset } = useSendPasswordResetCode()
-  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -35,12 +35,6 @@ export default function LoginPage() {
   const [passwordResetSent, setPasswordResetSent] = useState(false)
   const [showCodeInput, setShowCodeInput] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-
-  useEffect(() => {
-    router.prefetch('/admin')
-    router.prefetch('/student') 
-    router.prefetch('/coordinator')
-  }, [router])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -60,77 +54,60 @@ export default function LoginPage() {
     const newErrors: typeof errors = {}
     const isAdminEmail = formData.email.toLowerCase().includes('admin')
     const isCoordinatorEmail = formData.email.toLowerCase().includes('coordinator')
-    
     if (!formData.email) {
       newErrors.email = "Email is required"
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Invalid email format"
     }
-    
     if ((!showCodeInput || isAdminEmail || isCoordinatorEmail) && !formData.password) {
       newErrors.password = "Password is required"
     } else if ((!showCodeInput || isAdminEmail || isCoordinatorEmail) && formData.password && formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters"
     }
-    
     if (showCodeInput && !isAdminEmail && !isCoordinatorEmail && !formData.verificationCode) {
       newErrors.verificationCode = "Verification code is required"
     } else if (showCodeInput && !isAdminEmail && !isCoordinatorEmail && formData.verificationCode && formData.verificationCode.length !== 6) {
       newErrors.verificationCode = "Verification code must be 6 digits"
     }
-    
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
-
 
   const handleDirectLogin = async () => {
     if (!formData.password) {
       setErrors({ password: "Password is required" })
       return
     }
-
     try {
       const loginResponse = await loginUser({
         email: formData.email,
         password: formData.password
       })
-      
-      console.log('Login API Response:', loginResponse)
-      console.log('Response Data:', loginResponse?.data)
-      console.log('Department Field:', loginResponse?.data?.department)
-      console.log('Department Type:', typeof loginResponse?.data?.department)
-      
       if (loginResponse?.status === true && loginResponse?.data?.token) {
         if (typeof window !== 'undefined') {
           const token = loginResponse.data.token
+          const role = loginResponse.data.role
           const userProfile = JSON.stringify(loginResponse)
-          
-          // Save token to localStorage and cookie
           localStorage.setItem('token', token)
           localStorage.setItem('accessToken', token)
           localStorage.setItem('userProfile', userProfile)
-          cookies.set('accessToken', token, { expires: 7 })
-          
-          // Log saved user and role
-          console.log('=== LOGIN SUCCESS ===')
-          console.log('Saved User:', loginResponse.data)
-          console.log('User Role:', loginResponse.data.role)
-          console.log('Token saved:', token)
+          setUserContext(loginResponse.data, token)
+          setTimeout(() => {
+            fetchUserProfile()
+            setTimeout(() => {
+              const responseData = loginResponse.data as any
+              let redirectPath = `/${role}`
+              if (role === 'coordinator' && responseData.department) {
+                const departmentName = typeof responseData.department === 'string'
+                  ? responseData.department
+                  : responseData.department?.name || responseData.department?.code || 'unknown'
+                redirectPath = `/coordinator/${departmentName}`
+              }
+              router.push(redirectPath)
+            }, 100)
+          }, 100)
         }
-        
-        toast.success("Login successful!")
-        const role = loginResponse.data.role
-        
-        const responseData = loginResponse.data as any
-        if (role === 'coordinator' && responseData.department) {
-          const departmentName = typeof responseData.department === 'string' 
-            ? responseData.department 
-            : responseData.department?.name || responseData.department?.code || 'unknown'
-          router.push(`/coordinator/${departmentName}`)
-        } else {
-          router.push(`/${role}`)
-        }
+        toast.success("Successfully logged in as Admin!")
       } else {
         toast.error("Login failed: No token received")
       }
@@ -145,7 +122,6 @@ export default function LoginPage() {
       setErrors({ email: "Email is required" })
       return
     }
-    
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
       setErrors({ email: "Invalid email format" })
       return
@@ -154,7 +130,6 @@ export default function LoginPage() {
       await handleDirectLogin()
       return
     }
-
     try {
       const response = await sendVerificationCode({ email: formData.email })
       setShowCodeInput(true)
@@ -170,50 +145,40 @@ export default function LoginPage() {
     if (!validateForm()) {
       return
     }
-
     try {
       const response = await verifyCode({
         email: formData.email,
         code: formData.verificationCode
       })
-
       if (response.status === true) {
         toast.success(response?.message || "Verification successful!")
-        
         const loginResponse = await loginUser({
           email: formData.email,
+          password: formData.password
         })
-        
         if (loginResponse?.status === true && loginResponse?.data?.token) {
           if (typeof window !== 'undefined') {
             const token = loginResponse.data.token
+            const role = loginResponse.data.role
             const userProfile = JSON.stringify(loginResponse)
-            
-            // Save token to localStorage and cookie
             localStorage.setItem('token', token)
             localStorage.setItem('accessToken', token)
             localStorage.setItem('userProfile', userProfile)
-            cookies.set('accessToken', token, { expires: 7 })
-            
-            // Log saved user and role
-            console.log('=== LOGIN SUCCESS (OTP) ===')
-            console.log('Saved User:', loginResponse.data)
-            console.log('User Role:', loginResponse.data.role)
-            console.log('Token saved:', token)
+            setUserContext(loginResponse.data, token)
+            setTimeout(() => {
+              fetchUserProfile()
+              const responseData = loginResponse.data as any
+              let redirectPath = `/${role}`
+              if (role === 'coordinator' && responseData.department) {
+                const departmentName = typeof responseData.department === 'string'
+                  ? responseData.department
+                  : responseData.department?.name || responseData.department?.code || 'unknown'
+                redirectPath = `/coordinator/${departmentName}`
+              }
+              router.push(redirectPath)
+            }, 200)
           }
-          
           toast.success("Login successful!")
-          const role = loginResponse.data.role
-          
-          const responseData = loginResponse.data as any
-          if (role === 'coordinator' && responseData.department) {
-            const departmentName = typeof responseData.department === 'string' 
-              ? responseData.department 
-              : responseData.department?.name || responseData.department?.code || 'unknown'
-            router.push(`/coordinator/${departmentName}`)
-          } else {
-            router.push(`/${role}`)
-          }
           setShowCodeInput(false)
           setFormData(prev => ({ ...prev, verificationCode: "" }))
         } else {
@@ -233,12 +198,10 @@ export default function LoginPage() {
       setErrors({ email: "Email is required" })
       return
     }
-    
     if (!/\S+@\S+\.\S+/.test(formData.email)) {
       setErrors({ email: "Invalid email format" })
       return
     }
-
     try {
       await sendPasswordReset({ email: formData.email })
       setPasswordResetSent(true)
@@ -277,20 +240,17 @@ export default function LoginPage() {
             className="w-auto h-20"
           />
         </div>
-
         <div className="bg-white/20 w-full backdrop-blur-lg shadow-lg border-0 rounded-none overflow-hidden">
           <div className="bg-transparent shadow-none p-4 rounded-none border-none pb-10">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="text-center mb-6">
-                <h1 className="text-xl font-bold text-gray-800 mb-2">Login to your account</h1>
+                <h1 className="text-xl font-semibold text-gray-800 mb-2">Login to your account</h1>
               </div>
-
               {errors.general && (
                 <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-sm text-sm">
                   {errors.general}
                 </div>
               )}
-
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="email" className="text-sm font-semibold text-gray-800 mb-2 block">
@@ -310,6 +270,40 @@ export default function LoginPage() {
                     <p className="text-red-500 text-xs mt-1">{errors.email}</p>
                   )}
                 </div>
+                {(!showCodeInput || formData.email.toLowerCase().includes('admin') || formData.email.toLowerCase().includes('coordinator')) && (
+                  <div>
+                    <Label htmlFor="password" className="text-sm font-semibold text-gray-800 mb-2 block">
+                      Password
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 pr-12"
+                        placeholder="Enter your password"
+                        disabled={isPending}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-800 transition-colors"
+                        disabled={isPending}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                    )}
+                  </div>
+                )}
                 {showCodeInput && !formData.email.toLowerCase().includes('admin') && !formData.email.toLowerCase().includes('coordinator') && (
                   <div>
                     <Label htmlFor="verificationCode" className="text-sm font-semibold text-gray-800 mb-2 block">
@@ -332,7 +326,6 @@ export default function LoginPage() {
                   </div>
                 )}
               </div>
-
               {!showCodeInput || formData.email.toLowerCase().includes('admin') || formData.email.toLowerCase().includes('coordinator') ? (
                 <Button
                   type="submit"
@@ -389,7 +382,6 @@ export default function LoginPage() {
                   </Button>
                 </div>
               )}
-
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <button
@@ -406,14 +398,14 @@ export default function LoginPage() {
                     Sign up
                   </Link>
                 </div>
-
                 {showPasswordReset && (
                   <div className="space-y-2">
                     <Button
+                      variant="outline"
+                      className="w-full !bg-white"
                       type="button"
                       onClick={handleSendPasswordReset}
                       disabled={isSendingReset || !formData.email}
-                      className="w-full h-10 bg-red-500 hover:bg-red-600 text-white"
                     >
                       {isSendingReset ? "Sending..." : "Send password reset code"}
                     </Button>

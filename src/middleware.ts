@@ -4,7 +4,7 @@ import type { NextRequest, NextFetchEvent } from 'next/server';
 export function middleware(request: NextRequest, event: NextFetchEvent) {
   const url = request.nextUrl.clone();
   const path = url.pathname;
-  const isPublicRoute = path === '/auth/login' || path.startsWith('/auth/login/') || path === '/admin/auth/login' || path.startsWith('/admin/auth/login/') || path === '/auth/register';
+  const isPublicRoute = path === '/auth/login' || path.startsWith('/auth/login/') || path === '/auth/register';
   const isApiRoute = path.startsWith('/api/');
  
   if (isApiRoute) {

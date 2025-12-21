@@ -80,7 +80,7 @@ instance.interceptors.response.use(
 						localStorage.removeItem("token");
 						localStorage.removeItem("userProfile");
 						cookies.remove("accessToken");
-						if (window.location.pathname !== '/auth/login' && !window.location.pathname.includes('/admin/auth/login')) {
+						if (window.location.pathname !== '/auth/login') {
 							window.location.href = '/auth/login';
 						}
 					}

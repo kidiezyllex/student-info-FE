@@ -31,8 +31,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false)
   
   const [hasToken, setHasToken] = useState(false)
-  const isPublicRoute = pathname === "/auth/login" || pathname?.startsWith("/auth/login/") || pathname === "/auth/register" || pathname === "/admin/auth/login"
-
   const loginUser = (userInfo: any, token: string) => {
     setUser(userInfo)
     setHasToken(true)
