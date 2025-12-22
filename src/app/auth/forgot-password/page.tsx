@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
             <form onSubmit={handleSendPasswordReset} className="space-y-4">
               <div className="text-center mb-6">
                 <h1 className="text-xl font-semibold text-gray-800 mb-2">Forgot Password?</h1>
-                <p className="text-sm text-gray-600">Enter your email address and we'll send you a code to reset your password</p>
+                <p className="text-sm text-gray-600">Enter your email address and we&apos;ll send you a code to reset your password</p>
               </div>
               
               <div>

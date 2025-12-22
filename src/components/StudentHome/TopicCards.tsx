@@ -67,6 +67,7 @@ export function TopicCards({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {topics.map((topic) => (
         <div
+          key={topic._id}
           className="border border-lightBorderV1 rounded-xl hover:shadow-lg transition-shadow cursor-pointer flex flex-col relative h-56 overflow-hidden"
           onClick={() => onSelectTopic(topic._id)}
         >
