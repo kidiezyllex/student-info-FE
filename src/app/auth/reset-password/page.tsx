@@ -108,7 +108,7 @@ export default function ResetPasswordPage() {
       }}
       className="h-screen w-screen flex justify-center items-center"
     >
-      <div className="max-w-xl min-w-[400px] mx-auto bg-white/30 backdrop-blur-lg shadow-lg border-0 overflow-hidden rounded-xl">
+      <div className="w-[450px]  mx-auto bg-white/30 backdrop-blur-lg shadow-lg border-0 overflow-hidden rounded-xl">
         <div className="flex flex-col items-center gap-4 py-4 bg-white/30 backdrop-blur-lg shadow-lg border-0 rounded-none">
           <Image
             height={300}

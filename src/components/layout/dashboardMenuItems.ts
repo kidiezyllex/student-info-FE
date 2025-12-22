@@ -42,12 +42,6 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		icon: mdiAlphaTCircle,
 	},
 	{
-		id: "dataset-management", 
-		name: "Dataset Management",
-		path: "/admin/dataset",
-		icon: mdiDatabase,
-	},
-	{
 		id: "ai-chat",
 		name: "AI Chat",
 		path: "/admin/chat",

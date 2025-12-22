@@ -1,3 +1,5 @@
+"use client";
+
 import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import * as React from "react";
@@ -46,11 +48,14 @@ const BreadcrumbLink = React.forwardRef<
 	}
 
 	if (href) {
+		// Filter out anchor-specific props that Next.js Link doesn't accept
+		const { target, download, rel, ...linkProps } = props as any;
 		return (
 			<Link
 				href={href}
 				className={cn("transition-colors flex items-center hover:text-foreground", className)}
-				{...props}
+				{...linkProps}
+				ref={ref as any}
 			>
 				{children}
 			</Link>
