@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { IScholarship } from "@/interface/response/scholarship";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconAward, IconCalendar, IconMenu3 } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconAward, IconCalendarMonthFilled, IconMenu3 } from "@tabler/icons-react";
 import { Activity, AlarmClockOff, MonitorCheck } from "lucide-react";
 import { formatDate } from "@/utils/dateFormat";
 
@@ -32,7 +32,7 @@ const getStatusBadge = (applicationDeadline: string) => {
   } else {
     return (
       <Badge variant="slate">
-        <IconCalendar className="w-3 h-3" />
+        <IconCalendarMonthFilled className="w-3 h-3" />
         Expired
       </Badge>
     );

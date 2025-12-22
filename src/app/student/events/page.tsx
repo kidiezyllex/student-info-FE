@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
-import { IconSearch, IconCalendar, IconMapPin, IconUser, IconFilter, IconExternalLink, IconClock, IconCircleOff, IconX } from "@tabler/icons-react";
+import { IconSearch, IconCalendarMonthFilled, IconMapPin, IconUser, IconFilter, IconExternalLink, IconClock, IconCircleOff, IconX } from "@tabler/icons-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { IEvent } from "@/interface/response/event";
 import { Activity } from "lucide-react";
@@ -90,7 +90,7 @@ export default function StudentEventsPage() {
       }
       return (
         <Badge variant="blue">
-          <IconCalendar className="h-3 w-3" />
+          <IconCalendarMonthFilled className="h-3 w-3" />
           Upcoming
         </Badge>
       );
@@ -105,7 +105,7 @@ export default function StudentEventsPage() {
 
     return (
       <Badge variant="slate">
-        <IconCalendar className="w-3 h-3" />
+        <IconCalendarMonthFilled className="w-3 h-3" />
         Ended
       </Badge>
     );
@@ -242,7 +242,7 @@ export default function StudentEventsPage() {
 
                       <div className="space-y-2 mt-auto">
                         <div className="flex items-center gap-2 text-sm">
-                          <IconCalendar className="w-4 h-4 text-orange-600" />
+                          <IconCalendarMonthFilled className="w-4 h-4 text-orange-600" />
                           <span className="text-gray-800">
                             {formatDate(event.startDate)}
                           </span>
@@ -287,7 +287,7 @@ export default function StudentEventsPage() {
           ) : (
             <Card className="border border-lightBorderV1">
               <CardContent className="p-8 text-center">
-                <IconCalendar className="w-12 h-12 text-gray-800 mx-auto mb-4" />
+                <IconCalendarMonthFilled className="w-12 h-12 text-gray-800 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   No events found
                 </h3>

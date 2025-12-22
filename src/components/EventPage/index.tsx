@@ -20,7 +20,7 @@ import { EventDetailsDialog } from "@/components/EventPage/EventDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconSearch, IconPlus, IconCalendar, IconFilter, IconX } from "@tabler/icons-react";
+import { IconSearch, IconPlus, IconCalendarMonthFilled, IconFilter, IconX } from "@tabler/icons-react";
 import { IEvent } from "@/interface/response/event";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 

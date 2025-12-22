@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { IEvent } from "@/interface/response/event";
 import { formatDate } from "@/utils/dateFormat";
 import { motion } from "framer-motion";
-import { IconEdit, IconTrash, IconCalendar, IconMapPin, IconUser, IconBuilding, IconMenu3 } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconCalendarMonthFilled, IconMapPin, IconUser, IconBuilding, IconMenu3 } from "@tabler/icons-react";
 import { Activity, AlarmClock, AlarmClockOff } from "lucide-react";
 
 interface EventTableProps {
@@ -38,7 +38,7 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
     } else {
       return (
         <Badge variant="slate">
-          <IconCalendar className="w-3 h-3" />
+          <IconCalendarMonthFilled className="w-3 h-3" />
           Ended
         </Badge>
       );
@@ -77,7 +77,7 @@ export const EventTable = ({ events, isSearching, onEdit, onDelete }: EventTable
                 >
                   <TableCell className="flex items-center gap-2">
                     <div className="w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 flex items-center justify-center">
-                      <IconCalendar className="w-6 h-6 text-orange-400" />
+                      <IconCalendarMonthFilled className="w-6 h-6 text-orange-400" />
                     </div>
                     <div>
                       <p className="text-gray-800 font-semibold">{event.title}</p>

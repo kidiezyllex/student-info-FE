@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";
-import { IconSend, IconRobot, IconThumbUp, IconThumbDown, IconTrash, IconPlus, IconHistory, IconX, IconMessageCircle } from "@tabler/icons-react";
+import { IconSend, IconMessageChatbotFilled, IconThumbUp, IconThumbDown, IconTrash, IconPlus, IconHistory, IconX, IconMessageCircle } from "@tabler/icons-react";
 import { useUser } from "@/context/useUserContext";
 import { toast } from "react-toastify";
 import Image from "next/image";
@@ -303,7 +303,7 @@ export default function StudentChatPage() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/student">Dashboard</BreadcrumbLink>
+                <BreadcrumbLink href="/student">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -320,7 +320,7 @@ export default function StudentChatPage() {
               <div className="flex items-center gap-4">
                 <div className="relative">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-orange-500 rounded-full flex items-center justify-center shadow-md">
-                    <IconRobot className="w-7 h-7 text-white" />
+                    <IconMessageChatbotFilled className="w-7 h-7 text-white" />
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>

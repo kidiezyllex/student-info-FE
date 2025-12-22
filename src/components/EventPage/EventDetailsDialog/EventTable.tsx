@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { IEvent } from "@/interface/response/event";
 import { formatDate } from "@/utils/dateFormat";
 import { 
-  IconCalendar, 
+  IconCalendarMonthFilled, 
   IconMapPin, 
   IconUser, 
   IconBuilding,
@@ -58,7 +58,7 @@ export const EventTable = ({ event }: EventTableProps) => {
           <TableRow className="transition-colors">
             <TableCell className="font-semibold text-gray-800">
               <div className="flex items-center gap-2">
-                <IconCalendar className="w-4 h-4" />
+                <IconCalendarMonthFilled className="w-4 h-4" />
                 Time
               </div>
             </TableCell>

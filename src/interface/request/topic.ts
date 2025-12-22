@@ -5,6 +5,7 @@ export interface ITopicQueryParams {
   department?: string
   page?: number
   limit?: number
+  status?: "all" | "active" | "expired" // For filtering by expiration status
 }
 
 export interface ICreateTopicBody {

@@ -12,11 +12,11 @@ type TopicFiltersProps = {
 
 export function TopicFilters({ selectedType, onSelectType, topicTypes, typeLabels }: TopicFiltersProps) {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-3">
       <Button
         variant={selectedType === "all" ? "default" : "outline"}
         onClick={() => onSelectType("all")}
-        className={selectedType === "all" ? "bg-mainTextHoverV1 hover:bg-primary/90 text-white" : ""}
+        className={`h-8 rounded-full ${selectedType === "all" ? "bg-mainTextHoverV1 hover:bg-primary/90 text-white" : ""}`}
       >
         All Types
       </Button>
@@ -25,7 +25,7 @@ export function TopicFilters({ selectedType, onSelectType, topicTypes, typeLabel
           key={type}
           variant={selectedType === type ? "default" : "outline"}
           onClick={() => onSelectType(type)}
-          className={selectedType === type ? "bg-mainTextHoverV1 hover:bg-primary/90 text-white" : ""}
+          className={`h-8 rounded-full ${selectedType === type ? "bg-mainTextHoverV1 hover:bg-primary/90 text-white" : ""}`}
         >
           {typeLabels[type]}
         </Button>

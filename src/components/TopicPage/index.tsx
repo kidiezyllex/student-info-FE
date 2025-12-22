@@ -33,6 +33,7 @@ const topicTypes = [
 export default function TopicPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -44,25 +45,44 @@ export default function TopicPage() {
     page: currentPage,
     limit: pageSize,
     type: typeFilter === "all" ? undefined : (typeFilter as any),
+    // TODO: Uncomment when backend is ready
+    // status: statusFilter === "all" ? undefined : (statusFilter as "active" | "expired"),
   });
   const { mutateAsync: deleteTopicMutation, isPending: isDeleting } = useDeleteTopic();
 
-  // Filter client-side by search
+  // Helper function to check if topic is expired
+  const isTopicExpired = (topic: any) => {
+    const deadline = topic.applicationDeadline || topic.endDate;
+    if (!deadline) return false;
+    return new Date(deadline) < new Date();
+  };
+
+  // Filter client-side by search and status
   const filteredTopics = topicsData?.data
-    ? topicsData.data.filter((topic) =>
-        searchQuery.trim() === "" ||
-        topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        topic.department?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        topic.department?.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        topic.type.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+    ? topicsData.data.filter((topic) => {
+        // Search filter
+        const matchesSearch =
+          searchQuery.trim() === "" ||
+          topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.department?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.department?.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.type.toLowerCase().includes(searchQuery.toLowerCase());
+
+        // Status filter
+        const matchesStatus =
+          statusFilter === "all" ||
+          (statusFilter === "expired" && isTopicExpired(topic)) ||
+          (statusFilter === "active" && !isTopicExpired(topic) && (topic.applicationDeadline || topic.endDate));
+
+        return matchesSearch && matchesStatus;
+      })
     : [];
 
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, typeFilter]);
+  }, [searchQuery, typeFilter, statusFilter]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -152,6 +172,16 @@ export default function TopicPage() {
                       {type === "all" ? "All Types" : type.charAt(0).toUpperCase() + type.slice(1)}
                     </SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[180px] focus:border-mainTextHoverV1">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="expired">Expired</SelectItem>
                 </SelectContent>
               </Select>
               <Button

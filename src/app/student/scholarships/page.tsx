@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
-import { IconSearch, IconGift, IconCalendar, IconCurrencyDollar, IconFilter, IconExternalLink, IconX } from "@tabler/icons-react";
+import { IconSearch, IconGift, IconCalendarMonthFilled, IconCurrencyDollar, IconFilter, IconExternalLink, IconX } from "@tabler/icons-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { IScholarship } from "@/interface/response/scholarship";
@@ -226,7 +226,7 @@ export default function StudentScholarshipsPage() {
                         </div>
 
                         <div className="flex items-center gap-2 text-sm">
-                          <IconCalendar className="w-4 h-4 text-orange-600" />
+                          <IconCalendarMonthFilled className="w-4 h-4 text-orange-600" />
                           <span className="text-gray-800">
                             Deadline: {formatDate(scholarship.applicationDeadline)}
                           </span>

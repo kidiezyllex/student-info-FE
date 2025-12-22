@@ -44,13 +44,14 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
             <TableHead className="font-semibold text-gray-800 text-nowrap min-w-[200px]">Department</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Created By</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Created At</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">Deadline</TableHead>
             <TableHead className="font-semibold text-gray-800 text-nowrap">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {topics.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-gray-800">
+              <TableCell colSpan={8} className="text-center py-8 text-gray-800">
                 {isSearching ? "No topic found" : "No topic"}
               </TableCell>
             </TableRow>
@@ -98,6 +99,59 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
                     hour: "2-digit",
                     minute: "2-digit",
                   }).format(new Date(topic.createdAt))}
+                </TableCell>
+                <TableCell className="text-gray-800">
+                  {topic.applicationDeadline ? (
+                    <div>
+                      <div className="font-medium">
+                        {new Intl.DateTimeFormat("vi-VN", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }).format(new Date(topic.applicationDeadline))}
+                      </div>
+                      <Badge
+                        variant={
+                          new Date(topic.applicationDeadline) < new Date()
+                            ? "destructive"
+                            : "green"
+                        }
+                        className="mt-1 text-xs"
+                      >
+                        {new Date(topic.applicationDeadline) < new Date()
+                          ? "Expired"
+                          : "Active"}
+                      </Badge>
+                    </div>
+                  ) : topic.endDate ? (
+                    <div>
+                      <div className="font-medium">
+                        {new Intl.DateTimeFormat("vi-VN", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }).format(new Date(topic.endDate))}
+                      </div>
+                      <Badge
+                        variant={
+                          new Date(topic.endDate) < new Date()
+                            ? "destructive"
+                            : "green"
+                        }
+                        className="mt-1 text-xs"
+                      >
+                        {new Date(topic.endDate) < new Date()
+                          ? "Expired"
+                          : "Active"}
+                      </Badge>
+                    </div>
+                  ) : (
+                    <span className="text-gray-400">N/A</span>
+                  )}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">

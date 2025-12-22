@@ -70,13 +70,14 @@ export default function DashboardLayout({
 			
 			{/* Content area below header */}
 			<div className="flex mt-[78px] min-h-[calc(100vh-78px)]">
-				{/* Sidebar */}
-				<div
-					className={cn(
-						"bg-mainDarkBackgroundV1 transition-all duration-300 flex-shrink-0",
-						isOpen ? "w-[250px]" : "w-0 md:w-16 overflow-hidden flex justify-center",
-					)}
-				>
+				{/* Sidebar - Hidden for students */}
+				{!isStudent && (
+					<div
+						className={cn(
+							"bg-mainDarkBackgroundV1 transition-all duration-300 flex-shrink-0",
+							isOpen ? "w-[250px]" : "w-0 md:w-16 overflow-hidden flex justify-center",
+						)}
+					>
 					<div className="flex flex-col h-full bg-mainDarkBackgroundV1">
 						<nav className="flex-1 overflow-y-auto py-4 bg-mainDarkBackgroundV1">
 							<ul className={cn("", isOpen ? "px-2" : "px-1")}>
@@ -237,7 +238,8 @@ export default function DashboardLayout({
 							</ul>
 						</nav>
 					</div>
-				</div>
+					</div>
+				)}
 
 				{/* Main content - automatically takes remaining width */}
 				<main className="flex-1 overflow-auto bg-mainDarkBackgroundV1 p-4">
