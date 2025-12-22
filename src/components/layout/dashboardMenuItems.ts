@@ -2,17 +2,11 @@ import type { MenuItem } from "@/interface/types";
 import {
 	mdiViewDashboard,
 	mdiAccountGroup,
-	mdiAccount,
-	mdiAccountTie,
 	mdiSchool,
 	mdiCalendarMonth,
 	mdiGift,
 	mdiBell,
-	mdiMessageText,
 	mdiRobot,
-	mdiDatabase,
-	mdiCog,
-	mdiChartLine,
 	mdiAlphaTCircle
 } from "@mdi/js";
 
@@ -41,12 +35,6 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		path: "/admin/topics",
 		icon: mdiAlphaTCircle,
 	},
-	{
-		id: "ai-chat",
-		name: "AI Chat",
-		path: "/admin/chat",
-		icon: mdiRobot,
-	},
 ]; 
 
 export const getStudentMenuItems = (): MenuItem[] => [
@@ -61,24 +49,6 @@ export const getStudentMenuItems = (): MenuItem[] => [
 		name: "AI Chat",
 		path: "/student/chat",
 		icon: mdiRobot,
-	},
-	{
-		id: "student-scholarships",
-		name: "Scholarships",
-		path: "/student/scholarships",
-		icon: mdiGift,
-	},
-	{
-		id: "student-events",
-		name: "Events",
-		path: "/student/events",
-		icon: mdiCalendarMonth,
-	},
-	{
-		id: "student-notifications",
-		name: "Notifications",
-		path: "/student/notifications",
-		icon: mdiBell,
 	},
 ];
 

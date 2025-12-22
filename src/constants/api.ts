@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
     SEND_CODE: '/verification/send-code',
     VERIFY_CODE: '/verification/verify-code',
     SEND_PASSWORD_RESET: '/verification/send-password-reset',
+    RESET_PASSWORD: '/verification/reset-password',
   },
   USER: {
     GET_ALL: '/user',

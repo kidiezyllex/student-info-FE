@@ -1,6 +1,16 @@
 import { API_ENDPOINTS } from '@/constants/api';
-import { SendVerificationCodeRequest, VerifyCodeRequest, SendPasswordResetCodeRequest } from '@/interface/request/email';
-import { SendVerificationCodeResponse, VerifyCodeResponse, SendPasswordResetCodeResponse } from '@/interface/response/email';
+import {
+  SendVerificationCodeRequest,
+  VerifyCodeRequest,
+  SendPasswordResetCodeRequest,
+  ResetPasswordRequest,
+} from '@/interface/request/email';
+import {
+  SendVerificationCodeResponse,
+  VerifyCodeResponse,
+  SendPasswordResetCodeResponse,
+  ResetPasswordResponse,
+} from '@/interface/response/email';
 import { sendPost } from './axios';
 
 export const sendVerificationCode = async (data: SendVerificationCodeRequest): Promise<SendVerificationCodeResponse> => {
@@ -21,4 +31,8 @@ export const verifyCodeFromEmail = async (data: { email: string; code: string })
 
 export const sendPasswordResetCode = async (data: SendPasswordResetCodeRequest): Promise<SendPasswordResetCodeResponse> => {
   return await sendPost(API_ENDPOINTS.VERIFICATION.SEND_PASSWORD_RESET, data);
+};
+
+export const resetPassword = async (data: ResetPasswordRequest): Promise<ResetPasswordResponse> => {
+  return await sendPost(API_ENDPOINTS.VERIFICATION.RESET_PASSWORD, data);
 };

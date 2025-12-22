@@ -26,3 +26,13 @@ export interface SendPasswordResetCodeResponse {
     expiresAt: string;
   };
 }
+
+export interface ResetPasswordResponse {
+  status: boolean;
+  message: string;
+  data?: {
+    email: string;
+  };
+  errors?: Record<string, any>;
+  timestamp?: string;
+}

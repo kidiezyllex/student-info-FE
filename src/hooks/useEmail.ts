@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { sendVerificationCode, verifyCode, sendVerificationCodeToEmail, verifyCodeFromEmail, sendPasswordResetCode } from '@/api/email';
-import { SendVerificationCodeRequest, VerifyCodeRequest, SendPasswordResetCodeRequest } from '@/interface/request/email';
+import { sendVerificationCode, verifyCode, sendVerificationCodeToEmail, verifyCodeFromEmail, sendPasswordResetCode, resetPassword } from '@/api/email';
+import { SendVerificationCodeRequest, VerifyCodeRequest, SendPasswordResetCodeRequest, ResetPasswordRequest } from '@/interface/request/email';
 
 export const useSendVerificationCode = () => {
   return useMutation({
@@ -29,5 +29,11 @@ export const useVerifyCodeFromEmail = () => {
 export const useSendPasswordResetCode = () => {
   return useMutation({
     mutationFn: (data: SendPasswordResetCodeRequest) => sendPasswordResetCode(data),
+  });
+};
+
+export const useResetPassword = () => {
+  return useMutation({
+    mutationFn: (data: ResetPasswordRequest) => resetPassword(data),
   });
 };

@@ -7,7 +7,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useVerifyCodeFromEmail } from "@/hooks/useEmail"
+import { useVerifyCodeFromEmail, useResetPassword } from "@/hooks/useEmail"
 import { toast } from "react-toastify"
 import { Eye, EyeOff } from "lucide-react"
 
@@ -15,6 +15,7 @@ export default function ResetPasswordPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { mutateAsync: verifyCode, isPending: isVerifyingCode } = useVerifyCodeFromEmail()
+  const { mutateAsync: resetPassword, isPending: isResetting } = useResetPassword()
   const [email, setEmail] = useState("")
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [passwordResetData, setPasswordResetData] = useState({
@@ -33,7 +34,6 @@ export default function ResetPasswordPage() {
     if (emailParam) {
       setEmail(decodeURIComponent(emailParam))
     } else {
-      // If no email in query params, redirect to forgot-password
       router.push('/auth/forgot-password')
     }
   }, [searchParams, router])
@@ -78,22 +78,30 @@ export default function ResetPasswordPage() {
       return
     }
     try {
-      // Verify reset code first
       const verifyResponse = await verifyCode({
         email: email,
         code: passwordResetData.resetCode
       })
-      if (verifyResponse.status === true) {
-        // TODO: Call reset password API when available
-        // For now, show success message
-        toast.success("Password reset code verified! Please contact admin to reset your password.")
-        // Navigate back to login
+      if (verifyResponse.status !== true) {
+        toast.error("Invalid reset code")
+        return
+      }
+
+      const resetResponse = await resetPassword({
+        email: email,
+        code: passwordResetData.resetCode,
+        newPassword: passwordResetData.newPassword,
+        confirmPassword: passwordResetData.confirmPassword,
+      })
+
+      if (resetResponse.status === true) {
+        toast.success(resetResponse.message || "Password has been reset successfully. Please login with your new password.")
         router.push("/auth/login")
       } else {
-        toast.error("Invalid reset code")
+        toast.error(resetResponse.message || "Failed to reset password")
       }
     } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || error?.message || "Invalid reset code"
+      const errorMessage = error?.response?.data?.message || error?.message || "Failed to reset password"
       toast.error(errorMessage)
     }
   }
@@ -144,7 +152,7 @@ export default function ResetPasswordPage() {
                         onChange={handlePasswordResetInputChange}
                         className="h-10 border-gray-200 transition-all duration-200 bg-white/50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                         placeholder="Enter reset code"
-                        disabled={isVerifyingCode}
+                               disabled={isVerifyingCode || isResetting}
                         maxLength={6}
                       />
                       {errors.resetCode && (
@@ -230,13 +238,13 @@ export default function ResetPasswordPage() {
                       <Button
                         type="button"
                         onClick={handleResetPassword}
-                        disabled={isVerifyingCode || !passwordResetData.resetCode || !passwordResetData.newPassword || !passwordResetData.confirmPassword}
+                               disabled={isVerifyingCode || isResetting || !passwordResetData.resetCode || !passwordResetData.newPassword || !passwordResetData.confirmPassword}
                         className="flex-1 h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-orange-500/25 hover:shadow-sm hover:shadow-orange-500/30 transition-all duration-200 transform hover:-translate-y-0.5 rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
                       >
-                        {isVerifyingCode ? (
+                               {isVerifyingCode || isResetting ? (
                           <div className="flex items-center gap-2">
                             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                            Resetting...
+                                   {isResetting ? "Resetting..." : "Verifying..."}
                           </div>
                         ) : (
                           "Reset Password"
