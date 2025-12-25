@@ -71,9 +71,8 @@ export function TopicCards({
           className="border border-lightBorderV1 rounded-xl hover:shadow-lg transition-shadow cursor-pointer flex flex-col relative h-56 overflow-hidden"
           onClick={() => onSelectTopic(topic._id)}
         >
-          {topic.startDate && (
+          {(topic.startDate || topic.applicationDeadline || topic.endDate) && (
             <div className="flex items-end gap-2 text-xs text-gray-800 absolute z-10 bottom-1.5 left-2">
-
               <Button
                 variant={topic.metadata?.isSaved ? "default" : "outline"}
                 size="sm"
@@ -81,7 +80,25 @@ export function TopicCards({
               >
                 <IconCalendarMonthFilled className="h-5 w-5 text-orange-500" />
               </Button>
-              <span className="text-gray-800 text-sm font-semibold">{new Date(topic.startDate).toLocaleDateString()}</span>
+              <div className="flex items-center gap-4">
+                {topic.startDate && (
+                  <p className="text-gray-800 text-sm font-semibold">
+                    Start:{" "} 
+                    <span className="font-normal">{new Date(topic.startDate).toLocaleDateString()}</span>
+                  </p>
+                )}
+                {topic.applicationDeadline ? (
+                  <span className="text-gray-800 text-sm font-semibold">
+                    Deadline:{" "}
+                    <span className="font-normal">{new Date(topic.applicationDeadline).toLocaleDateString()}</span>
+                  </span>
+                ) : topic.endDate ? (
+                  <span className="text-gray-800 text-sm font-semibold">
+                    End:{" "}
+                    <span className="font-normal">{new Date(topic.endDate).toLocaleDateString()}</span>
+                  </span>
+                ) : null}
+              </div>
             </div>
           )}
           <Image src="/images/topic-card.png" alt="topic-card" fill className="w-full" />

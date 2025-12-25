@@ -81,7 +81,7 @@ const StatCard = ({
 
       {/* Hover effect overlay */}
       <div
-        className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-25 transition-opacity duration-300 pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-br opacity-25 transition-opacity duration-300 pointer-events-none"
         style={{
           backgroundImage: `linear-gradient(135deg, ${color} 0%, transparent 100%)`,
         }}
