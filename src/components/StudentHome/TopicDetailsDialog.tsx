@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { IconBookmark, IconBookmarkFilled } from "@tabler/icons-react";
 import { ITopic, TopicType } from "@/interface/response/topic";
 
@@ -22,6 +23,13 @@ export function TopicDetailsDialog({
   onToggleSave,
   typeColorMap,
 }: TopicDetailsDialogProps) {
+  const renderTableRow = (label: string, value: React.ReactNode) => (
+    <TableRow className="transition-colors">
+      <TableCell className="font-semibold text-gray-800 w-1/3">{label}</TableCell>
+      <TableCell className="text-gray-800">{value}</TableCell>
+    </TableRow>
+  );
+
   return (
     <Dialog open={!!selectedTopicId} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
@@ -49,78 +57,48 @@ export function TopicDetailsDialog({
                     )}
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onToggleSave(selectedTopicData.data._id, selectedTopicData.data.metadata?.isSaved || false)}
-                >
-                  {selectedTopicData.data.metadata?.isSaved ? (
-                    <IconBookmarkFilled className="h-5 w-5 text-orange-500" />
-                  ) : (
-                    <IconBookmark className="h-5 w-5" />
-                  )}
-                </Button>
               </div>
             </DialogHeader>
-            <div className="space-y-4 mt-4">
-              <div>
-                <h4 className="font-semibold text-gray-800 mb-2">Description</h4>
-                <p className="text-gray-600">{selectedTopicData.data.description}</p>
-              </div>
-              {selectedTopicData.data.startDate && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Start Date</h4>
-                  <p className="text-gray-600">{new Date(selectedTopicData.data.startDate).toLocaleString()}</p>
-                </div>
-              )}
-              {selectedTopicData.data.endDate && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">End Date</h4>
-                  <p className="text-gray-600">{new Date(selectedTopicData.data.endDate).toLocaleString()}</p>
-                </div>
-              )}
-              {selectedTopicData.data.location && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Location</h4>
-                  <p className="text-gray-600">{selectedTopicData.data.location}</p>
-                </div>
-              )}
-              {selectedTopicData.data.organizer && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Organizer</h4>
-                  <p className="text-gray-600">{selectedTopicData.data.organizer}</p>
-                </div>
-              )}
-              {selectedTopicData.data.applicationDeadline && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Application Deadline</h4>
-                  <p className="text-gray-600">{new Date(selectedTopicData.data.applicationDeadline).toLocaleString()}</p>
-                </div>
-              )}
-              {selectedTopicData.data.company && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Company</h4>
-                  <p className="text-gray-600">{selectedTopicData.data.company}</p>
-                </div>
-              )}
-              {selectedTopicData.data.position && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Position</h4>
-                  <p className="text-gray-600">{selectedTopicData.data.position}</p>
-                </div>
-              )}
-              {selectedTopicData.data.salary && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Salary</h4>
-                  <p className="text-gray-600">{selectedTopicData.data.salary}</p>
-                </div>
-              )}
-              {selectedTopicData.data.contactInfo && (
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Contact Information</h4>
-                  <p className="text-gray-600">{selectedTopicData.data.contactInfo}</p>
-                </div>
-              )}
+
+            <div className="w-full overflow-auto mt-4">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-[#F56C1420]">
+                    <TableHead className="font-semibold text-gray-800 w-1/3">Field</TableHead>
+                    <TableHead className="font-semibold text-gray-800">Value</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {renderTableRow("Description", <p className="text-gray-600">{selectedTopicData.data.description}</p>)}
+
+                  {selectedTopicData.data.startDate &&
+                    renderTableRow("Start Date", new Date(selectedTopicData.data.startDate).toLocaleString())}
+
+                  {selectedTopicData.data.endDate &&
+                    renderTableRow("End Date", new Date(selectedTopicData.data.endDate).toLocaleString())}
+
+                  {selectedTopicData.data.location &&
+                    renderTableRow("Location", selectedTopicData.data.location)}
+
+                  {selectedTopicData.data.organizer &&
+                    renderTableRow("Organizer", selectedTopicData.data.organizer)}
+
+                  {selectedTopicData.data.applicationDeadline &&
+                    renderTableRow("Application Deadline", new Date(selectedTopicData.data.applicationDeadline).toLocaleString())}
+
+                  {selectedTopicData.data.company &&
+                    renderTableRow("Company", selectedTopicData.data.company)}
+
+                  {selectedTopicData.data.position &&
+                    renderTableRow("Position", selectedTopicData.data.position)}
+
+                  {selectedTopicData.data.salary &&
+                    renderTableRow("Salary", selectedTopicData.data.salary)}
+
+                  {selectedTopicData.data.contactInfo &&
+                    renderTableRow("Contact Information", selectedTopicData.data.contactInfo)}
+                </TableBody>
+              </Table>
             </div>
           </>
         ) : (
