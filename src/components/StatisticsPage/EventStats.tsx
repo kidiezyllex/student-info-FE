@@ -2,16 +2,21 @@
 
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { 
+import {
   Bar,
   BarChart,
   CartesianGrid,
   Cell,
   ResponsiveContainer,
   XAxis,
-  YAxis
+  YAxis,
 } from "recharts";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 // Mock data for student information system
 const mockEventData = {
@@ -19,7 +24,7 @@ const mockEventData = {
   upcomingEvents: 6,
   totalEvents: 24,
   completedPercentage: 75,
-  upcomingPercentage: 25
+  upcomingPercentage: 25,
 };
 
 export default function EventStats() {
@@ -28,25 +33,25 @@ export default function EventStats() {
       name: "Completed",
       value: mockEventData.completedEvents,
       color: "#5CC184",
-      fill: "#5CC184"
+      fill: "#5CC184",
     },
     {
       name: "Upcoming",
       value: mockEventData.upcomingEvents,
       color: "#F56C14",
-      fill: "#F56C14"
-    }
+      fill: "#F56C14",
+    },
   ];
 
   const chartConfig: ChartConfig = {
-    "Completed": {
+    Completed: {
       label: "Completed",
       color: "#5CC184",
     },
-    "Upcoming": {
+    Upcoming: {
       label: "Upcoming",
       color: "#F56C14",
-    }
+    },
   };
 
   const totalEvents = mockEventData.totalEvents;
@@ -54,9 +59,13 @@ export default function EventStats() {
   return (
     <Card className="p-4 !shadow-md  ">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">Event Statistics</h3>
+        <h3 className="text-lg font-semibold text-gray-800">
+          Event Statistics
+        </h3>
         <p className="text-gray-800 text-sm">
-          Total: <span className="font-semibold text-primary">{totalEvents}</span> events
+          Total:{" "}
+          <span className="font-semibold text-primary">{totalEvents}</span>{" "}
+          events
         </p>
       </div>
 
@@ -68,40 +77,39 @@ export default function EventStats() {
       >
         <ChartContainer config={chartConfig} className="h-full w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart 
-              data={chartData} 
+            <BarChart
+              data={chartData}
               margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
               layout="vertical"
             >
-              <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#E5E5E5" />
-              <XAxis 
-                type="number" 
-                axisLine={false}
-                tickLine={false}
-                tickMargin={10}
-                tick={{ fill: '#687D92' }}
+              <CartesianGrid
+                strokeDasharray="3 3"
+                horizontal={true}
+                vertical={false}
+                stroke="#E5E5E5"
               />
-              <YAxis 
-                type="category" 
-                dataKey="name" 
+              <XAxis
+                type="number"
                 axisLine={false}
                 tickLine={false}
                 tickMargin={10}
-                tick={{ fill: '#687D92' }}
+                tick={{ fill: "#687D92" }}
+              />
+              <YAxis
+                type="category"
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tickMargin={10}
+                tick={{ fill: "#687D92" }}
                 width={120}
               />
               <ChartTooltip
                 content={
-                  <ChartTooltipContent 
-                    labelFormatter={(label) => `${label}`}
-                  />
+                  <ChartTooltipContent labelFormatter={(label) => `${label}`} />
                 }
               />
-              <Bar 
-                dataKey="value" 
-                barSize={40} 
-                radius={[0, 4, 4, 0]}
-              >
+              <Bar dataKey="value" barSize={40} radius={[0, 4, 4, 0]}>
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
@@ -113,28 +121,42 @@ export default function EventStats() {
 
       <div className="grid grid-cols-2 gap-4 mt-4">
         {chartData.map((item) => (
-          <div key={item.name} className="flex items-center justify-between bg-white p-3 rounded-md border border-lightBorderV1">
+          <div
+            key={item.name}
+            className="flex items-center justify-between bg-white p-3 rounded-md border border-lightBorderV1"
+          >
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-              <span className="text-sm font-semibold text-gray-800">{item.name}</span>
+              <div
+                className="w-4 h-4 rounded-full"
+                style={{ backgroundColor: item.color }}
+              ></div>
+              <span className="text-sm font-semibold text-gray-800">
+                {item.name}
+              </span>
             </div>
-            <span className="font-semibold" style={{ color: item.color }}>{item.value}</span>
+            <span className="font-semibold" style={{ color: item.color }}>
+              {item.value}
+            </span>
           </div>
         ))}
       </div>
-      
+
       <div className="mt-4 p-3 bg-gray-50 rounded-md">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <span className="text-gray-800">Completed percentage: </span>
-            <span className="font-semibold text-green-600">{mockEventData.completedPercentage}%</span>
+            <span className="font-semibold text-green-600">
+              {mockEventData.completedPercentage}%
+            </span>
           </div>
           <div>
             <span className="text-gray-800">Upcoming percentage: </span>
-            <span className="font-semibold text-orange-600">{mockEventData.upcomingPercentage}%</span>
+            <span className="font-semibold text-orange-600">
+              {mockEventData.upcomingPercentage}%
+            </span>
           </div>
         </div>
       </div>
     </Card>
   );
-} 
+}

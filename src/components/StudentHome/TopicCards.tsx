@@ -62,7 +62,7 @@ export function TopicCards({
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="rounded-[28px] overflow-hidden bg-transparent shadow-md border-2 border-black h-[300px]"
+            className="rounded-[28px] overflow-hidden bg-transparent shadow-md h-[300px]"
           >
             <Skeleton className="h-full w-full" />
           </div>
@@ -73,7 +73,7 @@ export function TopicCards({
 
   if (topics.length === 0) {
     return (
-      <Card className="border-2 border-gray-200 rounded-2xl">
+      <Card className="border border-gray-200 rounded-2xl">
         <CardContent className="p-12 text-center">
           <p className="text-gray-500 text-lg">No topics found</p>
         </CardContent>
@@ -95,7 +95,7 @@ export function TopicCards({
         return (
           <div
             key={topic._id}
-            className="group relative rounded-[28px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border-2 border-mainDarkBackgroundV1 h-[350px]"
+            className="group relative rounded-[28px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer h-[350px]"
             onClick={() => onSelectTopic(topic._id)}
           >
             {/* Full Height Background Image */}
@@ -162,68 +162,71 @@ export function TopicCards({
                 <p className="text-sm text-gray-800 line-clamp-3 leading-relaxed">
                   {topic.description}
                 </p>
-              </div>
 
-              {/* Deadline Section */}
-              {hasDeadline && (
-                <div className="flex items-center justify-between bg-white/95 backdrop-blur-sm rounded-xl p-3 border border-gray-200 group-hover:border-orange-300 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`p-2 rounded-lg ${
-                        isUrgent ? "bg-red-100" : "bg-orange-100"
-                      }`}
-                    >
-                      {isUrgent ? (
-                        <IconAlertCircle className="h-5 w-5 text-red-600" />
-                      ) : (
-                        <IconCalendar className="h-5 w-5 text-orange-600" />
-                      )}
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
-                        {topic.applicationDeadline ? "DEADLINE" : "END DATE"}
-                      </p>
-                      <p
-                        className={`text-sm font-bold ${
-                          isUrgent ? "text-red-600" : "text-gray-900"
+                {/* Deadline Section */}
+                {hasDeadline && (
+                  <div className="flex items-center justify-between bg-white/95 backdrop-blur-sm rounded-xl p-3 border border-gray-200 group-hover:border-orange-300 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`p-2 rounded-lg ${
+                          isUrgent ? "bg-red-100" : "bg-orange-100"
                         }`}
                       >
-                        {deadlineDate &&
-                          new Date(deadlineDate).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
-                      </p>
+                        {isUrgent ? (
+                          <IconAlertCircle className="h-5 w-5 text-red-600" />
+                        ) : (
+                          <IconCalendar className="h-5 w-5 text-orange-600" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
+                          {topic.applicationDeadline ? "DEADLINE" : "END DATE"}
+                        </p>
+                        <p
+                          className={`text-sm font-bold ${
+                            isUrgent ? "text-red-600" : "text-gray-900"
+                          }`}
+                        >
+                          {deadlineDate &&
+                            new Date(deadlineDate).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                        </p>
+                      </div>
                     </div>
+                    <IconArrowRight className="h-5 w-5 text-orange-600 group-hover:translate-x-1 transition-transform" />
                   </div>
-                  <IconArrowRight className="h-5 w-5 text-orange-600 group-hover:translate-x-1 transition-transform" />
-                </div>
-              )}
+                )}
 
-              {/* Start Date Section */}
-              {topic.startDate && !hasDeadline && (
-                <div className="flex items-center justify-between bg-white/95 backdrop-blur-sm rounded-2xl p-3 border border-gray-200 group-hover:border-blue-300 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-blue-100">
-                      <IconFlag className="h-5 w-5 text-blue-600" />
+                {/* Start Date Section */}
+                {topic.startDate && !hasDeadline && (
+                  <div className="flex items-center justify-between bg-white/95 backdrop-blur-sm rounded-2xl p-3 border border-gray-200 group-hover:border-blue-300 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-blue-100">
+                        <IconFlag className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
+                          STARTS
+                        </p>
+                        <p className="text-sm font-bold text-gray-900">
+                          {new Date(topic.startDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            }
+                          )}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
-                        STARTS
-                      </p>
-                      <p className="text-sm font-bold text-gray-900">
-                        {new Date(topic.startDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </p>
-                    </div>
+                    <IconArrowRight className="h-5 w-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
                   </div>
-                  <IconArrowRight className="h-5 w-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         );

@@ -322,7 +322,7 @@ export default function CoordinatorDashboard() {
           <div className="bg-white border border-lightBorderV1 rounded-lg p-4">
             <div className="space-y-4">
               <div className="flex items-center space-x-4 p-4 bg-blue-50/50 rounded-lg border border-blue-100">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900">
                     New event created: AI Workshop 2024
@@ -331,7 +331,7 @@ export default function CoordinatorDashboard() {
                 </div>
               </div>
               <div className="flex items-center space-x-4 p-4 bg-green-50/50 rounded-lg border border-green-100">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="w-4 h-4 bg-green-500 rounded-full"></div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900">
                     Scholarship application approved
@@ -340,7 +340,7 @@ export default function CoordinatorDashboard() {
                 </div>
               </div>
               <div className="flex items-center space-x-4 p-4 bg-yellow-50/50 rounded-lg border border-yellow-100">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900">
                     Notification sent to 156 students

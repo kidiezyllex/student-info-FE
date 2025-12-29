@@ -90,7 +90,7 @@ export function CalendarView({ events, isLoading }: CalendarViewProps) {
 
   return (
     <>
-      <Card className="p-6 bg-white shadow-lg">
+      <Card className="p-4 bg-white shadow-lg">
         <div className="calendar-container" style={{ height: "600px" }}>
           <Calendar
             localizer={localizer}

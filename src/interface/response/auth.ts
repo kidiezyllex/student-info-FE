@@ -43,6 +43,7 @@ export interface IProfileData {
   gender: string;
   active: boolean;
   savedNotifications: any[];
+  savedTopics: any[];
   createdAt: string;
   updatedAt: string;
   lastLogin: string;
