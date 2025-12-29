@@ -2,10 +2,8 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { IconBookmark, IconBookmarkFilled } from "@tabler/icons-react";
 import { ITopic, TopicType } from "@/interface/response/topic";
 
 type TopicDetailsDialogProps = {
@@ -20,7 +18,6 @@ export function TopicDetailsDialog({
   selectedTopicId,
   selectedTopicData,
   onClose,
-  onToggleSave,
   typeColorMap,
 }: TopicDetailsDialogProps) {
   const renderTableRow = (label: string, value: React.ReactNode) => (
