@@ -1,52 +1,56 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useSendPasswordResetCode } from "@/hooks/useEmail"
-import { toast } from "react-toastify"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useSendPasswordResetCode } from "@/hooks/useEmail";
+import { toast } from "react-toastify";
 
 export default function ForgotPasswordPage() {
-  const router = useRouter()
-  const { mutateAsync: sendPasswordReset, isPending: isSendingReset } = useSendPasswordResetCode()
-  const [email, setEmail] = useState("")
+  const router = useRouter();
+  const { mutateAsync: sendPasswordReset, isPending: isSendingReset } =
+    useSendPasswordResetCode();
+  const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<{
-    email?: string
-  }>({})
+    email?: string;
+  }>({});
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
+    setEmail(e.target.value);
     if (errors.email) {
-      setErrors(prev => ({ ...prev, email: undefined }))
+      setErrors((prev) => ({ ...prev, email: undefined }));
     }
-  }
+  };
 
   const handleSendPasswordReset = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     if (!email) {
-      setErrors({ email: "Email is required" })
-      return
+      setErrors({ email: "Email is required" });
+      return;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
-      setErrors({ email: "Invalid email format" })
-      return
+      setErrors({ email: "Invalid email format" });
+      return;
     }
-    
+
     try {
-      await sendPasswordReset({ email })
-      toast.success("Password reset code has been sent to your email")
+      await sendPasswordReset({ email });
+      toast.success("Password reset code has been sent to your email");
       // Navigate to reset-password page with email as query param
-      router.push(`/auth/reset-password?email=${encodeURIComponent(email)}`)
+      router.push(`/auth/reset-password?email=${encodeURIComponent(email)}`);
     } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || error?.message || "Failed to send password reset code"
-      toast.error(errorMessage)
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to send password reset code";
+      toast.error(errorMessage);
     }
-  }
+  };
 
   return (
     <div
@@ -74,12 +78,20 @@ export default function ForgotPasswordPage() {
           <div className="bg-transparent shadow-none p-4 rounded-none border-none pb-10">
             <form onSubmit={handleSendPasswordReset} className="space-y-4">
               <div className="text-center mb-6">
-                <h1 className="text-xl font-semibold text-gray-800 mb-2">Forgot Password?</h1>
-                <p className="text-sm text-gray-600">Enter your email address and we&apos;ll send you a code to reset your password</p>
+                <h1 className="text-xl font-semibold text-gray-800 mb-2">
+                  Forgot Password?
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Enter your email address and we&apos;ll send you a code to
+                  reset your password
+                </p>
               </div>
-              
+
               <div>
-                <Label htmlFor="email" className="text-sm font-semibold text-gray-800 mb-2 block">
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-semibold text-gray-800 mb-2 block"
+                >
                   Email
                 </Label>
                 <Input
@@ -93,7 +105,7 @@ export default function ForgotPasswordPage() {
                   disabled={isSendingReset}
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                 )}
               </div>
 
@@ -125,6 +137,5 @@ export default function ForgotPasswordPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

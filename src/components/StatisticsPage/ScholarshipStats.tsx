@@ -2,11 +2,13 @@
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { PieChart, Pie } from "recharts";
 import {
-  PieChart,
-  Pie
-} from "recharts";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 
 // Mock data for student information system
 const mockScholarshipData = {
@@ -17,8 +19,8 @@ const mockScholarshipData = {
     academic: 6,
     need: 5,
     sports: 2,
-    talent: 2
-  }
+    talent: 2,
+  },
 };
 
 export default function ScholarshipStats() {
@@ -26,36 +28,36 @@ export default function ScholarshipStats() {
     {
       name: "Academic Scholarship",
       value: mockScholarshipData.scholarshipsByType.academic,
-      fill: "var(--color-academic)"
+      fill: "var(--color-academic)",
     },
     {
       name: "Need-based Scholarship",
       value: mockScholarshipData.scholarshipsByType.need,
-      fill: "var(--color-need)"
+      fill: "var(--color-need)",
     },
     {
       name: "Sports Scholarship",
       value: mockScholarshipData.scholarshipsByType.sports,
-      fill: "var(--color-sports)"
+      fill: "var(--color-sports)",
     },
     {
       name: "Talent Scholarship",
       value: mockScholarshipData.scholarshipsByType.talent,
-      fill: "var(--color-talent)"
-    }
+      fill: "var(--color-talent)",
+    },
   ];
 
   const scholarshipStatusData = [
     {
       name: "Active",
       value: mockScholarshipData.activeScholarships,
-      fill: "var(--color-active)"
+      fill: "var(--color-active)",
     },
     {
       name: "Expired",
       value: mockScholarshipData.expiredScholarships,
-      fill: "var(--color-expired)"
-    }
+      fill: "var(--color-expired)",
+    },
   ];
 
   const typeChartConfig = {
@@ -77,7 +79,7 @@ export default function ScholarshipStats() {
     talent: {
       label: "Talent Scholarship",
       color: "#E91E63",
-    }
+    },
   } satisfies ChartConfig;
 
   const statusChartConfig = {
@@ -91,7 +93,7 @@ export default function ScholarshipStats() {
     expired: {
       label: "Expired",
       color: "#F0934E",
-    }
+    },
   } satisfies ChartConfig;
 
   const totalScholarships = mockScholarshipData.totalScholarships;
@@ -99,9 +101,15 @@ export default function ScholarshipStats() {
   return (
     <Card className="p-4 !shadow-md  ">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">Scholarship Statistics</h3>
+        <h3 className="text-lg font-semibold text-gray-800">
+          Scholarship Statistics
+        </h3>
         <p className="text-gray-800 text-sm">
-          Total: <span className="font-semibold text-primary">{totalScholarships}</span> scholarships
+          Total:{" "}
+          <span className="font-semibold text-primary">
+            {totalScholarships}
+          </span>{" "}
+          scholarships
         </p>
       </div>
 
@@ -115,7 +123,7 @@ export default function ScholarshipStats() {
         <Card className="flex flex-col flex-1">
           <CardHeader className="flex items-center justify-between">
             Scholarship Type
-            <p className="text-gray-800 text-xs">Distribution by type</p>
+            <p className="text-gray-800 text-sm">Distribution by type</p>
           </CardHeader>
           <CardContent className="flex-1 pb-0">
             <ChartContainer
@@ -139,7 +147,7 @@ export default function ScholarshipStats() {
         <Card className="flex flex-col flex-1">
           <CardHeader className="flex items-center justify-between">
             Scholarship Status
-            <p className="text-gray-800 text-xs">Distribution by status</p>
+            <p className="text-gray-800 text-sm">Distribution by status</p>
           </CardHeader>
           <CardContent className="flex-1 pb-0">
             <ChartContainer
@@ -161,4 +169,4 @@ export default function ScholarshipStats() {
       </motion.div>
     </Card>
   );
-} 
+}

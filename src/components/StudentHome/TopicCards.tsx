@@ -1,11 +1,18 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { IconBookmark, IconBookmarkFilled, IconCalendarMonthFilled } from "@tabler/icons-react";
-import { ITopic, TopicType } from "@/interface/response/topic";
+import {
+  IconBookmark,
+  IconBookmarkFilled,
+  IconCalendar,
+  IconAlertCircle,
+  IconFlag,
+  IconArrowRight,
+} from "@tabler/icons-react";
+import { ITopic } from "@/interface/response/topic";
 import Image from "next/image";
 
 type TopicCardsProps = {
@@ -13,6 +20,34 @@ type TopicCardsProps = {
   isLoading: boolean;
   onSelectTopic: (id: string) => void;
   onToggleSave: (id: string, isSaved: boolean) => void;
+};
+
+// Helper function to get type badge color
+const getTypeBadgeColor = (type: string) => {
+  const colors: Record<string, string> = {
+    scholarship: "bg-orange-500",
+    contest: "bg-blue-600",
+    workshop: "bg-purple-600",
+    grant: "bg-teal-600",
+    event: "bg-green-600",
+    notification: "bg-red-600",
+  };
+  return colors[type.toLowerCase()] || "bg-gray-600";
+};
+
+// Helper function to get random picsum image
+const getPicsumImage = (index: number) => {
+  const imageIds = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+  const id = imageIds[index % imageIds.length];
+  return `https://picsum.photos/seed/${id}/600/400`;
+};
+
+// Helper to get hashtags from topic
+const getHashtags = (topic: ITopic) => {
+  const tags = [];
+  if (topic.department?.code) tags.push(topic.department.code);
+  // Add more hashtags based on topic properties if available
+  return tags;
 };
 
 export function TopicCards({
@@ -23,30 +58,13 @@ export function TopicCards({
 }: TopicCardsProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="border border-lightBorderV1 rounded-xl flex flex-col relative h-56 overflow-hidden bg-gray-100"
+            className="rounded-[28px] overflow-hidden bg-transparent shadow-md border-2 border-black h-[300px]"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300" />
-            <Skeleton className="h-9 w-9 absolute top-2 right-2 rounded-full z-10" />
-            <Skeleton className="h-6 w-3/4 ml-3 mt-2 relative z-10" />
-            <div className="flex items-center gap-2 relative z-10 pl-3 mt-1">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-4 w-12" />
-            </div>
-            <div className="w-full relative z-10 p-3 mt-auto">
-              <div className="flex flex-col gap-1 bg-gray-200 rounded-md p-2">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-5/6" />
-                <Skeleton className="h-4 w-4/6" />
-              </div>
-            </div>
-            <div className="flex items-center gap-2 absolute z-10 bottom-1.5 left-2">
-              <Skeleton className="h-5 w-5 rounded" />
-              <Skeleton className="h-4 w-20" />
-            </div>
+            <Skeleton className="h-full w-full" />
           </div>
         ))}
       </div>
@@ -55,86 +73,161 @@ export function TopicCards({
 
   if (topics.length === 0) {
     return (
-      <Card className="border border-lightBorderV1">
-        <CardContent className="p-8 text-center">
-          <p className="text-gray-600">No topics found</p>
+      <Card className="border-2 border-gray-200 rounded-2xl">
+        <CardContent className="p-12 text-center">
+          <p className="text-gray-500 text-lg">No topics found</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {topics.map((topic) => (
-        <div
-          key={topic._id}
-          className="border border-lightBorderV1 rounded-xl hover:shadow-lg transition-shadow cursor-pointer flex flex-col relative h-56 overflow-hidden"
-          onClick={() => onSelectTopic(topic._id)}
-        >
-          {(topic.startDate || topic.applicationDeadline || topic.endDate) && (
-            <div className="flex items-end gap-2 text-xs text-gray-800 absolute z-10 bottom-1.5 left-2">
-              <Button
-                variant={topic.metadata?.isSaved ? "default" : "outline"}
-                size="sm"
-                className="h-9 w-9"
-              >
-                <IconCalendarMonthFilled className="h-5 w-5 text-orange-500" />
-              </Button>
-              <div className="flex items-center gap-4">
-                {topic.startDate && (
-                  <p className="text-gray-800 text-sm font-semibold">
-                    Start:{" "} 
-                    <span className="font-normal">{new Date(topic.startDate).toLocaleDateString()}</span>
-                  </p>
-                )}
-                {topic.applicationDeadline ? (
-                  <span className="text-gray-800 text-sm font-semibold">
-                    Deadline:{" "}
-                    <span className="font-normal">{new Date(topic.applicationDeadline).toLocaleDateString()}</span>
-                  </span>
-                ) : topic.endDate ? (
-                  <span className="text-gray-800 text-sm font-semibold">
-                    End:{" "}
-                    <span className="font-normal">{new Date(topic.endDate).toLocaleDateString()}</span>
-                  </span>
-                ) : null}
-              </div>
-            </div>
-          )}
-          <Image src="/images/topic-card.png" alt="topic-card" fill className="w-full" />
-          <Button
-            variant={topic.metadata?.isSaved ? "default" : "outline"}
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleSave(topic._id, topic.metadata?.isSaved || false);
-            }}
-            className="h-9 w-9 absolute top-2 right-2"
-          >
-            {topic.metadata?.isSaved ? (
-              <IconBookmarkFilled className="h-5 w-5 text-orange-500" />
-            ) : (
-              <IconBookmark className="h-5 w-5" />
-            )}
-          </Button>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {topics.map((topic, index) => {
+        const hashtags = getHashtags(topic);
+        const hasDeadline = topic.applicationDeadline || topic.endDate;
+        const deadlineDate = topic.applicationDeadline || topic.endDate;
+        const isUrgent =
+          deadlineDate &&
+          new Date(deadlineDate) <
+            new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-          <p className="text-lg pl-3 pt-2 max-w-[80%] font-semibold text-white line-clamp-1 relative z-10">
-            {topic.title}
-          </p>
-          <div className="flex items-center gap-2 relative z-10 pl-3">
-            <span className="text-sm underline text-white font-semibold">#{topic.type}</span>
-            {topic.department && (
-              <span className="text-sm text-white underline font-semibold">#{topic.department.code}</span>
-            )}
-          </div>
-          <div className=" w-full  relative z-106 p-3">
-            <div className="flex flex-col gap-1 bg-orange-200 rounded-md p-2">
-              <p className="text-sm text-gray-900 line-clamp-3">{topic.description}</p>
+        return (
+          <div
+            key={topic._id}
+            className="group relative rounded-[28px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border-2 border-mainDarkBackgroundV1 h-[350px]"
+            onClick={() => onSelectTopic(topic._id)}
+          >
+            {/* Full Height Background Image */}
+            <Image
+              src={getPicsumImage(index)}
+              alt={topic.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+
+            {/* Dark overlay for better text visibility */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70" />
+
+            {/* Type Badge - Top Left */}
+            <Badge
+              className={`absolute top-4 left-4 z-10 ${getTypeBadgeColor(
+                topic.type
+              )} text-white font-bold text-sm uppercase px-3 py-1.5 rounded-full shadow-lg border-0`}
+            >
+              {topic.type}
+            </Badge>
+
+            {/* Bookmark Button - Top Right */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleSave(topic._id, topic.metadata?.isSaved || false);
+              }}
+              className="absolute top-4 right-4 z-10 h-9 w-9 rounded-full bg-white/50 hover:bg-white/60 shadow-md p-0"
+            >
+              {topic.metadata?.isSaved ? (
+                <IconBookmarkFilled className="h-6 w-6 text-white" />
+              ) : (
+                <IconBookmark className="h-6 w-6 text-white" />
+              )}
+            </Button>
+
+            {/* Content Overlay - Bottom */}
+            <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pt-0 flex flex-col gap-3">
+              {/* Title and Hashtags */}
+              <div>
+                <h3 className="text-white font-bold text-xl line-clamp-2 mb-2">
+                  {topic.title}
+                </h3>
+                {/* Hashtags */}
+                {hashtags.length > 0 && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {hashtags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="text-white text-sm font-medium"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Description Box */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4">
+                <p className="text-sm text-gray-800 line-clamp-3 leading-relaxed">
+                  {topic.description}
+                </p>
+              </div>
+
+              {/* Deadline Section */}
+              {hasDeadline && (
+                <div className="flex items-center justify-between bg-white/95 backdrop-blur-sm rounded-xl p-3 border border-gray-200 group-hover:border-orange-300 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`p-2 rounded-lg ${
+                        isUrgent ? "bg-red-100" : "bg-orange-100"
+                      }`}
+                    >
+                      {isUrgent ? (
+                        <IconAlertCircle className="h-5 w-5 text-red-600" />
+                      ) : (
+                        <IconCalendar className="h-5 w-5 text-orange-600" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
+                        {topic.applicationDeadline ? "DEADLINE" : "END DATE"}
+                      </p>
+                      <p
+                        className={`text-sm font-bold ${
+                          isUrgent ? "text-red-600" : "text-gray-900"
+                        }`}
+                      >
+                        {deadlineDate &&
+                          new Date(deadlineDate).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                      </p>
+                    </div>
+                  </div>
+                  <IconArrowRight className="h-5 w-5 text-orange-600 group-hover:translate-x-1 transition-transform" />
+                </div>
+              )}
+
+              {/* Start Date Section */}
+              {topic.startDate && !hasDeadline && (
+                <div className="flex items-center justify-between bg-white/95 backdrop-blur-sm rounded-2xl p-3 border border-gray-200 group-hover:border-blue-300 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-blue-100">
+                      <IconFlag className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wide">
+                        STARTS
+                      </p>
+                      <p className="text-sm font-bold text-gray-900">
+                        {new Date(topic.startDate).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                  <IconArrowRight className="h-5 w-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
-

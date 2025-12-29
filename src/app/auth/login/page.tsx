@@ -1,114 +1,117 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useLogin } from "@/hooks/useAuth"
-import { useUser } from "@/context/useUserContext"
-import { toast } from "react-toastify"
-import { Eye, EyeOff } from "lucide-react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useLogin } from "@/hooks/useAuth";
+import { useUser } from "@/context/useUserContext";
+import { toast } from "react-toastify";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const { mutateAsync: loginUser, isPending } = useLogin()
-  const { loginUser: setUserContext, fetchUserProfile } = useUser()
+  const router = useRouter();
+  const { mutateAsync: loginUser, isPending } = useLogin();
+  const { loginUser: setUserContext, fetchUserProfile } = useUser();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
+  });
 
   const [errors, setErrors] = useState<{
-    email?: string
-    password?: string
-    general?: string
-  }>({})
+    email?: string;
+    password?: string;
+    general?: string;
+  }>({});
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
+      [name]: value,
+    }));
     if (errors[name as keyof typeof errors]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: undefined
-      }))
+        [name]: undefined,
+      }));
     }
-  }
+  };
 
   const validateForm = () => {
-    const newErrors: typeof errors = {}
+    const newErrors: typeof errors = {};
     if (!formData.email) {
-      newErrors.email = "Email is required"
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email format"
+      newErrors.email = "Invalid email format";
     }
     if (!formData.password) {
-      newErrors.password = "Password is required"
+      newErrors.password = "Password is required";
     } else if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters"
+      newErrors.password = "Password must be at least 6 characters";
     }
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleLogin = async () => {
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
     try {
       const loginResponse = await loginUser({
         email: formData.email,
-        password: formData.password
-      })
+        password: formData.password,
+      });
 
       if (loginResponse?.status === true && loginResponse?.data?.token) {
         if (typeof window !== "undefined") {
-          const token = loginResponse.data.token
-          const role = loginResponse.data.role
-          const userProfile = JSON.stringify(loginResponse)
+          const token = loginResponse.data.token;
+          const role = loginResponse.data.role;
+          const userProfile = JSON.stringify(loginResponse);
 
-          localStorage.setItem("token", token)
-          localStorage.setItem("accessToken", token)
-          localStorage.setItem("userProfile", userProfile)
+          localStorage.setItem("token", token);
+          localStorage.setItem("accessToken", token);
+          localStorage.setItem("userProfile", userProfile);
 
-          setUserContext(loginResponse.data, token)
-          await fetchUserProfile()
+          setUserContext(loginResponse.data, token);
+          await fetchUserProfile();
 
-          const responseData = loginResponse.data as any
-          let redirectPath = `/${role}`
+          const responseData = loginResponse.data as any;
+          let redirectPath = `/${role}`;
 
           if (role === "coordinator" && responseData.department) {
             const departmentName =
               typeof responseData.department === "string"
                 ? responseData.department
-                : responseData.department?.name || responseData.department?.code || "unknown"
-            redirectPath = `/coordinator/${departmentName}`
+                : responseData.department?.name ||
+                  responseData.department?.code ||
+                  "unknown";
+            redirectPath = `/coordinator/${departmentName}`;
           }
 
-          router.push(redirectPath)
+          router.push(redirectPath);
         }
-        toast.success("Login successful!")
+        toast.success("Login successful!");
       } else {
-        toast.error("Login failed: No token received")
+        toast.error("Login failed: No token received");
       }
     } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || error?.message || "Login failed"
-      toast.error(errorMessage)
+      const errorMessage =
+        error?.response?.data?.message || error?.message || "Login failed";
+      toast.error(errorMessage);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await handleLogin()
-  }
+    e.preventDefault();
+    await handleLogin();
+  };
 
   return (
     <div
@@ -136,7 +139,9 @@ export default function LoginPage() {
           <div className="bg-transparent shadow-none p-4 rounded-none border-none pb-10">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="text-center mb-6">
-                <h1 className="text-xl font-semibold text-gray-800 mb-2">Login to your account</h1>
+                <h1 className="text-xl font-semibold text-gray-800 mb-2">
+                  Login to your account
+                </h1>
               </div>
 
               {errors.general && (
@@ -147,7 +152,10 @@ export default function LoginPage() {
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="email" className="text-sm font-semibold text-gray-800 mb-2 block">
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-semibold text-gray-800 mb-2 block"
+                  >
                     Email
                   </Label>
                   <Input
@@ -161,12 +169,15 @@ export default function LoginPage() {
                     disabled={isPending}
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                   )}
                 </div>
 
                 <div>
-                  <Label htmlFor="password" className="text-sm font-semibold text-gray-800 mb-2 block">
+                  <Label
+                    htmlFor="password"
+                    className="text-sm font-semibold text-gray-800 mb-2 block"
+                  >
                     Password
                   </Label>
                   <div className="relative">
@@ -194,7 +205,9 @@ export default function LoginPage() {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.password}
+                    </p>
                   )}
                 </div>
               </div>
@@ -233,7 +246,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
-

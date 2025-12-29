@@ -4,14 +4,26 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useGetAllDepartments } from "@/hooks/useDepartment";
 import { useUploadFile } from "@/hooks/useUpload";
 import { IUpdateUserBody } from "@/interface/request/user";
 import { IUploadResponse } from "@/interface/response/upload";
 import { toast } from "react-toastify";
-import { IconLoader2, IconEdit, IconX, IconUpload, IconCheck } from "@tabler/icons-react";
+import {
+  IconLoader2,
+  IconEdit,
+  IconX,
+  IconUpload,
+  IconCheck,
+} from "@tabler/icons-react";
 
 interface UserFormProps {
   formData: IUpdateUserBody;
@@ -33,7 +45,8 @@ export const UserForm = ({
   onCancel,
 }: UserFormProps) => {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments();
+  const { data: departmentsData, isLoading: isLoadingDepartments } =
+    useGetAllDepartments();
   const { mutate: uploadFileMutation } = useUploadFile();
   const departments = departmentsData?.data || [];
 
@@ -66,7 +79,7 @@ export const UserForm = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const isValidType = file.type.startsWith('image/');
+    const isValidType = file.type.startsWith("image/");
     const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
 
     if (!isValidType) {
@@ -80,25 +93,28 @@ export const UserForm = ({
 
     setIsUploadingAvatar(true);
 
-    uploadFileMutation({ file }, {
-      onSuccess: (response: IUploadResponse) => {
-        if (response?.status) {
-          const imageUrl = response?.data?.url;
-          const newFormData = { ...formData, avatar: imageUrl };
-          onFormDataChange(newFormData);
-          toast.success(response?.message);
-        } else {
-          toast.error(response?.message);
-        }
-        setIsUploadingAvatar(false);
-      },
-      onError: (error: any) => {
-        toast.error(error?.response?.data?.message);
-        setIsUploadingAvatar(false);
+    uploadFileMutation(
+      { file },
+      {
+        onSuccess: (response: IUploadResponse) => {
+          if (response?.status) {
+            const imageUrl = response?.data?.url;
+            const newFormData = { ...formData, avatar: imageUrl };
+            onFormDataChange(newFormData);
+            toast.success(response?.message);
+          } else {
+            toast.error(response?.message);
+          }
+          setIsUploadingAvatar(false);
+        },
+        onError: (error: any) => {
+          toast.error(error?.response?.data?.message);
+          setIsUploadingAvatar(false);
+        },
       }
-    });
+    );
 
-    e.target.value = '';
+    e.target.value = "";
   };
 
   return (
@@ -124,7 +140,12 @@ export const UserForm = ({
               id="avatar-upload"
               disabled={isUploadingAvatar}
             />
-            <Label htmlFor="avatar-upload" className={`cursor-pointer ${isUploadingAvatar ? 'opacity-50 cursor-not-allowed' : ''}`}>
+            <Label
+              htmlFor="avatar-upload"
+              className={`cursor-pointer ${
+                isUploadingAvatar ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
               <div className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-lightBorderV1 rounded-lg hover:border-mainTextHoverV1 hover:bg-orange-50/50 transition-all duration-200 group">
                 <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-full bg-orange-100 group-hover:bg-orange-200 transition-colors duration-200">
                   {isUploadingAvatar ? (
@@ -135,9 +156,11 @@ export const UserForm = ({
                 </div>
                 <div className="text-center">
                   <div className="text-sm font-semibold text-gray-800 group-hover:text-mainTextHoverV1">
-                    {isUploadingAvatar ? "Đang tải ảnh..." : "Tải ảnh đại diện lên"}
+                    {isUploadingAvatar
+                      ? "Đang tải ảnh..."
+                      : "Tải ảnh đại diện lên"}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="text-sm text-gray-500 mt-1">
                     Select image (max 10MB)
                   </div>
                 </div>
@@ -177,7 +200,10 @@ export const UserForm = ({
         <Label htmlFor="role" className="text-gray-800">
           Role
         </Label>
-        <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
+        <Select
+          value={formData.role}
+          onValueChange={(value) => handleSelectChange("role", value)}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Select role" />
           </SelectTrigger>
@@ -201,11 +227,11 @@ export const UserForm = ({
             value={formData.name}
             onChange={handleChange}
             placeholder="Enter username"
-            className={`${errors.name ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+            className={`${
+              errors.name ? "border-red-500" : "border-lightBorderV1"
+            } focus:border-mainTextHoverV1`}
           />
-          {errors.name && (
-            <p className="text-red-500 text-sm">{errors.name}</p>
-          )}
+          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </div>
 
         <div className="space-y-2">
@@ -218,7 +244,9 @@ export const UserForm = ({
             value={formData.fullName}
             onChange={handleChange}
             placeholder="Enter full name"
-            className={`${errors.fullName ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+            className={`${
+              errors.fullName ? "border-red-500" : "border-lightBorderV1"
+            } focus:border-mainTextHoverV1`}
           />
           {errors.fullName && (
             <p className="text-red-500 text-sm">{errors.fullName}</p>
@@ -236,7 +264,9 @@ export const UserForm = ({
             value={formData.email}
             onChange={handleChange}
             placeholder="Nhập email"
-            className={`${errors.email ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+            className={`${
+              errors.email ? "border-red-500" : "border-lightBorderV1"
+            } focus:border-mainTextHoverV1`}
           />
           {errors.email && (
             <p className="text-red-500 text-sm">{errors.email}</p>
@@ -254,7 +284,9 @@ export const UserForm = ({
             value={formData.password}
             onChange={handleChange}
             placeholder="Enter new password"
-            className={`${errors.password ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+            className={`${
+              errors.password ? "border-red-500" : "border-lightBorderV1"
+            } focus:border-mainTextHoverV1`}
           />
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password}</p>
@@ -281,7 +313,9 @@ export const UserForm = ({
                 size="lg"
                 onClick={() => {
                   // Generate 5 random digits
-                  const randomDigits = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
+                  const randomDigits = Math.floor(Math.random() * 100000)
+                    .toString()
+                    .padStart(5, "0");
                   const generatedId = `200${randomDigits}`;
                   const newFormData = { ...formData, studentId: generatedId };
                   onFormDataChange(newFormData);
@@ -305,7 +339,9 @@ export const UserForm = ({
               value={formData.phoneNumber}
               onChange={handleChange}
               placeholder="Enter phone number"
-              className={`${errors.phoneNumber ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+              className={`${
+                errors.phoneNumber ? "border-red-500" : "border-lightBorderV1"
+              } focus:border-mainTextHoverV1`}
             />
             {errors.phoneNumber && (
               <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
@@ -320,11 +356,17 @@ export const UserForm = ({
             </Label>
             <Select
               value={formData.department || undefined}
-              onValueChange={(value) => handleSelectChange('department', value || "")}
+              onValueChange={(value) =>
+                handleSelectChange("department", value || "")
+              }
               disabled={isLoadingDepartments}
             >
               <SelectTrigger>
-                <SelectValue placeholder={isLoadingDepartments ? "Đang tải..." : "Chọn khoa"} />
+                <SelectValue
+                  placeholder={
+                    isLoadingDepartments ? "Đang tải..." : "Chọn khoa"
+                  }
+                />
               </SelectTrigger>
               <SelectContent>
                 {departments.map((department) => (
@@ -345,7 +387,7 @@ export const UserForm = ({
         <Switch
           id="active"
           checked={formData.active}
-          onCheckedChange={(checked) => handleSwitchChange('active', checked)}
+          onCheckedChange={(checked) => handleSwitchChange("active", checked)}
         />
       </div>
 

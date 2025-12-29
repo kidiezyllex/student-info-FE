@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useAskAI, useGetChatHistory, useGetChatSession, useRateAIResponse, useDeleteChatSession } from "@/hooks/useChat";
+import {
+  useAskAI,
+  useGetChatHistory,
+  useGetChatSession,
+  useRateAIResponse,
+  useDeleteChatSession,
+} from "@/hooks/useChat";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,13 +15,23 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";
-import { IconSend, IconMessageChatbotFilled, IconThumbUp, IconThumbDown, IconTrash, IconPlus, IconHistory, IconX, IconMessageCircle } from "@tabler/icons-react";
+import {
+  IconSend,
+  IconMessageChatbotFilled,
+  IconThumbUp,
+  IconThumbDown,
+  IconTrash,
+  IconPlus,
+  IconHistory,
+  IconX,
+  IconMessageCircle,
+} from "@tabler/icons-react";
 import { useUser } from "@/context/useUserContext";
 import { toast } from "react-toastify";
 import Image from "next/image";
@@ -35,8 +51,12 @@ interface Message extends IChatMessage {
 const formatMessageContent = (content: string) => {
   const parts = content.split(/(\*{2}[^\*]+\*{2})/g);
   return parts.map((part, index) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <span key={index} className="font-semibold">{part.slice(2, -2)}</span>;
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <span key={index} className="font-semibold">
+          {part.slice(2, -2)}
+        </span>
+      );
     }
     return part;
   });
@@ -68,16 +88,18 @@ export default function StudentChatPage() {
 
   useEffect(() => {
     if (currentSession?.data?.messages) {
-      const sessionMessages: Message[] = currentSession.data.messages.map((msg, index) => ({
-        id: `session-${index}-${Date.now()}`,
-        content: msg.content,
-        role: msg.role,
-        isUser: msg.role === "user",
-        timestamp: new Date(),
-        sessionId: currentSession.data._id,
-        messageIndex: index,
-        isAccurate: msg.isAccurate,
-      }));
+      const sessionMessages: Message[] = currentSession.data.messages.map(
+        (msg, index) => ({
+          id: `session-${index}-${Date.now()}`,
+          content: msg.content,
+          role: msg.role,
+          isUser: msg.role === "user",
+          timestamp: new Date(),
+          sessionId: currentSession.data._id,
+          messageIndex: index,
+          isAccurate: msg.isAccurate,
+        })
+      );
       setMessages(sessionMessages);
     }
   }, [currentSession]);
@@ -86,7 +108,9 @@ export default function StudentChatPage() {
     if (messages.length === 0 && !currentSessionId) {
       const welcomeMessage: Message = {
         id: `welcome-${Date.now()}`,
-        content: `Hello ${profile?.data?.name || 'Student'}! I'm your AI assistant. I'm here to help you with information about scholarships, events, academic questions, and more. How can I assist you today?`,
+        content: `Hello ${
+          profile?.data?.name || "Student"
+        }! I'm your AI assistant. I'm here to help you with information about scholarships, events, academic questions, and more. How can I assist you today?`,
         role: "assistant",
         isUser: false,
         timestamp: new Date(),
@@ -106,7 +130,7 @@ export default function StudentChatPage() {
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputMessage("");
     setIsTyping(true);
 
@@ -125,8 +149,8 @@ export default function StudentChatPage() {
         sessionId: response.data.sessionId,
       };
 
-      setMessages(prev => [...prev, aiMessage]);
-      
+      setMessages((prev) => [...prev, aiMessage]);
+
       // Update current session ID if it's a new session
       if (!currentSessionId) {
         setCurrentSessionId(response.data.sessionId);
@@ -134,12 +158,13 @@ export default function StudentChatPage() {
     } catch (error: any) {
       const errorMessage: Message = {
         id: `error-${Date.now()}`,
-        content: "I'm sorry, I encountered an error while processing your request. Please try again later.",
+        content:
+          "I'm sorry, I encountered an error while processing your request. Please try again later.",
         role: "assistant",
         isUser: false,
         timestamp: new Date(),
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
       toast.error("Failed to send message. Please try again.");
     } finally {
       setIsTyping(false);
@@ -153,7 +178,10 @@ export default function StudentChatPage() {
     }
   };
 
-  const handleRateMessage = async (messageIndex: number, isAccurate: boolean) => {
+  const handleRateMessage = async (
+    messageIndex: number,
+    isAccurate: boolean
+  ) => {
     if (!currentSessionId) return;
 
     try {
@@ -164,11 +192,15 @@ export default function StudentChatPage() {
       });
 
       // Update local message rating
-      setMessages(prev => prev.map((msg, index) => 
-        index === messageIndex ? { ...msg, isAccurate } : msg
-      ));
+      setMessages((prev) =>
+        prev.map((msg, index) =>
+          index === messageIndex ? { ...msg, isAccurate } : msg
+        )
+      );
 
-      toast.success(`Response ${isAccurate ? 'liked' : 'disliked'} successfully!`);
+      toast.success(
+        `Response ${isAccurate ? "liked" : "disliked"} successfully!`
+      );
     } catch (error) {
       toast.error("Failed to rate response. Please try again.");
     }
@@ -178,7 +210,7 @@ export default function StudentChatPage() {
     try {
       await deleteSession(sessionId);
       toast.success("Chat session deleted successfully!");
-      
+
       // If current session was deleted, start new chat
       if (sessionId === currentSessionId) {
         setCurrentSessionId(null);
@@ -201,7 +233,7 @@ export default function StudentChatPage() {
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   const formatSessionDate = (dateString: string) => {
@@ -209,7 +241,7 @@ export default function StudentChatPage() {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
+
     if (days === 0) return "Today";
     if (days === 1) return "Yesterday";
     if (days < 7) return `${days} days ago`;
@@ -230,7 +262,9 @@ export default function StudentChatPage() {
             <Card className="h-full bg-mainBackgroundV1 border border-lightBorderV1">
               <CardHeader className="p-4 border-b">
                 <div className="flex items-center justify-between w-full">
-                  <CardTitle className="text-lg font-semibold">Chat History</CardTitle>
+                  <CardTitle className="text-lg font-semibold">
+                    Chat History
+                  </CardTitle>
                   <Button
                     variant="outline"
                     size="sm"
@@ -272,7 +306,7 @@ export default function StudentChatPage() {
                             <h4 className="font-semibold text-base text-gray-800 truncate">
                               {session.title}
                             </h4>
-                            <p className="text-xs text-gray-800 mt-1">
+                            <p className="text-sm text-gray-800 mt-1">
                               {formatSessionDate(session.lastActive)}
                             </p>
                           </div>
@@ -325,32 +359,36 @@ export default function StudentChatPage() {
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
                 <div className="flex-1">
-                  <CardTitle className="text-xl font-semibold text-gray-800 mb-1">AI Assistant</CardTitle>
+                  <CardTitle className="text-xl font-semibold text-gray-800 mb-1">
+                    AI Assistant
+                  </CardTitle>
                   <div className="flex items-center gap-2">
                     <p className="text-sm text-gray-800 font-semibold">
-                      {currentSessionId ? "Continuing conversation" : "Ready to help with your questions"}
+                      {currentSessionId
+                        ? "Continuing conversation"
+                        : "Ready to help with your questions"}
                     </p>
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setShowHistory(!showHistory)}
-              className="flex items-center gap-2"
-            >
-              <IconHistory className="w-4 h-4" />
-              History
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleNewChat}
-              className="flex items-center gap-2"
-            >
-              <IconPlus className="w-4 h-4" />
-              New Chat
-            </Button>
-          </div>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="flex items-center gap-2"
+                >
+                  <IconHistory className="w-4 h-4" />
+                  History
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={handleNewChat}
+                  className="flex items-center gap-2"
+                >
+                  <IconPlus className="w-4 h-4" />
+                  New Chat
+                </Button>
+              </div>
             </CardHeader>
           </Card>
 
@@ -366,64 +404,97 @@ export default function StudentChatPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: index * 0.1 }}
-                        className={`flex gap-2 ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                        className={`flex gap-2 ${
+                          message.isUser ? "justify-end" : "justify-start"
+                        }`}
                       >
                         {!message.isUser && (
                           <div className="w-12 h-12 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
+                            <Image
+                              src="/images/ai-avatar.webp"
+                              alt="AI Avatar"
+                              width={50}
+                              height={50}
+                              className="w-full h-full object-cover"
+                            />
                           </div>
                         )}
 
-                        <div className={`max-w-[70%] ${message.isUser ? 'order-first' : ''}`}>
+                        <div
+                          className={`max-w-[70%] ${
+                            message.isUser ? "order-first" : ""
+                          }`}
+                        >
                           <div
-                            className={`p-3 rounded-lg ${message.isUser
-                                ? 'bg-mainTextHoverV1 text-white'
-                                : 'bg-gray-100 text-gray-800'
-                              }`}
+                            className={`p-3 rounded-lg ${
+                              message.isUser
+                                ? "bg-mainTextHoverV1 text-white"
+                                : "bg-gray-100 text-gray-800"
+                            }`}
                           >
-                            <p className="text-sm whitespace-pre-wrap">{formatMessageContent(message.content)}</p>
+                            <p className="text-sm whitespace-pre-wrap">
+                              {formatMessageContent(message.content)}
+                            </p>
                           </div>
-                          
+
                           <div className="flex items-center justify-between mt-1 px-1">
-                            <p className="text-xs text-gray-800">
+                            <p className="text-sm text-gray-800">
                               {formatTime(message.timestamp)}
                             </p>
-                            
+
                             {/* Rating buttons for AI messages */}
-                            {!message.isUser && message.sessionId && message.messageIndex !== undefined && (
-                              <div className="flex gap-1">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleRateMessage(message.messageIndex!, true)}
-                                  className={`h-8 w-8 p-0 ${
-                                    message.isAccurate === true 
-                                      ? 'text-green-600 bg-green-50' 
-                                      : 'text-gray-400 hover:text-green-600'
-                                  }`}
-                                >
-                                  <IconThumbUp className="w-5 h-5" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleRateMessage(message.messageIndex!, false)}
-                                  className={`h-8 w-8 p-0 ${
-                                    message.isAccurate === false 
-                                      ? 'text-red-600 bg-red-50' 
-                                      : 'text-gray-400 hover:text-red-600'
-                                  }`}
-                                >
-                                  <IconThumbDown className="w-5 h-5" />
-                                </Button>
-                              </div>
-                            )}
+                            {!message.isUser &&
+                              message.sessionId &&
+                              message.messageIndex !== undefined && (
+                                <div className="flex gap-1">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                      handleRateMessage(
+                                        message.messageIndex!,
+                                        true
+                                      )
+                                    }
+                                    className={`h-8 w-8 p-0 ${
+                                      message.isAccurate === true
+                                        ? "text-green-600 bg-green-50"
+                                        : "text-gray-400 hover:text-green-600"
+                                    }`}
+                                  >
+                                    <IconThumbUp className="w-5 h-5" />
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                      handleRateMessage(
+                                        message.messageIndex!,
+                                        false
+                                      )
+                                    }
+                                    className={`h-8 w-8 p-0 ${
+                                      message.isAccurate === false
+                                        ? "text-red-600 bg-red-50"
+                                        : "text-gray-400 hover:text-red-600"
+                                    }`}
+                                  >
+                                    <IconThumbDown className="w-5 h-5" />
+                                  </Button>
+                                </div>
+                              )}
                           </div>
                         </div>
 
                         {message.isUser && (
                           <div className="w-12 h-12 overflow-hidden bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Image src="/images/student.webp" alt="Student Avatar" width={50} height={50} className="w-full h-full object-cover" />
+                            <Image
+                              src="/images/student.webp"
+                              alt="Student Avatar"
+                              width={50}
+                              height={50}
+                              className="w-full h-full object-cover"
+                            />
                           </div>
                         )}
                       </motion.div>
@@ -438,13 +509,25 @@ export default function StudentChatPage() {
                       className="flex gap-2"
                     >
                       <div className="w-12 h-12 overflow-hidden bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Image src="/images/ai-avatar.webp" alt="AI Avatar" width={50} height={50} className="w-full h-full object-cover" />
+                        <Image
+                          src="/images/ai-avatar.webp"
+                          alt="AI Avatar"
+                          width={50}
+                          height={50}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <div className="bg-gray-100 p-3 rounded-lg">
                         <div className="flex gap-1">
                           <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          <div
+                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.1s" }}
+                          ></div>
+                          <div
+                            className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.2s" }}
+                          ></div>
                         </div>
                       </div>
                     </motion.div>
@@ -482,4 +565,4 @@ export default function StudentChatPage() {
       </div>
     </div>
   );
-} 
+}

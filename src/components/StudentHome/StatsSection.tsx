@@ -1,7 +1,11 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { IconPresentationFilled, IconCalendarMonthFilled, IconMessageChatbotFilled } from "@tabler/icons-react";
+import {
+  IconCalendarEvent,
+  IconCalendarMonthFilled,
+  IconMessageChatbotFilled,
+} from "@tabler/icons-react";
 import { ITopic } from "@/interface/response/topic";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -30,54 +34,56 @@ const StatCard = ({
       style={{
         border: `1px solid ${color}80`,
       }}
-      className={`group relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 transition-all duration-300 hover:-translate-y-1 ${link ? "cursor-pointer" : ""}`}
+      className={`group relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 transition-all duration-300 hover:-translate-y-1 ${
+        link ? "cursor-pointer" : ""
+      }`}
     >
-        {/* Background decoration */}
+      {/* Background decoration */}
+      <div
+        className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -mr-8 -mt-8"
+        style={{ backgroundColor: color }}
+      />
+
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex-1">
+          <h3 className="text-gray-800 text-base font-semibold uppercase tracking-wider">
+            {title}
+          </h3>
+        </div>
         <div
-          className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -mr-8 -mt-8"
-          style={{ backgroundColor: color }}
-        />
-
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <h3 className="text-gray-800 text-base font-semibold uppercase tracking-wider">
-              {title}
-            </h3>
+          className="mx-auto w-16 h-16 p-2 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-105 relative"
+          style={{
+            background: `linear-gradient(135deg, ${color}20 0%, ${color}30 100%)`,
+            border: `1px solid ${color}30`,
+          }}
+        >
+          <div style={{ color: color }}>
+            <Icon className="h-8 w-8" />
           </div>
+        </div>
+      </div>
+
+      {/* Value */}
+      <div className="mt-auto">
+        <p
+          className="text-4xl font-semibold bg-gradient-to-r bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(135deg, ${color} 0%, ${color}80 100%)`,
+          }}
+        >
+          {typeof value === "number" ? value.toLocaleString() : value}
+        </p>
+        <div className="flex items-center space-x-2">
           <div
-            className="mx-auto w-16 h-16 p-2 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-105 relative"
-            style={{
-              background: `linear-gradient(135deg, ${color}20 0%, ${color}30 100%)`,
-              border: `1px solid ${color}30`,
-            }}
-          >
-            <div style={{ color: color }}>
-              <Icon className="h-8 w-8" />
-            </div>
-          </div>
+            className="h-[6px] w-12 rounded-full"
+            style={{ backgroundColor: color }}
+          />
+          <span className="text-sm text-gray-500 font-semibold">
+            Current total
+          </span>
         </div>
-
-        {/* Value */}
-        <div className="mt-auto">
-          <p
-            className="text-4xl font-semibold bg-gradient-to-r bg-clip-text text-transparent"
-            style={{
-              backgroundImage: `linear-gradient(135deg, ${color} 0%, ${color}80 100%)`,
-            }}
-          >
-            {typeof value === "number" ? value.toLocaleString() : value}
-          </p>
-          <div className="flex items-center space-x-2">
-            <div
-              className="h-[6px] w-12 rounded-full"
-              style={{ backgroundColor: color }}
-            />
-            <span className="text-xs text-gray-500 font-semibold">
-              Current total
-            </span>
-          </div>
-        </div>
+      </div>
 
       {/* Hover effect overlay */}
       <div
@@ -104,15 +110,17 @@ const StatCard = ({
 export function StatsSection({ topics }: StatsSectionProps) {
   const totalTopics = topics.length;
   const upcomingEvents = topics.filter(
-    (t) => t.type === "event" && t.startDate && new Date(t.startDate) > new Date()
+    (t) =>
+      t.type === "event" && t.startDate && new Date(t.startDate) > new Date()
   ).length;
 
   const stats = [
     {
-      title: "Total Topics",
-      value: totalTopics,
-      icon: IconPresentationFilled,
+      title: "View Calendar",
+      value: "Calendar",
+      icon: IconCalendarEvent,
       color: "#3B82F6",
+      link: "/student/calendar",
     },
     {
       title: "Upcoming Events",
@@ -145,4 +153,3 @@ export function StatsSection({ topics }: StatsSectionProps) {
     </div>
   );
 }
-

@@ -12,7 +12,12 @@ import {
   Legend,
 } from "recharts";
 import { useState } from "react";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
@@ -34,7 +39,7 @@ const mockDepartmentData = {
     { month: "T9", engineering: 72, business: 52, arts: 45, science: 58 },
     { month: "T10", engineering: 62, business: 45, arts: 38, science: 50 },
     { month: "T11", engineering: 58, business: 42, arts: 35, science: 48 },
-    { month: "T12", engineering: 48, business: 35, arts: 30, science: 42 }
+    { month: "T12", engineering: 48, business: 35, arts: 30, science: 42 },
   ],
   2023: [
     { month: "T1", engineering: 42, business: 30, arts: 25, science: 35 },
@@ -48,8 +53,8 @@ const mockDepartmentData = {
     { month: "T9", engineering: 68, business: 48, arts: 42, science: 55 },
     { month: "T10", engineering: 58, business: 42, arts: 35, science: 48 },
     { month: "T11", engineering: 55, business: 38, arts: 32, science: 45 },
-    { month: "T12", engineering: 45, business: 32, arts: 28, science: 38 }
-  ]
+    { month: "T12", engineering: 45, business: 32, arts: 28, science: 38 },
+  ],
 };
 const chartConfig = {
   engineering: {
@@ -67,7 +72,7 @@ const chartConfig = {
   science: {
     label: "Khoa Khoa học",
     color: "#E91E63",
-  }
+  },
 } satisfies ChartConfig;
 
 export default function DepartmentComparisonChart() {
@@ -78,16 +83,18 @@ export default function DepartmentComparisonChart() {
     setYear(Number(value));
   };
 
-  const chartData = mockDepartmentData[year as keyof typeof mockDepartmentData] || mockDepartmentData[2024];
+  const chartData =
+    mockDepartmentData[year as keyof typeof mockDepartmentData] ||
+    mockDepartmentData[2024];
 
   return (
     <Card className="p-4 !shadow-md   h-full flex flex-col">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">Compare students by department</h3>
-          <p className="text-gray-800 text-sm">
-            Statistics by month {year}
-          </p>
+          <h3 className="text-lg font-semibold text-gray-800">
+            Compare students by department
+          </h3>
+          <p className="text-gray-800 text-sm">Statistics by month {year}</p>
         </div>
         <Select value={year.toString()} onValueChange={handleYearChange}>
           <SelectTrigger className="w-[120px] border-lightBorderV1 text-gray-800">
@@ -111,52 +118,55 @@ export default function DepartmentComparisonChart() {
       >
         <ChartContainer config={chartConfig} className="h-full w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E5E5" />
-              <XAxis 
+            <BarChart
+              data={chartData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#E5E5E5"
+              />
+              <XAxis
                 dataKey="month"
                 axisLine={false}
                 tickLine={false}
                 tickMargin={10}
-                tick={{ fill: '#687D92' }}
+                tick={{ fill: "#687D92" }}
               />
-              <YAxis 
+              <YAxis
                 axisLine={false}
                 tickLine={false}
                 tickMargin={10}
-                tick={{ fill: '#687D92' }}
+                tick={{ fill: "#687D92" }}
               />
-              <ChartTooltip 
-                content={
-                  <ChartTooltipContent />
-                }
-              />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
-              <Bar 
-                dataKey="engineering" 
+              <Bar
+                dataKey="engineering"
                 fill={chartConfig.engineering?.color || "#F56C14"}
-                radius={[4, 4, 0, 0]} 
+                radius={[4, 4, 0, 0]}
                 barSize={15}
                 name={chartConfig.engineering?.label || "Khoa Kỹ thuật"}
               />
-              <Bar 
-                dataKey="business" 
+              <Bar
+                dataKey="business"
                 fill={chartConfig.business?.color || "#5CC184"}
-                radius={[4, 4, 0, 0]} 
+                radius={[4, 4, 0, 0]}
                 barSize={15}
                 name={chartConfig.business?.label || "Khoa Kinh tế"}
               />
-              <Bar 
-                dataKey="arts" 
+              <Bar
+                dataKey="arts"
                 fill={chartConfig.arts?.color || "#F0934E"}
-                radius={[4, 4, 0, 0]} 
+                radius={[4, 4, 0, 0]}
                 barSize={15}
                 name={chartConfig.arts?.label || "Khoa Nghệ thuật"}
               />
-              <Bar 
-                dataKey="science" 
+              <Bar
+                dataKey="science"
                 fill={chartConfig.science?.color || "#E91E63"}
-                radius={[4, 4, 0, 0]} 
+                radius={[4, 4, 0, 0]}
                 barSize={15}
                 name={chartConfig.science?.label || "Khoa Khoa học"}
               />
@@ -166,4 +176,4 @@ export default function DepartmentComparisonChart() {
       </motion.div>
     </Card>
   );
-} 
+}

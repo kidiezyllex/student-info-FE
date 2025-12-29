@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ITopic } from "@/interface/response/topic";
@@ -30,7 +37,14 @@ const typeColorMap: Record<string, BadgeProps["variant"]> = {
   extracurricular: "pink",
 };
 
-export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit, onDelete }: TopicTableProps) => {
+export const TopicTable = ({
+  topics,
+  isSearching,
+  currentPage,
+  pageSize,
+  onEdit,
+  onDelete,
+}: TopicTableProps) => {
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
 
   return (
@@ -38,14 +52,30 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
       <Table>
         <TableHeader>
           <TableRow className="bg-[#F56C1420] hover:bg-gray-50">
-            <TableHead className="font-semibold text-gray-800 text-nowrap w-[60px]">No.</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap">Title</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap">Type</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap min-w-[200px]">Department</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap">Created By</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap">Created At</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap">Deadline</TableHead>
-            <TableHead className="font-semibold text-gray-800 text-nowrap">Action</TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap w-[60px]">
+              No.
+            </TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">
+              Title
+            </TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">
+              Type
+            </TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap min-w-[200px]">
+              Department
+            </TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">
+              Created By
+            </TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">
+              Created At
+            </TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">
+              Deadline
+            </TableHead>
+            <TableHead className="font-semibold text-gray-800 text-nowrap">
+              Action
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -67,11 +97,18 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
                   {(currentPage - 1) * pageSize + index + 1}
                 </TableCell>
                 <TableCell className="text-gray-800">
-                  <div className="font-semibold text-gray-800">{topic.title}</div>
-                  <div className="text-sm text-gray-600 line-clamp-2">{topic.description}</div>
+                  <div className="font-semibold text-gray-800">
+                    {topic.title}
+                  </div>
+                  <div className="text-sm text-gray-600 line-clamp-2">
+                    {topic.description}
+                  </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={typeColorMap[topic.type] || "outline"} className="capitalize">
+                  <Badge
+                    variant={typeColorMap[topic.type] || "outline"}
+                    className="capitalize"
+                  >
                     {topic.type}
                   </Badge>
                 </TableCell>
@@ -86,7 +123,9 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
                   )}
                 </TableCell>
                 <TableCell>
-                  <div className="text-gray-800 font-semibold">{topic.createdBy.name}</div>
+                  <div className="text-gray-800 font-semibold">
+                    {topic.createdBy.name}
+                  </div>
                   <div className="mt-1">
                     {getRoleBadge(topic.createdBy.role)}
                   </div>
@@ -118,7 +157,7 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
                             ? "destructive"
                             : "green"
                         }
-                        className="mt-1 text-xs"
+                        className="mt-1 text-sm"
                       >
                         {new Date(topic.applicationDeadline) < new Date()
                           ? "Expired"
@@ -142,7 +181,7 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
                             ? "destructive"
                             : "green"
                         }
-                        className="mt-1 text-xs"
+                        className="mt-1 text-sm"
                       >
                         {new Date(topic.endDate) < new Date()
                           ? "Expired"
@@ -191,4 +230,3 @@ export const TopicTable = ({ topics, isSearching, currentPage, pageSize, onEdit,
     </div>
   );
 };
-
