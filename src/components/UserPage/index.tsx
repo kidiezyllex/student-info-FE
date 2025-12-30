@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useGetAllUsers, useDeleteUser } from "@/hooks/useUser";
 import { useGetAllDepartments } from "@/hooks/useDepartment";
 import {
@@ -31,8 +32,11 @@ import { IconSearch, IconPlus, IconX } from "@tabler/icons-react";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 
 export default function UserPage() {
+  const searchParams = useSearchParams();
+  const initialRole = searchParams.get("role") || "all";
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [roleFilter, setRoleFilter] = useState<string>("all");
+  const [roleFilter, setRoleFilter] = useState<string>(initialRole);
   const [departmentFilter, setDepartmentFilter] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -145,7 +149,7 @@ export default function UserPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/admin">Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

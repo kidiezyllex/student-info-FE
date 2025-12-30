@@ -7,7 +7,8 @@ import {
 	mdiGift,
 	mdiBell,
 	mdiRobot,
-	mdiAlphaTCircle
+	mdiAlphaTCircle,
+	mdiHistory
 } from "@mdi/js";
 
 export const getDashboardMenuItems = (): MenuItem[] => [
@@ -34,6 +35,12 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		name: "Topic Management",
 		path: "/admin/topics",
 		icon: mdiAlphaTCircle,
+	},
+	{
+		id: "activity-logs",
+		name: "Activity Logs",
+		path: "/admin/activity-logs",
+		icon: mdiHistory,
 	},
 ]; 
 

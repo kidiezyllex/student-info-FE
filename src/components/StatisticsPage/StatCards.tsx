@@ -1,15 +1,10 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
+import { useGetStatistics } from "@/hooks/useStatistics";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-const mockData = {
-  studentsCount: 2847,
-  departmentsCount: 12,
-  eventsCount: 24,
-  scholarshipsCount: 15,
-};
 
 const StatCard = ({
   link,
@@ -38,7 +33,7 @@ const StatCard = ({
           style={{
             border: `1px solid ${color}80`,
           }}
-          className="group cursor-pointer relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 transition-all duration-300 hover:-translate-y-1"
+          className="group cursor-pointer relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 transition-all duration-300 hover:-translate-y-1 rounded-2xl"
         >
           {/* Background decoration */}
           <div
@@ -47,7 +42,7 @@ const StatCard = ({
           />
 
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between">
             <div className="flex-1">
               <h3 className="text-gray-800 text-sm font-semibold uppercase tracking-wider mb-1">
                 {title}
@@ -93,7 +88,7 @@ const StatCard = ({
 
           {/* Hover effect overlay */}
           <div
-            className="absolute inset-0 bg-gradient-to-br opacity-25 transition-opacity duration-300"
+            className="absolute inset-0 bg-gradient-to-br opacity-25 transition-opacity duration-300 pointer-events-none"
             style={{
               backgroundImage: `linear-gradient(135deg, ${color} 0%, transparent 100%)`,
             }}
@@ -105,13 +100,29 @@ const StatCard = ({
 };
 
 export default function StatCards() {
+  const { data: statsData, isLoading } = useGetStatistics();
+
+  const mockData = {
+    studentsCount: statsData?.data?.studentsCount ?? 0,
+    departmentsCount: statsData?.data?.departmentsCount ?? 0,
+    coordinatorsCount: statsData?.data?.coordinatorsCount ?? 0,
+    topicsCount: statsData?.data?.topicsCount ?? 0,
+  };
+
   const stats = [
     {
       title: "Students",
       value: mockData.studentsCount,
       icon: "/images/student/students.png",
       color: "#F56C14",
-      link: "/admin/students",
+      link: "#",
+    },
+    {
+      title: "Coordinator",
+      value: mockData.coordinatorsCount,
+      icon: "/images/student/notifications.png", // Using notifications icon for staffs as a placeholder if no staff icon
+      color: "#3B82F6",
+      link: "#",
     },
     {
       title: "Departments",
@@ -121,20 +132,23 @@ export default function StatCards() {
       link: "/admin/departments",
     },
     {
-      title: "Events",
-      value: mockData.eventsCount,
+      title: "Topics",
+      value: mockData.topicsCount,
       icon: "/images/student/events.png",
       color: "#F0934E",
-      link: "/admin/events",
-    },
-    {
-      title: "Scholarships",
-      value: mockData.scholarshipsCount,
-      icon: "/images/student/scholarships.png",
-      color: "#E91E63",
-      link: "/admin/scholarships",
+      link: "/admin/topics",
     },
   ];
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-48 bg-gray-200 rounded-2xl" />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

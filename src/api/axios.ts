@@ -11,13 +11,11 @@ function getLocalAccessToken() {
 	}
 	
 	try {
-		// Get token from localStorage only
 		const directAccessToken = localStorage.getItem("accessToken");
 		if (directAccessToken) {
 			return directAccessToken;
 		}
 		
-		// Try token (might be JSON or raw string)
 		const tokenFromStorage = localStorage.getItem("token");
 		if (tokenFromStorage) {
 			try {
@@ -36,8 +34,8 @@ function getLocalAccessToken() {
 
 const instance = axios.create({
 	timeout: 3 * 60 * 1000,
-	baseURL: `http://localhost:5000/api`,
-	// baseURL: `https://student-info-be.onrender.com/api`,
+	// baseURL: `http://localhost:5000/api`,
+	baseURL: `https://student-info-be.onrender.com/api`,
 	headers: {
 		"Content-Type": "application/json",
 		Accept: "application/json",
@@ -47,16 +45,8 @@ const instance = axios.create({
 instance.interceptors.request.use(
 	(config) => {
 		const token = getLocalAccessToken();
-		console.log('[Axios Interceptor] Token from getLocalAccessToken:', token ? 'Token exists' : 'No token');
-		console.log('[Axios Interceptor] Cookie accessToken:', cookies.get("accessToken"));
-		console.log('[Axios Interceptor] localStorage accessToken:', typeof window !== "undefined" ? localStorage.getItem("accessToken") : "N/A");
-		console.log('[Axios Interceptor] Request URL:', config.url);
-		
 		if (token) {
 			config.headers["Authorization"] = `Bearer ${token}`;
-			console.log('[Axios Interceptor] Authorization header set:', `Bearer ${token.substring(0, 20)}...`);
-		} else {
-			console.warn('[Axios Interceptor] No token found, request will be sent without Authorization header');
 		}
 		return config;
 	},
