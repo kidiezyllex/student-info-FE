@@ -2,7 +2,11 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useGetAllEvents, useGetUpcomingEvents, useDeleteEvent } from "@/hooks/useEvent";
+import {
+  useGetAllEvents,
+  useGetUpcomingEvents,
+  useDeleteEvent,
+} from "@/hooks/useEvent";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,18 +14,30 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { EventTable } from "@/components/EventPage/EventTable";
 import { EventCreateDialog } from "@/components/EventPage/EventCreateDialog";
 import { EventDetailsDialog } from "@/components/EventPage/EventDetailsDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
-import { IconSearch, IconPlus, IconCalendarMonthFilled, IconFilter, IconX } from "@tabler/icons-react";
+import {
+  IconSearch,
+  IconPlus,
+  IconCalendarMonthFilled,
+  IconFilter,
+  IconX,
+} from "@tabler/icons-react";
 import { IEvent } from "@/interface/response/event";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 
@@ -40,9 +56,18 @@ export default function CoordinatorEvents() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(5);
 
-  const { data: allEventsData, isLoading: isLoadingAll, refetch: refetchAll } = useGetAllEvents();
-  const { data: upcomingEventsData, isLoading: isLoadingUpcoming, refetch: refetchUpcoming } = useGetUpcomingEvents();
-  const { mutateAsync: deleteEventMutation, isPending: isDeleting } = useDeleteEvent();
+  const {
+    data: allEventsData,
+    isLoading: isLoadingAll,
+    refetch: refetchAll,
+  } = useGetAllEvents();
+  const {
+    data: upcomingEventsData,
+    isLoading: isLoadingUpcoming,
+    refetch: refetchUpcoming,
+  } = useGetUpcomingEvents();
+  const { mutateAsync: deleteEventMutation, isPending: isDeleting } =
+    useDeleteEvent();
 
   const isLoading = eventFilter === "all" ? isLoadingAll : isLoadingUpcoming;
   const eventsData = eventFilter === "all" ? allEventsData : upcomingEventsData;
@@ -61,21 +86,30 @@ export default function CoordinatorEvents() {
 
       // Filter by department first
       if (departmentName) {
-        filtered = filtered.filter(event => 
-          event.department && 
-          (event.department.name === departmentName || 
-           event.department.name.toLowerCase().includes(departmentName.toLowerCase()))
+        filtered = filtered.filter(
+          (event) =>
+            event.department &&
+            (event.department.name === departmentName ||
+              event.department.name
+                .toLowerCase()
+                .includes(departmentName.toLowerCase()))
         );
       }
 
       // Apply search filter
       if (searchQuery.trim()) {
-        filtered = filtered.filter(event =>
-          event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          event.organizer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (event.department && event.department.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        filtered = filtered.filter(
+          (event) =>
+            event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            event.description
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            event.organizer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (event.department &&
+              event.department.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()))
         );
       }
 
@@ -137,11 +171,15 @@ export default function CoordinatorEvents() {
   const paginatedEvents = filteredEvents.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-4 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/coordinator/${encodeURIComponent(departmentName)}`}>Dashboard</BreadcrumbLink>
+            <BreadcrumbLink
+              href={`/coordinator/${encodeURIComponent(departmentName)}`}
+            >
+              Dashboard
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -224,7 +262,10 @@ export default function CoordinatorEvents() {
               page={currentPage}
               pageSize={pageSize}
               total={eventsData?.total || filteredEvents.length}
-              totalPages={eventsData?.totalPages || Math.ceil(filteredEvents.length / pageSize)}
+              totalPages={
+                eventsData?.totalPages ||
+                Math.ceil(filteredEvents.length / pageSize)
+              }
               onPageChange={handlePageChange}
             />
           )}

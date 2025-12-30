@@ -36,10 +36,7 @@ const StatCard = ({
 }) => {
   const cardContent = (
     <Card
-      style={{
-        border: `1px solid ${color}80`,
-      }}
-      className={`group relative overflow-hidden p-4 h-full flex flex-col bg-gradient-to-br from-white to-gray-50/50 transition-all duration-300 hover:-translate-y-1 ${
+      className={`group border border-orange-400 relative overflow-hidden p-4 rounded-2xl h-full flex flex-col transition-all duration-300 hover:-translate-y-1 ${
         link ? "cursor-pointer" : ""
       }`}
     >
@@ -83,7 +80,7 @@ const StatCard = ({
 
       {/* Hover effect overlay */}
       <div
-        className="absolute inset-0 bg-gradient-to-br opacity-25 transition-opacity duration-300 pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-br opacity-10 transition-opacity duration-300 pointer-events-none"
         style={{
           backgroundImage: `linear-gradient(135deg, ${color} 0%, transparent 100%)`,
         }}
@@ -116,20 +113,20 @@ export function StatsSection({ topics }: StatsSectionProps) {
       title: "View Calendar",
       value: "Calendar",
       icon: IconCalendarEvent,
-      color: "#3B82F6",
+      color: "#F97316",
       link: "/student/calendar",
     },
     {
       title: "Upcoming Events",
       value: upcomingEvents,
       icon: IconCalendarMonthFilled,
-      color: "#10B981",
+      color: "#F97316",
     },
     {
       title: "AI Chat",
       value: "Chat",
       icon: IconMessageChatbotFilled,
-      color: "#8B5CF6",
+      color: "#F97316",
       link: "/student/chat",
     },
   ];
@@ -148,8 +145,8 @@ export function StatsSection({ topics }: StatsSectionProps) {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="p-4 h-full bg-gradient-to-br from-orange-50 to-white border-2 border-orange-200">
-          <div className="flex items-center gap-6">
+        <Card className="p-4 rounded-2xl h-full border border-orange-400">
+          <div className="flex items-center gap-4">
             {/* Avatar */}
             <div className="relative flex-shrink-0">
               <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-orange-300 shadow-lg">
@@ -169,7 +166,7 @@ export function StatsSection({ topics }: StatsSectionProps) {
             </div>
 
             {/* User Info */}
-            <div className="flex-1 space-y-3">
+            <div className="flex-1 space-y-2">
               <div>
                 <h3 className="text-lg font-bold text-gray-800 truncate">
                   {userData?.name || "Loading..."}
@@ -209,6 +206,12 @@ export function StatsSection({ topics }: StatsSectionProps) {
             </div>
           </div>
         </Card>
+        <div
+          className="absolute inset-0 bg-gradient-to-br opacity-10 transition-opacity duration-300 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(135deg, #F97316 0%, transparent 100%)`,
+          }}
+        />
       </motion.div>
 
       {/* Stats Cards */}

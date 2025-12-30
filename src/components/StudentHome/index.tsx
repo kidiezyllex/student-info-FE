@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useGetTopics, useGetTopicById, useSaveTopic, useUnsaveTopic } from "@/hooks/useTopic";
+import {
+  useGetTopics,
+  useGetTopicById,
+  useSaveTopic,
+  useUnsaveTopic,
+} from "@/hooks/useTopic";
+import { useGetUserProfile } from "@/hooks/useUser";
 import { TopicType } from "@/interface/response/topic";
 import { toast } from "react-toastify";
 import { StatsSection } from "./StatsSection";
@@ -17,12 +23,14 @@ export default function StudentHome() {
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 9;
-  
+
   const { data: topicsData, isLoading: isLoadingTopics } = useGetTopics({
     type: selectedType === "all" ? undefined : selectedType,
     page: currentPage,
     limit: limit,
   });
+
+  const { data: userProfile } = useGetUserProfile();
 
   // Reset page to 1 when filter type changes
   useEffect(() => {
@@ -47,26 +55,30 @@ export default function StudentHome() {
   const topics = topicsData?.data || [];
   const total = topicsData?.total || 0;
   const totalPages = topicsData?.totalPages || 0;
+  const savedTopics = userProfile?.data?.savedTopics || [];
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1 min-h-screen pb-24">
+    <div className="space-y-4 bg-white p-4 rounded-lg border border-lightBorderV1 min-h-screen pb-24">
       <StatsSection topics={topics} />
       {/* Topic Cards */}
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold text-gray-800">
-          {selectedType === "all" ? "All Topics" : typeLabels[selectedType as TopicType]}
+          {selectedType === "all"
+            ? "All Topics"
+            : typeLabels[selectedType as TopicType]}
         </h2>
         <TopicFilters
-            selectedType={selectedType}
-            onSelectType={setSelectedType}
-            topicTypes={topicTypes}
-            typeLabels={typeLabels}
-          />
+          selectedType={selectedType}
+          onSelectType={setSelectedType}
+          topicTypes={topicTypes}
+          typeLabels={typeLabels}
+        />
         <TopicCards
           topics={topics}
           isLoading={isLoadingTopics}
           onSelectTopic={setSelectedTopicId}
           onToggleSave={handleSaveTopic}
+          savedTopics={savedTopics}
         />
         {!isLoadingTopics && topics.length > 0 && (
           <Pagination
@@ -90,4 +102,3 @@ export default function StudentHome() {
     </div>
   );
 }
-

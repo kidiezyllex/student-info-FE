@@ -11,11 +11,18 @@ import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { IconMapPin, IconClock, IconUser } from "@tabler/icons-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const locales = {
   "en-US": enUS,
@@ -34,20 +41,32 @@ interface CalendarEvent {
   title: string;
   start: Date;
   end: Date;
-  resource: ICalendarEvent;
+  resource: ICalendarEvent & { color?: string };
+  color?: string;
+}
+
+export interface CalendarInfo {
+  id: string;
+  name: string;
+  color: string;
 }
 
 interface CalendarViewProps {
-  events: ICalendarEvent[];
+  events: (ICalendarEvent & { color?: string })[];
   isLoading?: boolean;
+  calendars?: CalendarInfo[];
 }
 
-export function CalendarView({ events, isLoading }: CalendarViewProps) {
+export function CalendarView({
+  events,
+  isLoading,
+  calendars,
+}: CalendarViewProps) {
   const [view, setView] = useState<View>("month");
   const [date, setDate] = useState(new Date());
-  const [selectedEvent, setSelectedEvent] = useState<ICalendarEvent | null>(
-    null
-  );
+  const [selectedEvent, setSelectedEvent] = useState<
+    (ICalendarEvent & { color?: string }) | null
+  >(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const calendarEvents: CalendarEvent[] = useMemo(() => {
@@ -57,6 +76,7 @@ export function CalendarView({ events, isLoading }: CalendarViewProps) {
       start: new Date(event.start),
       end: new Date(event.end),
       resource: event,
+      color: event.color,
     }));
   }, [events]);
 
@@ -65,10 +85,10 @@ export function CalendarView({ events, isLoading }: CalendarViewProps) {
     setIsDialogOpen(true);
   };
 
-  const eventStyleGetter = () => {
+  const eventStyleGetter = (event: CalendarEvent) => {
     return {
       style: {
-        backgroundColor: "#3B82F6",
+        backgroundColor: event.color || "#3B82F6",
         borderRadius: "6px",
         opacity: 0.9,
         color: "white",
@@ -79,6 +99,15 @@ export function CalendarView({ events, isLoading }: CalendarViewProps) {
       },
     };
   };
+
+  const renderTableRow = (label: string, value: React.ReactNode) => (
+    <TableRow className="transition-colors">
+      <TableCell className="font-semibold text-gray-800 w-1/3 align-top">
+        {label}
+      </TableCell>
+      <TableCell className="text-gray-800">{value}</TableCell>
+    </TableRow>
+  );
 
   if (isLoading) {
     return (
@@ -111,102 +140,96 @@ export function CalendarView({ events, isLoading }: CalendarViewProps) {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-blue-600">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="flex flex-row items-center gap-2">
+            <DialogTitle className="text-2xl font-semibold text-gray-800 w-fit">
               {selectedEvent?.summary}
             </DialogTitle>
-            <DialogDescription>
-              <div className="mt-4 space-y-4">
-                {/* Time */}
-                <div className="flex items-start gap-3">
-                  <IconClock className="w-5 h-5 text-gray-500 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-gray-700">Time</p>
-                    <p className="text-sm text-gray-600">
-                      {selectedEvent &&
-                        format(new Date(selectedEvent.start), "PPpp")}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      to{" "}
-                      {selectedEvent &&
-                        format(new Date(selectedEvent.end), "PPpp")}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Location */}
-                {selectedEvent?.location && (
-                  <div className="flex items-start gap-3">
-                    <IconMapPin className="w-5 h-5 text-gray-500 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-gray-700">Location</p>
-                      <p className="text-sm text-gray-600">
-                        {selectedEvent.location}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Description */}
-                {selectedEvent?.description && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 flex items-center justify-center mt-0.5">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-700">Description</p>
-                      <p className="text-sm text-gray-600 whitespace-pre-wrap">
-                        {selectedEvent.description}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Organizer */}
-                {selectedEvent?.organizer && (
-                  <div className="flex items-start gap-3">
-                    <IconUser className="w-5 h-5 text-gray-500 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-gray-700">Organizer</p>
-                      <p className="text-sm text-gray-600">
-                        {selectedEvent.organizer.displayName ||
-                          selectedEvent.organizer.email}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Status */}
-                <div className="flex items-center gap-2">
-                  <Badge
-                    variant={
-                      selectedEvent?.status === "confirmed"
-                        ? "default"
-                        : "secondary"
-                    }
-                    className="capitalize"
-                  >
-                    {selectedEvent?.status}
-                  </Badge>
-                </div>
-
-                {/* Link to Google Calendar */}
-                {selectedEvent?.htmlLink && (
-                  <div className="pt-4 border-t">
-                    <a
-                      href={selectedEvent.htmlLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 text-sm font-medium hover:underline"
+            {calendars && selectedEvent && (
+              <div className="w-fit -translate-y-1">
+                {calendars
+                  .filter((cal) => cal.color === selectedEvent.color)
+                  .map((cal) => (
+                    <div
+                      key={cal.id}
+                      style={{ background: cal.color }}
+                      className="flex items-center gap-2 px-3 py-0.5 rounded-full shadow-sm border"
                     >
-                      View in Google Calendar →
-                    </a>
+                      <div className="w-2 h-2 rounded-full bg-white" />
+                      <span className="text-sm font-medium text-white">
+                        {cal.name}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </DialogHeader>
+          <Table className="border">
+            <TableHeader>
+              <TableRow className="bg-gray-50">
+                <TableHead className="font-semibold text-gray-800 w-1/3">
+                  Field
+                </TableHead>
+                <TableHead className="font-semibold text-gray-800">
+                  Value
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {selectedEvent &&
+                renderTableRow(
+                  "Time",
+                  <div className="flex flex-col">
+                    <span>{format(new Date(selectedEvent.start), "PPpp")}</span>
+                    <span className="text-gray-500 text-xs my-1">to</span>
+                    <span>{format(new Date(selectedEvent.end), "PPpp")}</span>
                   </div>
                 )}
-              </div>
-            </DialogDescription>
-          </DialogHeader>
+
+              {selectedEvent?.location &&
+                renderTableRow(
+                  "Location",
+                  <div className="flex items-center gap-2">
+                    <IconMapPin className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                    <span>{selectedEvent.location}</span>
+                  </div>
+                )}
+
+              {selectedEvent?.description &&
+                renderTableRow(
+                  "Description",
+                  <p className="whitespace-pre-wrap">
+                    {selectedEvent.description}
+                  </p>
+                )}
+
+              {selectedEvent?.organizer &&
+                renderTableRow(
+                  "Organized by",
+                  <div className="flex items-center gap-2">
+                    <IconUser className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                    <span>
+                      {selectedEvent.organizer.displayName ||
+                        selectedEvent.organizer.email}
+                    </span>
+                  </div>
+                )}
+
+              {renderTableRow(
+                "Status",
+                <Badge
+                  variant={
+                    selectedEvent?.status === "confirmed"
+                      ? "default"
+                      : "secondary"
+                  }
+                  className="capitalize"
+                >
+                  {selectedEvent?.status || "N/A"}
+                </Badge>
+              )}
+            </TableBody>
+          </Table>
         </DialogContent>
       </Dialog>
 
@@ -246,15 +269,16 @@ export function CalendarView({ events, isLoading }: CalendarViewProps) {
         }
         .rbc-toolbar button:hover {
           background-color: #f3f4f6;
-          border-color: #9ca3af;
+          border-color: #f56c14;
         }
         .rbc-toolbar button.rbc-active {
-          background-color: #3b82f6;
+          background-color: #f56c14;
           color: white;
-          border-color: #3b82f6;
+          border-color: #f56c14;
         }
         .rbc-toolbar button.rbc-active:hover {
-          background-color: #2563eb;
+          background-color: #ea580c;
+          color: white;
         }
       `}</style>
     </>

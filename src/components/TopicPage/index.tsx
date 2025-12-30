@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useGetTopicsAdmin } from "@/hooks/useTopic";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -13,7 +20,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import { IconSearch, IconX, IconPlus } from "@tabler/icons-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useDeleteTopic } from "@/hooks/useTopic";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
 
@@ -41,14 +54,19 @@ export default function TopicPage() {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
 
-  const { data: topicsData, isLoading, refetch } = useGetTopicsAdmin({
+  const {
+    data: topicsData,
+    isLoading,
+    refetch,
+  } = useGetTopicsAdmin({
     page: currentPage,
     limit: pageSize,
     type: typeFilter === "all" ? undefined : (typeFilter as any),
     // TODO: Uncomment when backend is ready
     // status: statusFilter === "all" ? undefined : (statusFilter as "active" | "expired"),
   });
-  const { mutateAsync: deleteTopicMutation, isPending: isDeleting } = useDeleteTopic();
+  const { mutateAsync: deleteTopicMutation, isPending: isDeleting } =
+    useDeleteTopic();
 
   // Helper function to check if topic is expired
   const isTopicExpired = (topic: any) => {
@@ -65,15 +83,21 @@ export default function TopicPage() {
           searchQuery.trim() === "" ||
           topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          topic.department?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          topic.department?.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.department?.name
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          topic.department?.code
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
           topic.type.toLowerCase().includes(searchQuery.toLowerCase());
 
         // Status filter
         const matchesStatus =
           statusFilter === "all" ||
           (statusFilter === "expired" && isTopicExpired(topic)) ||
-          (statusFilter === "active" && !isTopicExpired(topic) && (topic.applicationDeadline || topic.endDate));
+          (statusFilter === "active" &&
+            !isTopicExpired(topic) &&
+            (topic.applicationDeadline || topic.endDate));
 
         return matchesSearch && matchesStatus;
       })
@@ -119,10 +143,12 @@ export default function TopicPage() {
   };
 
   const hasSearchFilter = searchQuery.trim();
-  const displayTopics = hasSearchFilter ? filteredTopics : (topicsData?.data || []);
+  const displayTopics = hasSearchFilter
+    ? filteredTopics
+    : topicsData?.data || [];
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-4 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -169,7 +195,9 @@ export default function TopicPage() {
                 <SelectContent>
                   {topicTypes.map((type) => (
                     <SelectItem key={type} value={type}>
-                      {type === "all" ? "All Types" : type.charAt(0).toUpperCase() + type.slice(1)}
+                      {type === "all"
+                        ? "All Types"
+                        : type.charAt(0).toUpperCase() + type.slice(1)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -221,15 +249,17 @@ export default function TopicPage() {
             )}
           </Card>
 
-          {!hasSearchFilter && topicsData?.totalPages && topicsData.totalPages > 1 && (
-            <Pagination
-              page={currentPage}
-              pageSize={pageSize}
-              total={topicsData.total || 0}
-              totalPages={topicsData.totalPages}
-              onPageChange={handlePageChange}
-            />
-          )}
+          {!hasSearchFilter &&
+            topicsData?.totalPages &&
+            topicsData.totalPages > 1 && (
+              <Pagination
+                page={currentPage}
+                pageSize={pageSize}
+                total={topicsData.total || 0}
+                totalPages={topicsData.totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           {hasSearchFilter && filteredTopics.length > pageSize && (
             <Pagination
               page={currentPage}
@@ -275,4 +305,3 @@ export default function TopicPage() {
     </div>
   );
 }
-

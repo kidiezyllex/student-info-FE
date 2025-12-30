@@ -11,6 +11,12 @@ import {
   IconAlertCircle,
   IconFlag,
   IconArrowRight,
+  IconSchool,
+  IconTrophy,
+  IconUsers,
+  IconCoin,
+  IconCalendarEvent,
+  IconSpeakerphone,
 } from "@tabler/icons-react";
 import { ITopic } from "@/interface/response/topic";
 import Image from "next/image";
@@ -20,19 +26,36 @@ type TopicCardsProps = {
   isLoading: boolean;
   onSelectTopic: (id: string) => void;
   onToggleSave: (id: string, isSaved: boolean) => void;
+  savedTopics: string[];
 };
 
 // Helper function to get type badge color
 const getTypeBadgeColor = (type: string) => {
   const colors: Record<string, string> = {
-    scholarship: "bg-orange-500",
-    contest: "bg-blue-600",
-    workshop: "bg-purple-600",
-    grant: "bg-teal-600",
     event: "bg-green-600",
+    scholarship: "bg-orange-500",
     notification: "bg-red-600",
+    job: "bg-blue-600",
+    advertisement: "bg-pink-600",
+    internship: "bg-purple-600",
+    recruitment: "bg-indigo-600",
+    volunteer: "bg-teal-600",
+    extracurricular: "bg-cyan-600",
   };
   return colors[type.toLowerCase()] || "bg-gray-600";
+};
+
+// Helper function to get type icon
+const getTypeIcon = (type: string) => {
+  const icons: Record<string, React.ReactNode> = {
+    scholarship: <IconSchool className="w-3.5 h-3.5" />,
+    contest: <IconTrophy className="w-3.5 h-3.5" />,
+    workshop: <IconUsers className="w-3.5 h-3.5" />,
+    grant: <IconCoin className="w-3.5 h-3.5" />,
+    event: <IconCalendarEvent className="w-3.5 h-3.5" />,
+    notification: <IconSpeakerphone className="w-3.5 h-3.5" />,
+  };
+  return icons[type.toLowerCase()] || <IconFlag className="w-3.5 h-3.5" />;
 };
 
 // Helper function to get random picsum image
@@ -46,7 +69,6 @@ const getPicsumImage = (index: number) => {
 const getHashtags = (topic: ITopic) => {
   const tags = [];
   if (topic.department?.code) tags.push(topic.department.code);
-  // Add more hashtags based on topic properties if available
   return tags;
 };
 
@@ -55,10 +77,11 @@ export function TopicCards({
   isLoading,
   onSelectTopic,
   onToggleSave,
+  savedTopics,
 }: TopicCardsProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
@@ -82,7 +105,7 @@ export function TopicCards({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {topics.map((topic, index) => {
         const hashtags = getHashtags(topic);
         const hasDeadline = topic.applicationDeadline || topic.endDate;
@@ -91,11 +114,12 @@ export function TopicCards({
           deadlineDate &&
           new Date(deadlineDate) <
             new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+        const isSaved = savedTopics.includes(topic._id);
 
         return (
           <div
             key={topic._id}
-            className="group relative rounded-[28px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer h-[350px]"
+            className="group relative rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer h-[330px] overflow-hidden"
             onClick={() => onSelectTopic(topic._id)}
           >
             {/* Full Height Background Image */}
@@ -113,8 +137,9 @@ export function TopicCards({
             <Badge
               className={`absolute top-4 left-4 z-10 ${getTypeBadgeColor(
                 topic.type
-              )} text-white font-bold text-sm uppercase px-3 py-1.5 rounded-full shadow-lg border-0`}
+              )} text-white font-medium text-sm capitalize px-3 py-1 rounded-full shadow-lg border-0 flex items-center gap-1.5`}
             >
+              {getTypeIcon(topic.type)}
               {topic.type}
             </Badge>
 
@@ -124,22 +149,26 @@ export function TopicCards({
               size="sm"
               onClick={(e) => {
                 e.stopPropagation();
-                onToggleSave(topic._id, topic.metadata?.isSaved || false);
+                onToggleSave(topic._id, isSaved);
               }}
-              className="absolute top-4 right-4 z-10 h-9 w-9 rounded-full bg-white/50 hover:bg-white/60 shadow-md p-0"
+              className={`absolute top-4 right-4 z-10 h-9 w-9 rounded-full ${
+                isSaved
+                  ? "bg-[#FFEDD5] text-orange-500"
+                  : "bg-white/50 text-white"
+              } hover:bg-white/60 shadow-md p-0`}
             >
-              {topic.metadata?.isSaved ? (
-                <IconBookmarkFilled className="h-6 w-6 text-white" />
+              {isSaved ? (
+                <IconBookmarkFilled className="h-6 w-6" />
               ) : (
-                <IconBookmark className="h-6 w-6 text-white" />
+                <IconBookmark className="h-6 w-6" />
               )}
             </Button>
 
             {/* Content Overlay - Bottom */}
-            <div className="absolute bottom-0 left-0 right-0 z-10 p-4 pt-0 flex flex-col gap-3">
+            <div className="absolute bottom-0 left-0 right-0 z-10 p-4 flex flex-col gap-3">
               {/* Title and Hashtags */}
               <div>
-                <h3 className="text-white font-bold text-xl line-clamp-2 mb-2">
+                <h3 className="text-white font-semibold text-xl line-clamp-2 my-2">
                   {topic.title}
                 </h3>
                 {/* Hashtags */}
@@ -158,7 +187,7 @@ export function TopicCards({
               </div>
 
               {/* Description Box */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 space-y-1">
                 <p className="text-sm text-gray-800 line-clamp-3 leading-relaxed">
                   {topic.description}
                 </p>

@@ -89,6 +89,7 @@ export const useSaveTopic = () => {
       queryClient.invalidateQueries({ queryKey: ["topics"] })
       queryClient.invalidateQueries({ queryKey: ["topics-admin"] })
       queryClient.invalidateQueries({ queryKey: ["saved-topics"] })
+      queryClient.invalidateQueries({ queryKey: ["user", "profile"] })
     },
   })
 }
@@ -103,6 +104,7 @@ export const useUnsaveTopic = () => {
       queryClient.invalidateQueries({ queryKey: ["topics"] })
       queryClient.invalidateQueries({ queryKey: ["topics-admin"] })
       queryClient.invalidateQueries({ queryKey: ["saved-topics"] })
+      queryClient.invalidateQueries({ queryKey: ["user", "profile"] })
     },
   })
 }

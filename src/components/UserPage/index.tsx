@@ -10,11 +10,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { UserTable } from "@/components/UserPage/UserTable";
 import { UserCreateDialog } from "@/components/UserPage/UserCreateDialog";
 import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
@@ -38,27 +44,52 @@ export default function UserPage() {
   const { data: departmentsData } = useGetAllDepartments(1, 1000);
 
   const roleParam = roleFilter && roleFilter !== "all" ? roleFilter : undefined;
-  const departmentParam = departmentFilter && departmentFilter !== "all" ? departmentFilter : undefined;
-  
-  const { data: usersData, isLoading, refetch } = useGetAllUsers(currentPage, pageSize, roleParam, departmentParam);
-  const { mutateAsync: deleteUserMutation, isPending: isDeleting } = useDeleteUser();
+  const departmentParam =
+    departmentFilter && departmentFilter !== "all"
+      ? departmentFilter
+      : undefined;
 
-  const filteredUsers = usersData?.data ? usersData.data.filter(user => {
-    if (searchQuery.trim()) {
-      return (
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (user.fullName && user.fullName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (user.studentId && user.studentId.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (user.phoneNumber && user.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (user.department && user.department.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (user.department && user.department.code.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    }
-    
-    return true;
-  }) : [];
+  const {
+    data: usersData,
+    isLoading,
+    refetch,
+  } = useGetAllUsers(currentPage, pageSize, roleParam, departmentParam);
+  const { mutateAsync: deleteUserMutation, isPending: isDeleting } =
+    useDeleteUser();
+
+  const filteredUsers = usersData?.data
+    ? usersData.data.filter((user) => {
+        if (searchQuery.trim()) {
+          return (
+            user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (user.fullName &&
+              user.fullName
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())) ||
+            (user.studentId &&
+              user.studentId
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())) ||
+            (user.phoneNumber &&
+              user.phoneNumber
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())) ||
+            (user.department &&
+              user.department.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase())) ||
+            (user.department &&
+              user.department.code
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()))
+          );
+        }
+
+        return true;
+      })
+    : [];
 
   useEffect(() => {
     setCurrentPage(1);
@@ -108,9 +139,9 @@ export default function UserPage() {
   };
 
   const hasSearchFilter = searchQuery.trim();
-  const displayUsers = hasSearchFilter ? filteredUsers : (usersData?.data || []);
+  const displayUsers = hasSearchFilter ? filteredUsers : usersData?.data || [];
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-4 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -159,7 +190,10 @@ export default function UserPage() {
                   <SelectItem value="student">Student</SelectItem>
                 </SelectContent>
               </Select>
-              <Select value={departmentFilter} onValueChange={handleDepartmentFilterChange}>
+              <Select
+                value={departmentFilter}
+                onValueChange={handleDepartmentFilterChange}
+              >
                 <SelectTrigger className="w-[200px] focus:border-mainTextHoverV1">
                   <SelectValue placeholder="Filter by department" />
                 </SelectTrigger>
@@ -208,15 +242,17 @@ export default function UserPage() {
               />
             )}
           </Card>
-          {!hasSearchFilter && usersData?.totalPages && usersData.totalPages > 1 && (
-            <Pagination
-              page={currentPage}
-              pageSize={pageSize}
-              total={usersData.total || 0}
-              totalPages={usersData.totalPages}
-              onPageChange={handlePageChange}
-            />
-          )}
+          {!hasSearchFilter &&
+            usersData?.totalPages &&
+            usersData.totalPages > 1 && (
+              <Pagination
+                page={currentPage}
+                pageSize={pageSize}
+                total={usersData.total || 0}
+                totalPages={usersData.totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           {hasSearchFilter && filteredUsers.length > pageSize && (
             <Pagination
               page={currentPage}
@@ -260,4 +296,4 @@ export default function UserPage() {
       )}
     </div>
   );
-} 
+}

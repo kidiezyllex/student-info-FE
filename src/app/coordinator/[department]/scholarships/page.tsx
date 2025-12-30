@@ -2,7 +2,11 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useGetAllScholarships, useGetActiveScholarships, useDeleteScholarship } from "@/hooks/useScholarship";
+import {
+  useGetAllScholarships,
+  useGetActiveScholarships,
+  useDeleteScholarship,
+} from "@/hooks/useScholarship";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,11 +14,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'; 
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ScholarshipTable } from "@/components/ScholarshipPage/ScholarshipTable";
 import { ScholarshipCreateDialog } from "@/components/ScholarshipPage/ScholarshipCreateDialog";
 import { ScholarshipDetailsDialog } from "@/components/ScholarshipPage/ScholarshipDetailsDialog";
@@ -31,21 +41,37 @@ export default function CoordinatorScholarships() {
   const params = useParams();
   const [departmentName, setDepartmentName] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [scholarshipFilter, setScholarshipFilter] = useState<ScholarshipFilter>("all");
+  const [scholarshipFilter, setScholarshipFilter] =
+    useState<ScholarshipFilter>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [selectedScholarshipId, setSelectedScholarshipId] = useState<string | null>(null);
-  const [filteredScholarships, setFilteredScholarships] = useState<IScholarship[]>([]);
+  const [selectedScholarshipId, setSelectedScholarshipId] = useState<
+    string | null
+  >(null);
+  const [filteredScholarships, setFilteredScholarships] = useState<
+    IScholarship[]
+  >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(5);
 
-  const { data: allScholarshipsData, isLoading: isLoadingAll, refetch: refetchAll } = useGetAllScholarships();
-  const { data: activeScholarshipsData, isLoading: isLoadingActive, refetch: refetchActive } = useGetActiveScholarships();
-  const { mutateAsync: deleteScholarshipMutation, isPending: isDeleting } = useDeleteScholarship();
+  const {
+    data: allScholarshipsData,
+    isLoading: isLoadingAll,
+    refetch: refetchAll,
+  } = useGetAllScholarships();
+  const {
+    data: activeScholarshipsData,
+    isLoading: isLoadingActive,
+    refetch: refetchActive,
+  } = useGetActiveScholarships();
+  const { mutateAsync: deleteScholarshipMutation, isPending: isDeleting } =
+    useDeleteScholarship();
 
-  const isLoading = scholarshipFilter === "all" ? isLoadingAll : isLoadingActive;
-  const scholarshipsData = scholarshipFilter === "all" ? allScholarshipsData : activeScholarshipsData;
+  const isLoading =
+    scholarshipFilter === "all" ? isLoadingAll : isLoadingActive;
+  const scholarshipsData =
+    scholarshipFilter === "all" ? allScholarshipsData : activeScholarshipsData;
   const refetch = scholarshipFilter === "all" ? refetchAll : refetchActive;
 
   useEffect(() => {
@@ -61,23 +87,38 @@ export default function CoordinatorScholarships() {
 
       // Filter by department first
       if (departmentName) {
-        filtered = filtered.filter(scholarship => 
-          scholarship.department && 
-          (scholarship.department.name === departmentName || 
-           scholarship.department.name.toLowerCase().includes(departmentName.toLowerCase()))
+        filtered = filtered.filter(
+          (scholarship) =>
+            scholarship.department &&
+            (scholarship.department.name === departmentName ||
+              scholarship.department.name
+                .toLowerCase()
+                .includes(departmentName.toLowerCase()))
         );
       }
-      
+
       if (searchQuery.trim()) {
-        filtered = filtered.filter(scholarship =>
-          scholarship.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          scholarship.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          scholarship.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          scholarship.eligibility.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (scholarship.department && scholarship.department.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        filtered = filtered.filter(
+          (scholarship) =>
+            scholarship.title
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            scholarship.description
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            scholarship.provider
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            scholarship.eligibility
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            (scholarship.department &&
+              scholarship.department.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()))
         );
       }
-      
+
       setFilteredScholarships(filtered);
       // Reset to first page when data changes
       setCurrentPage(1);
@@ -133,14 +174,21 @@ export default function CoordinatorScholarships() {
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedScholarships = filteredScholarships.slice(startIndex, endIndex);
+  const paginatedScholarships = filteredScholarships.slice(
+    startIndex,
+    endIndex
+  );
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-4 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/coordinator/${encodeURIComponent(departmentName)}`}>Dashboard</BreadcrumbLink>
+            <BreadcrumbLink
+              href={`/coordinator/${encodeURIComponent(departmentName)}`}
+            >
+              Dashboard
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -148,7 +196,7 @@ export default function CoordinatorScholarships() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      
+
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -175,17 +223,20 @@ export default function CoordinatorScholarships() {
                   </button>
                 )}
               </div>
-              <Select value={scholarshipFilter} onValueChange={handleFilterChange}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All scholarships</SelectItem>
-                    <SelectItem value="active">Active scholarships</SelectItem>
-                  </SelectContent>
-                </Select>
+              <Select
+                value={scholarshipFilter}
+                onValueChange={handleFilterChange}
+              >
+                <SelectTrigger className="w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All scholarships</SelectItem>
+                  <SelectItem value="active">Active scholarships</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            
+
             <Button
               onClick={() => setIsCreateDialogOpen(true)}
               className="bg-mainTextHoverV1 hover:bg-primary/90 text-white"
@@ -224,13 +275,16 @@ export default function CoordinatorScholarships() {
               page={currentPage}
               pageSize={pageSize}
               total={scholarshipsData?.total || filteredScholarships.length}
-              totalPages={scholarshipsData?.totalPages || Math.ceil(filteredScholarships.length / pageSize)}
+              totalPages={
+                scholarshipsData?.totalPages ||
+                Math.ceil(filteredScholarships.length / pageSize)
+              }
               onPageChange={handlePageChange}
             />
           )}
         </div>
       </motion.div>
-      
+
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         isDeleting={isDeleting}
@@ -243,13 +297,13 @@ export default function CoordinatorScholarships() {
         errorMessage="Failed to delete scholarship."
         warningMessage="This will permanently remove the scholarship and all associated data."
       />
-      
+
       <ScholarshipCreateDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSuccess={handleSuccess}
       />
-      
+
       {selectedScholarshipId && (
         <ScholarshipDetailsDialog
           isOpen={isDetailsDialogOpen}

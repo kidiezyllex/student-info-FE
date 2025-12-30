@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useGetAllDepartments, useDeleteDepartment } from "@/hooks/useDepartment";
+import {
+  useGetAllDepartments,
+  useDeleteDepartment,
+} from "@/hooks/useDepartment";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,11 +12,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'; 
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { DepartmentTable } from "@/components/DepartmentPage/DepartmentTable";
 import { DepartmentCreateDialog } from "@/components/DepartmentPage/DepartmentCreateDialog";
 import { DepartmentDetailsDialog } from "@/components/DepartmentPage/DepartmentDetailsDialog";
@@ -31,7 +40,9 @@ export default function DepartmentPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(null);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState<
+    string | null
+  >(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
 
@@ -39,22 +50,34 @@ export default function DepartmentPage() {
   // "all" -> undefined (no filter)
   // "with" -> true (departments with coordinator)
   // "without" -> false (departments without coordinator)
-  const hasCoordinatorParam = coordinatorFilter === "all" 
-    ? undefined 
-    : coordinatorFilter === "with" 
-    ? true 
-    : false;
-  
-  const { data: departmentsData, isLoading, refetch } = useGetAllDepartments(currentPage, pageSize, hasCoordinatorParam);
-  const { mutateAsync: deleteDepartmentMutation, isPending: isDeleting } = useDeleteDepartment();
+  const hasCoordinatorParam =
+    coordinatorFilter === "all"
+      ? undefined
+      : coordinatorFilter === "with"
+      ? true
+      : false;
+
+  const {
+    data: departmentsData,
+    isLoading,
+    refetch,
+  } = useGetAllDepartments(currentPage, pageSize, hasCoordinatorParam);
+  const { mutateAsync: deleteDepartmentMutation, isPending: isDeleting } =
+    useDeleteDepartment();
 
   // Filter users based on search query (client-side filtering for search only)
-  const filteredDepartments = departmentsData?.data ? departmentsData.data.filter(department =>
-    searchQuery.trim() === "" ||
-    department.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    department.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (department.description && department.description.toLowerCase().includes(searchQuery.toLowerCase()))
-  ) : [];
+  const filteredDepartments = departmentsData?.data
+    ? departmentsData.data.filter(
+        (department) =>
+          searchQuery.trim() === "" ||
+          department.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          department.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (department.description &&
+            department.description
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()))
+      )
+    : [];
 
   // Reset to first page when search query or coordinator filter changes
   useEffect(() => {
@@ -100,14 +123,18 @@ export default function DepartmentPage() {
   };
 
   const hasSearchFilter = searchQuery.trim();
-  const displayDepartments = hasSearchFilter ? filteredDepartments : (departmentsData?.data || []);
+  const displayDepartments = hasSearchFilter
+    ? filteredDepartments
+    : departmentsData?.data || [];
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-4 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/" suppressHydrationWarning>Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href="/" suppressHydrationWarning>
+              Dashboard
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -141,7 +168,10 @@ export default function DepartmentPage() {
               )}
             </div>
             <div className="flex items-center gap-3">
-              <Select value={coordinatorFilter} onValueChange={handleCoordinatorFilterChange}>
+              <Select
+                value={coordinatorFilter}
+                onValueChange={handleCoordinatorFilterChange}
+              >
                 <SelectTrigger className="w-[200px] focus:border-mainTextHoverV1">
                   <SelectValue placeholder="Filter by coordinator" />
                 </SelectTrigger>
@@ -187,15 +217,17 @@ export default function DepartmentPage() {
               />
             )}
           </Card>
-          {!hasSearchFilter && departmentsData?.totalPages && departmentsData.totalPages > 1 && (
-            <Pagination
-              page={currentPage}
-              pageSize={pageSize}
-              total={departmentsData.total || 0}
-              totalPages={departmentsData.totalPages}
-              onPageChange={handlePageChange}
-            />
-          )}
+          {!hasSearchFilter &&
+            departmentsData?.totalPages &&
+            departmentsData.totalPages > 1 && (
+              <Pagination
+                page={currentPage}
+                pageSize={pageSize}
+                total={departmentsData.total || 0}
+                totalPages={departmentsData.totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           {hasSearchFilter && filteredDepartments.length > pageSize && (
             <Pagination
               page={currentPage}
@@ -219,13 +251,13 @@ export default function DepartmentPage() {
         errorMessage="Failed to delete department."
         warningMessage="This will permanently remove the department and all associated data."
       />
-      
+
       <DepartmentCreateDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSuccess={() => refetch()}
       />
-      
+
       {selectedDepartmentId && (
         <DepartmentDetailsDialog
           isOpen={isDetailsDialogOpen}
@@ -239,4 +271,4 @@ export default function DepartmentPage() {
       )}
     </div>
   );
-} 
+}

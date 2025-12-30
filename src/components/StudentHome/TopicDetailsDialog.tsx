@@ -1,9 +1,21 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { ITopic, TopicType } from "@/interface/response/topic";
 
 type TopicDetailsDialogProps = {
@@ -22,7 +34,9 @@ export function TopicDetailsDialog({
 }: TopicDetailsDialogProps) {
   const renderTableRow = (label: string, value: React.ReactNode) => (
     <TableRow className="transition-colors">
-      <TableCell className="font-semibold text-gray-800 w-1/3">{label}</TableCell>
+      <TableCell className="font-semibold text-gray-800 w-1/3">
+        {label}
+      </TableCell>
       <TableCell className="text-gray-800">{value}</TableCell>
     </TableRow>
   );
@@ -38,50 +52,78 @@ export function TopicDetailsDialog({
                   <DialogTitle className="text-2xl font-semibold text-gray-800">
                     {selectedTopicData.data.title}
                   </DialogTitle>
-                  <div className="flex items-center gap-2 mt-2">
+                  <div className="flex items-center gap-2 mt-1">
                     <Badge
                       style={{
-                        backgroundColor: typeColorMap[selectedTopicData.data.type] + "20",
+                        backgroundColor:
+                          typeColorMap[selectedTopicData.data.type] + "20",
                         color: typeColorMap[selectedTopicData.data.type],
-                        borderColor: typeColorMap[selectedTopicData.data.type] + "40",
+                        borderColor:
+                          typeColorMap[selectedTopicData.data.type] + "40",
                       }}
                       className="capitalize"
                     >
                       {selectedTopicData.data.type}
                     </Badge>
                     {selectedTopicData.data.department && (
-                      <Badge variant="orange">{selectedTopicData.data.department.name}</Badge>
+                      <Badge variant="orange">
+                        {selectedTopicData.data.department.name}
+                      </Badge>
                     )}
                   </div>
                 </div>
               </div>
             </DialogHeader>
-
-            <div className="w-full overflow-auto mt-4">
-              <Table>
+            <div className="w-full overflow-auto">
+              <Table className="border">
                 <TableHeader>
                   <TableRow className="bg-[#F56C1420]">
-                    <TableHead className="font-semibold text-gray-800 w-1/3">Field</TableHead>
-                    <TableHead className="font-semibold text-gray-800">Value</TableHead>
+                    <TableHead className="font-semibold text-gray-800 w-1/3">
+                      Field
+                    </TableHead>
+                    <TableHead className="font-semibold text-gray-800">
+                      Value
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {renderTableRow("Description", <p className="text-gray-600">{selectedTopicData.data.description}</p>)}
+                  {renderTableRow(
+                    "Description",
+                    <p className="text-gray-600">
+                      {selectedTopicData.data.description}
+                    </p>
+                  )}
 
                   {selectedTopicData.data.startDate &&
-                    renderTableRow("Start Date", new Date(selectedTopicData.data.startDate).toLocaleString())}
+                    renderTableRow(
+                      "Start Date",
+                      new Date(
+                        selectedTopicData.data.startDate
+                      ).toLocaleString()
+                    )}
 
                   {selectedTopicData.data.endDate &&
-                    renderTableRow("End Date", new Date(selectedTopicData.data.endDate).toLocaleString())}
+                    renderTableRow(
+                      "End Date",
+                      new Date(selectedTopicData.data.endDate).toLocaleString()
+                    )}
 
                   {selectedTopicData.data.location &&
                     renderTableRow("Location", selectedTopicData.data.location)}
 
                   {selectedTopicData.data.organizer &&
-                    renderTableRow("Organizer", selectedTopicData.data.organizer)}
+                    renderTableRow(
+                      "Organizer",
+                      selectedTopicData.data.organizer
+                    )}
 
                   {selectedTopicData.data.applicationDeadline &&
-                    renderTableRow("Application Deadline", new Date(selectedTopicData.data.applicationDeadline).toLocaleString())}
+                    renderTableRow(
+                      "Application Deadline",
+                      new Date(
+                        selectedTopicData.data.applicationDeadline
+                      ).toLocaleString()
+                    )}
 
                   {selectedTopicData.data.company &&
                     renderTableRow("Company", selectedTopicData.data.company)}
@@ -93,7 +135,10 @@ export function TopicDetailsDialog({
                     renderTableRow("Salary", selectedTopicData.data.salary)}
 
                   {selectedTopicData.data.contactInfo &&
-                    renderTableRow("Contact Information", selectedTopicData.data.contactInfo)}
+                    renderTableRow(
+                      "Contact Information",
+                      selectedTopicData.data.contactInfo
+                    )}
                 </TableBody>
               </Table>
             </div>
@@ -109,4 +154,3 @@ export function TopicDetailsDialog({
     </Dialog>
   );
 }
-

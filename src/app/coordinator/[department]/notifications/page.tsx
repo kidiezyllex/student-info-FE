@@ -2,7 +2,10 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useGetNotifications, useDeleteNotification } from "@/hooks/useNotification";
+import {
+  useGetNotifications,
+  useDeleteNotification,
+} from "@/hooks/useNotification";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,11 +13,17 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { NotificationTable } from "@/components/NotificationPage/NotificationTable";
 import { NotificationCreateDialog } from "@/components/NotificationPage/NotificationCreateDialog";
 import { NotificationDetailsDialog } from "@/components/NotificationPage/NotificationDetailsDialog";
@@ -34,13 +43,18 @@ export default function CoordinatorNotifications() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [selectedNotificationId, setSelectedNotificationId] = useState<string | null>(null);
-  const [filteredNotifications, setFilteredNotifications] = useState<INotification[]>([]);
+  const [selectedNotificationId, setSelectedNotificationId] = useState<
+    string | null
+  >(null);
+  const [filteredNotifications, setFilteredNotifications] = useState<
+    INotification[]
+  >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(5);
 
   const { data: notificationsData, isLoading, refetch } = useGetNotifications();
-  const { mutateAsync: deleteNotificationMutation, isPending: isDeleting } = useDeleteNotification();
+  const { mutateAsync: deleteNotificationMutation, isPending: isDeleting } =
+    useDeleteNotification();
 
   useEffect(() => {
     if (params.department) {
@@ -55,28 +69,45 @@ export default function CoordinatorNotifications() {
 
       // Filter by department first
       if (departmentName) {
-        filtered = filtered.filter(notification => 
-          notification.department && 
-          (notification.department.name === departmentName || 
-           notification.department.name.toLowerCase().includes(departmentName.toLowerCase()))
+        filtered = filtered.filter(
+          (notification) =>
+            notification.department &&
+            (notification.department.name === departmentName ||
+              notification.department.name
+                .toLowerCase()
+                .includes(departmentName.toLowerCase()))
         );
       }
 
       if (typeFilter) {
-        filtered = filtered.filter(notification => notification.type === typeFilter);
+        filtered = filtered.filter(
+          (notification) => notification.type === typeFilter
+        );
       }
 
       if (importanceFilter) {
         const isImportant = importanceFilter === "important";
-        filtered = filtered.filter(notification => notification.isImportant === isImportant);
+        filtered = filtered.filter(
+          (notification) => notification.isImportant === isImportant
+        );
       }
 
       if (searchQuery.trim()) {
-        filtered = filtered.filter(notification =>
-          notification.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          notification.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          notification.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (notification.department && notification.department.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        filtered = filtered.filter(
+          (notification) =>
+            notification.title
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            notification.content
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            notification.type
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            (notification.department &&
+              notification.department.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()))
         );
       }
 
@@ -86,7 +117,13 @@ export default function CoordinatorNotifications() {
       setFilteredNotifications([]);
       setCurrentPage(1);
     }
-  }, [notificationsData?.data, searchQuery, typeFilter, importanceFilter, departmentName]);
+  }, [
+    notificationsData?.data,
+    searchQuery,
+    typeFilter,
+    importanceFilter,
+    departmentName,
+  ]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -129,14 +166,21 @@ export default function CoordinatorNotifications() {
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedNotifications = filteredNotifications.slice(startIndex, endIndex);
+  const paginatedNotifications = filteredNotifications.slice(
+    startIndex,
+    endIndex
+  );
 
   return (
-    <div className="space-y-6 bg-white p-4 rounded-lg border border-lightBorderV1">
+    <div className="space-y-4 bg-white p-4 rounded-lg border border-lightBorderV1">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/coordinator/${encodeURIComponent(departmentName)}`}>Dashboard</BreadcrumbLink>
+            <BreadcrumbLink
+              href={`/coordinator/${encodeURIComponent(departmentName)}`}
+            >
+              Dashboard
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -171,7 +215,10 @@ export default function CoordinatorNotifications() {
                   </button>
                 )}
               </div>
-              <Select value={importanceFilter || "all"} onValueChange={handleImportanceFilterChange}>
+              <Select
+                value={importanceFilter || "all"}
+                onValueChange={handleImportanceFilterChange}
+              >
                 <SelectTrigger className="w-40">
                   <SelectValue />
                 </SelectTrigger>
@@ -210,7 +257,9 @@ export default function CoordinatorNotifications() {
             ) : (
               <NotificationTable
                 notifications={paginatedNotifications}
-                isSearching={!!searchQuery || !!typeFilter || !!importanceFilter}
+                isSearching={
+                  !!searchQuery || !!typeFilter || !!importanceFilter
+                }
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
@@ -221,7 +270,10 @@ export default function CoordinatorNotifications() {
               page={currentPage}
               pageSize={pageSize}
               total={notificationsData?.total || filteredNotifications.length}
-              totalPages={notificationsData?.totalPages || Math.ceil(filteredNotifications.length / pageSize)}
+              totalPages={
+                notificationsData?.totalPages ||
+                Math.ceil(filteredNotifications.length / pageSize)
+              }
               onPageChange={handlePageChange}
             />
           )}
