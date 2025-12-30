@@ -6,6 +6,7 @@ export interface ITopicQueryParams {
   page?: number
   limit?: number
   status?: "all" | "active" | "expired" // For filtering by expiration status
+  search?: string // For searching by title or description
 }
 
 export interface ICreateTopicBody {

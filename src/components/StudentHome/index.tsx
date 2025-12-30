@@ -16,26 +16,40 @@ import { TopicCards } from "./TopicCards";
 import { TopicDetailsDialog } from "./TopicDetailsDialog";
 import { Pagination } from "@/components/ui/pagination";
 import { topicTypes, typeColorMap, typeLabels } from "./constants";
+import { Input } from "@/components/ui/input";
+import { IconSearch, IconX } from "@tabler/icons-react";
 
 export default function StudentHome() {
   // Topics
   const [selectedType, setSelectedType] = useState<TopicType | "all">("all");
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const limit = 9;
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   const { data: topicsData, isLoading: isLoadingTopics } = useGetTopics({
     type: selectedType === "all" ? undefined : selectedType,
     page: currentPage,
     limit: limit,
+    search: debouncedSearch || undefined,
   });
 
   const { data: userProfile } = useGetUserProfile();
 
-  // Reset page to 1 when filter type changes
+  // Reset page to 1 when filter type or search changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedType]);
+  }, [selectedType, debouncedSearch]);
   const { data: selectedTopicData } = useGetTopicById(selectedTopicId || "");
   const { mutate: saveTopicMutation } = useSaveTopic();
   const { mutate: unsaveTopicMutation } = useUnsaveTopic();
@@ -73,6 +87,27 @@ export default function StudentHome() {
           topicTypes={topicTypes}
           typeLabels={typeLabels}
         />
+
+        {/* Search Input */}
+        <div className="relative">
+          <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Search topics by title or description..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-10"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <IconX className="w-5 h-5" />
+            </button>
+          )}
+        </div>
+
         <TopicCards
           topics={topics}
           isLoading={isLoadingTopics}

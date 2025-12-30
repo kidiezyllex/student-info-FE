@@ -5,7 +5,7 @@ import {
   IconCalendarEvent,
   IconCalendarMonthFilled,
   IconMessageChatbotFilled,
-  IconUser,
+  IconTimelineEventFilled,
   IconMail,
   IconShield,
 } from "@tabler/icons-react";
@@ -112,14 +112,14 @@ export function StatsSection({ topics }: StatsSectionProps) {
     {
       title: "View Calendar",
       value: "Calendar",
-      icon: IconCalendarEvent,
+      icon: IconCalendarMonthFilled,
       color: "#F97316",
       link: "/student/calendar",
     },
     {
       title: "Upcoming Events",
       value: upcomingEvents,
-      icon: IconCalendarMonthFilled,
+      icon: IconTimelineEventFilled,
       color: "#F97316",
     },
     {
@@ -145,7 +145,7 @@ export function StatsSection({ topics }: StatsSectionProps) {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="p-4 rounded-2xl h-full border border-orange-400">
+        <Card className="p-4 rounded-2xl h-full border border-orange-400 relative">
           <div className="flex items-center gap-4">
             {/* Avatar */}
             <div className="relative flex-shrink-0">
@@ -180,7 +180,7 @@ export function StatsSection({ topics }: StatsSectionProps) {
               {/* Stats */}
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <div className="bg-orange-100 p-2 rounded-lg h-9 w-9 flex items-center justify-center">
+                  <div className="bg-orange-100 p-2 rounded-md h-10 w-10 flex items-center justify-center">
                     <IconShield className="w-5 h-5 text-orange-600" />
                   </div>
                   <div>
@@ -192,7 +192,7 @@ export function StatsSection({ topics }: StatsSectionProps) {
                 </div>
                 <div className="h-8 w-px bg-orange-200" />
                 <div className="flex items-center gap-2">
-                  <div className="bg-orange-100 p-2 rounded-lg h-9 w-9 flex items-center justify-center">
+                  <div className="bg-orange-100 p-2 rounded-md h-10 w-10 flex items-center justify-center">
                     <IconCalendarEvent className="w-5 h-5 text-orange-600" />
                   </div>
                   <div>
@@ -204,14 +204,14 @@ export function StatsSection({ topics }: StatsSectionProps) {
                 </div>
               </div>
             </div>
+            <div
+              className="absolute inset-0 bg-gradient-to-br opacity-10 transition-opacity duration-300 pointer-events-none"
+              style={{
+                backgroundImage: `linear-gradient(135deg, #F97316 0%, transparent 100%)`,
+              }}
+            />
           </div>
         </Card>
-        <div
-          className="absolute inset-0 bg-gradient-to-br opacity-10 transition-opacity duration-300 pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(135deg, #F97316 0%, transparent 100%)`,
-          }}
-        />
       </motion.div>
 
       {/* Stats Cards */}

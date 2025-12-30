@@ -39,6 +39,21 @@ export default function CommonHeader() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm((e.target as HTMLInputElement).value);
   };
+
+  const getHomeRoute = () => {
+    const role = userProfile?.data?.role;
+    switch (role) {
+      case "student":
+        return "/student";
+      case "admin":
+        return "/admin";
+      case "coordinator":
+        return "/coordinator";
+      default:
+        return "/";
+    }
+  };
+
   return (
     <>
       <div
@@ -46,18 +61,20 @@ export default function CommonHeader() {
       p-4 px-4 bg-mainDarkBackgroundV1 border-b border-b-darkBorderV1 flex justify-between items-center h-[78px]"
       >
         <div className="flex items-center w-[244px] justify-between">
-          <Link href="/" className="block" suppressHydrationWarning>
-            <span className="block">
-              <Image
-                height={500}
-                width={500}
-                draggable={false}
-                quality={100}
-                src="/images/vgu-logo2.webp"
-                alt="vgu-logo"
-                className="w-auto h-24 object-contain"
-              />
-            </span>
+          <Link
+            href={getHomeRoute()}
+            className="block"
+            suppressHydrationWarning
+          >
+            <Image
+              height={500}
+              width={500}
+              draggable={false}
+              quality={100}
+              src="/images/vgu-logo2.webp"
+              alt="vgu-logo"
+              className="w-auto h-24 object-contain"
+            />
           </Link>
           {!pathname?.startsWith("/student") && (
             <Button
@@ -79,36 +96,6 @@ export default function CommonHeader() {
               )}
             </Button>
           )}
-        </div>
-        <div className="relative hidden md:block">
-          <form
-            onSubmit={handleSearchSubmit}
-            className="relative flex items-center gap-4"
-          >
-            <div className="relative w-[440px] flex justify-between items-center border border-mainTextV1 rounded-sm bg-transparent">
-              <Input
-                ref={inputRef}
-                placeholder="Search..."
-                className="w-[90%] text-maintext pr-10 border-none focus:!outline-none focus:!ring-0 focus:!border-none !bg-transparent text-gray-800"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                disabled={isLoading}
-              />
-              {isLoading && (
-                <Icon
-                  path={mdiLoading}
-                  size={0.8}
-                  spin
-                  className="absolute right-[10px] top-1/2 transform -translate-y-1/2 text-mainActiveV1"
-                />
-              )}
-            </div>
-            <button
-              type="submit"
-              style={{ display: "none" }}
-              aria-hidden="true"
-            ></button>
-          </form>
         </div>
         <div className="flex items-center gap-2">
           <DropdownMenu modal={false}>
