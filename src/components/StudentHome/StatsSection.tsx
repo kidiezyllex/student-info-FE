@@ -102,10 +102,11 @@ const StatCard = ({
 
 export function StatsSection({ topics }: StatsSectionProps) {
   const { data: userProfile } = useGetUserProfile();
-  const totalTopics = topics.length;
-  const upcomingEvents = topics.filter(
-    (t) =>
-      t.type === "event" && t.startDate && new Date(t.startDate) > new Date()
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  const newTopicsCount = topics.filter(
+    (t) => new Date(t.createdAt) >= oneWeekAgo
   ).length;
 
   const stats = [
@@ -117,14 +118,14 @@ export function StatsSection({ topics }: StatsSectionProps) {
       link: "/student/calendar",
     },
     {
-      title: "Upcoming Events",
-      value: upcomingEvents,
+      title: "New Topics",
+      value: newTopicsCount,
       icon: IconTimelineEventFilled,
       color: "#F97316",
     },
     {
-      title: "AI Chat",
-      value: "Chat",
+      title: "VGU Assistant",
+      value: "Assistant",
       icon: IconMessageChatbotFilled,
       color: "#F97316",
       link: "/student/chat",
