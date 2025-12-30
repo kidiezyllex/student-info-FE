@@ -151,7 +151,6 @@ export default function StudentChatPage() {
 
       setMessages((prev) => [...prev, aiMessage]);
 
-      // Update current session ID if it's a new session
       if (!currentSessionId) {
         setCurrentSessionId(response.data.sessionId);
       }
@@ -341,7 +340,7 @@ export default function StudentChatPage() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>AI Chat</BreadcrumbPage>
+                <BreadcrumbPage>VGU Assistant</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

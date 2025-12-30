@@ -7,6 +7,9 @@ export interface ITopicQueryParams {
   limit?: number
   status?: "all" | "active" | "expired" // For filtering by expiration status
   search?: string // For searching by title or description
+  sort?: string
+  order?: "asc" | "desc"
+  hasDeadline?: boolean
 }
 
 export interface ICreateTopicBody {

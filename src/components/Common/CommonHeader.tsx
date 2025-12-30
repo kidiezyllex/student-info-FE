@@ -42,7 +42,7 @@ export default function CommonHeader() {
   };
 
   return (
-    <div className="w-full fixed top-0 left-0 right-0 z-50 p-4 px-4 bg-mainDarkBackgroundV1 border-b border-b-darkBorderV1 flex justify-between items-center h-[80px]">
+    <div className="w-full fixed top-0 left-0 right-0 z-50 p-4 px-4 bg-mainDarkBackgroundV1 border-b border-b-darkBorderV1 flex items-center h-[80px]">
       {!pathname?.startsWith("/student") && (
         <Button
           variant="ghost"
@@ -58,7 +58,7 @@ export default function CommonHeader() {
       )}
       <Link
         href={getHomeRoute()}
-        className="relative flex items-center justify-center"
+        className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center"
         suppressHydrationWarning
       >
         <Image
@@ -74,7 +74,7 @@ export default function CommonHeader() {
           Vietnamese–German University
         </p>
       </Link>
-      <div className="flex items-center gap-2 scale-95">
+      <div className="ml-auto flex items-center gap-2 scale-95">
         <div className="h-[52px] w-[52px] flex-shrink-0 border border-white/70 rounded-full overflow-hidden cursor-pointer bg-slate-100">
           <Image
             draggable={false}
