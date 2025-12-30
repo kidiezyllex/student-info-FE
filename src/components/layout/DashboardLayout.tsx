@@ -108,7 +108,7 @@ export default function DashboardLayout({
                             >
                               <div
                                 className={cn(
-                                  "flex items-center rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-colors",
+                                  "flex items-center rounded-lg p-[10px] h-[46px] text-sm font-semibold transition-colors",
                                   isMenuActive(menu)
                                     ? "bg-[#29323A] text-white"
                                     : "text-white/70 hover:bg-[#29323A]",
@@ -146,7 +146,7 @@ export default function DashboardLayout({
                           >
                             <div
                               className={cn(
-                                "flex items-center  rounded-lg p-[10px] h-[46px] text-[13px] font-semibold transition-colors cursor-pointer",
+                                "flex items-center  rounded-lg p-[10px] h-[46px] text-sm font-semibold transition-colors cursor-pointer",
                                 isMenuActive(menu)
                                   ? "bg-[#29323A] text-white"
                                   : "text-white/70 hover:bg-[#29323A]",
@@ -217,7 +217,7 @@ export default function DashboardLayout({
                                       >
                                         <div
                                           className={cn(
-                                            "flex items-center rounded-lg p-[8px] h-[38px] text-[13px] font-normal transition-colors",
+                                            "flex items-center rounded-lg p-[8px] h-[38px] text-sm font-normal transition-colors",
                                             pathname === sub.path
                                               ? "bg-[#29323A] text-white"
                                               : "text-white/70 hover:bg-[#29323A]"
@@ -250,7 +250,7 @@ export default function DashboardLayout({
                               animate={{ opacity: 1, x: 0 }}
                               exit={{ opacity: 0, x: -5 }}
                               transition={{ duration: 0.2 }}
-                              className="fixed ml-16 mt-[-30px] bg-[#29323A] border border-lightBorderV1 text-white text-[13px] py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
+                              className="fixed ml-16 mt-[-30px] bg-[#29323A] border border-lightBorderV1 text-white text-sm py-1.5 px-3 rounded-md shadow-light-grey z-50 whitespace-nowrap flex items-center"
                             >
                               <span className="w-1.5 h-1.5 rounded-full bg-mainActiveV1 mr-1.5"></span>
                               <span className="font-semibold">{menu.name}</span>

@@ -74,49 +74,36 @@ export default function CommonHeader() {
           Vietnamese–German University
         </p>
       </Link>
-      <div className="flex items-center gap-2 ">
-        <DropdownMenu modal={false}>
-          <DropdownMenuTrigger asChild>
-            <div className="h-11 w-11 flex-shrink-0 border border-slate-300 rounded-full overflow-hidden cursor-pointer bg-slate-100">
-              <Image
-                draggable={false}
-                quality={100}
-                src={
-                  `/images/${
-                    userProfile?.data?.gender
-                      ? userProfile?.data?.gender
-                      : "male"
-                  }-${
-                    userProfile?.data?.role
-                      ? userProfile?.data?.role
-                      : "student"
-                  }.webp` || "/images/student.webp"
-                }
-                alt={"default-avatar"}
-                className="object-cover h-full w-full"
-                width={100}
-                height={100}
-              />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 mt-4">
-            <div className="px-3 py-2 text-[13px] text-gray-800 font-semibold select-none">
-              Hello, {username}
-            </div>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 text-gray-800 font-semibold">
-              <User className="w-4 h-4" />
-              Account
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="gap-2 text-red-500 font-semibold"
-              onClick={logoutUser}
-            >
-              <LogOut className="w-4 h-4" />
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex items-center gap-2 scale-95">
+        <div className="h-[52px] w-[52px] flex-shrink-0 border border-white/70 rounded-full overflow-hidden cursor-pointer bg-slate-100">
+          <Image
+            draggable={false}
+            quality={100}
+            src={
+              `/images/${
+                userProfile?.data?.gender ? userProfile?.data?.gender : "male"
+              }-${
+                userProfile?.data?.role ? userProfile?.data?.role : "student"
+              }.webp` || "/images/student.webp"
+            }
+            alt={"default-avatar"}
+            className="object-cover h-full w-full"
+            width={100}
+            height={100}
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <div className="text-sm text-white font-semibold select-none">
+            {username}
+          </div>
+          <button
+            onClick={logoutUser}
+            className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white rounded-md px-2 py-1.5 justify-center"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="text-sm">Logout</span>
+          </button>
+        </div>
       </div>
     </div>
   );
