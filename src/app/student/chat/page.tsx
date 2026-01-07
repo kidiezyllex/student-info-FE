@@ -677,7 +677,7 @@ export default function StudentChatPage() {
               Create Support Ticket
             </DialogTitle>
             <DialogDescription>
-              Our AI couldn't fully answer your question. Create a support
+              Our AI couldn&apos;t fully answer your question. Create a support
               ticket and our team will help you directly.
             </DialogDescription>
           </DialogHeader>

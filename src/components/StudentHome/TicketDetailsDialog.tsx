@@ -164,7 +164,7 @@ export function TicketDetailsDialog({
                         Your Query:
                       </p>
                       <p className="text-blue-800 italic">
-                        "{ticket.aiConversation.userQuery}"
+                        &quot;{ticket.aiConversation.userQuery}&quot;
                       </p>
                     </div>
                     <div className="p-3 bg-green-50/50 rounded-lg border border-green-100 text-sm">

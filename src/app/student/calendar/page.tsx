@@ -12,25 +12,25 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-export default function CalendarPage() {
-  const calendars = [
-    {
-      id: "c_6d1538434f0949f4572a2e27a19bc4433076bc33fab658dbc801e55e469993b0@group.calendar.google.com",
-      name: "CSE2023",
-      color: "rgb(173, 20, 87)",
-    },
-    {
-      id: "en.vietnamese#holiday@group.v.calendar.google.com",
-      name: "Holidays in Vietnam",
-      color: "rgb(11, 128, 67)",
-    },
-    {
-      id: "16773@student.vgu.edu.vn",
-      name: "Duy Nguyen Quang",
-      color: "rgb(3, 155, 229)",
-    },
-  ];
+const calendars = [
+  {
+    id: "c_6d1538434f0949f4572a2e27a19bc4433076bc33fab658dbc801e55e469993b0@group.calendar.google.com",
+    name: "CSE2023",
+    color: "rgb(173, 20, 87)",
+  },
+  {
+    id: "en.vietnamese#holiday@group.v.calendar.google.com",
+    name: "Holidays in Vietnam",
+    color: "rgb(11, 128, 67)",
+  },
+  {
+    id: "16773@student.vgu.edu.vn",
+    name: "Duy Nguyen Quang",
+    color: "rgb(3, 155, 229)",
+  },
+];
 
+export default function CalendarPage() {
   const {
     data: data1,
     isLoading: isLoading1,
