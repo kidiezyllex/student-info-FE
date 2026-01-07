@@ -50,6 +50,8 @@ import {
   IconX,
   IconMessageCircle,
   IconTicket,
+  IconMenu2,
+  IconEdit,
 } from "@tabler/icons-react";
 import { useUser } from "@/context/useUserContext";
 import { toast } from "react-toastify";
@@ -334,86 +336,92 @@ export default function StudentChatPage() {
 
   return (
     <div className="flex h-[calc(100vh-100px)] mr-4 space-x-4">
-      {/* Chat History Sidebar */}
-      <AnimatePresence>
-        {showHistory && (
-          <motion.div
-            initial={{ opacity: 0, x: -300, width: 0 }}
-            animate={{ opacity: 1, x: 0, width: "320px" }}
-            exit={{ opacity: 0, x: -300, width: 0 }}
-            className="overflow-hidden"
+      {/* Combined Sidebar Group */}
+      <div className="flex h-full bg-white rounded-lg border border-lightBorderV1 shadow-sm overflow-hidden">
+        {/* Mini Sidebar with Icons (Always visible) */}
+        <div className="w-14 flex flex-col items-center py-4 space-y-4 border-r border-lightBorderV1 bg-white h-full z-20 shadow-[2px_0_5px_rgba(0,0,0,0,0.02)]">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowHistory(!showHistory)}
+            className={`w-10 h-10 rounded-xl transition-all ${
+              showHistory
+                ? "bg-orange-100 text-orange-600 shadow-inner"
+                : "text-gray-500 hover:bg-orange-50 hover:text-orange-600"
+            }`}
+            title="Toggle History"
           >
-            <Card className="h-full bg-mainBackgroundV1 border border-lightBorderV1">
-              <CardHeader className="p-4 border-b">
-                <div className="flex items-center justify-between w-full">
-                  <CardTitle className="text-lg font-semibold">
+            <IconMenu2 className="w-6 h-6" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleNewChat}
+            className="w-10 h-10 rounded-xl text-gray-500 hover:bg-orange-50 hover:text-orange-600 transition-all"
+            title="New Chat"
+          >
+            <IconEdit className="w-6 h-6" />
+          </Button>
+        </div>
+
+        {/* Chat History Section (Expandable) */}
+        <AnimatePresence>
+          {showHistory && (
+            <motion.div
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: "300px", opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="bg-white h-full z-10 overflow-hidden"
+            >
+              <div className="w-[300px] flex flex-col h-full">
+                <div className="p-4 border-b border-lightBorderV1">
+                  <h3 className="text-lg font-semibold text-gray-800">
                     Chat History
-                  </CardTitle>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowHistory(false)}
-                    className="h-8 w-8 flex items-center justify-center p-0"
-                  >
-                    <IconX className="w-4 h-4" />
-                  </Button>
+                  </h3>
                 </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="p-4">
-                  <Button
-                    onClick={handleNewChat}
-                    className="w-full mb-4 bg-mainTextHoverV1 hover:bg-primary/90"
-                  >
-                    <IconMessageCircle className="w-4 h-4" />
-                    New Chat
-                  </Button>
-                </div>
-                <ScrollArea className="h-[calc(100vh-280px)] max-w-[320px] w-[320px]">
-                  <div className="px-4 space-y-2 max-w-[320px] w-[320px]">
+                <ScrollArea className="flex-1 w-full overflow-x-hidden">
+                  <div className="p-2 w-[300px] overflow-x-hidden box-border">
                     {historyLoading ? (
                       <LoadingSpinner size="sm" className="py-6" />
                     ) : (
                       chatHistory?.data?.map((session: IChatHistoryItem) => (
                         <div
                           key={session._id}
-                          className={`p-3 rounded-lg border cursor-pointer transition-colors ${
+                          className={`p-3 rounded-lg border cursor-pointer transition-all relative group flex items-center w-[276px] overflow-hidden mb-1 bg-mainBackgroundV1 ${
                             currentSessionId === session._id
-                              ? "bg-orange-50 border-orange-200"
-                              : "bg-white hover:bg-gray-50 border-gray-200"
+                              ? "border-gray-300"
+                              : "border-transparent hover:bg-white/60 hover:border-gray-100"
                           }`}
+                          onClick={() => handleLoadSession(session._id)}
                         >
-                          <div
-                            onClick={() => handleLoadSession(session._id)}
-                            className="flex-1"
-                          >
-                            <h4 className="font-semibold text-base text-gray-800 truncate">
+                          <div className="flex-1 min-w-0 pr-6">
+                            <h4 className="font-medium text-sm text-gray-800 truncate block">
                               {session.title}
                             </h4>
-                            <p className="text-sm text-gray-800 mt-1">
+                            <p className="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-wider">
                               {formatSessionDate(session.lastActive)}
                             </p>
                           </div>
-                          <div className="flex items-center justify-end mt-2">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleDeleteSession(session._id);
-                              }}
-                            >
-                              <IconTrash className="w-5 h-5 text-red-500 hover:text-red-700" />
-                            </button>
-                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteSession(session._id);
+                            }}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1.5 hover:bg-red-50 rounded-lg transition-all"
+                          >
+                            <IconTrash className="w-4 h-4 text-red-500" />
+                          </button>
                         </div>
                       ))
                     )}
                   </div>
                 </ScrollArea>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Main Chat Interface */}
       <div className="flex-1 space-y-4 bg-mainBackgroundV1 p-4 rounded-lg border border-lightBorderV1">
@@ -424,8 +432,10 @@ export default function StudentChatPage() {
                 <BreadcrumbLink href="/student">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>VGU Assistant</BreadcrumbPage>
+              <BreadcrumbItem className="min-w-0">
+                <BreadcrumbPage className="truncate">
+                  VGU Assistant
+                </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -433,8 +443,8 @@ export default function StudentChatPage() {
 
         <div className="flex flex-col h-full max-h-[calc(100vh-180px)]">
           {/* Chat Header */}
-          <Card className="bg-gradient-to-r from-purple-50 to-orange-50 rounded-b-none border-b-0">
-            <CardHeader className="p-3 w-full flex justify-between items-center">
+          <Card className="bg-gradient-to-r from-purple-50 to-orange-50 rounded-b-none border-b-0 border-lightBorderV1">
+            <CardHeader className="p-3 w-full flex flex-row justify-between items-center space-y-0">
               <div className="flex items-center gap-4">
                 <div className="relative">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-orange-500 rounded-full flex items-center justify-center shadow-md">
@@ -442,36 +452,16 @@ export default function StudentChatPage() {
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
-                <div className="flex-1">
-                  <CardTitle className="text-xl font-semibold text-gray-800 mb-1">
+                <div className="flex-1 min-w-0">
+                  <CardTitle className="text-xl font-semibold text-gray-800 mb-0 truncate">
                     AI Assistant
                   </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm text-gray-800 font-semibold">
-                      {currentSessionId
-                        ? "Continuing conversation"
-                        : "Ready to help with your questions"}
-                    </p>
-                  </div>
+                  <p className="text-sm text-gray-500 font-medium truncate">
+                    {currentSessionId
+                      ? "Continuing conversation"
+                      : "Ready to help with your questions"}
+                  </p>
                 </div>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setShowHistory(!showHistory)}
-                  className="flex items-center gap-2"
-                >
-                  <IconHistory className="w-4 h-4" />
-                  History
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleNewChat}
-                  className="flex items-center gap-2"
-                >
-                  <IconPlus className="w-4 h-4" />
-                  New Chat
-                </Button>
               </div>
             </CardHeader>
           </Card>
@@ -643,7 +633,7 @@ export default function StudentChatPage() {
           </Card>
 
           {/* Message Input */}
-          <Card className="rounded-t-none border-t-0 bg-orange-50">
+          <Card className="rounded-t-none border-t-0 bg-mainBackgroundV1">
             <CardContent className="p-4">
               <div className="flex gap-2">
                 <Input
