@@ -18,7 +18,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-// Mock data for student information system
 const mockEventData = {
   completedEvents: 18,
   upcomingEvents: 6,

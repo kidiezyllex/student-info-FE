@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useMenuSidebar } from "@/stores/useMenuSidebar";
 import { IconMenu2 } from "@tabler/icons-react";
@@ -16,12 +17,15 @@ import { useGetUserProfile } from "@/hooks/useUser";
 import { User, LogOut } from "lucide-react";
 import { useUser } from "@/context/useUserContext";
 import Image from "next/image";
+import { UserDetailsDialog } from "@/components/UserPage/UserDetailsDialog";
 
 export default function CommonHeader() {
   const { toggle } = useMenuSidebar();
   const { isOpen } = useMenuSidebar();
-  const { data: userProfile } = useGetUserProfile();
+  const { data: userProfile, refetch: refetchUserProfile } =
+    useGetUserProfile();
   const { logoutUser } = useUser();
+  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
 
   const pathname = usePathname();
 
@@ -75,16 +79,22 @@ export default function CommonHeader() {
         </p>
       </Link>
       <div className="ml-auto flex items-center gap-2 scale-95">
-        <div className="h-[52px] w-[52px] flex-shrink-0 border border-white/70 rounded-full overflow-hidden cursor-pointer bg-slate-100">
+        {/* Avatar */}
+        <div
+          className="h-[52px] w-[52px] flex-shrink-0 border border-white/70 rounded-full overflow-hidden cursor-pointer bg-slate-100 hover:border-mainActiveV1 transition-colors duration-200"
+          onClick={() => setIsProfileDialogOpen(true)}
+        >
           <Image
             draggable={false}
             quality={100}
             src={
+              userProfile?.data?.avatar ||
               `/images/${
                 userProfile?.data?.gender ? userProfile?.data?.gender : "male"
               }-${
                 userProfile?.data?.role ? userProfile?.data?.role : "student"
-              }.webp` || "/images/student.webp"
+              }.webp` ||
+              "/images/student.webp"
             }
             alt={"default-avatar"}
             className="object-cover h-full w-full"
@@ -105,6 +115,18 @@ export default function CommonHeader() {
           </button>
         </div>
       </div>
+
+      {/* Profile Dialog */}
+      {userProfile?.data?._id && (
+        <UserDetailsDialog
+          isOpen={isProfileDialogOpen}
+          onClose={() => setIsProfileDialogOpen(false)}
+          userId={userProfile.data._id}
+          onSuccess={() => {
+            refetchUserProfile();
+          }}
+        />
+      )}
     </div>
   );
 }

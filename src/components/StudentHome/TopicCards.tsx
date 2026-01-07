@@ -85,7 +85,7 @@ export function TopicCards({
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="rounded-[28px] overflow-hidden bg-transparent shadow-md h-[300px]"
+            className="rounded-2xl overflow-hidden bg-transparent shadow-md h-[300px]"
           >
             <Skeleton className="h-full w-full" />
           </div>

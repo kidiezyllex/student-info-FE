@@ -134,9 +134,10 @@ export function StatsSection({ topics }: StatsSectionProps) {
 
   const userData = userProfile?.data;
   const avatarSrc =
-    userData?.gender && userData?.role
+    userData?.avatar ||
+    (userData?.gender && userData?.role
       ? `/images/${userData.gender}-${userData.role}.webp`
-      : "/images/male-student.webp";
+      : "/images/male-student.webp");
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
