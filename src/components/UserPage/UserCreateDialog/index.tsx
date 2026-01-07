@@ -472,7 +472,9 @@ export const UserCreateDialog = ({
                     <SelectTrigger>
                       <SelectValue
                         placeholder={
-                          isLoadingDepartments ? "Đang tải..." : "Chọn khoa"
+                          isLoadingDepartments
+                            ? "Loading..."
+                            : "Select department"
                         }
                       />
                     </SelectTrigger>

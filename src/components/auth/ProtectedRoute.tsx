@@ -23,11 +23,11 @@ export default function ProtectedRoute({
     setIsClient(true);
   }, []);
 
-  // Tự động xử lý trường hợp có token nhưng không có profile -> tránh loading vô hạn
+  // Auto handle case with token but no profile -> avoid infinite loading
   useEffect(() => {
     if (!isClient) return;
 
-    // Chỉ xử lý khi đã load xong profile nhưng vẫn không có profile
+    // Only handle when profile loading is done but still no profile
     if (!isLoadingProfile && !profile) {
       if (typeof window !== "undefined") {
         const hasAccessTokenLS =
@@ -39,7 +39,7 @@ export default function ProtectedRoute({
             .split(";")
             .some((c) => c.trim().startsWith("accessToken="));
 
-        // Nếu vẫn còn token/cookie mà không có profile -> clear hết và đưa về trang login
+        // If still has token/cookie but no profile -> clear all and redirect to login
         if (hasAccessTokenLS || hasAccessTokenCookie) {
           try {
             localStorage.removeItem("accessToken");

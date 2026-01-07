@@ -157,8 +157,8 @@ export const UserForm = ({
                 <div className="text-center">
                   <div className="text-sm font-semibold text-gray-800 group-hover:text-mainTextHoverV1">
                     {isUploadingAvatar
-                      ? "Đang tải ảnh..."
-                      : "Tải ảnh đại diện lên"}
+                      ? "Uploading image..."
+                      : "Upload avatar image"}
                   </div>
                   <div className="text-sm text-gray-500 mt-1">
                     Select image (max 10MB)
@@ -175,7 +175,7 @@ export const UserForm = ({
                 <div className="w-40 h-40 rounded-md border border-lightBorderV1 overflow-hidden">
                   <img
                     src={formData.avatar}
-                    alt="Ảnh đại diện"
+                    alt="Avatar"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -263,7 +263,7 @@ export const UserForm = ({
             type="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Nhập email"
+            placeholder="Enter email"
             className={`${
               errors.email ? "border-red-500" : "border-lightBorderV1"
             } focus:border-mainTextHoverV1`}
@@ -364,7 +364,7 @@ export const UserForm = ({
               <SelectTrigger>
                 <SelectValue
                   placeholder={
-                    isLoadingDepartments ? "Đang tải..." : "Chọn khoa"
+                    isLoadingDepartments ? "Loading..." : "Select department"
                   }
                 />
               </SelectTrigger>

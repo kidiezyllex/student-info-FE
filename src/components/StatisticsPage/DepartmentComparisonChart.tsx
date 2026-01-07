@@ -58,19 +58,19 @@ const mockDepartmentData = {
 };
 const chartConfig = {
   engineering: {
-    label: "Khoa Kỹ thuật",
+    label: "Engineering",
     color: "#F56C14",
   },
   business: {
-    label: "Khoa Kinh tế",
+    label: "Business",
     color: "#5CC184",
   },
   arts: {
-    label: "Khoa Nghệ thuật",
+    label: "Arts",
     color: "#F0934E",
   },
   science: {
-    label: "Khoa Khoa học",
+    label: "Science",
     color: "#E91E63",
   },
 } satisfies ChartConfig;
@@ -147,28 +147,28 @@ export default function DepartmentComparisonChart() {
                 fill={chartConfig.engineering?.color || "#F56C14"}
                 radius={[4, 4, 0, 0]}
                 barSize={15}
-                name={chartConfig.engineering?.label || "Khoa Kỹ thuật"}
+                name={chartConfig.engineering?.label || "Engineering"}
               />
               <Bar
                 dataKey="business"
                 fill={chartConfig.business?.color || "#5CC184"}
                 radius={[4, 4, 0, 0]}
                 barSize={15}
-                name={chartConfig.business?.label || "Khoa Kinh tế"}
+                name={chartConfig.business?.label || "Business"}
               />
               <Bar
                 dataKey="arts"
                 fill={chartConfig.arts?.color || "#F0934E"}
                 radius={[4, 4, 0, 0]}
                 barSize={15}
-                name={chartConfig.arts?.label || "Khoa Nghệ thuật"}
+                name={chartConfig.arts?.label || "Arts"}
               />
               <Bar
                 dataKey="science"
                 fill={chartConfig.science?.color || "#E91E63"}
                 radius={[4, 4, 0, 0]}
                 barSize={15}
-                name={chartConfig.science?.label || "Khoa Khoa học"}
+                name={chartConfig.science?.label || "Science"}
               />
             </BarChart>
           </ResponsiveContainer>

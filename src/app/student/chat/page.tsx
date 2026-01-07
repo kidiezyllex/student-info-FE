@@ -8,6 +8,7 @@ import {
   useRateAIResponse,
   useDeleteChatSession,
 } from "@/hooks/useChat";
+import { useCreateSupportTicket } from "@/hooks/useSupportTicket";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -20,6 +21,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   IconSend,
@@ -31,6 +49,7 @@ import {
   IconHistory,
   IconX,
   IconMessageCircle,
+  IconTicket,
 } from "@tabler/icons-react";
 import { useUser } from "@/context/useUserContext";
 import { toast } from "react-toastify";
@@ -72,11 +91,24 @@ export default function StudentChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Support Ticket States
+  const [showTicketDialog, setShowTicketDialog] = useState(false);
+  const [ticketFormData, setTicketFormData] = useState({
+    subject: "",
+    description: "",
+    priority: "medium" as "low" | "medium" | "high" | "urgent",
+    category: "other" as "academic" | "technical" | "administrative" | "other",
+    userQuery: "",
+    aiResponse: "",
+  });
+
   const { mutateAsync: askAI, isPending: isAsking } = useAskAI();
   const { data: chatHistory, isLoading: historyLoading } = useGetChatHistory();
   const { data: currentSession } = useGetChatSession(currentSessionId || "");
   const { mutateAsync: rateResponse } = useRateAIResponse();
   const { mutateAsync: deleteSession } = useDeleteChatSession();
+  const { mutateAsync: createTicket, isPending: isCreatingTicket } =
+    useCreateSupportTicket();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -229,6 +261,59 @@ export default function StudentChatPage() {
     setCurrentSessionId(null);
     setMessages([]);
     setShowHistory(false);
+  };
+
+  const handleOpenTicketDialog = (userQuery: string, aiResponse: string) => {
+    setTicketFormData({
+      subject: `Question about: ${userQuery.substring(0, 50)}${
+        userQuery.length > 50 ? "..." : ""
+      }`,
+      description: `AI could not answer the following question:\n\n${userQuery}`,
+      priority: "medium",
+      category: "other",
+      userQuery,
+      aiResponse,
+    });
+    setShowTicketDialog(true);
+  };
+
+  const handleCreateTicket = async () => {
+    try {
+      await createTicket({
+        subject: ticketFormData.subject,
+        description: ticketFormData.description,
+        priority: ticketFormData.priority,
+        category: ticketFormData.category,
+        aiConversation: {
+          userQuery: ticketFormData.userQuery,
+          aiResponse: ticketFormData.aiResponse,
+          conversationId: currentSessionId || "",
+        },
+        contactInfo: {
+          email: profile?.data?.email || "",
+          phoneNumber: "",
+        },
+      });
+
+      toast.success(
+        "Support ticket created successfully! Our team will contact you soon."
+      );
+      setShowTicketDialog(false);
+
+      // Reset form
+      setTicketFormData({
+        subject: "",
+        description: "",
+        priority: "medium",
+        category: "other",
+        userQuery: "",
+        aiResponse: "",
+      });
+    } catch (error: any) {
+      toast.error(
+        error?.message || "Failed to create support ticket. Please try again."
+      );
+    }
   };
 
   const formatTime = (date: Date) => {
@@ -436,52 +521,72 @@ export default function StudentChatPage() {
                             </p>
                           </div>
 
-                          <div className="flex items-center justify-between mt-1 px-1">
+                          <div className="flex items-center justify-between mt-1">
                             <p className="text-sm text-gray-800">
                               {formatTime(message.timestamp)}
                             </p>
 
-                            {/* Rating buttons for AI messages */}
-                            {!message.isUser &&
-                              message.sessionId &&
-                              message.messageIndex !== undefined && (
-                                <div className="flex gap-1">
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() =>
-                                      handleRateMessage(
-                                        message.messageIndex!,
-                                        true
-                                      )
-                                    }
-                                    className={`h-8 w-8 p-0 ${
-                                      message.isAccurate === true
-                                        ? "text-green-600 bg-green-50"
-                                        : "text-gray-400 hover:text-green-600"
-                                    }`}
-                                  >
-                                    <IconThumbUp className="w-5 h-5" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() =>
-                                      handleRateMessage(
-                                        message.messageIndex!,
-                                        false
-                                      )
-                                    }
-                                    className={`h-8 w-8 p-0 ${
-                                      message.isAccurate === false
-                                        ? "text-red-600 bg-red-50"
-                                        : "text-gray-400 hover:text-red-600"
-                                    }`}
-                                  >
-                                    <IconThumbDown className="w-5 h-5" />
-                                  </Button>
-                                </div>
-                              )}
+                            {/* Rating buttons and Support Ticket for AI messages */}
+                            {!message.isUser && (
+                              <div className="flex gap-1">
+                                {message.sessionId &&
+                                  message.messageIndex !== undefined && (
+                                    <>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() =>
+                                          handleRateMessage(
+                                            message.messageIndex!,
+                                            true
+                                          )
+                                        }
+                                        className={`h-8 w-8 p-0 ${
+                                          message.isAccurate === true
+                                            ? "text-green-600 bg-green-50"
+                                            : "text-gray-400 hover:text-green-600"
+                                        }`}
+                                      >
+                                        <IconThumbUp className="w-5 h-5" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() =>
+                                          handleRateMessage(
+                                            message.messageIndex!,
+                                            false
+                                          )
+                                        }
+                                        className={`h-8 w-8 p-0 ${
+                                          message.isAccurate === false
+                                            ? "text-red-600 bg-red-50"
+                                            : "text-gray-400 hover:text-red-600"
+                                        }`}
+                                      >
+                                        <IconThumbDown className="w-5 h-5" />
+                                      </Button>
+                                    </>
+                                  )}
+                                {/* Support Ticket Button */}
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    const prevMessage = messages[index - 1];
+                                    handleOpenTicketDialog(
+                                      prevMessage?.content || "",
+                                      message.content
+                                    );
+                                  }}
+                                  className="h-8 px-2 text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                                  title="Create Support Ticket"
+                                >
+                                  <IconTicket className="w-4 h-4 mr-1" />
+                                  <span className="text-sm">Need Help?</span>
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         </div>
 
@@ -562,6 +667,139 @@ export default function StudentChatPage() {
           </Card>
         </div>
       </div>
+
+      {/* Support Ticket Dialog */}
+      <Dialog open={showTicketDialog} onOpenChange={setShowTicketDialog}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <IconTicket className="w-5 h-5 text-orange-600" />
+              Create Support Ticket
+            </DialogTitle>
+            <DialogDescription>
+              Our AI couldn't fully answer your question. Create a support
+              ticket and our team will help you directly.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="subject">Subject *</Label>
+              <Input
+                id="subject"
+                value={ticketFormData.subject}
+                onChange={(e) =>
+                  setTicketFormData({
+                    ...ticketFormData,
+                    subject: e.target.value,
+                  })
+                }
+                placeholder="Brief summary of your issue"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="description">Description *</Label>
+              <Textarea
+                id="description"
+                value={ticketFormData.description}
+                onChange={(e) =>
+                  setTicketFormData({
+                    ...ticketFormData,
+                    description: e.target.value,
+                  })
+                }
+                placeholder="Provide more details about your issue"
+                rows={4}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="priority">Priority</Label>
+                <Select
+                  value={ticketFormData.priority}
+                  onValueChange={(value: any) =>
+                    setTicketFormData({ ...ticketFormData, priority: value })
+                  }
+                >
+                  <SelectTrigger id="priority">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="low">Low</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="urgent">Urgent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="category">Category</Label>
+                <Select
+                  value={ticketFormData.category}
+                  onValueChange={(value: any) =>
+                    setTicketFormData({ ...ticketFormData, category: value })
+                  }
+                >
+                  <SelectTrigger id="category">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="academic">Academic</SelectItem>
+                    <SelectItem value="technical">Technical</SelectItem>
+                    <SelectItem value="administrative">
+                      Administrative
+                    </SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+              <p className="text-sm text-gray-600 mb-2">
+                <strong>Your Question:</strong>
+              </p>
+              <p className="text-sm text-gray-800 italic">
+                {ticketFormData.userQuery || "No question captured"}
+              </p>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowTicketDialog(false)}
+              disabled={isCreatingTicket}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreateTicket}
+              disabled={
+                !ticketFormData.subject.trim() ||
+                !ticketFormData.description.trim() ||
+                isCreatingTicket
+              }
+              className="bg-orange-600 hover:bg-orange-700"
+            >
+              {isCreatingTicket ? (
+                <>
+                  <LoadingSpinner size="sm" className="mr-2" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <IconTicket className="w-4 h-4 mr-2" />
+                  Create Ticket
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

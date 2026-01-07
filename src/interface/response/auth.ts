@@ -38,10 +38,12 @@ export interface IRegisterResponse {
 export interface IProfileData {
   _id: string;
   name: string;
+  fullName?: string;
   email: string;
   role: string;
   avatar?: string;
   gender: string;
+  studentId?: string;
   active: boolean;
   savedNotifications: any[];
   savedTopics: any[];

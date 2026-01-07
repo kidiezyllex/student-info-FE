@@ -11,7 +11,12 @@ import {
   YAxis,
 } from "recharts";
 import { useState } from "react";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
@@ -33,7 +38,7 @@ const mockRegistrationData = {
     { month: "T9", students: 220 },
     { month: "T10", students: 185 },
     { month: "T11", students: 160 },
-    { month: "T12", students: 140 }
+    { month: "T12", students: 140 },
   ],
   2023: [
     { month: "T1", students: 110 },
@@ -47,15 +52,15 @@ const mockRegistrationData = {
     { month: "T9", students: 205 },
     { month: "T10", students: 175 },
     { month: "T11", students: 150 },
-    { month: "T12", students: 130 }
-  ]
+    { month: "T12", students: 130 },
+  ],
 };
 
 const chartConfig = {
   students: {
-    label: "Sinh viên",
+    label: "Students",
     color: "#F56C14",
-  }
+  },
 } satisfies ChartConfig;
 
 export default function StudentRegistrationChart() {
@@ -66,16 +71,22 @@ export default function StudentRegistrationChart() {
     setYear(Number(value));
   };
 
-  const chartData = mockRegistrationData[year as keyof typeof mockRegistrationData] || mockRegistrationData[2024];
+  const chartData =
+    mockRegistrationData[year as keyof typeof mockRegistrationData] ||
+    mockRegistrationData[2024];
   const totalStudents = chartData.reduce((sum, item) => sum + item.students, 0);
 
   return (
     <Card className="p-4 !shadow-md   h-full flex flex-col">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">Student Registration by Month</h3>
+          <h3 className="text-lg font-semibold text-gray-800">
+            Student Registration by Month
+          </h3>
           <p className="text-gray-800 text-sm">
-            Total students registered: <span className="font-semibold text-primary">{totalStudents}</span> students
+            Total students registered:{" "}
+            <span className="font-semibold text-primary">{totalStudents}</span>{" "}
+            students
           </p>
         </div>
         <Select value={year.toString()} onValueChange={handleYearChange}>
@@ -100,36 +111,43 @@ export default function StudentRegistrationChart() {
       >
         <ChartContainer config={chartConfig} className="h-full w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E5E5" />
-              <XAxis 
+            <BarChart
+              data={chartData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#E5E5E5"
+              />
+              <XAxis
                 dataKey="month"
                 axisLine={false}
                 tickLine={false}
                 tickMargin={10}
-                tick={{ fill: '#687D92' }}
+                tick={{ fill: "#687D92" }}
               />
-              <YAxis 
+              <YAxis
                 axisLine={false}
                 tickLine={false}
                 tickMargin={10}
-                tick={{ fill: '#687D92' }}
+                tick={{ fill: "#687D92" }}
                 tickFormatter={(value) => `${value.toLocaleString()}`}
               />
-              <ChartTooltip 
+              <ChartTooltip
                 content={
-                  <ChartTooltipContent 
+                  <ChartTooltipContent
                     formatter={(value, name) => [
-                      `${value} sinh viên`,
-                      name === "students" ? chartConfig.students?.label : name
+                      `${value} students`,
+                      name === "students" ? chartConfig.students?.label : name,
                     ]}
                   />
                 }
               />
-              <Bar 
-                dataKey="students" 
+              <Bar
+                dataKey="students"
                 fill={chartConfig.students?.color || "#F56C14"}
-                radius={[4, 4, 0, 0]} 
+                radius={[4, 4, 0, 0]}
                 barSize={30}
               />
             </BarChart>
@@ -138,4 +156,4 @@ export default function StudentRegistrationChart() {
       </motion.div>
     </Card>
   );
-} 
+}
