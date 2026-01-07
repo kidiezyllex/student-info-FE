@@ -380,16 +380,18 @@ export const UserForm = ({
         )}
       </div>
 
-      <div className="flex items-center justify-between space-x-2">
-        <Label htmlFor="active" className="text-gray-800">
-          Active
-        </Label>
-        <Switch
-          id="active"
-          checked={formData.active}
-          onCheckedChange={(checked) => handleSwitchChange("active", checked)}
-        />
-      </div>
+      {formData.role !== "student" && (
+        <div className="flex items-center justify-between space-x-2">
+          <Label htmlFor="active" className="text-gray-800">
+            Active
+          </Label>
+          <Switch
+            id="active"
+            checked={formData.active}
+            onCheckedChange={(checked) => handleSwitchChange("active", checked)}
+          />
+        </div>
+      )}
 
       <div className="flex gap-2 justify-end pt-4">
         <Button variant="outline" onClick={onCancel} disabled={isUpdating}>

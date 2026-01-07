@@ -81,7 +81,7 @@ export default function CommonHeader() {
       <div className="ml-auto flex items-center gap-2 scale-95">
         {/* Avatar */}
         <div
-          className="h-[52px] w-[52px] flex-shrink-0 border border-white/70 rounded-full overflow-hidden cursor-pointer bg-slate-100 hover:border-mainActiveV1 transition-colors duration-200"
+          className="h-[52px] w-[52px] flex-shrink-0 rounded-full overflow-hidden cursor-pointer bg-slate-100 hover:border-mainActiveV1 transition-colors duration-200 border-2 border-orange-300 shadow-md"
           onClick={() => setIsProfileDialogOpen(true)}
         >
           <Image

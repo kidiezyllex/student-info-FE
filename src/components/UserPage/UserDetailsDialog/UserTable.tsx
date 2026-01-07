@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { IUser } from "@/interface/response/user";
+import Image from "next/image";
 import {
   Activity,
   CheckCircle2,
@@ -22,7 +23,7 @@ import {
   Calendar,
   User as UserIcon,
 } from "lucide-react";
-import { formatDate, formatDateOnly } from "@/utils/dateFormat";
+import { formatDateOnly } from "@/utils/dateFormat";
 
 interface UserTableProps {
   user: IUser & {
@@ -94,6 +95,10 @@ interface UserTableProps {
 }
 
 export const UserTable = ({ user }: UserTableProps) => {
+  const avatarSrc =
+    user.avatar ||
+    `/images/${user.gender ? user.gender : "male"}-${user.role}.webp`;
+
   const getRoleBadge = (role: string) => {
     switch (role.toLowerCase()) {
       case "admin":
@@ -162,22 +167,22 @@ export const UserTable = ({ user }: UserTableProps) => {
         <CardContent className="space-y-4 pt-4">
           {/* User Header */}
           <div className="flex items-center gap-4 pb-4 border-b border-gray-200">
-            <div className="w-20 h-20 border border-slate-300 flex-shrink-0 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
-              {user.avatar ? (
-                <img
-                  src={user.avatar}
-                  alt={user.fullName || user.name}
-                  className="w-full h-full object-cover"
+            {/* Avatar */}
+            <div className="relative flex-shrink-0">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-orange-300 shadow-lg">
+                <Image
+                  src={avatarSrc}
+                  alt={user.fullName || user.name || "User"}
+                  width={80}
+                  height={80}
+                  className="object-cover w-full h-full"
+                  draggable={false}
+                  quality={100}
                 />
-              ) : (
-                <img
-                  src={`/images/${user.gender ? user.gender : "male"}-${
-                    user.role
-                  }.webp`}
-                  alt={"default-avatar"}
-                  className="w-full h-full object-cover flex-shrink-0"
-                />
-              )}
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              </div>
             </div>
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-gray-800">
