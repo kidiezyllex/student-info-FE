@@ -30,7 +30,7 @@ const nextConfig = {
 		],
 	},
 	async rewrites() {
-		const domain = "example-be.onrender.com";
+		const domain = "student-info-be.onrender.com";
 		return [
 			{
 				source: "/api/:path*",
