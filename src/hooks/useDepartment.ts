@@ -4,14 +4,16 @@ import {
   getDepartmentById,
   createDepartment,
   updateDepartment,
-  deleteDepartment
+  deleteDepartment,
+  getDepartmentStats
 } from '@/api/department';
 import {
   IGetAllDepartmentsResponse,
   IGetDepartmentByIdResponse,
   ICreateDepartmentResponse,
   IUpdateDepartmentResponse,
-  IDeleteDepartmentResponse
+  IDeleteDepartmentResponse,
+  IDepartmentStatsResponse
 } from '@/interface/response/department';
 import { ICreateDepartmentBody, IUpdateDepartmentBody } from '@/interface/request/department';
 
@@ -62,4 +64,14 @@ export const useDeleteDepartment = () => {
       queryClient.invalidateQueries({ queryKey: ['departments'] });
     },
   });
-}; 
+};
+
+export const useGetDepartmentStats = (departmentId: string, options?: { enabled?: boolean }) => {
+  return useQuery<IDepartmentStatsResponse, Error>({
+    queryKey: ['departments', departmentId, 'stats'],
+    queryFn: () => getDepartmentStats(departmentId),
+    enabled: !!departmentId && (options?.enabled !== false),
+    ...options,
+  });
+};
+ 

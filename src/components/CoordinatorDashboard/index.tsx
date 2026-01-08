@@ -16,12 +16,12 @@ import {
   IconUsers,
   IconFileText,
   IconTicket,
-  IconCalendarEvent,
+  IconCheck,
 } from "@tabler/icons-react";
 import { useGetTicketStats } from "@/hooks/useSupportTicket";
+import { useGetTopicsAdmin } from "@/hooks/useTopic";
+import { useGetDepartmentStats } from "@/hooks/useDepartment";
 import Link from "next/link";
-import Image from "next/image";
-
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -126,31 +126,39 @@ const StatCard = ({
 
 export default function CoordinatorDashboard() {
   const { profile } = useUser();
+  const departmentId = profile?.data?.department?._id || "";
+
+  // Fetch department-specific statistics
+  const { data: deptStats } = useGetDepartmentStats(departmentId, {
+    enabled: !!departmentId,
+  });
+
+  // Legacy hooks (can be removed once department stats is fully integrated)
   const { data: ticketStats } = useGetTicketStats();
+  const { data: topicsData } = useGetTopicsAdmin({ page: 1, limit: 1 });
 
   const departmentName = profile?.data?.department?.name || "Your Department";
 
   const stats = [
     {
       title: "Active Topics",
-      value: 0,
+      value: deptStats?.data?.activeTopics || 0,
       icon: IconFileText,
       color: "#3B82F6",
       bgColor: "bg-blue-50",
       link: "/coordinator/topics",
     },
     {
-      title: "Active Events",
-      value: 0,
-      icon: IconCalendarEvent,
+      title: "Resolved Tickets",
+      value: deptStats?.data?.tickets?.resolved || 0,
+      icon: IconCheck,
       color: "#10B981",
       bgColor: "bg-green-50",
-      link: "/coordinator/topics?type=event",
+      link: "/coordinator/tickets?status=resolved",
     },
     {
       title: "Open Tickets",
-      value:
-        ticketStats?.data?.byStatus?.find((s) => s._id === "open")?.count || 0,
+      value: deptStats?.data?.tickets?.pending || 0,
       icon: IconTicket,
       color: "#F59E0B",
       bgColor: "bg-orange-50",
@@ -158,7 +166,7 @@ export default function CoordinatorDashboard() {
     },
     {
       title: "Department Students",
-      value: 0,
+      value: deptStats?.data?.studentsCount || 0,
       icon: IconUsers,
       color: "#8B5CF6",
       bgColor: "bg-purple-50",
@@ -209,91 +217,6 @@ export default function CoordinatorDashboard() {
               />
             ))}
           </div>
-        </motion.div>
-
-        {/* Quick Actions */}
-        <motion.div variants={item}>
-          <Card className="border-lightBorderV1">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold text-gray-800">
-                Quick Actions
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link
-                  href="/coordinator/topics"
-                  className="group p-6 border-2 border-lightBorderV1 rounded-xl hover:border-blue-300 hover:bg-blue-50/50 transition-all duration-300 hover:-translate-y-1"
-                >
-                  <div className="flex flex-col items-start">
-                    <div className="p-3 bg-blue-100 rounded-xl mb-4 group-hover:bg-blue-200 transition-colors">
-                      <IconFileText className="w-8 h-8 text-blue-600" />
-                    </div>
-                    <h4 className="font-bold text-gray-800 mb-2">
-                      Manage Topics
-                    </h4>
-                    <p className="text-sm text-gray-600">
-                      Create and manage department topics
-                    </p>
-                  </div>
-                </Link>
-                <Link
-                  href="/coordinator/tickets"
-                  className="group p-6 border-2 border-lightBorderV1 rounded-xl hover:border-orange-300 hover:bg-orange-50/50 transition-all duration-300 hover:-translate-y-1"
-                >
-                  <div className="flex flex-col items-start">
-                    <div className="p-3 bg-orange-100 rounded-xl mb-4 group-hover:bg-orange-200 transition-colors">
-                      <IconTicket className="w-8 h-8 text-orange-600" />
-                    </div>
-                    <h4 className="font-bold text-gray-800 mb-2">
-                      Support Tickets
-                    </h4>
-                    <p className="text-sm text-gray-600">
-                      Manage student support requests
-                    </p>
-                  </div>
-                </Link>
-                <Link
-                  href="/coordinator/topics?type=event"
-                  className="group p-6 border-2 border-lightBorderV1 rounded-xl hover:border-green-300 hover:bg-green-50/50 transition-all duration-300 hover:-translate-y-1"
-                >
-                  <div className="flex flex-col items-start">
-                    <div className="p-3 bg-green-100 rounded-xl mb-4 group-hover:bg-green-200 transition-colors">
-                      <IconCalendarEvent className="w-8 h-8 text-green-600" />
-                    </div>
-                    <h4 className="font-bold text-gray-800 mb-2">Events</h4>
-                    <p className="text-sm text-gray-600">
-                      View and manage department events
-                    </p>
-                  </div>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Recent Activity */}
-        <motion.div variants={item}>
-          <Card className="border-lightBorderV1">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold text-gray-800">
-                Recent Activity
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <IconFileText className="w-8 h-8 text-gray-400" />
-                </div>
-                <p className="text-gray-600 text-center font-medium">
-                  No recent activity to display
-                </p>
-                <p className="text-gray-400 text-sm text-center mt-2">
-                  Activity will appear here as you manage topics and tickets
-                </p>
-              </div>
-            </CardContent>
-          </Card>
         </motion.div>
       </motion.div>
     </div>

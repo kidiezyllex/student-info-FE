@@ -4,7 +4,8 @@ import {
   IGetDepartmentByIdResponse,
   ICreateDepartmentResponse,
   IUpdateDepartmentResponse,
-  IDeleteDepartmentResponse
+  IDeleteDepartmentResponse,
+  IDepartmentStatsResponse
 } from "@/interface/response/department";
 import { ICreateDepartmentBody, IUpdateDepartmentBody } from "@/interface/request/department";
 
@@ -35,4 +36,10 @@ export const updateDepartment = async (id: string, body: IUpdateDepartmentBody):
 export const deleteDepartment = async (id: string): Promise<IDeleteDepartmentResponse> => {
   const res = await sendDelete(`/departments/${id}`);
   return res;
-}; 
+};
+
+export const getDepartmentStats = async (departmentId: string): Promise<IDepartmentStatsResponse> => {
+  const res = await sendGet(`/departments/${departmentId}/stats`);
+  return res;
+};
+ 
