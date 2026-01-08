@@ -8,7 +8,8 @@ import {
 	mdiBell,
 	mdiRobot,
 	mdiAlphaTCircle,
-	mdiHistory
+	mdiHistory,
+	mdiTicket
 } from "@mdi/js";
 
 export const getDashboardMenuItems = (): MenuItem[] => [
@@ -63,25 +64,19 @@ export const getCoordinatorMenuItems = (department: string): MenuItem[] => [
 	{
 		id: "coordinator-dashboard",
 		name: "Dashboard",
-		path: `/coordinator/${department}`,
+		path: "/coordinator",
 		icon: mdiViewDashboard,
 	},
 	{
-		id: "coordinator-event-management",
-		name: "Event Management",
-		path: `/coordinator/${department}/events`,
-		icon: mdiCalendarMonth,
+		id: "coordinator-topic-management",
+		name: "Topic Management",
+		path: "/coordinator/topics",
+		icon: mdiAlphaTCircle,
 	},
 	{
-		id: "coordinator-scholarship-management",
-		name: "Scholarship Management",
-		path: `/coordinator/${department}/scholarships`,
-		icon: mdiGift,
+		id: "coordinator-ticket-management",
+		name: "Support Tickets",
+		path: "/coordinator/tickets",
+		icon: mdiTicket,
 	},
-	{
-		id: "coordinator-notification-management",
-		name: "Notification Management",
-		path: `/coordinator/${department}/notifications`,
-		icon: mdiBell,
-	},
-]; 
+];  

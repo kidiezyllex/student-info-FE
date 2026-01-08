@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/select";
 import { useDeleteTopic } from "@/hooks/useTopic";
 import { DeleteDialog } from "@/components/ui/delete-dialog";
+import { useAuth } from "@/hooks/useAuth";
 
 const topicTypes = [
   "all",
@@ -43,7 +44,14 @@ const topicTypes = [
   "extracurricular",
 ];
 
-export default function TopicPage() {
+interface TopicPageProps {
+  isCoordinator?: boolean;
+}
+
+export default function TopicPage({ isCoordinator = false }: TopicPageProps) {
+  const { profileData } = useAuth();
+  const departmentId = profileData?.data?.department?._id;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -152,7 +160,9 @@ export default function TopicPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/admin">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink href={isCoordinator ? "/coordinator" : "/admin"}>
+              Dashboard
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -289,6 +299,8 @@ export default function TopicPage() {
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSuccess={() => refetch()}
+        isCoordinator={isCoordinator}
+        departmentId={departmentId}
       />
 
       {selectedTopicId && (
@@ -300,6 +312,7 @@ export default function TopicPage() {
           }}
           topicId={selectedTopicId}
           onSuccess={() => refetch()}
+          isCoordinator={isCoordinator}
         />
       )}
     </div>

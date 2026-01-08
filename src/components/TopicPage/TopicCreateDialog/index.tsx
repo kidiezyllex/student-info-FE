@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useCreateTopic } from "@/hooks/useTopic";
 import { useGetAllDepartments } from "@/hooks/useDepartment";
@@ -25,6 +31,8 @@ interface TopicCreateDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
+  isCoordinator?: boolean;
+  departmentId?: string;
 }
 
 const topicTypes: TopicType[] = [
@@ -39,7 +47,13 @@ const topicTypes: TopicType[] = [
   "extracurricular",
 ];
 
-export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDialogProps) => {
+export const TopicCreateDialog = ({
+  isOpen,
+  onClose,
+  onSuccess,
+  isCoordinator = false,
+  departmentId,
+}: TopicCreateDialogProps) => {
   const [formData, setFormData] = useState<ICreateTopicBody>({
     title: "",
     description: "",
@@ -49,7 +63,14 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { mutate: createTopicMutation, isPending } = useCreateTopic();
-  const { data: departmentsData, isLoading: isLoadingDepartments } = useGetAllDepartments(1, 1000);
+  const { data: departmentsData, isLoading: isLoadingDepartments } =
+    useGetAllDepartments(1, 1000);
+
+  useEffect(() => {
+    if (isCoordinator && departmentId && isOpen) {
+      setFormData((prev) => ({ ...prev, department: departmentId }));
+    }
+  }, [isCoordinator, departmentId, isOpen]);
 
   const departments = departmentsData?.data || [];
 
@@ -62,14 +83,16 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
     if (!isoString) return "";
     const date = new Date(isoString);
     const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
@@ -80,7 +103,10 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
 
   const handleSelectChange = (name: string, value: string) => {
     if (name === "department") {
-      setFormData({ ...formData, [name]: value === "all-departments" ? null : value });
+      setFormData({
+        ...formData,
+        [name]: value === "all-departments" ? null : value,
+      });
     } else if (name === "type") {
       // Reset type-specific fields when type changes
       setFormData({
@@ -98,7 +124,10 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
     }
   };
 
-  const handleDateTimeChange = (field: 'startDate' | 'endDate' | 'applicationDeadline', value: string) => {
+  const handleDateTimeChange = (
+    field: "startDate" | "endDate" | "applicationDeadline",
+    value: string
+  ) => {
     setFormData({ ...formData, [field]: convertToISOString(value) });
   };
 
@@ -125,14 +154,19 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
       if (!formData.endDate) {
         newErrors.endDate = "End date is required for events";
       }
-      if (formData.startDate && formData.endDate && new Date(formData.endDate) <= new Date(formData.startDate)) {
+      if (
+        formData.startDate &&
+        formData.endDate &&
+        new Date(formData.endDate) <= new Date(formData.startDate)
+      ) {
         newErrors.endDate = "End date must be after start date";
       }
     }
 
     if (formData.type === "scholarship") {
       if (!formData.applicationDeadline) {
-        newErrors.applicationDeadline = "Application deadline is required for scholarships";
+        newErrors.applicationDeadline =
+          "Application deadline is required for scholarships";
       }
     }
 
@@ -154,7 +188,10 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
         onSuccess?.();
       },
       onError: (error: any) => {
-        toast.error(error?.response?.data?.message || "An error occurred while creating topic");
+        toast.error(
+          error?.response?.data?.message ||
+            "An error occurred while creating topic"
+        );
       },
     });
   };
@@ -182,11 +219,21 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               <Input
                 id="startDate"
                 type="datetime-local"
-                value={formData.startDate ? convertFromISOString(formData.startDate) : ""}
-                onChange={(e) => handleDateTimeChange("startDate", e.target.value)}
-                className={`${errors.startDate ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+                value={
+                  formData.startDate
+                    ? convertFromISOString(formData.startDate)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("startDate", e.target.value)
+                }
+                className={`${
+                  errors.startDate ? "border-red-500" : "border-lightBorderV1"
+                } focus:border-mainTextHoverV1`}
               />
-              {errors.startDate && <p className="text-red-500 text-sm">{errors.startDate}</p>}
+              {errors.startDate && (
+                <p className="text-red-500 text-sm">{errors.startDate}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="endDate" className="text-gray-800">
@@ -195,14 +242,24 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               <Input
                 id="endDate"
                 type="datetime-local"
-                value={formData.endDate ? convertFromISOString(formData.endDate) : ""}
-                onChange={(e) => handleDateTimeChange("endDate", e.target.value)}
-                className={`${errors.endDate ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+                value={
+                  formData.endDate ? convertFromISOString(formData.endDate) : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("endDate", e.target.value)
+                }
+                className={`${
+                  errors.endDate ? "border-red-500" : "border-lightBorderV1"
+                } focus:border-mainTextHoverV1`}
               />
-              {errors.endDate && <p className="text-red-500 text-sm">{errors.endDate}</p>}
+              {errors.endDate && (
+                <p className="text-red-500 text-sm">{errors.endDate}</p>
+              )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="location" className="text-gray-800">Location</Label>
+              <Label htmlFor="location" className="text-gray-800">
+                Location
+              </Label>
               <Input
                 id="location"
                 name="location"
@@ -213,7 +270,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="organizer" className="text-gray-800">Organizer</Label>
+              <Label htmlFor="organizer" className="text-gray-800">
+                Organizer
+              </Label>
               <Input
                 id="organizer"
                 name="organizer"
@@ -236,14 +295,30 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               <Input
                 id="applicationDeadline"
                 type="datetime-local"
-                value={formData.applicationDeadline ? convertFromISOString(formData.applicationDeadline) : ""}
-                onChange={(e) => handleDateTimeChange("applicationDeadline", e.target.value)}
-                className={`${errors.applicationDeadline ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+                value={
+                  formData.applicationDeadline
+                    ? convertFromISOString(formData.applicationDeadline)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("applicationDeadline", e.target.value)
+                }
+                className={`${
+                  errors.applicationDeadline
+                    ? "border-red-500"
+                    : "border-lightBorderV1"
+                } focus:border-mainTextHoverV1`}
               />
-              {errors.applicationDeadline && <p className="text-red-500 text-sm">{errors.applicationDeadline}</p>}
+              {errors.applicationDeadline && (
+                <p className="text-red-500 text-sm">
+                  {errors.applicationDeadline}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="value" className="text-gray-800">Value</Label>
+              <Label htmlFor="value" className="text-gray-800">
+                Value
+              </Label>
               <Input
                 id="value"
                 name="value"
@@ -254,7 +329,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2 col-span-2">
-              <Label htmlFor="requirements" className="text-gray-800">Requirements</Label>
+              <Label htmlFor="requirements" className="text-gray-800">
+                Requirements
+              </Label>
               <Textarea
                 id="requirements"
                 name="requirements"
@@ -266,7 +343,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="provider" className="text-gray-800">Provider</Label>
+              <Label htmlFor="provider" className="text-gray-800">
+                Provider
+              </Label>
               <Input
                 id="provider"
                 name="provider"
@@ -277,7 +356,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2 col-span-2">
-              <Label htmlFor="eligibility" className="text-gray-800">Eligibility</Label>
+              <Label htmlFor="eligibility" className="text-gray-800">
+                Eligibility
+              </Label>
               <Textarea
                 id="eligibility"
                 name="eligibility"
@@ -289,7 +370,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2 col-span-2">
-              <Label htmlFor="applicationProcess" className="text-gray-800">Application Process</Label>
+              <Label htmlFor="applicationProcess" className="text-gray-800">
+                Application Process
+              </Label>
               <Textarea
                 id="applicationProcess"
                 name="applicationProcess"
@@ -307,22 +390,36 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
         return (
           <>
             <div className="space-y-2">
-              <Label htmlFor="startDate" className="text-gray-800">Start Date</Label>
+              <Label htmlFor="startDate" className="text-gray-800">
+                Start Date
+              </Label>
               <Input
                 id="startDate"
                 type="datetime-local"
-                value={formData.startDate ? convertFromISOString(formData.startDate) : ""}
-                onChange={(e) => handleDateTimeChange("startDate", e.target.value)}
+                value={
+                  formData.startDate
+                    ? convertFromISOString(formData.startDate)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("startDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="endDate" className="text-gray-800">End Date</Label>
+              <Label htmlFor="endDate" className="text-gray-800">
+                End Date
+              </Label>
               <Input
                 id="endDate"
                 type="datetime-local"
-                value={formData.endDate ? convertFromISOString(formData.endDate) : ""}
-                onChange={(e) => handleDateTimeChange("endDate", e.target.value)}
+                value={
+                  formData.endDate ? convertFromISOString(formData.endDate) : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("endDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
@@ -330,9 +427,14 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               <Checkbox
                 id="isImportant"
                 checked={formData.isImportant || false}
-                onCheckedChange={(checked) => handleCheckboxChange("isImportant", checked as boolean)}
+                onCheckedChange={(checked) =>
+                  handleCheckboxChange("isImportant", checked as boolean)
+                }
               />
-              <Label htmlFor="isImportant" className="text-gray-800 cursor-pointer">
+              <Label
+                htmlFor="isImportant"
+                className="text-gray-800 cursor-pointer"
+              >
                 Mark as important
               </Label>
             </div>
@@ -343,7 +445,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
         return (
           <>
             <div className="space-y-2">
-              <Label htmlFor="company" className="text-gray-800">Company</Label>
+              <Label htmlFor="company" className="text-gray-800">
+                Company
+              </Label>
               <Input
                 id="company"
                 name="company"
@@ -354,7 +458,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="position" className="text-gray-800">Position</Label>
+              <Label htmlFor="position" className="text-gray-800">
+                Position
+              </Label>
               <Input
                 id="position"
                 name="position"
@@ -365,7 +471,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="salary" className="text-gray-800">Salary</Label>
+              <Label htmlFor="salary" className="text-gray-800">
+                Salary
+              </Label>
               <Input
                 id="salary"
                 name="salary"
@@ -376,7 +484,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contactInfo" className="text-gray-800">Contact Info</Label>
+              <Label htmlFor="contactInfo" className="text-gray-800">
+                Contact Info
+              </Label>
               <Input
                 id="contactInfo"
                 name="contactInfo"
@@ -387,12 +497,20 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="applicationDeadline" className="text-gray-800">Application Deadline</Label>
+              <Label htmlFor="applicationDeadline" className="text-gray-800">
+                Application Deadline
+              </Label>
               <Input
                 id="applicationDeadline"
                 type="datetime-local"
-                value={formData.applicationDeadline ? convertFromISOString(formData.applicationDeadline) : ""}
-                onChange={(e) => handleDateTimeChange("applicationDeadline", e.target.value)}
+                value={
+                  formData.applicationDeadline
+                    ? convertFromISOString(formData.applicationDeadline)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("applicationDeadline", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
@@ -403,27 +521,43 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
         return (
           <>
             <div className="space-y-2">
-              <Label htmlFor="startDate" className="text-gray-800">Start Date</Label>
+              <Label htmlFor="startDate" className="text-gray-800">
+                Start Date
+              </Label>
               <Input
                 id="startDate"
                 type="datetime-local"
-                value={formData.startDate ? convertFromISOString(formData.startDate) : ""}
-                onChange={(e) => handleDateTimeChange("startDate", e.target.value)}
+                value={
+                  formData.startDate
+                    ? convertFromISOString(formData.startDate)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("startDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="endDate" className="text-gray-800">End Date</Label>
+              <Label htmlFor="endDate" className="text-gray-800">
+                End Date
+              </Label>
               <Input
                 id="endDate"
                 type="datetime-local"
-                value={formData.endDate ? convertFromISOString(formData.endDate) : ""}
-                onChange={(e) => handleDateTimeChange("endDate", e.target.value)}
+                value={
+                  formData.endDate ? convertFromISOString(formData.endDate) : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("endDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contactInfo" className="text-gray-800">Contact Info</Label>
+              <Label htmlFor="contactInfo" className="text-gray-800">
+                Contact Info
+              </Label>
               <Input
                 id="contactInfo"
                 name="contactInfo"
@@ -440,7 +574,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
         return (
           <>
             <div className="space-y-2">
-              <Label htmlFor="company" className="text-gray-800">Company</Label>
+              <Label htmlFor="company" className="text-gray-800">
+                Company
+              </Label>
               <Input
                 id="company"
                 name="company"
@@ -451,7 +587,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="position" className="text-gray-800">Position</Label>
+              <Label htmlFor="position" className="text-gray-800">
+                Position
+              </Label>
               <Input
                 id="position"
                 name="position"
@@ -462,27 +600,43 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="startDate" className="text-gray-800">Start Date</Label>
+              <Label htmlFor="startDate" className="text-gray-800">
+                Start Date
+              </Label>
               <Input
                 id="startDate"
                 type="datetime-local"
-                value={formData.startDate ? convertFromISOString(formData.startDate) : ""}
-                onChange={(e) => handleDateTimeChange("startDate", e.target.value)}
+                value={
+                  formData.startDate
+                    ? convertFromISOString(formData.startDate)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("startDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="endDate" className="text-gray-800">End Date</Label>
+              <Label htmlFor="endDate" className="text-gray-800">
+                End Date
+              </Label>
               <Input
                 id="endDate"
                 type="datetime-local"
-                value={formData.endDate ? convertFromISOString(formData.endDate) : ""}
-                onChange={(e) => handleDateTimeChange("endDate", e.target.value)}
+                value={
+                  formData.endDate ? convertFromISOString(formData.endDate) : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("endDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contactInfo" className="text-gray-800">Contact Info</Label>
+              <Label htmlFor="contactInfo" className="text-gray-800">
+                Contact Info
+              </Label>
               <Input
                 id="contactInfo"
                 name="contactInfo"
@@ -493,12 +647,20 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="applicationDeadline" className="text-gray-800">Application Deadline</Label>
+              <Label htmlFor="applicationDeadline" className="text-gray-800">
+                Application Deadline
+              </Label>
               <Input
                 id="applicationDeadline"
                 type="datetime-local"
-                value={formData.applicationDeadline ? convertFromISOString(formData.applicationDeadline) : ""}
-                onChange={(e) => handleDateTimeChange("applicationDeadline", e.target.value)}
+                value={
+                  formData.applicationDeadline
+                    ? convertFromISOString(formData.applicationDeadline)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("applicationDeadline", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
@@ -509,7 +671,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
         return (
           <>
             <div className="space-y-2">
-              <Label htmlFor="company" className="text-gray-800">Company</Label>
+              <Label htmlFor="company" className="text-gray-800">
+                Company
+              </Label>
               <Input
                 id="company"
                 name="company"
@@ -520,7 +684,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contactInfo" className="text-gray-800">Contact Info</Label>
+              <Label htmlFor="contactInfo" className="text-gray-800">
+                Contact Info
+              </Label>
               <Input
                 id="contactInfo"
                 name="contactInfo"
@@ -531,12 +697,20 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="applicationDeadline" className="text-gray-800">Application Deadline</Label>
+              <Label htmlFor="applicationDeadline" className="text-gray-800">
+                Application Deadline
+              </Label>
               <Input
                 id="applicationDeadline"
                 type="datetime-local"
-                value={formData.applicationDeadline ? convertFromISOString(formData.applicationDeadline) : ""}
-                onChange={(e) => handleDateTimeChange("applicationDeadline", e.target.value)}
+                value={
+                  formData.applicationDeadline
+                    ? convertFromISOString(formData.applicationDeadline)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("applicationDeadline", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
@@ -547,27 +721,43 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
         return (
           <>
             <div className="space-y-2">
-              <Label htmlFor="startDate" className="text-gray-800">Start Date</Label>
+              <Label htmlFor="startDate" className="text-gray-800">
+                Start Date
+              </Label>
               <Input
                 id="startDate"
                 type="datetime-local"
-                value={formData.startDate ? convertFromISOString(formData.startDate) : ""}
-                onChange={(e) => handleDateTimeChange("startDate", e.target.value)}
+                value={
+                  formData.startDate
+                    ? convertFromISOString(formData.startDate)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("startDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="endDate" className="text-gray-800">End Date</Label>
+              <Label htmlFor="endDate" className="text-gray-800">
+                End Date
+              </Label>
               <Input
                 id="endDate"
                 type="datetime-local"
-                value={formData.endDate ? convertFromISOString(formData.endDate) : ""}
-                onChange={(e) => handleDateTimeChange("endDate", e.target.value)}
+                value={
+                  formData.endDate ? convertFromISOString(formData.endDate) : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("endDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="location" className="text-gray-800">Location</Label>
+              <Label htmlFor="location" className="text-gray-800">
+                Location
+              </Label>
               <Input
                 id="location"
                 name="location"
@@ -578,7 +768,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="contactInfo" className="text-gray-800">Contact Info</Label>
+              <Label htmlFor="contactInfo" className="text-gray-800">
+                Contact Info
+              </Label>
               <Input
                 id="contactInfo"
                 name="contactInfo"
@@ -595,27 +787,43 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
         return (
           <>
             <div className="space-y-2">
-              <Label htmlFor="startDate" className="text-gray-800">Start Date</Label>
+              <Label htmlFor="startDate" className="text-gray-800">
+                Start Date
+              </Label>
               <Input
                 id="startDate"
                 type="datetime-local"
-                value={formData.startDate ? convertFromISOString(formData.startDate) : ""}
-                onChange={(e) => handleDateTimeChange("startDate", e.target.value)}
+                value={
+                  formData.startDate
+                    ? convertFromISOString(formData.startDate)
+                    : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("startDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="endDate" className="text-gray-800">End Date</Label>
+              <Label htmlFor="endDate" className="text-gray-800">
+                End Date
+              </Label>
               <Input
                 id="endDate"
                 type="datetime-local"
-                value={formData.endDate ? convertFromISOString(formData.endDate) : ""}
-                onChange={(e) => handleDateTimeChange("endDate", e.target.value)}
+                value={
+                  formData.endDate ? convertFromISOString(formData.endDate) : ""
+                }
+                onChange={(e) =>
+                  handleDateTimeChange("endDate", e.target.value)
+                }
                 className="border-lightBorderV1 focus:border-mainTextHoverV1"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="location" className="text-gray-800">Location</Label>
+              <Label htmlFor="location" className="text-gray-800">
+                Location
+              </Label>
               <Input
                 id="location"
                 name="location"
@@ -626,7 +834,9 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="organizer" className="text-gray-800">Organizer</Label>
+              <Label htmlFor="organizer" className="text-gray-800">
+                Organizer
+              </Label>
               <Input
                 id="organizer"
                 name="organizer"
@@ -648,14 +858,18 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
         size="medium"
-        className="max-h-[90vh] overflow-y-auto bg-white">
+        className="max-h-[90vh] overflow-y-auto bg-white"
+      >
         <DialogHeader>
           <DialogTitle className="text-gray-800 flex items-center gap-2">
             Create New Topic
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 flex-1 h-full">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 flex-1 h-full"
+        >
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="type" className="text-gray-800">
@@ -689,9 +903,13 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="Enter topic title"
-                className={`${errors.title ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+                className={`${
+                  errors.title ? "border-red-500" : "border-lightBorderV1"
+                } focus:border-mainTextHoverV1`}
               />
-              {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+              {errors.title && (
+                <p className="text-red-500 text-sm">{errors.title}</p>
+              )}
             </div>
 
             <div className="space-y-2 col-span-2">
@@ -705,26 +923,36 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
                 onChange={handleChange}
                 placeholder="Enter topic description"
                 rows={4}
-                className={`${errors.description ? 'border-red-500' : 'border-lightBorderV1'} focus:border-mainTextHoverV1`}
+                className={`${
+                  errors.description ? "border-red-500" : "border-lightBorderV1"
+                } focus:border-mainTextHoverV1`}
               />
-              {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+              {errors.description && (
+                <p className="text-red-500 text-sm">{errors.description}</p>
+              )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="department" className="text-gray-800">Department</Label>
+              <Label htmlFor="department" className="text-gray-800">
+                Department
+              </Label>
               {isLoadingDepartments ? (
                 <div className="h-10 w-full bg-gray-100 animate-pulse rounded" />
               ) : (
                 <Select
                   value={formData.department || "all-departments"}
-                  onValueChange={(value) => handleSelectChange("department", value)}
-                  disabled={isPending || isLoadingDepartments}
+                  onValueChange={(value) =>
+                    handleSelectChange("department", value)
+                  }
+                  disabled={isPending || isLoadingDepartments || isCoordinator}
                 >
                   <SelectTrigger className="border-lightBorderV1 focus:border-mainTextHoverV1">
                     <SelectValue placeholder="Select department" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all-departments">All Departments (General)</SelectItem>
+                    <SelectItem value="all-departments">
+                      All Departments (General)
+                    </SelectItem>
                     {departments.map((dept) => (
                       <SelectItem key={dept._id} value={dept._id}>
                         {dept.name} ({dept.code})
@@ -772,4 +1000,3 @@ export const TopicCreateDialog = ({ isOpen, onClose, onSuccess }: TopicCreateDia
     </Dialog>
   );
 };
-
