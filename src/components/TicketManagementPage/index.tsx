@@ -359,7 +359,7 @@ export default function TicketManagementPage() {
       <Dialog open={showNoteDialog} onOpenChange={setShowNoteDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Add Admin Note</DialogTitle>
+            <DialogTitle>Add Note</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
