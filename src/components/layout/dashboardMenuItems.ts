@@ -68,6 +68,12 @@ export const getCoordinatorMenuItems = (department: string): MenuItem[] => [
 		icon: mdiViewDashboard,
 	},
 	{
+		id: "student-management",
+		name: "Student Management",
+		path: "/coordinator/students",
+		icon: mdiAccountGroup,
+	},
+	{
 		id: "coordinator-topic-management",
 		name: "Topic Management",
 		path: "/coordinator/topics",
