@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,6 +17,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ISupportTicket } from "@/interface/response/support-ticket";
 import { useGetSupportTicketById } from "@/hooks/useSupportTicket";
 import {
@@ -24,22 +33,31 @@ import {
   IconCheckbox,
   IconClock,
   IconBuilding,
+  IconNotes,
 } from "@tabler/icons-react";
 
 type TicketDetailsDialogProps = {
+  open: boolean;
   ticketId: string | null;
   onClose: () => void;
   statusConfig: any;
   priorityConfig: any;
   categoryConfig: any;
+  isCoordinator?: boolean;
+  onStatusChange?: (ticketId: string, status: string) => void;
+  onAddNote?: (ticket: ISupportTicket) => void;
 };
 
 export function TicketDetailsDialog({
+  open,
   ticketId,
   onClose,
   statusConfig,
   priorityConfig,
   categoryConfig,
+  isCoordinator = false,
+  onStatusChange,
+  onAddNote,
 }: TicketDetailsDialogProps) {
   const { data: ticketData, isLoading } = useGetSupportTicketById(
     ticketId || ""
@@ -56,7 +74,7 @@ export function TicketDetailsDialog({
   );
 
   return (
-    <Dialog open={!!ticketId} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         {isLoading ? (
           <div className="p-8 text-center">
@@ -72,33 +90,19 @@ export function TicketDetailsDialog({
                   {ticket.subject}
                 </DialogTitle>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge
-                    style={{
-                      backgroundColor: statusConfig[ticket.status].color + "20",
-                      color: statusConfig[ticket.status].color,
-                      borderColor: statusConfig[ticket.status].color + "40",
-                    }}
-                    className="capitalize"
-                  >
+                  <Badge variant={statusConfig[ticket.status].variant}>
                     {statusConfig[ticket.status].label}
                   </Badge>
-                  <Badge
-                    style={{
-                      backgroundColor:
-                        priorityConfig[ticket.priority].color + "20",
-                      color: priorityConfig[ticket.priority].color,
-                    }}
-                    className="capitalize"
-                  >
+                  <Badge variant={priorityConfig[ticket.priority].variant}>
                     {priorityConfig[ticket.priority].label} Priority
                   </Badge>
-                  <Badge variant="orange">
+                  <Badge variant={categoryConfig[ticket.category].variant}>
                     {categoryConfig[ticket.category].label}
                   </Badge>
                 </div>
               </div>
             </DialogHeader>
-            <div className="w-full overflow-auto space-y-6">
+            <div className="w-full overflow-auto space-y-6 mt-4">
               <Table className="border">
                 <TableHeader>
                   <TableRow className="bg-[#F56C1420]">
@@ -111,6 +115,50 @@ export function TicketDetailsDialog({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
+                  {isCoordinator && (
+                    <TableRow>
+                      <TableCell className="font-semibold text-gray-800">
+                        Student
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="font-medium">
+                            {ticket.student.name}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {ticket.student.email}
+                          </span>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {isCoordinator && (
+                    <TableRow>
+                      <TableCell className="font-semibold text-gray-800">
+                        Update Status
+                      </TableCell>
+                      <TableCell>
+                        <Select
+                          value={ticket.status}
+                          onValueChange={(value) =>
+                            onStatusChange?.(ticket._id, value)
+                          }
+                        >
+                          <SelectTrigger className="w-40">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="open">Open</SelectItem>
+                            <SelectItem value="in_progress">
+                              In Progress
+                            </SelectItem>
+                            <SelectItem value="resolved">Resolved</SelectItem>
+                            <SelectItem value="closed">Closed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
+                    </TableRow>
+                  )}
                   {renderTableRow(
                     "Department",
                     <div className="flex items-center gap-2">
@@ -150,6 +198,29 @@ export function TicketDetailsDialog({
                     )}
                 </TableBody>
               </Table>
+
+              {/* Admin Notes Section */}
+              {ticket.adminNotes && ticket.adminNotes.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2 px-1">
+                    <IconNotes className="w-4 h-4 text-orange-600" />
+                    Admin Notes
+                  </h4>
+                  <div className="space-y-2">
+                    {ticket.adminNotes.map((note, index) => (
+                      <div
+                        key={index}
+                        className="bg-orange-50/50 p-3 rounded-lg border border-orange-100 text-sm"
+                      >
+                        <p className="text-gray-800">{note.note}</p>
+                        <p className="text-[10px] text-gray-500 mt-1">
+                          {new Date(note.createdAt).toLocaleString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* AI Conversation Section */}
               {ticket.aiConversation && (
@@ -199,6 +270,15 @@ export function TicketDetailsDialog({
                 </div>
               )}
             </div>
+            <DialogFooter className="mt-6">
+              {isCoordinator && (
+                <Button variant="outline" onClick={() => onAddNote?.(ticket)}>
+                  <IconNotes className="w-4 h-4 mr-2" />
+                  Add Note
+                </Button>
+              )}
+              <Button onClick={onClose}>Close</Button>
+            </DialogFooter>
           </>
         ) : (
           <div className="p-8 text-center text-gray-500">

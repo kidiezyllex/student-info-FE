@@ -28,6 +28,7 @@ import {
 const statusConfig = {
   open: {
     label: "Open",
+    variant: "blue" as const,
     color: "#3B82F6",
     icon: IconAlertCircle,
     bgColor: "bg-blue-100",
@@ -35,6 +36,7 @@ const statusConfig = {
   },
   in_progress: {
     label: "In Progress",
+    variant: "amber" as const,
     color: "#F59E0B",
     icon: IconProgressCheck,
     bgColor: "bg-amber-100",
@@ -42,6 +44,7 @@ const statusConfig = {
   },
   resolved: {
     label: "Resolved",
+    variant: "green" as const,
     color: "#10B981",
     icon: IconCircleCheck,
     bgColor: "bg-green-100",
@@ -49,6 +52,7 @@ const statusConfig = {
   },
   closed: {
     label: "Closed",
+    variant: "gray" as const,
     color: "#6B7280",
     icon: IconX,
     bgColor: "bg-gray-100",
@@ -57,20 +61,24 @@ const statusConfig = {
 };
 
 const priorityConfig = {
-  low: { label: "Low", color: "#10B981" },
-  medium: { label: "Medium", color: "#F59E0B" },
-  high: { label: "High", color: "#EF4444" },
-  urgent: { label: "Urgent", color: "#DC2626" },
+  low: { label: "Low", variant: "green" as const, color: "#10B981" },
+  medium: { label: "Medium", variant: "amber" as const, color: "#F59E0B" },
+  high: { label: "High", variant: "orange" as const, color: "#EF4444" },
+  urgent: { label: "Urgent", variant: "red" as const, color: "#DC2626" },
 };
 
 const categoryConfig = {
-  academic: { label: "Academic", icon: "📚" },
-  technical: { label: "Technical", icon: "💻" },
-  administrative: { label: "Administrative", icon: "📋" },
-  other: { label: "Other", icon: "📌" },
+  academic: { label: "Academic", variant: "blue" as const, icon: "📚" },
+  technical: { label: "Technical", variant: "violet" as const, icon: "💻" },
+  administrative: {
+    label: "Administrative",
+    variant: "amber" as const,
+    icon: "📋",
+  },
+  other: { label: "Other", variant: "slate" as const, icon: "📌" },
 };
 
-import { TicketDetailsDialog } from "@/components/StudentHome/TicketDetailsDialog";
+import { TicketDetailsDialog } from "@/components/TicketManagementPage/TicketDetailsDialog";
 
 const TicketCard = ({
   ticket,
@@ -301,6 +309,7 @@ export default function TicketsPage() {
 
       {/* Ticket Details Dialog */}
       <TicketDetailsDialog
+        open={!!selectedTicketId}
         ticketId={selectedTicketId}
         onClose={() => setSelectedTicketId(null)}
         statusConfig={statusConfig}

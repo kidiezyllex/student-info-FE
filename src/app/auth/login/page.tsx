@@ -85,16 +85,6 @@ export default function LoginPage() {
           const responseData = loginResponse.data as any;
           let redirectPath = `/${role}`;
 
-          if (role === "coordinator" && responseData.department) {
-            const departmentName =
-              typeof responseData.department === "string"
-                ? responseData.department
-                : responseData.department?.name ||
-                  responseData.department?.code ||
-                  "unknown";
-            redirectPath = `/coordinator/${departmentName}`;
-          }
-
           router.push(redirectPath);
         }
         toast.success("Login successful!");
