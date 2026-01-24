@@ -9,13 +9,13 @@ function getLocalAccessToken() {
 	if (typeof window === "undefined") {
 		return null;
 	}
-	
+
 	try {
 		const directAccessToken = localStorage.getItem("accessToken");
 		if (directAccessToken) {
 			return directAccessToken;
 		}
-		
+
 		const tokenFromStorage = localStorage.getItem("token");
 		if (tokenFromStorage) {
 			try {
@@ -59,7 +59,7 @@ instance.interceptors.response.use(
 	(response) => response,
 	async (error) => {
 		const originalRequest = error.config;
-		
+
 		if (error.response?.status === 401) {
 			const errorMessage = error.response?.data?.message || "";
 			if (errorMessage.includes("No token") || errorMessage.includes("token") || errorMessage.includes("unauthorized")) {
@@ -77,7 +77,7 @@ instance.interceptors.response.use(
 				}
 			}
 		}
-		
+
 		return Promise.reject(error);
 	}
 );
@@ -110,7 +110,7 @@ export const sendPost = (url: string, params?: any, queryParams?: any) => {
 		});
 };
 
-export const sendPut = (url: string, params?: any) => 
+export const sendPut = (url: string, params?: any) =>
 	instance.put(url, params)
 		.then((res) => res?.data)
 		.catch((error) => {

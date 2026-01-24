@@ -1,5 +1,14 @@
 # Student Info - Description
 
+## Nền tảng công nghệ:
+
+- **Frontend**: Next.js 14.2.7, React 18.3.1, TypeScript 5.3.3.
+- **Backend**: Node.js, Express.js (TypeScript/JavaScript).
+- **Database**: MongoDB (Mongoose) với Text Search tích hợp.
+- **AI**: Groq Llama 3.1 70B với kiến trúc RAG (Retrieval-Augmented Generation).
+- **Media**: Cloudinary (Quản lý file & hình ảnh).
+- **Integration**: Google Calendar API (Lịch học vụ).
+
 ## Table of Contents
 
 - [1. Administrator (Quản trị viên)](#1-administrator-quản-trị-viên)
