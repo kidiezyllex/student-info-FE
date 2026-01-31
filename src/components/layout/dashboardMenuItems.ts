@@ -43,6 +43,12 @@ export const getDashboardMenuItems = (): MenuItem[] => [
 		path: "/admin/activity-logs",
 		icon: mdiHistory,
 	},
+	{
+		id: "admin-ticket-management",
+		name: "Support Tickets",
+		path: "/admin/tickets",
+		icon: mdiTicket,
+	},
 ]; 
 
 export const getStudentMenuItems = (): MenuItem[] => [
