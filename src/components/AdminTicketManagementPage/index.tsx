@@ -2,14 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -59,7 +51,7 @@ import {
   IconTrendingUp,
   IconClock,
   IconAlertCircle,
-  IconCheckCircle,
+  IconCircleCheck,
 } from "@tabler/icons-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "react-toastify";
@@ -284,7 +276,7 @@ export default function AdminTicketManagementPage() {
                   </p>
                 </div>
                 <div className="p-3 bg-green-100 rounded-full">
-                  <IconCheckCircle className="w-6 h-6 text-green-600" />
+                  <IconCircleCheck className="w-6 h-6 text-green-600" />
                 </div>
               </div>
             </CardContent>
